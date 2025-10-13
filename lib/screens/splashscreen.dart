@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -16,9 +18,11 @@ class _SplashscreenState extends State<Splashscreen>
   late final Animation<double> _circleSizeAnimation;
 
   late final AnimationController _moveController;
-  late final Animation<double> _moveAnimation;
+  late Animation<double> _moveAnimation; // ✅ Changed to non-final
 
   late final AnimationController _textController;
+
+  bool _isInitialized = false; // ✅ Added flag
 
   @override
   void initState() {
@@ -51,29 +55,51 @@ class _SplashscreenState extends State<Splashscreen>
       duration: const Duration(milliseconds: 1000),
     );
 
-    _moveAnimation = Tween<double>(begin: 0, end: -100).animate(
-      CurvedAnimation(parent: _moveController, curve: Curves.easeInOut),
-    );
+    // ✅ Initialize with placeholder value
+    _moveAnimation =
+        Tween<double>(
+          begin: 0,
+          end: 0, // Will be updated in didChangeDependencies
+        ).animate(
+          CurvedAnimation(parent: _moveController, curve: Curves.easeInOut),
+        );
 
     // Text appear (fade + slide)
     _textController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1000),
     );
+  }
 
-    _controller.forward();
+  // ✅ Override didChangeDependencies to access MediaQuery safely
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    _controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed) _circleController.forward();
-    });
+    if (!_isInitialized) {
+      _isInitialized = true;
 
-    _circleController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) _moveController.forward();
-    });
+      // ✅ Now safe to use MediaQuery
+      _moveAnimation =
+          Tween<double>(
+            begin: 0,
+            end: -MediaQuery.of(context).size.width * 0.2,
+          ).animate(
+            CurvedAnimation(parent: _moveController, curve: Curves.easeInOut),
+          );
 
-    _moveController.addStatusListener((status) {
-      if (status == AnimationStatus.forward) _textController.forward();
-    });
+      // ✅ Start animation chain here
+      _controller.forward();
+      _controller.addStatusListener((status) {
+        if (status == AnimationStatus.completed) _circleController.forward();
+      });
+      _circleController.addStatusListener((status) {
+        if (status == AnimationStatus.completed) _moveController.forward();
+      });
+      _moveController.addStatusListener((status) {
+        if (status == AnimationStatus.forward) _textController.forward();
+      });
+    }
   }
 
   @override
@@ -87,36 +113,50 @@ class _SplashscreenState extends State<Splashscreen>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        // 🌈 Background
-        Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF215DF7), Color(0xFF0C1F51)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+    // Screen size for responsiveness
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+
+    // Responsive scaling
+    final baseCircleSize = width * 0.35;
+    final minCircleSize = width * 0.22;
+    final textRightPadding = width * 0.1;
+
+    return Scaffold(
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          // 🌈 Background
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF215DF7), Color(0xFF0C1F51)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
             ),
           ),
-        ),
 
-        // 🎯 Animated circle + vector
-        Center(
-          child: AnimatedBuilder(
+          // 🎯 Animated circle + vector
+          AnimatedBuilder(
             animation: Listenable.merge([
               _circleSizeAnimation,
               _curvedAnimation,
               _moveAnimation,
             ]),
             builder: (context, child) {
+              final circleSize = Tween<double>(
+                begin: baseCircleSize,
+                end: minCircleSize,
+              ).evaluate(_circleController);
+
               return Transform.translate(
                 offset: Offset(_moveAnimation.value, 0),
                 child: Container(
-                  width: _circleSizeAnimation.value,
-                  height: _circleSizeAnimation.value,
+                  width: circleSize,
+                  height: circleSize,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
+                    borderRadius: BorderRadius.circular(circleSize / 2),
                     color: Colors.white,
                   ),
                   child: ShaderMask(
@@ -133,9 +173,9 @@ class _SplashscreenState extends State<Splashscreen>
                     },
                     blendMode: BlendMode.dstIn,
                     child: Center(
-                      child: Image.asset(
-                        'assets/images/Vector.png',
-                        width: _circleSizeAnimation.value,
+                      child: SvgPicture.asset(
+                        'assets/images/Vector.svg',
+                        width: circleSize,
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -144,84 +184,88 @@ class _SplashscreenState extends State<Splashscreen>
               );
             },
           ),
-        ),
-        Positioned(
-          bottom: 350,
-          right: 30,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              FadeTransition(
-                opacity: Tween<double>(begin: 0, end: 1).animate(
-                  CurvedAnimation(
-                    parent: _textController,
-                    curve: const Interval(0.0, 0.5, curve: Curves.easeIn),
+
+          // 🧠 Text Animation
+          Positioned(
+            right: textRightPadding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FadeTransition(
+                  opacity: Tween<double>(begin: 0, end: 1).animate(
+                    CurvedAnimation(
+                      parent: _textController,
+                      curve: const Interval(0.0, 0.5, curve: Curves.easeIn),
+                    ),
                   ),
-                ),
-                child: SlideTransition(
-                  position:
-                      Tween<Offset>(
-                        begin: const Offset(-0.3, 0),
-                        end: Offset.zero,
-                      ).animate(
-                        CurvedAnimation(
-                          parent: _textController,
-                          curve: const Interval(
-                            0.0,
-                            0.5,
-                            curve: Curves.easeOut,
+                  child: SlideTransition(
+                    position:
+                        Tween<Offset>(
+                          begin: const Offset(-0.3, 0),
+                          end: Offset.zero,
+                        ).animate(
+                          CurvedAnimation(
+                            parent: _textController,
+                            curve: const Interval(
+                              0.0,
+                              0.5,
+                              curve: Curves.easeOut,
+                            ),
                           ),
                         ),
+                    child: Text(
+                      "SEHA TECH",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: width * 0.095,
+                        fontFamily: 'Cairo',
+                        fontWeight: FontWeight.bold,
+                        // letterSpacing: 1.2,
+                        decoration: TextDecoration.none,
                       ),
-                  child: const Text(
-                    "SehaTech",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.2,
-                      decoration: TextDecoration.none,
                     ),
                   ),
                 ),
-              ),
-              FadeTransition(
-                opacity: Tween<double>(begin: 0, end: 1).animate(
-                  CurvedAnimation(
-                    parent: _textController,
-                    curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
+
+                FadeTransition(
+                  opacity: Tween<double>(begin: 0, end: 1).animate(
+                    CurvedAnimation(
+                      parent: _textController,
+                      curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
+                    ),
                   ),
-                ),
-                child: SlideTransition(
-                  position:
-                      Tween<Offset>(
-                        begin: const Offset(-0.3, 0),
-                        end: Offset.zero,
-                      ).animate(
-                        CurvedAnimation(
-                          parent: _textController,
-                          curve: const Interval(
-                            0.5,
-                            1.0,
-                            curve: Curves.easeOut,
+                  child: SlideTransition(
+                    position:
+                        Tween<Offset>(
+                          begin: const Offset(-0.3, 0),
+                          end: Offset.zero,
+                        ).animate(
+                          CurvedAnimation(
+                            parent: _textController,
+                            curve: const Interval(
+                              0.5,
+                              1.0,
+                              curve: Curves.easeOut,
+                            ),
                           ),
                         ),
+                    child: Text(
+                      " Health Comes First",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: width * 0.045,
+                        fontFamily: 'PoltawskiNowy',
+                        fontWeight: FontWeight.w400,
+                        decoration: TextDecoration.none,
                       ),
-                  child: const Text(
-                    "Health Comes First",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none,
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
