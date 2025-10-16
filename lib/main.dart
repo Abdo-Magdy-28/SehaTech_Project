@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:grad_project/screens/loginpage.dart';
+import 'package:grad_project/screens/signupform.dart';
 import 'package:grad_project/screens/splashscreen.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: const Splashscreen(),
+      home: const Signupform(),
     );
   }
 }
