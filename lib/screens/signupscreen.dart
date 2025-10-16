@@ -13,33 +13,31 @@ class Signupscreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 40),
+            SizedBox(height: 30),
 
             ////// Doctor Photo
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 200,
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        top: 30,
-                        left: 35,
-                        right: 8,
-                        child: Image.asset(
+                child: Hero(
+                  tag: 'first',
+                  child: SizedBox(
+                    height: 200,
+                    child: Stack(
+                      children: [
+                        Image.asset(
                           "assets/images/Sign-up-cards-BG.png",
                           fit: BoxFit.cover,
                         ),
-                      ),
-                      Positioned(
-                        child: Image.asset(
-                          "assets/images/Sign-up-card01.png",
+                        Positioned(
+                          child: Image.asset(
+                            "assets/images/Sign-up-card01.png",
 
-                          fit: BoxFit.fitHeight,
+                            fit: BoxFit.fitHeight,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -172,6 +170,7 @@ class Signupscreen extends StatelessWidget {
                       },
                     ),
                   );
+                  return null;
                 },
               ),
             ),

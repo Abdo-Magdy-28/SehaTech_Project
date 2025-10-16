@@ -1,6 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:grad_project/screens/loginpage.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -27,7 +29,19 @@ class _SplashscreenState extends State<Splashscreen>
   @override
   void initState() {
     super.initState();
-
+    Future.delayed(Duration(seconds: 5), () {
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+          transitionDuration: const Duration(milliseconds: 800),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const Loginpage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        ),
+      );
+    });
     // First animation (shader slide)
     _controller = AnimationController(
       vsync: this,
@@ -83,7 +97,7 @@ class _SplashscreenState extends State<Splashscreen>
       _moveAnimation =
           Tween<double>(
             begin: 0,
-            end: -MediaQuery.of(context).size.width * 0.2,
+            end: -MediaQuery.of(context).size.width * 0.25,
           ).animate(
             CurvedAnimation(parent: _moveController, curve: Curves.easeInOut),
           );
@@ -120,7 +134,7 @@ class _SplashscreenState extends State<Splashscreen>
     // Responsive scaling
     final baseCircleSize = width * 0.35;
     final minCircleSize = width * 0.22;
-    final textRightPadding = width * 0.1;
+    final textRightPadding = width * 0.15;
 
     return Scaffold(
       body: Stack(
@@ -201,7 +215,7 @@ class _SplashscreenState extends State<Splashscreen>
                   child: SlideTransition(
                     position:
                         Tween<Offset>(
-                          begin: const Offset(-0.3, 0),
+                          begin: const Offset(-0.4, 0),
                           end: Offset.zero,
                         ).animate(
                           CurvedAnimation(
