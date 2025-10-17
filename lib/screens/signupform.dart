@@ -1,5 +1,9 @@
+// ignore_for_file: implicit_call_tearoffs
+
 import 'package:flutter/material.dart';
+import 'package:grad_project/screens/signupscreen2.dart';
 import 'package:grad_project/widgets/textformfield.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 class Signupform extends StatefulWidget {
   const Signupform({super.key});
@@ -60,6 +64,8 @@ class _SignupformState extends State<Signupform> {
           child: Form(
             key: formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: devHeight * 0.02),
                 Text(
@@ -77,6 +83,9 @@ class _SignupformState extends State<Signupform> {
                   controller: _firstController,
                   focusNode: _firstFocus,
                   hinttext: 'First Name',
+                  validator: RequiredValidator(
+                    errorText: "First Name Requierd ",
+                  ),
                   bordercolor: const Color(0xFF727880),
                   prefixicon: "assets/images/iconamoon_profile-light.svg",
                   textInputAction: TextInputAction.next,
@@ -89,6 +98,9 @@ class _SignupformState extends State<Signupform> {
                   controller: _lastController,
                   focusNode: _lastFocus,
                   hinttext: 'Last Name',
+                  validator: RequiredValidator(
+                    errorText: "Last Name Requierd ",
+                  ),
                   bordercolor: const Color(0xFF727880),
                   prefixicon: "assets/images/iconamoon_profile-light.svg",
                   textInputAction: TextInputAction.next,
@@ -101,6 +113,10 @@ class _SignupformState extends State<Signupform> {
                   controller: _emailController,
                   focusNode: _emailFocus,
                   hinttext: 'Email',
+                  validator: MultiValidator([
+                    RequiredValidator(errorText: "Email IS requierd "),
+                    EmailValidator(errorText: "Email Is Invaild"),
+                  ]),
                   bordercolor: const Color(0xFF727880),
                   prefixicon: "assets/images/carbon_email.svg",
                   textInputAction: TextInputAction.next,
@@ -113,6 +129,13 @@ class _SignupformState extends State<Signupform> {
                   controller: _passwordController,
                   focusNode: _passwordFocus,
                   hinttext: 'Password',
+                  validator: MultiValidator([
+                    RequiredValidator(errorText: "Password Requierd"),
+                    MinLengthValidator(
+                      6,
+                      errorText: 'Password must be at least 6 characters',
+                    ),
+                  ]),
                   obsecure: true,
                   bordercolor: const Color(0xFF727880),
                   prefixicon: "assets/images/teenyicons_password-outline.svg",
@@ -126,6 +149,14 @@ class _SignupformState extends State<Signupform> {
                   controller: _confirmController,
                   focusNode: _confirmFocus,
                   hinttext: 'Confirm Password',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please confirm your password';
+                    } else if (value != _passwordController.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  },
                   obsecure: true,
                   bordercolor: const Color(0xFF727880),
                   prefixicon: "assets/images/teenyicons_password-outline.svg",
@@ -158,6 +189,14 @@ class _SignupformState extends State<Signupform> {
                   ),
                 ),
                 SizedBox(height: devHeight * 0.02),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Already have an account?"),
+                    TextButton(onPressed: () {}, child: Text("Sign In")),
+                  ],
+                ),
               ],
             ),
           ),
@@ -170,6 +209,13 @@ class _SignupformState extends State<Signupform> {
     if (formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Form is valid! Signing up...')),
+      );
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) {
+            return Signupscreen2();
+          },
+        ),
       );
     } else {
       ScaffoldMessenger.of(

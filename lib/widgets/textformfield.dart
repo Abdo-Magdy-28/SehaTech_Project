@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 class Textformfield extends StatelessWidget {
   const Textformfield({
@@ -12,8 +13,9 @@ class Textformfield extends StatelessWidget {
     this.onFieldSubmitted,
     this.textInputAction = TextInputAction.done,
     this.controller,
+    this.validator,
   });
-
+  final String? Function(String?)? validator;
   final String hinttext;
   final bool obsecure;
   final Color bordercolor;
@@ -28,17 +30,12 @@ class Textformfield extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
+        validator: validator,
         controller: controller,
         focusNode: focusNode,
         obscureText: obsecure,
         textInputAction: textInputAction,
         onFieldSubmitted: onFieldSubmitted,
-        validator: (value) {
-          if (value?.isEmpty ?? true) {
-            return "Field is required";
-          }
-          return null;
-        },
         style: const TextStyle(color: Colors.black87),
         decoration: InputDecoration(
           hintText: hinttext,
