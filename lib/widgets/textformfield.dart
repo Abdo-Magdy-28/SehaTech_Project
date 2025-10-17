@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
-class Textformfield extends StatelessWidget {
-  const Textformfield({
+class Textformfield extends StatefulWidget {
+  Textformfield({
     super.key,
     required this.hinttext,
     this.obsecure = false,
@@ -14,10 +14,12 @@ class Textformfield extends StatelessWidget {
     this.textInputAction = TextInputAction.done,
     this.controller,
     this.validator,
+    this.ispassword = false,
   });
   final String? Function(String?)? validator;
   final String hinttext;
-  final bool obsecure;
+  bool obsecure;
+  final bool ispassword;
   final Color bordercolor;
   final String prefixicon;
   final FocusNode focusNode;
@@ -26,38 +28,59 @@ class Textformfield extends StatelessWidget {
   final TextInputAction textInputAction;
 
   @override
+  State<Textformfield> createState() => _TextformfieldState();
+}
+
+class _TextformfieldState extends State<Textformfield> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
-        validator: validator,
-        controller: controller,
-        focusNode: focusNode,
-        obscureText: obsecure,
-        textInputAction: textInputAction,
-        onFieldSubmitted: onFieldSubmitted,
+        validator: widget.validator,
+        controller: widget.controller,
+        focusNode: widget.focusNode,
+        obscureText: widget.obsecure,
+        textInputAction: widget.textInputAction,
+        onFieldSubmitted: widget.onFieldSubmitted,
         style: const TextStyle(color: Colors.black87),
         decoration: InputDecoration(
-          hintText: hinttext,
+          hintText: widget.hinttext,
           hintStyle: const TextStyle(color: Colors.grey),
           filled: true,
           fillColor: const Color(0xFFF3F1F7),
           prefixIcon: Padding(
             padding: const EdgeInsets.all(10),
             child: SvgPicture.asset(
-              prefixicon,
+              widget.prefixicon,
               width: 18,
               height: 18,
               fit: BoxFit.contain,
             ),
           ),
+
+          suffixIcon: widget.ispassword
+              ? GestureDetector(
+                  onTap: () {
+                    widget.obsecure = !widget.obsecure;
+                    setState(() {});
+                  },
+                  child: widget.obsecure
+                      ? Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: SvgPicture.asset("assets/images/shape.svg"),
+                        )
+                      : Icon(Icons.remove_red_eye_outlined),
+                )
+              : null,
+
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide(color: bordercolor),
+            borderSide: BorderSide(color: widget.bordercolor),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide(color: bordercolor),
+            borderSide: BorderSide(color: widget.bordercolor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),

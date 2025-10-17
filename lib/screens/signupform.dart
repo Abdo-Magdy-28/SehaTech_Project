@@ -48,9 +48,12 @@ class _SignupformState extends State<Signupform> {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
+      extendBodyBehindAppBar: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
+        shadowColor: Colors.transparent,
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -71,7 +74,7 @@ class _SignupformState extends State<Signupform> {
                 Text(
                   'SIGN UP',
                   style: TextStyle(
-                    fontSize: devWidth * 0.06,
+                    fontSize: devWidth * 0.08,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Cairo',
                   ),
@@ -84,9 +87,9 @@ class _SignupformState extends State<Signupform> {
                   focusNode: _firstFocus,
                   hinttext: 'First Name',
                   validator: RequiredValidator(
-                    errorText: "First Name Requierd ",
+                    errorText: "First Name required",
                   ),
-                  bordercolor: const Color(0xFF727880),
+                  bordercolor: const Color(0xFFF3F1F7),
                   prefixicon: "assets/images/iconamoon_profile-light.svg",
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) =>
@@ -98,10 +101,8 @@ class _SignupformState extends State<Signupform> {
                   controller: _lastController,
                   focusNode: _lastFocus,
                   hinttext: 'Last Name',
-                  validator: RequiredValidator(
-                    errorText: "Last Name Requierd ",
-                  ),
-                  bordercolor: const Color(0xFF727880),
+                  validator: RequiredValidator(errorText: "Last Name required"),
+                  bordercolor: const Color(0xFFF3F1F7),
                   prefixicon: "assets/images/iconamoon_profile-light.svg",
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) =>
@@ -114,10 +115,10 @@ class _SignupformState extends State<Signupform> {
                   focusNode: _emailFocus,
                   hinttext: 'Email',
                   validator: MultiValidator([
-                    RequiredValidator(errorText: "Email IS requierd "),
-                    EmailValidator(errorText: "Email Is Invaild"),
+                    RequiredValidator(errorText: "Email required "),
+                    EmailValidator(errorText: "Email Is Invalid"),
                   ]),
-                  bordercolor: const Color(0xFF727880),
+                  bordercolor: const Color(0xFFF3F1F7),
                   prefixicon: "assets/images/carbon_email.svg",
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) =>
@@ -129,15 +130,16 @@ class _SignupformState extends State<Signupform> {
                   controller: _passwordController,
                   focusNode: _passwordFocus,
                   hinttext: 'Password',
+                  ispassword: true,
                   validator: MultiValidator([
-                    RequiredValidator(errorText: "Password Requierd"),
+                    RequiredValidator(errorText: "Password required"),
                     MinLengthValidator(
                       6,
                       errorText: 'Password must be at least 6 characters',
                     ),
                   ]),
                   obsecure: true,
-                  bordercolor: const Color(0xFF727880),
+                  bordercolor: const Color(0xFFF3F1F7),
                   prefixicon: "assets/images/teenyicons_password-outline.svg",
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) =>
@@ -158,7 +160,8 @@ class _SignupformState extends State<Signupform> {
                     return null;
                   },
                   obsecure: true,
-                  bordercolor: const Color(0xFF727880),
+                  ispassword: true,
+                  bordercolor: const Color(0xFFF3F1F7),
                   prefixicon: "assets/images/teenyicons_password-outline.svg",
                   textInputAction: TextInputAction.done,
                   onFieldSubmitted: (_) => _submitForm(),
@@ -188,14 +191,32 @@ class _SignupformState extends State<Signupform> {
                     ),
                   ),
                 ),
-                SizedBox(height: devHeight * 0.02),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("Already have an account?"),
-                    TextButton(onPressed: () {}, child: Text("Sign In")),
-                  ],
+                SizedBox(height: devHeight * 0.01),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Already have an account?"),
+                      TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size.zero,
+                        ),
+                        child: Text(
+                          "Sign In",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize:
+                                devWidth * 0.04, // ✅ Added responsive font size
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
