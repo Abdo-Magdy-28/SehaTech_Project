@@ -1,41 +1,36 @@
 // ignore_for_file: implicit_call_tearoffs
 
 import 'package:flutter/material.dart';
-import 'package:grad_project/screens/signin.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/screens/signupscreen2.dart';
+import 'package:grad_project/screens/verifyidentity.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
-class Signupform extends StatefulWidget {
-  const Signupform({super.key});
+class Signin extends StatefulWidget {
+  const Signin({super.key});
 
   @override
-  State<Signupform> createState() => _SignupformState();
+  State<Signin> createState() => _SigninState();
 }
 
-class _SignupformState extends State<Signupform> {
+class _SigninState extends State<Signin> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final _firstFocus = FocusNode();
-  final _lastFocus = FocusNode();
+
   final _emailFocus = FocusNode();
   final _passwordFocus = FocusNode();
   final _confirmFocus = FocusNode();
 
-  final _firstController = TextEditingController();
-  final _lastController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmController = TextEditingController();
 
   @override
   void dispose() {
-    _firstFocus.dispose();
-    _lastFocus.dispose();
     _emailFocus.dispose();
     _passwordFocus.dispose();
     _confirmFocus.dispose();
-    _firstController.dispose();
-    _lastController.dispose();
+
     _emailController.dispose();
     _passwordController.dispose();
     _confirmController.dispose();
@@ -73,7 +68,7 @@ class _SignupformState extends State<Signupform> {
               children: [
                 SizedBox(height: devHeight * 0.02),
                 Text(
-                  'SIGN UP',
+                  'SIGN IN',
                   style: TextStyle(
                     fontSize: devWidth * 0.08,
                     fontWeight: FontWeight.w700,
@@ -81,34 +76,6 @@ class _SignupformState extends State<Signupform> {
                   ),
                 ),
                 SizedBox(height: devHeight * 0.04),
-
-                // First Name
-                Textformfield(
-                  controller: _firstController,
-                  focusNode: _firstFocus,
-                  hinttext: 'First Name',
-                  validator: RequiredValidator(
-                    errorText: "First Name required",
-                  ),
-                  bordercolor: const Color(0xFFF3F1F7),
-                  prefixicon: "assets/images/iconamoon_profile-light.svg",
-                  textInputAction: TextInputAction.next,
-                  onFieldSubmitted: (_) =>
-                      FocusScope.of(context).requestFocus(_lastFocus),
-                ),
-
-                // Last Name
-                Textformfield(
-                  controller: _lastController,
-                  focusNode: _lastFocus,
-                  hinttext: 'Last Name',
-                  validator: RequiredValidator(errorText: "Last Name required"),
-                  bordercolor: const Color(0xFFF3F1F7),
-                  prefixicon: "assets/images/iconamoon_profile-light.svg",
-                  textInputAction: TextInputAction.next,
-                  onFieldSubmitted: (_) =>
-                      FocusScope.of(context).requestFocus(_emailFocus),
-                ),
 
                 // Email
                 Textformfield(
@@ -142,36 +109,45 @@ class _SignupformState extends State<Signupform> {
                   obsecure: true,
                   bordercolor: const Color(0xFFF3F1F7),
                   prefixicon: "assets/images/teenyicons_password-outline.svg",
-                  textInputAction: TextInputAction.next,
-                  onFieldSubmitted: (_) =>
-                      FocusScope.of(context).requestFocus(_confirmFocus),
-                ),
-
-                // Confirm Password
-                Textformfield(
-                  controller: _confirmController,
-                  focusNode: _confirmFocus,
-                  hinttext: 'Confirm Password',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please confirm your password';
-                    } else if (value != _passwordController.text) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
-                  obsecure: true,
-                  ispassword: true,
-                  bordercolor: const Color(0xFFF3F1F7),
-                  prefixicon: "assets/images/teenyicons_password-outline.svg",
                   textInputAction: TextInputAction.done,
                   onFieldSubmitted: (_) => _submitForm(),
                 ),
 
-                SizedBox(height: devHeight * 0.04),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return Verifyidentity();
+                              },
+                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 3),
+                          minimumSize: Size.zero,
+                        ),
+                        child: Text(
+                          "Forgot Password",
+                          style: TextStyle(
+                            color: Colors.black,
+
+                            fontSize:
+                                devWidth * 0.04, // ✅ Added responsive font size
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Hero(
                   tag: 'first',
-
                   child: SizedBox(
                     width: double.infinity,
                     height: devHeight * 0.07,
@@ -196,48 +172,88 @@ class _SignupformState extends State<Signupform> {
                     ),
                   ),
                 ),
-                SizedBox(height: devHeight * 0.01),
+                SizedBox(height: devHeight * 0.04),
+                Center(child: Text("OR")),
+                SizedBox(height: devHeight * 0.04),
+                SizedBox(
+                  width: devWidth * 0.9,
+                  height: devHeight * 0.075,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: Color(0xfff3f1f8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset("assets/images/Icons2.svg"),
+                        SizedBox(width: devWidth * 0.01),
+                        Text(
+                          "Sign Up With Google",
+                          style: TextStyle(
+                            color: Color(0xFF676767),
+                            fontSize: devWidth * 0.045, // ✅ Changed from 18
+                            fontFamily: 'Cairo',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: devHeight * 0.02),
+                SizedBox(
+                  width: devWidth * 0.9,
+                  height: devHeight * 0.075,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: Color(0xff0d61ec),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                    ),
+
+                    onPressed: () {},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset("assets/images/Icons.svg"),
+                        SizedBox(width: devWidth * 0.01),
+                        Text(
+                          "Sign Up With Facebook",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: devWidth * 0.045, // ✅ Changed from 18
+                            fontFamily: 'Cairo',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("Already have an account?"),
+                      Text("Dont Have Account?"),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(
-                            PageRouteBuilder(
-                              transitionDuration: const Duration(
-                                milliseconds: 800,
-                              ),
-                              reverseTransitionDuration: const Duration(
-                                milliseconds: 500,
-                              ),
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) =>
-                                      const Signin(),
-                              transitionsBuilder:
-                                  (
-                                    context,
-                                    animation,
-                                    secondaryAnimation,
-                                    child,
-                                  ) {
-                                    return FadeTransition(
-                                      opacity: animation,
-                                      child: child,
-                                    );
-                                  },
-                            ),
-                          );
+                          Navigator.pop(context);
                         },
                         style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
+                          padding: EdgeInsets.all(3),
                           minimumSize: Size.zero,
                         ),
                         child: Text(
-                          "Sign In",
+                          "Sign Up",
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
