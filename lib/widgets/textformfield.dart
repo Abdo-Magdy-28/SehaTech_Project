@@ -15,6 +15,7 @@ class Textformfield extends StatefulWidget {
     this.controller,
     this.validator,
     this.ispassword = false,
+    this.keyboardType,
   });
   final String? Function(String?)? validator;
   final String hinttext;
@@ -26,6 +27,7 @@ class Textformfield extends StatefulWidget {
   final TextEditingController? controller;
   final Function(String)? onFieldSubmitted;
   final TextInputAction textInputAction;
+  final TextInputType? keyboardType;
 
   @override
   State<Textformfield> createState() => _TextformfieldState();
@@ -37,6 +39,7 @@ class _TextformfieldState extends State<Textformfield> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
+        keyboardType: widget.keyboardType,
         validator: widget.validator,
         controller: widget.controller,
         focusNode: widget.focusNode,

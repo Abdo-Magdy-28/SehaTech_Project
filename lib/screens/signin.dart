@@ -134,7 +134,7 @@ class _SigninState extends State<Signin> {
                           minimumSize: Size.zero,
                         ),
                         child: Text(
-                          "Forgot Password",
+                          "Forgot Password ?",
                           style: TextStyle(
                             color: Colors.black,
 
@@ -152,7 +152,7 @@ class _SigninState extends State<Signin> {
                     width: double.infinity,
                     height: devHeight * 0.07,
                     child: ElevatedButton(
-                      onPressed: _submitForm,
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF2260FF),
                         shape: RoundedRectangleBorder(
@@ -161,7 +161,7 @@ class _SigninState extends State<Signin> {
                         elevation: 0,
                       ),
                       child: Text(
-                        'Sign Up',
+                        'Sign In',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: devWidth * 0.045,

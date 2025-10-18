@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grad_project/screens/signin.dart';
 import 'package:grad_project/screens/signupform.dart';
 import 'package:grad_project/widgets/carousel_card.dart';
 import 'package:slide_to_act/slide_to_act.dart';
@@ -139,7 +140,13 @@ class _LoginpageState extends State<Loginpage> {
                             ),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => Signin(),
+                                ),
+                              );
+                            },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
                               minimumSize: Size.zero,

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:grad_project/screens/splashscreen.dart';
+import 'package:grad_project/screens/verificationview.dart';
 import 'package:grad_project/screens/signin.dart';
 import 'package:grad_project/screens/signupform.dart';
 import 'package:grad_project/screens/signupscreen2.dart';
+import 'package:grad_project/screens/verifyidentity.dart';
 
 void main() {
   debugPaintSizeEnabled = false;
@@ -18,7 +21,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: const Signupform(),
+      home: const Splashscreen(),
     );
   }
 }
