@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 
 class Textformfield extends StatefulWidget {
   Textformfield({
@@ -53,7 +52,7 @@ class _TextformfieldState extends State<Textformfield> {
           filled: true,
           fillColor: const Color(0xFFF3F1F7),
           prefixIcon: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(12),
             child: SvgPicture.asset(
               widget.prefixicon,
               width: 18,
@@ -70,7 +69,7 @@ class _TextformfieldState extends State<Textformfield> {
                   },
                   child: widget.obsecure
                       ? Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(12.0),
                           child: SvgPicture.asset("assets/images/shape.svg"),
                         )
                       : Icon(Icons.remove_red_eye_outlined),

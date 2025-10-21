@@ -110,8 +110,11 @@ class _SplashscreenState extends State<Splashscreen>
       _circleController.addStatusListener((status) {
         if (status == AnimationStatus.completed) _moveController.forward();
       });
-      _moveController.addStatusListener((status) {
-        if (status == AnimationStatus.forward) _textController.forward();
+      _moveController.addStatusListener((status) async {
+        if (status == AnimationStatus.forward) {
+          await Future.delayed(Duration(milliseconds: 600));
+          _textController.forward();
+        }
       });
     }
   }
@@ -180,7 +183,7 @@ class _SplashscreenState extends State<Splashscreen>
                         end: Alignment.centerRight,
                         stops: [
                           _curvedAnimation.value,
-                          (_curvedAnimation.value + 0.1).clamp(0.0, 1.0),
+                          (_curvedAnimation.value + 0.1).clamp(0, 1.0),
                         ],
                         colors: [Colors.black, Colors.transparent],
                       ).createShader(bounds);

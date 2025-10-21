@@ -58,10 +58,10 @@ class CarouselCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          right: 15,
-          bottom: 2.5,
+          right: devwidth * 0.05,
+          bottom: devheight * 0.004,
           child: SizedBox(
-            width: devwidth * 0.43,
+            width: devwidth * 0.45,
             child: Image.asset(image, fit: BoxFit.cover),
           ),
         ),

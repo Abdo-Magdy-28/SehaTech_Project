@@ -37,7 +37,7 @@ class _VerificationviewState extends State<Verificationview> {
           : '';
       hidden =
           '*' * (username.length - visibleStart.length - visibleEnd.length);
-      finalemail = visibleStart + hidden + visibleEnd + '@' + domain;
+      finalemail = '$visibleStart$hidden$visibleEnd@$domain';
     }
     // hashing phone number
     else {
@@ -86,7 +86,7 @@ class _VerificationviewState extends State<Verificationview> {
                     if (email == widget.verifyer)
                       Text(
                         // Display masked email
-                        '$finalemail',
+                        finalemail,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )
                     else
