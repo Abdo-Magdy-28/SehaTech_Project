@@ -59,11 +59,10 @@ class _GradientSlideToActState extends State<GradientSlideToAct>
 
   @override
   Widget build(BuildContext context) {
-    // حساب المساحات
-    final padding = 12.0; // مسافة أكبر من الحواف
-    final buttonDiameter = widget.height - 24; // الزرار أصغر
-    final trackWidth = widget.width - (padding * 2); // عرض المسار
-    final maxDrag = trackWidth - buttonDiameter; // أقصى مسافة للسحب
+    final padding = 12.0;
+    final buttonDiameter = widget.height - 24;
+    final trackWidth = widget.width - (padding * 2);
+    final maxDrag = trackWidth - buttonDiameter;
     final progress = maxDrag > 0
         ? (_dragPosition / maxDrag).clamp(0.0, 1.0)
         : 0.0;
@@ -78,7 +77,6 @@ class _GradientSlideToActState extends State<GradientSlideToAct>
       ),
       child: Stack(
         children: [
-          // الخلفية المتحركة - بتملا كل المساحة
           Positioned.fill(
             child: AnimatedContainer(
               duration: _isDragging
@@ -91,10 +89,9 @@ class _GradientSlideToActState extends State<GradientSlideToAct>
             ),
           ),
 
-          // النص - بيتحرك شمال شوية بسيطة
           AnimatedPositioned(
             duration: _isDragging ? Duration.zero : Duration(milliseconds: 400),
-            left: -(_dragPosition * 0.15), // بيتحرك شمال شوية بس
+            left: -(_dragPosition * 0.15),
             right: 0,
             top: 0,
             bottom: 0,
@@ -111,7 +108,6 @@ class _GradientSlideToActState extends State<GradientSlideToAct>
             ),
           ),
 
-          // الزرار المتحرك
           Positioned(
             left: padding + _dragPosition,
             top: padding,
@@ -131,7 +127,6 @@ class _GradientSlideToActState extends State<GradientSlideToAct>
                 });
 
                 if (_dragPosition >= maxDrag * 0.8) {
-                  // مكتمل
                   _animateToPosition(maxDrag);
                   Future.delayed(Duration(milliseconds: 200), () {
                     widget.onSubmit();
@@ -142,7 +137,7 @@ class _GradientSlideToActState extends State<GradientSlideToAct>
                     });
                   });
                 } else {
-                  // رجوع للبداية
+                  // Back to start
                   _animateToPosition(0);
                 }
               },
@@ -150,7 +145,7 @@ class _GradientSlideToActState extends State<GradientSlideToAct>
                 width: buttonDiameter,
                 height: buttonDiameter,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color.lerp(Color(0xff2260FF), Colors.white, progress),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
@@ -162,7 +157,7 @@ class _GradientSlideToActState extends State<GradientSlideToAct>
                 ),
                 child: Icon(
                   Icons.arrow_forward_rounded,
-                  color: Color(0xff2260FF),
+                  color: Color.lerp(Colors.white, Color(0xff003D99), progress),
                   size: buttonDiameter * 0.5,
                 ),
               ),
