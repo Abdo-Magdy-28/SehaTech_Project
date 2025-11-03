@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class chatbotslider extends StatelessWidget {
   const chatbotslider({super.key, required this.devheight});
@@ -23,10 +24,14 @@ class chatbotslider extends StatelessWidget {
               color: Colors.white,
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.person_outline,
-              color: Color(0xff111111),
-              size: 24,
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/images/image 1328.png',
+                  fit: BoxFit.cover, // fills the circle nicely
+                ),
+              ),
             ),
           ),
           Padding(
@@ -39,7 +44,7 @@ class chatbotslider extends StatelessWidget {
                     color: Colors.white,
                     fontFamily: 'Cairo',
                     fontWeight: FontWeight.w600,
-                    fontSize: 16,
+                    fontSize: 15,
                   ),
                 ),
                 Text(
@@ -61,10 +66,9 @@ class chatbotslider extends StatelessWidget {
               color: Colors.white,
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.arrow_forward,
-              color: Color(0xff111111),
-              size: 24,
+            child: SvgPicture.asset(
+              'assets/images/direction-right.svg',
+              fit: BoxFit.scaleDown,
             ),
           ),
         ],

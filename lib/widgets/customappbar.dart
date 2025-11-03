@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grad_project/constants.dart';
 
 class Customappbar extends StatelessWidget {
@@ -21,10 +22,9 @@ class Customappbar extends StatelessWidget {
               border: Border.all(color: Colors.grey, width: 1),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.person_outline,
-              color: Color(0xff111111),
-              size: 24,
+            child: SvgPicture.asset(
+              'assets/images/profile.svg',
+              fit: BoxFit.scaleDown,
             ),
           ),
           Row(
@@ -58,10 +58,9 @@ class Customappbar extends StatelessWidget {
                 border: Border.all(color: Colors.grey, width: 1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                Icons.notifications,
-                color: Color(0xff111111),
-                size: 24,
+              child: SvgPicture.asset(
+                'assets/images/bell.svg',
+                fit: BoxFit.scaleDown,
               ),
             ),
           ),
