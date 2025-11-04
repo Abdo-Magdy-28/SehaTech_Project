@@ -9,6 +9,7 @@ import 'package:grad_project/widgets/customappbar.dart';
 import 'package:grad_project/widgets/doctor_card.dart';
 import 'package:grad_project/widgets/home_carouselcard.dart';
 import 'package:grad_project/widgets/medication_management_grid.dart';
+import 'package:grad_project/widgets/medicencard.dart';
 import 'package:grad_project/widgets/medicinereminder.dart';
 import 'package:grad_project/widgets/weakcalender.dart';
 import 'package:grad_project/widgets/weaklystreak.dart';
@@ -113,7 +114,16 @@ class _HomepageState extends State<Homepage> {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: 5,
                   itemBuilder: (context, index) {
-                    return Doctorcard(devheight: devheight);
+                    return Doctorcard(
+                      devheight: devheight,
+                      doctorimage: Image.asset('assets/images/Pic.png'),
+                      job: "Neurologist",
+                      hospital: "El-Demerdash Hospital",
+                      name: "Youssef Ali",
+                      rate: 4.0,
+                      begindate: "10:30am",
+                      enddate: "5:30pm",
+                    );
                   },
                 ),
                 SizedBox(height: devheight * 0.025),
@@ -144,6 +154,14 @@ class _HomepageState extends State<Homepage> {
                 SizedBox(height: devheight * 0.025),
                 WeekScheduleWidget(),
                 SizedBox(height: devheight * 0.025),
+                medicinecard(
+                  image: Image.asset("assets/images/Shape10.png"),
+                  condition: 'missed',
+                  name: "Belladonna 30",
+                  quatity: "2 Drops",
+                  scheduletime: "Every 2 Hour",
+                  time: "09:30 AM",
+                ),
               ],
             ),
           ),

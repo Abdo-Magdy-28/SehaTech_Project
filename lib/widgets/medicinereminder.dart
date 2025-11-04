@@ -31,39 +31,32 @@ class _MedicinereminderState extends State<Medicinereminder> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset('assets/images/i.svg'),
-                        SizedBox(width: devwidth * 0.02),
-                        Text(
-                          'Upcoming Reminder',
-                          style: TextStyle(
-                            color: Color(0xff707070),
-                            fontSize: 14,
-                          ),
+                    SvgPicture.asset('assets/images/i.svg'),
+                    // SizedBox(width: devwidth * 0.02),
+                    Text(
+                      'Upcoming Reminder',
+                      style: TextStyle(color: Color(0xff707070), fontSize: 14),
+                    ),
+                    // SizedBox(width: devwidth * 0.25),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: devheight * 0.01,
+                        vertical: devwidth * 0.02,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Color(0xfffdecec),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        widget.medicine.reminderTime,
+                        style: TextStyle(
+                          color: Color(0xffda3e3e),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
                         ),
-                        SizedBox(width: devwidth * 0.25),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: devheight * 0.01,
-                            vertical: devwidth * 0.02,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Color(0xfffdecec),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            widget.medicine.reminderTime,
-                            style: TextStyle(
-                              color: Color(0xffda3e3e),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
