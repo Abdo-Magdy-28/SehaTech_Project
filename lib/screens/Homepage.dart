@@ -75,6 +75,7 @@ class _HomepageState extends State<Homepage> {
           child: SizedBox(
             width: devwidth * 0.9,
             child: CustomScrollView(
+              physics: BouncingScrollPhysics(),
               slivers: [
                 SliverToBoxAdapter(child: SizedBox(height: devheight * 0.02)),
                 SliverToBoxAdapter(child: Customappbar()),
