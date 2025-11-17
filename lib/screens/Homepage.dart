@@ -67,7 +67,6 @@ class _HomepageState extends State<Homepage> {
           setState(() {
             _selectedIndex = index;
           });
-          print(index);
         },
       ),
       body: SafeArea(
@@ -89,6 +88,7 @@ class _HomepageState extends State<Homepage> {
                 SliverToBoxAdapter(child: chatbotslider(devheight: devheight)),
                 SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
                 SliverToBoxAdapter(child: categorysrow()),
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.030)),
                 SliverToBoxAdapter(
                   child: home_crouselcard(
                     devwidth: devwidth,
