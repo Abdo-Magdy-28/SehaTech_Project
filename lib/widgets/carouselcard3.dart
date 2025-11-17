@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CarouselCard extends StatelessWidget {
-  const CarouselCard({
+class CarouselCard3 extends StatelessWidget {
+  const CarouselCard3({
     super.key,
     required this.title,
     required this.hint,
@@ -67,31 +67,11 @@ class CarouselCard extends StatelessWidget {
 
         // Main image
         Positioned(
-          right: 1,
-          bottom: 0.001,
+          right: -10,
+          top: -10,
           child: SizedBox(
-            width: cardWidth * 0.5,
-            child: Image.asset(image, fit: BoxFit.contain),
-          ),
-        ),
-
-        // Button SVG
-        Positioned(
-          right: cardWidth * 0.38,
-          bottom: cardHeight * 0.32,
-          child: SvgPicture.asset(
-            "assets/images/Button container.svg",
-            width: cardWidth * 0.13,
-          ),
-        ),
-
-        // Switch SVG
-        Positioned(
-          right: cardWidth * 0.03,
-          bottom: cardHeight * 0.02,
-          child: SvgPicture.asset(
-            "assets/images/Switch container.svg",
-            width: cardWidth * 0.11,
+            width: cardWidth * 0.55,
+            child: Image.asset(image, fit: BoxFit.cover),
           ),
         ),
       ],
