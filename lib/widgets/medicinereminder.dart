@@ -17,7 +17,7 @@ class _MedicinereminderState extends State<Medicinereminder> {
     final devwidth = MediaQuery.of(context).size.width;
     return Container(
       width: devwidth * 0.1,
-      height: devheight * 0.25,
+      height: devheight * 0.2,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
@@ -28,23 +28,26 @@ class _MedicinereminderState extends State<Medicinereminder> {
         children: [
           // Header section
           Padding(
-            padding: EdgeInsets.all(devwidth * 0.04),
+            padding: EdgeInsets.only(
+              top: devwidth * 0.04,
+              right: devwidth * 0.04,
+              left: devwidth * 0.04,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SvgPicture.asset('assets/images/i.svg'),
-                    // SizedBox(width: devwidth * 0.02),
+                    SizedBox(width: devwidth * 0.01),
                     Text(
                       'Upcoming Reminder',
                       style: TextStyle(color: Color(0xff707070), fontSize: 14),
                     ),
-                    // SizedBox(width: devwidth * 0.25),
+                    SizedBox(width: devwidth * 0.2),
                     Container(
                       padding: EdgeInsets.symmetric(
-                        horizontal: devheight * 0.01,
+                        horizontal: devheight * 0.005,
                         vertical: devwidth * 0.02,
                       ),
                       decoration: BoxDecoration(
@@ -62,16 +65,16 @@ class _MedicinereminderState extends State<Medicinereminder> {
                     ),
                   ],
                 ),
-                SizedBox(height: devheight * 0.01),
+
                 Text(
                   widget.medicine.medicineName,
                   style: const TextStyle(
-                    fontSize: 24,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Color(0xff111111),
                   ),
                 ),
-                SizedBox(height: devheight * 0.01),
+
                 Text(
                   widget.medicine.dosage,
                   style: TextStyle(fontSize: 14, color: Color(0xff808080)),
@@ -99,7 +102,7 @@ class _MedicinereminderState extends State<Medicinereminder> {
                         color: Color(0xfff9783c),
                         fontFamily: 'cairo',
                         fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        fontSize: 14,
                       ),
                     ),
                   ],
@@ -122,7 +125,7 @@ class _MedicinereminderState extends State<Medicinereminder> {
                         color: Color(0xff2260ff),
                         fontFamily: 'cairo',
                         fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        fontSize: 14,
                       ),
                     ),
                   ],
