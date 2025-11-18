@@ -29,12 +29,12 @@ class hearttopic extends StatelessWidget {
             ),
             Positioned(
               right: -15,
-              top: -15,
+              top: -35,
               child: SizedBox(
-                height: 160,
-                width: 138,
+                height: 190,
+                width: 150,
                 child: Image.asset(
-                  "assets/images/49214 1.png",
+                  "assets/images/Doctor.png",
                   fit: BoxFit.cover,
                 ),
               ),

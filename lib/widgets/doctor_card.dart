@@ -184,7 +184,7 @@ class Doctorcard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8, right: 9),
+                  padding: const EdgeInsets.only(top: 3, right: 9),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

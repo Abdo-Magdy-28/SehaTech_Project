@@ -1,13 +1,11 @@
-// ====== GradientSlideToAct — FINAL VERSION ======
-
 import 'package:flutter/material.dart';
 
+// Custom Gradient Slide Widget
 class GradientSlideToAct extends StatefulWidget {
   final double width;
   final double height;
   final String text;
   final VoidCallback onSubmit;
-  final Function(double)? onProgressChanged;
 
   const GradientSlideToAct({
     Key? key,
@@ -15,7 +13,6 @@ class GradientSlideToAct extends StatefulWidget {
     required this.height,
     required this.text,
     required this.onSubmit,
-    this.onProgressChanged,
   }) : super(key: key);
 
   @override
@@ -34,15 +31,15 @@ class _GradientSlideToActState extends State<GradientSlideToAct>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 350),
+      duration: Duration(milliseconds: 400),
     );
-
     _animation =
         Tween<double>(begin: 0, end: 0).animate(
           CurvedAnimation(parent: _controller, curve: Curves.easeOut),
         )..addListener(() {
-          setState(() => _dragPosition = _animation.value);
-          _updateProgress();
+          setState(() {
+            _dragPosition = _animation.value;
+          });
         });
   }
 
@@ -52,22 +49,7 @@ class _GradientSlideToActState extends State<GradientSlideToAct>
     super.dispose();
   }
 
-  void _updateProgress() {
-    if (widget.onProgressChanged == null) return;
-
-    final padding = 12.0;
-    final trackWidth = widget.width - (padding * 2);
-    final buttonDiameter = widget.height - 24;
-    final maxDrag = trackWidth - buttonDiameter;
-
-    final progress = maxDrag > 0
-        ? (_dragPosition / maxDrag).clamp(0.0, 1.0)
-        : 0.0;
-
-    widget.onProgressChanged!(progress);
-  }
-
-  void _animateTo(double target) {
+  void _animateToPosition(double target) {
     _animation = Tween<double>(
       begin: _dragPosition,
       end: target,
@@ -97,7 +79,9 @@ class _GradientSlideToActState extends State<GradientSlideToAct>
         children: [
           Positioned.fill(
             child: AnimatedContainer(
-              duration: Duration(milliseconds: 250),
+              duration: _isDragging
+                  ? Duration.zero
+                  : Duration(milliseconds: 400),
               decoration: BoxDecoration(
                 color: Color.lerp(Colors.white, Color(0xff90B8FF), progress),
                 borderRadius: BorderRadius.circular(widget.height / 2),
@@ -106,7 +90,7 @@ class _GradientSlideToActState extends State<GradientSlideToAct>
           ),
 
           AnimatedPositioned(
-            duration: Duration(milliseconds: 150),
+            duration: _isDragging ? Duration.zero : Duration(milliseconds: 400),
             left: -(_dragPosition * 0.15),
             right: 0,
             top: 0,
@@ -136,22 +120,25 @@ class _GradientSlideToActState extends State<GradientSlideToAct>
                     maxDrag,
                   );
                 });
-                _updateProgress();
               },
               onHorizontalDragEnd: (details) {
-                setState(() => _isDragging = false);
+                setState(() {
+                  _isDragging = false;
+                });
 
                 if (_dragPosition >= maxDrag * 0.8) {
-                  _animateTo(maxDrag);
-
-                  Future.delayed(Duration(milliseconds: 260), () {
+                  _animateToPosition(maxDrag);
+                  Future.delayed(Duration(milliseconds: 200), () {
                     widget.onSubmit();
-                    Future.delayed(Duration(milliseconds: 150), () {
-                      if (mounted) _animateTo(0);
+                    Future.delayed(Duration(milliseconds: 100), () {
+                      if (mounted) {
+                        _animateToPosition(0);
+                      }
                     });
                   });
                 } else {
-                  _animateTo(0);
+                  // Back to start
+                  _animateToPosition(0);
                 }
               },
               child: Container(

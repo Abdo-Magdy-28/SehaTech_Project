@@ -32,7 +32,7 @@ class _WeaklystreakState extends State<Weaklystreak> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(width: devwidth * 0.01),
+                  SizedBox(width: devwidth * 0.007),
                   SvgPicture.asset('assets/images/Frame 3.svg'),
                   SizedBox(width: devwidth * 0.03),
                   Text(
@@ -41,12 +41,12 @@ class _WeaklystreakState extends State<Weaklystreak> {
                       color: Colors.black,
                       fontFamily: 'Cairo',
                       fontWeight: FontWeight.w600,
-                      fontSize: 18,
+                      fontSize: 16,
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: devheight * 0.03),
+              SizedBox(height: devheight * 0.01),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,7 +58,7 @@ class _WeaklystreakState extends State<Weaklystreak> {
                       color: Colors.black,
                       fontFamily: 'Cairo',
                       fontWeight: FontWeight.bold,
-                      fontSize: 25,
+                      fontSize: 32,
                     ),
                   ),
                   SizedBox(width: devwidth * 0.03),
@@ -75,7 +75,7 @@ class _WeaklystreakState extends State<Weaklystreak> {
                   ),
                 ],
               ),
-              SizedBox(height: devheight * 0.01),
+              SizedBox(height: devheight * 0.008),
               TextButton(
                 onPressed: () {},
                 child: Row(
@@ -88,7 +88,7 @@ class _WeaklystreakState extends State<Weaklystreak> {
                         color: Color(0xff0d61ec),
                         fontFamily: 'Cairo',
                         fontWeight: FontWeight.w400,
-                        fontSize: 18,
+                        fontSize: 14,
                       ),
                     ),
                     SizedBox(width: devwidth * 0.01),
