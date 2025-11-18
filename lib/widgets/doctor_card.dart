@@ -22,7 +22,7 @@ class Doctorcard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
-        height: devheight * 0.13,
+        height: devheight * 0.12,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: Color(0xffF0F0F0),
@@ -35,7 +35,7 @@ class Doctorcard extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: Column(
-                  spacing: 2,
+                  spacing: 0,
                   children: [
                     Row(
                       children: [
@@ -48,11 +48,12 @@ class Doctorcard extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 4,
                               children: [
                                 Text(
                                   "Dr : $name",
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     color: Color(0xff33384B),
                                     fontFamily: 'Cairo',
                                     fontWeight: FontWeight.w600,
@@ -67,7 +68,7 @@ class Doctorcard extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 11,
                                         color: Color(0xffAAB6C3),
                                         fontFamily: 'Cairo',
                                         fontWeight: FontWeight.w400,
@@ -79,7 +80,7 @@ class Doctorcard extends StatelessWidget {
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 11,
                                           color: Color(0xffAAB6C3),
                                           fontFamily: 'Cairo',
                                           fontWeight: FontWeight.w400,
@@ -95,15 +96,17 @@ class Doctorcard extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
+                      padding: const EdgeInsets.only(left: 32.0, top: 4),
                       child: Row(
-                        spacing: 20,
+                        spacing: 15,
                         children: [
                           Row(
                             children: [
                               Text(
                                 "$rate",
+
                                 style: TextStyle(
+                                  fontSize: 13,
                                   color: Color(0xff33384B),
                                   fontFamily: 'Cairo',
                                   fontWeight: FontWeight.w400,
@@ -130,6 +133,7 @@ class Doctorcard extends StatelessWidget {
                                   color: Color(0xff33384B),
                                   fontFamily: 'Cairo',
                                   fontWeight: FontWeight.w400,
+                                  fontSize: 13,
                                 ),
                               ),
                               Text(
@@ -138,6 +142,7 @@ class Doctorcard extends StatelessWidget {
                                   color: Color(0xff33384B),
                                   fontFamily: 'Cairo',
                                   fontWeight: FontWeight.w400,
+                                  fontSize: 13,
                                 ),
                               ),
                             ],
@@ -150,11 +155,11 @@ class Doctorcard extends StatelessWidget {
               ),
             ),
             Column(
-              spacing: 12,
+              spacing: 10,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(right: 10, top: 10),
                   child: Align(
                     alignment: Alignment.topRight,
                     child: Container(
@@ -179,13 +184,13 @@ class Doctorcard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                  padding: const EdgeInsets.only(top: 8, right: 9),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
-                        height: 26,
-                        width: 30,
+                        height: 24,
+                        width: 24,
                         child: SvgPicture.asset(
                           'assets/images/lets-icons_map-duotone.svg',
                         ),

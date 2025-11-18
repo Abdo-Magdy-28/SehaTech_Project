@@ -132,7 +132,7 @@ class _HomepageState extends State<Homepage> {
                       job: "Neurologist",
                       hospital: "El-Demerdash Hospital",
                       name: "Youssef Ali",
-                      rate: 4.0,
+                      rate: 4.5,
                       begindate: "10:30am",
                       enddate: "5:30pm",
                     );
