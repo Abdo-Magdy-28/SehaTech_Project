@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/screens/loginpage.dart';
 import 'package:grad_project/screens/splashscreen.dart';
+import 'package:grad_project/screens/map.dart';
 
 void main() {
   debugPaintSizeEnabled = false;
@@ -16,9 +17,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'SEHA TECH',
       theme: ThemeData(),
-      home: const Homepage(),
+      home: Map(),
     );
   }
 }
