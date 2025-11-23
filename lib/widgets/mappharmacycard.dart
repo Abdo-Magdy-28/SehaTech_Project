@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class Mapdoctorcard extends StatelessWidget {
-  const Mapdoctorcard({
+class Mappharmacycard extends StatelessWidget {
+  const Mappharmacycard({
     super.key,
     required this.devheight,
-    required this.job,
-    required this.hospital,
     required this.rate,
-    required this.begindate,
-    required this.enddate,
     required this.name,
-    required this.doctorimage,
-    this.onviewpressed,
   });
-  final Image doctorimage;
+
   final double devheight, rate;
-  final String job, hospital, begindate, enddate, name;
-  final VoidCallback? onviewpressed;
+  final String name;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -40,7 +34,12 @@ class Mapdoctorcard extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: SizedBox(width: 37, child: doctorimage),
+                        child: SizedBox(
+                          width: 37,
+                          child: SvgPicture.asset(
+                            "assets/images/pharmasvg.svg",
+                          ),
+                        ),
                       ),
                       Expanded(
                         child: Padding(
@@ -50,7 +49,7 @@ class Mapdoctorcard extends StatelessWidget {
                             spacing: 4,
                             children: [
                               Text(
-                                "Dr : $name",
+                                name,
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Color(0xff33384B),
@@ -63,7 +62,7 @@ class Mapdoctorcard extends StatelessWidget {
 
                                 children: [
                                   Text(
-                                    "$job | ",
+                                    "Pharmacy ",
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     style: TextStyle(
@@ -71,19 +70,6 @@ class Mapdoctorcard extends StatelessWidget {
                                       color: Color(0xffAAB6C3),
                                       fontFamily: 'Cairo',
                                       fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      hospital,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        color: Color(0xffAAB6C3),
-                                        fontFamily: 'Cairo',
-                                        fontWeight: FontWeight.w400,
-                                      ),
                                     ),
                                   ),
                                 ],
@@ -127,16 +113,7 @@ class Mapdoctorcard extends StatelessWidget {
                               child: Image.asset('assets/images/Time.png'),
                             ),
                             Text(
-                              "$begindate - ",
-                              style: TextStyle(
-                                color: Color(0xff33384B),
-                                fontFamily: 'Cairo',
-                                fontWeight: FontWeight.w400,
-                                fontSize: 13,
-                              ),
-                            ),
-                            Text(
-                              enddate,
+                              "24-Hours ",
                               style: TextStyle(
                                 color: Color(0xff33384B),
                                 fontFamily: 'Cairo',
@@ -161,8 +138,7 @@ class Mapdoctorcard extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.topRight,
                     child: InkWell(
-                      onTap: onviewpressed,
-
+                      onTap: () {},
                       child: Container(
                         height: 25,
                         width: 60,

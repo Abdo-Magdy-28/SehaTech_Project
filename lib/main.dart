@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'SEHA TECH',
       theme: ThemeData(),
-      home: Map(),
+      home: Mapscreen(),
     );
   }
 }
