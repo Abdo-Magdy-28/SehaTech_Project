@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:grad_project/screens/Homepage.dart';
 
 import 'package:grad_project/screens/map.dart';
+import 'package:grad_project/screens/splashscreen.dart';
 
 void main() {
   debugPaintSizeEnabled = false;

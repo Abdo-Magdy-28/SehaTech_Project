@@ -17,7 +17,7 @@ class _MedicinereminderState extends State<Medicinereminder> {
     final devwidth = MediaQuery.of(context).size.width;
     return Container(
       width: devwidth * 0.1,
-      height: devheight * 0.2,
+      height: devheight * 0.22,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),

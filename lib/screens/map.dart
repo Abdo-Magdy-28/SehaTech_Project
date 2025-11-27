@@ -1,15 +1,16 @@
 import 'dart:ui';
 import 'dart:core';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:grad_project/widgets/doctor_card.dart';
 import 'package:grad_project/widgets/mapdoctorcard.dart';
 import 'package:grad_project/widgets/mapdoctorcarddetail.dart';
 import 'package:grad_project/widgets/maphospitalcard.dart';
 import 'package:grad_project/widgets/mappharmacycard.dart';
+import 'package:grad_project/widgets/mapscreen/blurred_appbar.dart';
+import 'package:grad_project/widgets/mapscreen/circlemap.dart';
+import 'package:grad_project/widgets/mapscreen/searchbar.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:grad_project/widgets/buildcard.dart';
@@ -94,101 +95,14 @@ class MapState extends State<Mapscreen> {
             : Stack(
                 children: [
                   // Mapscreen - Full Screen
-                  FlutterMap(
-                    options: MapOptions(
-                      initialCenter: currentLocation!,
-                      initialZoom: 15.0,
-                    ),
-                    children: [
-                      TileLayer(
-                        urlTemplate:
-                            'https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=mIKqtgOr2ggQ9XftPFEl',
-                        userAgentPackageName: 'com.example.app',
-                      ),
-                      MarkerLayer(
-                        markers: [
-                          Marker(
-                            width: 40,
-                            height: 40,
-                            point: currentLocation!,
-                            child: Icon(
-                              Icons.my_location,
-                              color: Colors.blue,
-                              size: 35,
-                            ),
-                          ),
-                        ],
-                      ),
-                      CircleLayer(
-                        circles: [
-                          CircleMarker(
-                            point: currentLocation!,
-                            color: Colors.blue.withOpacity(0.2),
-                            borderStrokeWidth: 2,
-                            borderColor: Colors.blue,
-                            radius: 100,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  circlemap(currentLocation: currentLocation),
 
                   // Blurred Header with SafeArea
                   Positioned(
                     top: 0,
                     left: 0,
                     right: 0,
-                    child: ClipRect(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                        child: Container(
-                          height:
-                              MediaQuery.of(context).padding.top +
-                              80, // Status bar + header height
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Colors.white.withOpacity(0.1),
-                                width: 1,
-                              ),
-                            ),
-                          ),
-                          child: SafeArea(
-                            bottom: false,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 12,
-                              ),
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.arrow_back,
-                                      color: Colors.black,
-                                    ),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      'Explore Nearby',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  SizedBox(width: 48),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    child: blurred_appbar(),
                   ),
 
                   // Search Bar
@@ -196,31 +110,7 @@ class MapState extends State<Mapscreen> {
                     top: MediaQuery.of(context).padding.top + 90,
                     left: 16,
                     right: 16,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 4,
-                            offset: Offset(0, 6),
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Search...',
-                          prefixIcon: Icon(Icons.search, color: Colors.grey),
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                      ),
-                    ),
+                    child: searchbar(),
                   ),
 
                   // Floating Buttons
@@ -360,177 +250,171 @@ class MapState extends State<Mapscreen> {
                                           SizedBox(
                                             height: 210,
                                             width: 350,
-                                            child: Expanded(
-                                              child: ListView(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 16,
-                                                ),
-                                                children:
-                                                    selectedCategory ==
-                                                        'Doctors'
-                                                    ? [
-                                                        Mapdoctorcard(
-                                                          devheight: devheight,
-                                                          doctorimage: Image.asset(
-                                                            'assets/images/Pic.png',
-                                                          ),
-                                                          job: "Neurologist",
-                                                          hospital:
-                                                              "El-Demerdash Hospital",
-                                                          name: "Youssef Ali",
-                                                          rate: 4.5,
-                                                          begindate: "10:30am",
-                                                          enddate: "5:30pm",
-                                                          onviewpressed: () {
-                                                            setState(() {
-                                                              selectedDoctor = {
-                                                                'name':
-                                                                    'Youssef Ali',
-                                                                'job':
-                                                                    'Neurologist',
-                                                                'hospital':
-                                                                    'El-Demerdash Hospital',
-                                                                'rate': 4.8,
-                                                                'experience':
-                                                                    '3yr',
-                                                                'treated':
-                                                                    '50+',
-                                                                'hourlyRate':
-                                                                    '350 L.E',
-                                                                'begindate':
-                                                                    '10:30am',
-                                                                'enddate':
-                                                                    '5:30pm',
-                                                              };
-                                                            });
-                                                          },
-                                                        ),
-                                                        Mapdoctorcard(
-                                                          devheight: devheight,
-                                                          doctorimage: Image.asset(
-                                                            'assets/images/Pic.png',
-                                                          ),
-                                                          job: "Neurologist",
-                                                          hospital:
-                                                              "El-Demerdash Hospital",
-                                                          name: "Youssef Ali",
-                                                          rate: 4.5,
-                                                          begindate: "10:30am",
-                                                          enddate: "5:30pm",
-                                                          onviewpressed: () {
-                                                            setState(() {
-                                                              selectedDoctor = {
-                                                                'name':
-                                                                    'Youssef Ali',
-                                                                'job':
-                                                                    'Neurologist',
-                                                                'hospital':
-                                                                    'El-Demerdash Hospital',
-                                                                'rate': 4.8,
-                                                                'experience':
-                                                                    '3yr',
-                                                                'treated':
-                                                                    '50+',
-                                                                'hourlyRate':
-                                                                    '350 L.E',
-                                                                'begindate':
-                                                                    '10:30am',
-                                                                'enddate':
-                                                                    '5:30pm',
-                                                              };
-                                                            });
-                                                          },
-                                                        ),
-                                                        Mapdoctorcard(
-                                                          devheight: devheight,
-                                                          doctorimage: Image.asset(
-                                                            'assets/images/Pic.png',
-                                                          ),
-                                                          job: "Neurologist",
-                                                          hospital:
-                                                              "El-Demerdash Hospital",
-                                                          name: "Youssef Ali",
-                                                          rate: 4.5,
-                                                          begindate: "10:30am",
-                                                          enddate: "5:30pm",
-                                                        ),
-                                                        Mapdoctorcard(
-                                                          devheight: devheight,
-                                                          doctorimage: Image.asset(
-                                                            'assets/images/Pic.png',
-                                                          ),
-                                                          job: "Neurologist",
-                                                          hospital:
-                                                              "El-Demerdash Hospital",
-                                                          name: "Youssef Ali",
-                                                          rate: 4.5,
-                                                          begindate: "10:30am",
-                                                          enddate: "5:30pm",
-                                                          onviewpressed: () {
-                                                            setState(() {
-                                                              selectedDoctor = {
-                                                                'name':
-                                                                    'Youssef Ali',
-                                                                'job':
-                                                                    'Neurologist',
-                                                                'hospital':
-                                                                    'El-Demerdash Hospital',
-                                                                'rate': 4.8,
-                                                                'experience':
-                                                                    '3yr',
-                                                                'treated':
-                                                                    '50+',
-                                                                'hourlyRate':
-                                                                    '350 L.E',
-                                                                'begindate':
-                                                                    '10:30am',
-                                                                'enddate':
-                                                                    '5:30pm',
-                                                              };
-                                                            });
-                                                          },
-                                                        ),
-                                                      ]
-                                                    : selectedCategory ==
-                                                          'Hospitals'
-                                                    ? [
-                                                        Maphospitalcard(
-                                                          name: 'El-Amawy',
-                                                          rate: 4.8,
-                                                          devheight: devheight,
-                                                        ),
-                                                        Maphospitalcard(
-                                                          name: 'El-Amawy',
-                                                          rate: 4.8,
-                                                          devheight: devheight,
-                                                        ),
-                                                        Maphospitalcard(
-                                                          name: 'El-Amawy',
-                                                          rate: 4.8,
-                                                          devheight: devheight,
-                                                        ),
-                                                      ]
-                                                    : [
-                                                        Mappharmacycard(
-                                                          name:
-                                                              'El-Amiry Hospital',
-                                                          devheight: devheight,
-                                                          rate: 4.8,
-                                                        ),
-                                                        Mappharmacycard(
-                                                          name:
-                                                              'El-Amiry Hospital',
-                                                          devheight: devheight,
-                                                          rate: 4.8,
-                                                        ),
-                                                        Mappharmacycard(
-                                                          name:
-                                                              'El-Amiry Hospital',
-                                                          devheight: devheight,
-                                                          rate: 4.8,
-                                                        ),
-                                                      ],
+                                            child: ListView(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 16,
                                               ),
+                                              children:
+                                                  selectedCategory == 'Doctors'
+                                                  ? [
+                                                      Mapdoctorcard(
+                                                        devheight: devheight,
+                                                        doctorimage: Image.asset(
+                                                          'assets/images/Pic.png',
+                                                        ),
+                                                        job: "Neurologist",
+                                                        hospital:
+                                                            "El-Demerdash Hospital",
+                                                        name: "Youssef Ali",
+                                                        rate: 4.5,
+                                                        begindate: "10:30am",
+                                                        enddate: "5:30pm",
+                                                        onviewpressed: () {
+                                                          setState(() {
+                                                            selectedDoctor = {
+                                                              'name':
+                                                                  'Youssef Ali',
+                                                              'job':
+                                                                  'Neurologist',
+                                                              'hospital':
+                                                                  'El-Demerdash Hospital',
+                                                              'rate': 4.8,
+                                                              'experience':
+                                                                  '3yr',
+                                                              'treated': '50+',
+                                                              'hourlyRate':
+                                                                  '350 L.E',
+                                                              'begindate':
+                                                                  '10:30am',
+                                                              'enddate':
+                                                                  '5:30pm',
+                                                            };
+                                                          });
+                                                        },
+                                                      ),
+                                                      Mapdoctorcard(
+                                                        devheight: devheight,
+                                                        doctorimage: Image.asset(
+                                                          'assets/images/Pic.png',
+                                                        ),
+                                                        job: "Neurologist",
+                                                        hospital:
+                                                            "El-Demerdash Hospital",
+                                                        name: "Youssef Ali",
+                                                        rate: 4.5,
+                                                        begindate: "10:30am",
+                                                        enddate: "5:30pm",
+                                                        onviewpressed: () {
+                                                          setState(() {
+                                                            selectedDoctor = {
+                                                              'name':
+                                                                  'Youssef Ali',
+                                                              'job':
+                                                                  'Neurologist',
+                                                              'hospital':
+                                                                  'El-Demerdash Hospital',
+                                                              'rate': 4.8,
+                                                              'experience':
+                                                                  '3yr',
+                                                              'treated': '50+',
+                                                              'hourlyRate':
+                                                                  '350 L.E',
+                                                              'begindate':
+                                                                  '10:30am',
+                                                              'enddate':
+                                                                  '5:30pm',
+                                                            };
+                                                          });
+                                                        },
+                                                      ),
+                                                      Mapdoctorcard(
+                                                        devheight: devheight,
+                                                        doctorimage: Image.asset(
+                                                          'assets/images/Pic.png',
+                                                        ),
+                                                        job: "Neurologist",
+                                                        hospital:
+                                                            "El-Demerdash Hospital",
+                                                        name: "Youssef Ali",
+                                                        rate: 4.5,
+                                                        begindate: "10:30am",
+                                                        enddate: "5:30pm",
+                                                      ),
+                                                      Mapdoctorcard(
+                                                        devheight: devheight,
+                                                        doctorimage: Image.asset(
+                                                          'assets/images/Pic.png',
+                                                        ),
+                                                        job: "Neurologist",
+                                                        hospital:
+                                                            "El-Demerdash Hospital",
+                                                        name: "Youssef Ali",
+                                                        rate: 4.5,
+                                                        begindate: "10:30am",
+                                                        enddate: "5:30pm",
+                                                        onviewpressed: () {
+                                                          setState(() {
+                                                            selectedDoctor = {
+                                                              'name':
+                                                                  'Youssef Ali',
+                                                              'job':
+                                                                  'Neurologist',
+                                                              'hospital':
+                                                                  'El-Demerdash Hospital',
+                                                              'rate': 4.8,
+                                                              'experience':
+                                                                  '3yr',
+                                                              'treated': '50+',
+                                                              'hourlyRate':
+                                                                  '350 L.E',
+                                                              'begindate':
+                                                                  '10:30am',
+                                                              'enddate':
+                                                                  '5:30pm',
+                                                            };
+                                                          });
+                                                        },
+                                                      ),
+                                                    ]
+                                                  : selectedCategory ==
+                                                        'Hospitals'
+                                                  ? [
+                                                      Maphospitalcard(
+                                                        name: 'El-Amawy',
+                                                        rate: 4.8,
+                                                        devheight: devheight,
+                                                      ),
+                                                      Maphospitalcard(
+                                                        name: 'El-Amawy',
+                                                        rate: 4.8,
+                                                        devheight: devheight,
+                                                      ),
+                                                      Maphospitalcard(
+                                                        name: 'El-Amawy',
+                                                        rate: 4.8,
+                                                        devheight: devheight,
+                                                      ),
+                                                    ]
+                                                  : [
+                                                      Mappharmacycard(
+                                                        name:
+                                                            'El-Amiry Hospital',
+                                                        devheight: devheight,
+                                                        rate: 4.8,
+                                                      ),
+                                                      Mappharmacycard(
+                                                        name:
+                                                            'El-Amiry Hospital',
+                                                        devheight: devheight,
+                                                        rate: 4.8,
+                                                      ),
+                                                      Mappharmacycard(
+                                                        name:
+                                                            'El-Amiry Hospital',
+                                                        devheight: devheight,
+                                                        rate: 4.8,
+                                                      ),
+                                                    ],
                                             ),
                                           ),
                                         ],
@@ -573,6 +457,7 @@ class MapState extends State<Mapscreen> {
           fontWeight: FontWeight.w500,
         ),
       ),
+
       style: ElevatedButton.styleFrom(
         minimumSize: Size(0, 29),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -594,14 +479,13 @@ class MapState extends State<Mapscreen> {
       padding: EdgeInsets.all(16),
       child: Column(
         children: [
-          // Header مع زر الرجوع
           Row(
             children: [
               IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
                   setState(() {
-                    selectedDoctor = null; // ✅ العودة للقائمة
+                    selectedDoctor = null;
                   });
                 },
               ),
@@ -617,16 +501,11 @@ class MapState extends State<Mapscreen> {
               ),
               IconButton(
                 icon: Icon(Icons.navigation, color: Color(0xff2260FF)),
-                onPressed: () {
-                  // Navigate to doctor location
-                },
+                onPressed: () {},
               ),
             ],
           ),
 
-          SizedBox(height: 16),
-
-          // معلومات الدكتور
           Row(
             children: [
               CircleAvatar(
@@ -660,9 +539,6 @@ class MapState extends State<Mapscreen> {
             ],
           ),
 
-          SizedBox(height: 12),
-
-          // Rating
           Row(
             children: [
               Text(
@@ -670,7 +546,7 @@ class MapState extends State<Mapscreen> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Icon(Icons.star, color: Colors.amber, size: 18),
-              Spacer(),
+
               Icon(Icons.access_time, size: 16, color: Colors.grey),
               SizedBox(width: 4),
               Text(
@@ -691,8 +567,6 @@ class MapState extends State<Mapscreen> {
               _buildStatColumn('Hourly Rate', selectedDoctor!['hourlyRate']),
             ],
           ),
-
-          SizedBox(height: 16),
 
           // Book Button
           ElevatedButton(
