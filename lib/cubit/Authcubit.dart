@@ -46,4 +46,14 @@ class Authcubit extends Cubit<Authstates> {
       emit(errorstate());
     }
   }
+
+  Future login({required String email, required String password}) async {
+    emit(loadingstate());
+
+    final response = await AuthService().login(
+      email: email,
+      password: password,
+    );
+    return response;
+  }
 }

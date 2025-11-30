@@ -1,7 +1,10 @@
 // ignore_for_file: implicit_call_tearoffs
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/cubit/Authcubit.dart';
+import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/screens/signupscreen2.dart';
 import 'package:grad_project/screens/verifyidentity.dart';
 import 'package:grad_project/widgets/textformfield.dart';
@@ -144,7 +147,6 @@ class _SigninState extends State<Signin> {
                           "Forgot Password ?",
                           style: TextStyle(
                             color: Colors.black,
-
                             fontSize:
                                 devWidth * 0.04, // ✅ Added responsive font size
                           ),
@@ -159,7 +161,27 @@ class _SigninState extends State<Signin> {
                     width: double.infinity,
                     height: devHeight * 0.07,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final response =
+                            await BlocProvider.of<Authcubit>(context).login(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            );
+                        if (response.success) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return Homepage();
+                              },
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(response.message)),
+                          );
+                        }
+                      }, ///////////////////////////////////////////////////////////////////////
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF2260FF),
                         shape: RoundedRectangleBorder(

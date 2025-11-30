@@ -214,7 +214,12 @@ class _LoginpageState extends State<Loginpage> {
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => Signin()),
+                              MaterialPageRoute(
+                                builder: (context) => BlocProvider(
+                                  create: (context) => Authcubit(),
+                                  child: Signin(),
+                                ),
+                              ),
                             );
                           },
                           style: TextButton.styleFrom(
