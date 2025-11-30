@@ -1,0 +1,49 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/Authstates.dart';
+import 'package:grad_project/models/user.dart';
+import 'package:grad_project/services/Authservice.dart';
+
+class Authcubit extends Cubit<Authstates> {
+  Authcubit() : super(nothingstate());
+  String? firstname,
+      lastname,
+      email,
+      password,
+      confirmpassword,
+      username,
+      role,
+      gender,
+      phone;
+
+  User? user;
+  Future signup() async {
+    emit(loadingstate());
+    try {
+      final response = await AuthService().signup(
+        firstname: firstname!,
+        lastname: lastname!,
+        email: email!,
+        gender: gender!,
+        confirmpassword: confirmpassword!,
+        password: password!,
+        phone: phone!,
+        role: role!,
+        username: username!,
+      );
+      if (response.statusCode == 201) {
+        emit(successstate());
+        return response;
+      } else {
+        emit(errorstate());
+      }
+    } on DioException catch (e) {
+      print('Dio error: ${e.message}');
+      print('Response data: ${e.response?.data}');
+      emit(errorstate());
+    } catch (e) {
+      print('Error: $e');
+      emit(errorstate());
+    }
+  }
+}

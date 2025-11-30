@@ -15,6 +15,7 @@ class Textformfield extends StatefulWidget {
     this.validator,
     this.ispassword = false,
     this.keyboardType,
+    this.onchange,
   });
   final String? Function(String?)? validator;
   final String hinttext;
@@ -25,6 +26,7 @@ class Textformfield extends StatefulWidget {
   final FocusNode focusNode;
   final TextEditingController? controller;
   final Function(String)? onFieldSubmitted;
+  void Function(String)? onchange;
   final TextInputAction textInputAction;
   final TextInputType? keyboardType;
 
@@ -45,6 +47,7 @@ class _TextformfieldState extends State<Textformfield> {
         obscureText: widget.obsecure,
         textInputAction: widget.textInputAction,
         onFieldSubmitted: widget.onFieldSubmitted,
+        onChanged: widget.onchange,
         style: const TextStyle(color: Colors.black87),
         decoration: InputDecoration(
           hintText: widget.hinttext,

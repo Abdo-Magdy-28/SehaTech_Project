@@ -1,7 +1,9 @@
 // ignore_for_file: implicit_call_tearoffs
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:grad_project/cubit/Authcubit.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 
 class Signupscreen2 extends StatefulWidget {
@@ -106,14 +108,14 @@ class _Signupscreen2State extends State<Signupscreen2> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Radio<String>(
-                        value: "Male",
+                        value: "male",
                         groupValue: selectedGender,
                         onChanged: (value) =>
                             setState(() => selectedGender = value),
                       ),
                       const Text("Male"),
                       Radio<String>(
-                        value: "Female",
+                        value: "female",
                         groupValue: selectedGender,
                         onChanged: (value) =>
                             setState(() => selectedGender = value),
@@ -127,19 +129,19 @@ class _Signupscreen2State extends State<Signupscreen2> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Radio<String>(
-                        value: "Doctor",
+                        value: "doctor",
                         groupValue: selectedjob,
                         onChanged: (value) =>
                             setState(() => selectedjob = value),
                       ),
                       const Text("Doctor"),
                       Radio<String>(
-                        value: "Patiant",
+                        value: "patient",
                         groupValue: selectedjob,
                         onChanged: (value) =>
                             setState(() => selectedjob = value),
                       ),
-                      const Text("Patiant"),
+                      const Text("Patient"),
                     ],
                   ),
                   SizedBox(height: devHeight * 0.04),
@@ -147,7 +149,25 @@ class _Signupscreen2State extends State<Signupscreen2> {
                     width: double.infinity,
                     height: devHeight * 0.07,
                     child: ElevatedButton(
-                      onPressed: _submitForm,
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          final authCubit = BlocProvider.of<Authcubit>(context);
+                          authCubit.username = _userNameController.text;
+                          authCubit.phone = _phoneNumberController.text;
+                          authCubit.gender = selectedGender;
+                          authCubit.role = selectedjob;
+                          await authCubit.signup();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Form is valid! Signing up...'),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Please fix errors.')),
+                          );
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF2260FF),
                         shape: RoundedRectangleBorder(
@@ -175,15 +195,5 @@ class _Signupscreen2State extends State<Signupscreen2> {
     );
   }
 
-  void _submitForm() {
-    if (formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Form is valid! Signing up...')),
-      );
-    } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please fix errors.')));
-    }
-  }
+  void _submitForm() {}
 }

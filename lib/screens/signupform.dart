@@ -1,6 +1,10 @@
 // ignore_for_file: implicit_call_tearoffs
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/Authcubit.dart';
+import 'package:grad_project/cubit/Authstates.dart';
+import 'package:grad_project/models/user.dart';
 import 'package:grad_project/screens/signin.dart';
 import 'package:grad_project/screens/signupscreen2.dart';
 import 'package:grad_project/widgets/textformfield.dart';
@@ -44,6 +48,7 @@ class _SignupformState extends State<Signupform> {
 
   @override
   Widget build(BuildContext context) {
+    String Firstname, Lastname, Email, Password, confirmpassword;
     final devHeight = MediaQuery.of(context).size.height;
     final devWidth = MediaQuery.of(context).size.width;
 
@@ -87,6 +92,10 @@ class _SignupformState extends State<Signupform> {
                   controller: _firstController,
                   focusNode: _firstFocus,
                   hinttext: 'First Name',
+                  onchange: (value) {
+                    Firstname = value;
+                    // BlocProvider.of<Authcubit>(context).firstname = value;
+                  },
                   validator: RequiredValidator(
                     errorText: "First Name required",
                   ),
@@ -102,6 +111,10 @@ class _SignupformState extends State<Signupform> {
                   controller: _lastController,
                   focusNode: _lastFocus,
                   hinttext: 'Last Name',
+                  onchange: (value) {
+                    Lastname = value;
+                    // BlocProvider.of<Authcubit>(context).lastname = value;
+                  },
                   validator: RequiredValidator(errorText: "Last Name required"),
                   bordercolor: const Color(0xFFF3F1F7),
                   prefixicon: "assets/images/iconamoon_profile-light.svg",
@@ -115,6 +128,10 @@ class _SignupformState extends State<Signupform> {
                   controller: _emailController,
                   focusNode: _emailFocus,
                   hinttext: 'Email',
+                  onchange: (value) {
+                    Email = value;
+                    // BlocProvider.of<Authcubit>(context).email = value;
+                  },
                   validator: MultiValidator([
                     RequiredValidator(errorText: "Email required "),
                     EmailValidator(errorText: "Email Is Invalid"),
@@ -132,11 +149,15 @@ class _SignupformState extends State<Signupform> {
                   focusNode: _passwordFocus,
                   hinttext: 'Password',
                   ispassword: true,
+                  onchange: (value) {
+                    Password = value;
+                    // BlocProvider.of<Authcubit>(context).password = value;
+                  },
                   validator: MultiValidator([
                     RequiredValidator(errorText: "Password required"),
                     MinLengthValidator(
-                      6,
-                      errorText: 'Password must be at least 6 characters',
+                      8,
+                      errorText: 'Password must be at least 8 characters',
                     ),
                   ]),
                   obsecure: true,
@@ -152,6 +173,11 @@ class _SignupformState extends State<Signupform> {
                   controller: _confirmController,
                   focusNode: _confirmFocus,
                   hinttext: 'Confirm Password',
+                  onchange: (value) {
+                    confirmpassword = value;
+                    // BlocProvider.of<Authcubit>(context).confirmpassword =
+                    //     value;
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please confirm your password';
@@ -171,12 +197,38 @@ class _SignupformState extends State<Signupform> {
                 SizedBox(height: devHeight * 0.04),
                 Hero(
                   tag: 'first',
-
                   child: SizedBox(
                     width: double.infinity,
                     height: devHeight * 0.07,
                     child: ElevatedButton(
-                      onPressed: _submitForm,
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          final authCubit = BlocProvider.of<Authcubit>(context);
+                          authCubit.firstname = _firstController.text;
+                          authCubit.lastname = _lastController.text;
+                          authCubit.email = _emailController.text;
+                          authCubit.password = _passwordController.text;
+                          authCubit.confirmpassword = _confirmController.text;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Form is valid! Signing up...'),
+                            ),
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => BlocProvider.value(
+                                value: BlocProvider.of<Authcubit>(context),
+                                child: Signupscreen2(),
+                              ),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Please fix errors.')),
+                          );
+                        }
+                      }, /////////////////////
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF2260FF),
                         shape: RoundedRectangleBorder(
@@ -257,22 +309,5 @@ class _SignupformState extends State<Signupform> {
     );
   }
 
-  void _submitForm() {
-    if (formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Form is valid! Signing up...')),
-      );
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) {
-            return Signupscreen2();
-          },
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please fix errors.')));
-    }
-  }
+  void _submitForm() {}
 }

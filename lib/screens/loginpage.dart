@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grad_project/cubit/Authcubit.dart';
 import 'package:grad_project/screens/signin.dart';
 import 'package:grad_project/screens/signupform.dart';
 import 'package:grad_project/widgets/carousel_card.dart';
@@ -240,8 +242,14 @@ class _LoginpageState extends State<Loginpage> {
                     height: devheight * 0.075,
                     text: "Swap To Create Account",
                     onSubmit: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Signupform()),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider(
+                            create: (context) => Authcubit(),
+                            child: Signupform(),
+                          ),
+                        ),
                       );
                     },
                   ),

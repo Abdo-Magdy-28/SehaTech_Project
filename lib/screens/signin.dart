@@ -39,6 +39,7 @@ class _SigninState extends State<Signin> {
 
   @override
   Widget build(BuildContext context) {
+    String Email, Password;
     final devHeight = MediaQuery.of(context).size.height;
     final devWidth = MediaQuery.of(context).size.width;
 
@@ -82,6 +83,9 @@ class _SigninState extends State<Signin> {
                   controller: _emailController,
                   focusNode: _emailFocus,
                   hinttext: 'Email',
+                  onchange: (value) {
+                    Email = value;
+                  },
                   validator: MultiValidator([
                     RequiredValidator(errorText: "Email required "),
                     EmailValidator(errorText: "Email Is Invalid"),
@@ -99,6 +103,9 @@ class _SigninState extends State<Signin> {
                   focusNode: _passwordFocus,
                   hinttext: 'Password',
                   ispassword: true,
+                  onchange: (value) {
+                    Password = value;
+                  },
                   validator: MultiValidator([
                     RequiredValidator(errorText: "Password required"),
                     MinLengthValidator(
