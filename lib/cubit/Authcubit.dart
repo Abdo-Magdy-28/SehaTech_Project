@@ -54,6 +54,7 @@ class Authcubit extends Cubit<Authstates> {
       email: email,
       password: password,
     );
+    emit(successstate());
     return response;
   }
 }

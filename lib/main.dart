@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:grad_project/cubit/Authcubit.dart';
 import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/screens/loginpage.dart';
 import 'package:grad_project/screens/map.dart';
@@ -17,11 +19,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'SEHA TECH',
-      theme: ThemeData(),
-      home: Loginpage(),
+    return BlocProvider(
+      create: (context) => Authcubit(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'SEHA TECH',
+        theme: ThemeData(),
+        home: Loginpage(),
+      ),
     );
   }
 }

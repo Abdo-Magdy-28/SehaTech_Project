@@ -258,7 +258,7 @@ class _SignupformState extends State<Signupform> {
                       Text("Already have an account?"),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(
+                          Navigator.of(context).pushReplacement(
                             PageRouteBuilder(
                               transitionDuration: const Duration(
                                 milliseconds: 800,

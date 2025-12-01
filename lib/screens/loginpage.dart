@@ -215,10 +215,9 @@ class _LoginpageState extends State<Loginpage> {
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => BlocProvider(
-                                  create: (context) => Authcubit(),
-                                  child: Signin(),
-                                ),
+                                builder: (context) {
+                                  return Signin();
+                                },
                               ),
                             );
                           },
@@ -249,12 +248,7 @@ class _LoginpageState extends State<Loginpage> {
                     onSubmit: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => BlocProvider(
-                            create: (context) => Authcubit(),
-                            child: Signupform(),
-                          ),
-                        ),
+                        MaterialPageRoute(builder: (_) => Signupform()),
                       );
                     },
                   ),

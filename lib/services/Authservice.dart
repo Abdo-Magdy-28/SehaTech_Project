@@ -18,7 +18,7 @@ class AuthService {
     required String gender,
     required String phone,
   }) async {
-    const String url = "http://192.168.1.3:5000/api/auth/signup";
+    const String url = "http://192.168.1.2:5000/api/auth/signup";
     try {
       return await dio.post(
         url,
@@ -43,7 +43,7 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    const String url = "http://192.168.1.3:5000/api/auth/login";
+    const String url = "http://192.168.1.2:5000/api/auth/login";
     try {
       final response = await dio.post(
         url,
