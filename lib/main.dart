@@ -7,6 +7,7 @@ import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/screens/loginpage.dart';
 import 'package:grad_project/screens/map.dart';
 import 'package:grad_project/screens/splashscreen.dart';
+import 'package:grad_project/screens/verifyidentity.dart';
 
 Future<void> main() async {
   debugPaintSizeEnabled = false;
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'SEHA TECH',
         theme: ThemeData(),
-        home: Loginpage(),
+        home: Verifyidentity(),
       ),
     );
   }

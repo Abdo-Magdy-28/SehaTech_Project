@@ -3,8 +3,8 @@ import 'package:grad_project/screens/changepassword.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class Verificationview extends StatefulWidget {
-  const Verificationview({super.key, required this.verifyer});
-  final String verifyer;
+  const Verificationview({super.key, required this.email});
+  final String email;
 
   @override
   State<Verificationview> createState() => _VerificationviewState();
@@ -14,9 +14,7 @@ class _VerificationviewState extends State<Verificationview> {
   final OtpController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    String phonenumber = '';
     String email = '';
-    String word = '';
     String visibleStart = '';
     String hidden = '';
     String visibleEnd = '';
@@ -24,27 +22,17 @@ class _VerificationviewState extends State<Verificationview> {
     String finalemail = '';
     String username = '';
     List parts = [];
-    if (widget.verifyer.contains('@')) {
-      email = widget.verifyer;
-      word = "Email";
-      // Hashing email
-      parts = email.split('@');
-      username = parts[0];
-      domain = parts[1];
-      visibleStart = username.substring(0, username.length >= 2 ? 2 : 1);
-      visibleEnd = username.length > 4
-          ? username.substring(username.length - 1)
-          : '';
-      hidden =
-          '*' * (username.length - visibleStart.length - visibleEnd.length);
-      finalemail = '$visibleStart$hidden$visibleEnd@$domain';
-    }
-    // hashing phone number
-    else {
-      phonenumber = widget.verifyer;
-      word = "Phone";
-      List<String> number = phonenumber.split('');
-    }
+
+    // Hashing email
+    parts = email.split('@');
+    username = parts[0];
+    domain = parts[1];
+    visibleStart = username.substring(0, username.length >= 2 ? 2 : 1);
+    visibleEnd = username.length > 4
+        ? username.substring(username.length - 1)
+        : '';
+    hidden = '*' * (username.length - visibleStart.length - visibleEnd.length);
+    finalemail = '$visibleStart$hidden$visibleEnd@$domain';
 
     final devHeight = MediaQuery.of(context).size.height;
     final devWidth = MediaQuery.of(context).size.width;
@@ -71,29 +59,24 @@ class _VerificationviewState extends State<Verificationview> {
               children: [
                 SizedBox(height: devHeight * 0.2),
                 Text(
-                  "$word Verification",
+                  "Email Verification",
                   style: TextStyle(
                     fontSize: devWidth * 0.06,
                     fontWeight: FontWeight.w800,
                     fontFamily: 'Cairo',
                   ),
                 ),
-                Text("We sent a code to your $word "),
+                Text("We sent a code to your Email "),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if (email == widget.verifyer)
-                      Text(
-                        // Display masked email
-                        finalemail,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )
-                    else
-                      Text(
-                        "01*****${phonenumber.substring(7)}",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                    Text(
+                      // Display masked email
+                      finalemail,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+
                     TextButton(
                       style: ButtonStyle(),
                       onPressed: () {

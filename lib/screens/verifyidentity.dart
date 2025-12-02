@@ -59,7 +59,7 @@ class _VerifyidentityState extends State<Verifyidentity> {
                   ),
                   SizedBox(height: devHeight * 0.01),
                   Text(
-                    "Enter your email or phone number to receive reset Code",
+                    "Enter your email to receive reset Code",
                     style: TextStyle(
                       fontSize: devWidth * 0.036,
                       fontFamily: 'Cairo',
@@ -73,7 +73,10 @@ class _VerifyidentityState extends State<Verifyidentity> {
                     controller: _emailController,
                     focusNode: _emailFocus,
                     hinttext: 'Email Address',
-                    validator: EmailValidator(errorText: "Invalid Email").call,
+                    validator: MultiValidator([
+                      EmailValidator(errorText: "invaild email"),
+                      RequiredValidator(errorText: "Enter email"),
+                    ]),
                     bordercolor: const Color(0xFFF3F1F7),
                     prefixicon: "assets/images/carbon_email.svg",
                     textInputAction: TextInputAction.next,
@@ -81,36 +84,7 @@ class _VerifyidentityState extends State<Verifyidentity> {
 
                   SizedBox(height: devHeight * 0.02),
 
-                  Text(
-                    "OR",
-                    style: TextStyle(
-                      fontSize: devWidth * 0.055,
-                      fontFamily: 'Cairo',
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xff8e9399),
-                    ),
-                  ),
-
-                  SizedBox(height: devHeight * 0.02),
-
                   // ===== PHONE FIELD =====
-                  Textformfield(
-                    keyboardType: TextInputType.number,
-                    controller: _phoneController,
-                    focusNode: _phoneFocus,
-                    hinttext: 'Phone Number',
-                    validator: MultiValidator([
-                      PatternValidator(
-                        r'^01[0-9]+$',
-                        errorText: "Invalid Phone Number",
-                      ),
-                      MaxLengthValidator(11, errorText: "Invalid Phone Number"),
-                    ]),
-                    bordercolor: const Color(0xFFF3F1F7),
-                    prefixicon: "assets/images/carbon_phone.svg",
-                    textInputAction: TextInputAction.done,
-                  ),
-
                   SizedBox(height: devHeight * 0.04),
 
                   SizedBox(
@@ -146,27 +120,6 @@ class _VerifyidentityState extends State<Verifyidentity> {
   }
 
   void _submitForm() {
-    final bothEmpty =
-        _emailController.text.isEmpty && _phoneController.text.isEmpty;
-    final bothFilled =
-        _emailController.text.isNotEmpty && _phoneController.text.isNotEmpty;
-
-    if (bothEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter either Email or Phone Number'),
-        ),
-      );
-      return;
-    } else if (bothFilled) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter either Email or Phone Number'),
-        ),
-      );
-      return;
-    }
-
     if (formKey.currentState!.validate()) {
       //Email Entered
       if (_emailController.text.isNotEmpty) {
@@ -178,24 +131,12 @@ class _VerifyidentityState extends State<Verifyidentity> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return Verificationview(verifyer: _emailController.text);
+              return Verificationview(email: _emailController.text);
             },
           ),
         );
       }
       // Phone Number Entered
-      else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Phone entered — go to SMS Reset page')),
-        );
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) {
-              return Verificationview(verifyer: _phoneController.text);
-            },
-          ),
-        );
-      }
     } else {
       ScaffoldMessenger.of(
         context,
