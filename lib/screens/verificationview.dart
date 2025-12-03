@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/Authcubit.dart';
 import 'package:grad_project/screens/changepassword.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -14,7 +16,7 @@ class _VerificationviewState extends State<Verificationview> {
   final OtpController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    String email = '';
+    String email = widget.email;
     String visibleStart = '';
     String hidden = '';
     String visibleEnd = '';
@@ -117,7 +119,11 @@ class _VerificationviewState extends State<Verificationview> {
                   children: [
                     Text("Don't receive your code? "),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await BlocProvider.of<Authcubit>(
+                          context,
+                        ).forgotpassword(email: widget.email);
+                      },
                       child: Text(
                         "Resend",
                         style: TextStyle(

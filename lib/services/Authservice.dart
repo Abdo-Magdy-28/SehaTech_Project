@@ -109,6 +109,31 @@ class AuthService {
   Future<void> logout() async {
     await storage.delete(key: 'auth_token');
   }
+
+  Future<Response> forgotPassword({required String email}) async {
+    const String url = "http://192.168.1.3:5000/api/auth/forgotPassword";
+    try {
+      return await dio.post(url, data: {"email": email});
+    } catch (e) {
+      throw Exception("forgot password api call error");
+    }
+  }
+
+  Future<Response> resetPassword({
+    required String code,
+    required String password,
+    required String confirmpassword,
+  }) async {
+    String url = "http://192.168.1.3:5000/api/auth/resetPassword/$code";
+    try {
+      return await dio.post(
+        url,
+        data: {"password": password, "passwordConfirm": confirmpassword},
+      );
+    } catch (e) {
+      throw Exception("forgot password api call error");
+    }
+  }
 }
 
 class LoginResponse {

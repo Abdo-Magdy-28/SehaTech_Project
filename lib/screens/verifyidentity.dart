@@ -1,7 +1,9 @@
 // ignore_for_file: implicit_call_tearoffs
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:grad_project/cubit/Authcubit.dart';
 import 'package:grad_project/screens/verificationview.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 
@@ -84,7 +86,6 @@ class _VerifyidentityState extends State<Verifyidentity> {
 
                   SizedBox(height: devHeight * 0.02),
 
-                  // ===== PHONE FIELD =====
                   SizedBox(height: devHeight * 0.04),
 
                   SizedBox(
@@ -119,15 +120,13 @@ class _VerifyidentityState extends State<Verifyidentity> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (formKey.currentState!.validate()) {
       //Email Entered
       if (_emailController.text.isNotEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Email entered — go to Email Reset page'),
-          ),
-        );
+        await BlocProvider.of<Authcubit>(
+          context,
+        ).forgotpassword(email: _emailController.text);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
@@ -136,7 +135,6 @@ class _VerifyidentityState extends State<Verifyidentity> {
           ),
         );
       }
-      // Phone Number Entered
     } else {
       ScaffoldMessenger.of(
         context,
