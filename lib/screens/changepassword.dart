@@ -1,12 +1,15 @@
 // ignore_for_file: implicit_call_tearoffs
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:grad_project/cubit/Authcubit.dart';
+import 'package:grad_project/screens/loginpage.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 
 class Changepassword extends StatefulWidget {
-  const Changepassword({super.key});
-
+  const Changepassword({super.key, required this.pin});
+  final String pin;
   @override
   State<Changepassword> createState() => _ChangepasswordState();
 }
@@ -103,7 +106,30 @@ class _ChangepasswordState extends State<Changepassword> {
                       width: double.infinity,
                       height: devHeight * 0.07,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          final response =
+                              await BlocProvider.of<Authcubit>(
+                                context,
+                              ).resetpassword(
+                                code: widget.pin,
+                                password: _passwordController.text,
+                                confirmpassword: _confirmController.text,
+                              );
+                          if (response.success) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return Loginpage();
+                                },
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(response.message)),
+                            );
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF2260FF),
                           shape: RoundedRectangleBorder(

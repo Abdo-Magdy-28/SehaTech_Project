@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/Authcubit.dart';
 import 'package:grad_project/screens/changepassword.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:grad_project/cubit/Authcubit.dart';
+import 'package:grad_project/cubit/Authstates.dart';
 
 class Verificationview extends StatefulWidget {
   const Verificationview({super.key, required this.email});
@@ -140,12 +142,24 @@ class _VerificationviewState extends State<Verificationview> {
                   width: double.infinity,
                   height: devHeight * 0.07,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => Changepassword(),
-                        ),
-                      );
+                    onPressed: () async {
+                      final response = await BlocProvider.of<Authcubit>(
+                        context,
+                      ).checkToken(code: OtpController.text);
+                      if (response.success) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return Changepassword(pin: OtpController.text);
+                            },
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(response.message)),
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF2260FF),

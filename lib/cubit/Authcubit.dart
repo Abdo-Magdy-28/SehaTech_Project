@@ -58,6 +58,28 @@ class Authcubit extends Cubit<Authstates> {
     return response;
   }
 
+  Future checkToken({required String code}) async {
+    emit(loadingstate());
+    final response = await AuthService().checkToken(Token: code);
+    emit(successstate());
+    return response;
+  }
+
+  Future resetpassword({
+    required String code,
+    required String password,
+    required String confirmpassword,
+  }) async {
+    emit(loadingstate());
+    final response = await AuthService().resetPassword(
+      code: code,
+      password: password,
+      confirmpassword: confirmpassword,
+    );
+    emit(successstate());
+    return response;
+  }
+
   Future forgotpassword({required String email}) async {
     emit(loadingstate());
     final response = await AuthService().forgotPassword(email: email);

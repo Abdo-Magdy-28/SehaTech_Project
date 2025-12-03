@@ -18,7 +18,7 @@ class AuthService {
     required String gender,
     required String phone,
   }) async {
-    const String url = "http://192.168.1.2:5000/api/auth/signup";
+    const String url = "https://sehatech-backend.vercel.app/api/auth/signup";
     try {
       return await dio.post(
         url,
@@ -43,7 +43,7 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    const String url = "http://192.168.1.2:5000/api/auth/login";
+    const String url = "https://sehatech-backend.vercel.app/api/auth/login";
     try {
       final response = await dio.post(
         url,
@@ -111,11 +111,22 @@ class AuthService {
   }
 
   Future<Response> forgotPassword({required String email}) async {
-    const String url = "http://192.168.1.3:5000/api/auth/forgotPassword";
+    const String url =
+        "https://sehatech-backend.vercel.app/api/auth/forgotPassword";
     try {
       return await dio.post(url, data: {"email": email});
     } catch (e) {
       throw Exception("forgot password api call error");
+    }
+  }
+
+  Future<Response> checkToken({required String Token}) async {
+    String url =
+        "https://sehatech-backend.vercel.app/api/auth/checkToken/$Token";
+    try {
+      return await dio.post(url, data: {"Token": Token});
+    } catch (e) {
+      throw Exception("Invaild reset code");
     }
   }
 
@@ -124,7 +135,8 @@ class AuthService {
     required String password,
     required String confirmpassword,
   }) async {
-    String url = "http://192.168.1.3:5000/api/auth/resetPassword/$code";
+    String url =
+        "https://sehatech-backend.vercel.app/api/auth/resetPassword/$code";
     try {
       return await dio.post(
         url,
