@@ -13,7 +13,7 @@
         <!-- ADD API KEY HERE - inside <application> but outside <activity> -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCpPEmII5eUKitoQZ9HF6bqvHa0THtQuFI"/>
+            android:value=""/>
 
         <activity
             android:name=".MainActivity"
