@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:grad_project/constants.dart';
 
 class Customappbar extends StatelessWidget {
   const Customappbar({super.key});
@@ -9,7 +8,7 @@ class Customappbar extends StatelessWidget {
   Widget build(BuildContext context) {
     final devheight = MediaQuery.of(context).size.height;
     final devwidth = MediaQuery.of(context).size.width;
-    return Container(
+    return SizedBox(
       height: devheight * 0.06,
       width: devwidth * 0.8,
       child: Row(

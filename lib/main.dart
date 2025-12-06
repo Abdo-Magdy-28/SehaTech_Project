@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:grad_project/cubit/Authcubit.dart';
 import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/screens/loginpage.dart';
@@ -26,7 +25,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'SEHA TECH',
         theme: ThemeData(),
-        home: Verifyidentity(),
+        home: Homepage(),
       ),
     );
   }
