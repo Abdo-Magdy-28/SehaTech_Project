@@ -1,7 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grad_project/cubit/Authcubit.dart';
+import 'package:grad_project/firebase_options.dart';
 import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/screens/loginpage.dart';
 import 'package:grad_project/screens/map.dart';
@@ -10,6 +13,8 @@ import 'package:grad_project/screens/verifyidentity.dart';
 
 Future<void> main() async {
   debugPaintSizeEnabled = false;
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // await dotenv.load();
   runApp(const MyApp());
 }
@@ -25,7 +30,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'SEHA TECH',
         theme: ThemeData(),
-        home: Loginpage(),
+        home: Mapscreen(),
       ),
     );
   }

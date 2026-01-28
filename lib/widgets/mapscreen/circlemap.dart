@@ -1,44 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class circlemap extends StatelessWidget {
-  const circlemap({super.key, required this.currentLocation});
+class CircleMap extends StatelessWidget {
+  const CircleMap({super.key, required this.currentLocation});
 
-  final LatLng? currentLocation;
+  final LatLng currentLocation; // ✅ Google Maps LatLng
 
   @override
   Widget build(BuildContext context) {
-    return FlutterMap(
-      options: MapOptions(initialCenter: currentLocation!, initialZoom: 15.0),
-      children: [
-        TileLayer(
-          urlTemplate:
-              'https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=mIKqtgOr2ggQ9XftPFEl',
-          userAgentPackageName: 'com.example.app',
+    return GoogleMap(
+      initialCameraPosition: CameraPosition(target: currentLocation, zoom: 15),
+      myLocationEnabled: true,
+      myLocationButtonEnabled: true,
+
+      markers: {
+        Marker(
+          markerId: const MarkerId('current_location'),
+          position: currentLocation,
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         ),
-        MarkerLayer(
-          markers: [
-            Marker(
-              width: 40,
-              height: 40,
-              point: currentLocation!,
-              child: Icon(Icons.my_location, color: Colors.blue, size: 35),
-            ),
-          ],
+      },
+
+      circles: {
+        Circle(
+          circleId: const CircleId('radius_circle'),
+          center: currentLocation,
+          radius: 100, // meters
+          fillColor: Colors.blue.withOpacity(0.2),
+          strokeColor: Colors.blue,
+          strokeWidth: 2,
         ),
-        CircleLayer(
-          circles: [
-            CircleMarker(
-              point: currentLocation!,
-              color: Colors.blue.withOpacity(0.2),
-              borderStrokeWidth: 2,
-              borderColor: Colors.blue,
-              radius: 100,
-            ),
-          ],
-        ),
-      ],
+      },
     );
   }
 }

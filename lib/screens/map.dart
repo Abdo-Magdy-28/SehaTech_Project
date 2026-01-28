@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grad_project/widgets/doctor_card.dart';
 import 'package:grad_project/widgets/mapdoctorcard.dart';
 import 'package:grad_project/widgets/mapdoctorcarddetail.dart';
@@ -11,7 +12,6 @@ import 'package:grad_project/widgets/mappharmacycard.dart';
 import 'package:grad_project/widgets/mapscreen/blurred_appbar.dart';
 import 'package:grad_project/widgets/mapscreen/circlemap.dart';
 import 'package:grad_project/widgets/mapscreen/searchbar.dart';
-import 'package:latlong2/latlong.dart';
 
 import 'package:grad_project/widgets/buildcard.dart';
 
@@ -95,7 +95,7 @@ class MapState extends State<Mapscreen> {
             : Stack(
                 children: [
                   // Mapscreen - Full Screen
-                  circlemap(currentLocation: currentLocation),
+                  CircleMap(currentLocation: currentLocation!),
 
                   // Blurred Header with SafeArea
                   Positioned(
