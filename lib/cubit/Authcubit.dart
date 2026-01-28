@@ -61,6 +61,7 @@ class Authcubit extends Cubit<Authstates> {
   Future checkToken({required String code}) async {
     emit(loadingstate());
     final response = await AuthService().checkToken(Token: code);
+    print(response);
     emit(successstate());
     return response;
   }
@@ -71,13 +72,28 @@ class Authcubit extends Cubit<Authstates> {
     required String confirmpassword,
   }) async {
     emit(loadingstate());
-    final response = await AuthService().resetPassword(
-      code: code,
-      password: password,
-      confirmpassword: confirmpassword,
-    );
-    emit(successstate());
-    return response;
+
+    try {
+      final response = await AuthService().resetPassword(
+        code: code,
+        password: password,
+        confirmpassword: confirmpassword,
+      );
+
+      final data = response.data;
+
+      if (response.statusCode == 200 && data['status'] == 'success') {
+        emit(successstate());
+      } else {
+        print(data['message']); // Token invalid / expired
+        emit(errorstate());
+      }
+
+      return response;
+    } catch (e) {
+      emit(errorstate());
+      rethrow;
+    }
   }
 
   Future forgotpassword({required String email}) async {

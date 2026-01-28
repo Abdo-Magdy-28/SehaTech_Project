@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:grad_project/constants.dart';
 import 'package:grad_project/models/user.dart';
 
 class AuthService {
@@ -18,7 +19,7 @@ class AuthService {
     required String gender,
     required String phone,
   }) async {
-    const String url = "https://sehatech-backend.vercel.app/api/auth/signup";
+    const String url = "$apiurl/api/auth/signup";
     try {
       return await dio.post(
         url,
@@ -43,7 +44,7 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    const String url = "https://sehatech-backend.vercel.app/api/auth/login";
+    const String url = "$apiurl/api/auth/login";
     try {
       final response = await dio.post(
         url,
@@ -111,8 +112,7 @@ class AuthService {
   }
 
   Future<Response> forgotPassword({required String email}) async {
-    const String url =
-        "https://sehatech-backend.vercel.app/api/auth/forgotPassword";
+    const String url = "$apiurl/api/auth/forgotPassword";
     try {
       return await dio.post(url, data: {"email": email});
     } catch (e) {
@@ -121,8 +121,7 @@ class AuthService {
   }
 
   Future<Response> checkToken({required String Token}) async {
-    String url =
-        "https://sehatech-backend.vercel.app/api/auth/checkToken/$Token";
+    String url = "$apiurl/api/auth/checkToken/$Token";
     try {
       return await dio.post(url, data: {"Token": Token});
     } catch (e) {
@@ -135,13 +134,28 @@ class AuthService {
     required String password,
     required String confirmpassword,
   }) async {
-    String url =
-        "https://sehatech-backend.vercel.app/api/auth/resetPassword/$code";
+    String url = "$apiurl/api/auth/resetPassword/$code";
     try {
-      return await dio.post(
+      final response = await dio.post(
         url,
         data: {"password": password, "passwordConfirm": confirmpassword},
+        options: Options(
+          validateStatus: (status) => status != null && status < 500,
+        ),
       );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = response.data;
+
+        String token = data['token'];
+        await storage.write(key: 'auth_token', value: token);
+
+        final userData = data['user'];
+        User? userObj;
+        if (userData != null) {
+          userObj = User.fromJson(userData);
+        }
+      }
+      return response;
     } catch (e) {
       throw Exception("forgot password api call error");
     }

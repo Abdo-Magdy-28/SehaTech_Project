@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:grad_project/cubit/Authcubit.dart';
+import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/screens/loginpage.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 
@@ -115,18 +116,18 @@ class _ChangepasswordState extends State<Changepassword> {
                                 password: _passwordController.text,
                                 confirmpassword: _confirmController.text,
                               );
-                          if (response.success) {
+                          if (response.data['status'] == "success") {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return Loginpage();
+                                  return Homepage();
                                 },
                               ),
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(response.message)),
+                              SnackBar(content: Text(response.data['message'])),
                             );
                           }
                         },

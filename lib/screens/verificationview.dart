@@ -146,7 +146,7 @@ class _VerificationviewState extends State<Verificationview> {
                       final response = await BlocProvider.of<Authcubit>(
                         context,
                       ).checkToken(code: OtpController.text);
-                      if (response.success) {
+                      if (response.data['status'] == 'success') {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -157,7 +157,7 @@ class _VerificationviewState extends State<Verificationview> {
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(response.message)),
+                          SnackBar(content: Text(response.data['message'])),
                         );
                       }
                     },
