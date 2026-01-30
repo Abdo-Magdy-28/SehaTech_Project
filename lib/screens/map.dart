@@ -132,7 +132,10 @@ class MapState extends State<Mapscreen> {
                           showModalBottomSheet(
                             context: context,
                             barrierColor: Colors.transparent,
-                            builder: (context) => buildsheet(devheight),
+                            builder: (context) => StatefulBuilder(
+                              builder: (context, StateSetter setModalState) =>
+                                  buildsheet(devheight, setModalState),
+                            ),
                           ).then((value) {
                             setState(() {
                               modalshowed = false;
@@ -167,7 +170,7 @@ class MapState extends State<Mapscreen> {
     );
   }
 
-  Widget buildsheet(double devheight) {
+  Widget buildsheet(double devheight, StateSetter setModalState) {
     return ClipRRect(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(30),
@@ -202,12 +205,19 @@ class MapState extends State<Mapscreen> {
                   margin: EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     children: [
-                      Expanded(child: _buildTabButton('Doctors', Icons.person)),
+                      Expanded(
+                        child: _buildTabButton(
+                          'Doctors',
+                          Icons.person,
+                          setModalState,
+                        ),
+                      ),
                       SizedBox(width: 8),
                       Expanded(
                         child: _buildTabButton(
                           'Hospitals',
                           Icons.local_hospital,
+                          setModalState,
                         ),
                       ),
                       SizedBox(width: 8),
@@ -215,6 +225,7 @@ class MapState extends State<Mapscreen> {
                         child: _buildTabButton(
                           'Pharmacy',
                           Icons.medical_services,
+                          setModalState,
                         ),
                       ),
                     ],
@@ -234,7 +245,7 @@ class MapState extends State<Mapscreen> {
                   color: Colors.white,
                 ),
                 child: selectedDoctor != null
-                    ? _buildDoctorDetailCard()
+                    ? _buildDoctorDetailCard(setModalState)
                     : Column(
                         children: [
                           Padding(
@@ -284,7 +295,7 @@ class MapState extends State<Mapscreen> {
                                         begindate: "10:30am",
                                         enddate: "5:30pm",
                                         onviewpressed: () {
-                                          setState(() {
+                                          setModalState(() {
                                             selectedDoctor = {
                                               'name': 'Youssef Ali',
                                               'job': 'Neurologist',
@@ -312,7 +323,7 @@ class MapState extends State<Mapscreen> {
                                         begindate: "10:30am",
                                         enddate: "5:30pm",
                                         onviewpressed: () {
-                                          setState(() {
+                                          setModalState(() {
                                             selectedDoctor = {
                                               'name': 'Youssef Ali',
                                               'job': 'Neurologist',
@@ -352,7 +363,7 @@ class MapState extends State<Mapscreen> {
                                         begindate: "10:30am",
                                         enddate: "5:30pm",
                                         onviewpressed: () {
-                                          setState(() {
+                                          setModalState(() {
                                             selectedDoctor = {
                                               'name': 'Youssef Ali',
                                               'job': 'Neurologist',
@@ -418,11 +429,15 @@ class MapState extends State<Mapscreen> {
     );
   }
 
-  Widget _buildTabButton(String label, IconData icon) {
+  Widget _buildTabButton(
+    String label,
+    IconData icon,
+    StateSetter setModalState,
+  ) {
     bool isSelected = selectedCategory == label;
     return ElevatedButton.icon(
       onPressed: () {
-        setState(() {
+        setModalState(() {
           selectedCategory = label;
         });
       },
@@ -455,7 +470,7 @@ class MapState extends State<Mapscreen> {
     );
   }
 
-  Widget _buildDoctorDetailCard() {
+  Widget _buildDoctorDetailCard(StateSetter setModalState) {
     if (selectedDoctor == null) return SizedBox.shrink();
 
     return Container(
@@ -467,7 +482,7 @@ class MapState extends State<Mapscreen> {
               IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
-                  setState(() {
+                  setModalState(() {
                     selectedDoctor = null;
                   });
                 },
