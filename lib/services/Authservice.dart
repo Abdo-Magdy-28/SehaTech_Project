@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -8,7 +7,7 @@ import 'package:grad_project/models/user.dart';
 class AuthService {
   final Dio dio = Dio();
   final storage = FlutterSecureStorage();
-  Future<Response> signup({
+  Future<LoginResponse> signup({
     required String firstname,
     required String lastname,
     required String email,
@@ -20,8 +19,9 @@ class AuthService {
     required String phone,
   }) async {
     const String url = "$apiurl/api/auth/signup";
+
     try {
-      return await dio.post(
+      final response = await dio.post(
         url,
         data: {
           "username": username,
@@ -34,9 +34,46 @@ class AuthService {
           "password": password,
           "passwordConfirm": confirmpassword,
         },
+        options: Options(
+          validateStatus: (status) => status != null && status < 500,
+        ),
       );
+
+      // Sucsses Signup
+      if (response.statusCode == 201) {
+        return LoginResponse(
+          success: true,
+          message: 'Account created successfully',
+        );
+      }
+
+      // Emai or Username existed
+      if (response.statusCode == 409) {
+        return LoginResponse(
+          success: false,
+          message: 'Email or username already exists',
+        );
+      }
+
+      // Validation Error
+      return LoginResponse(
+        success: false,
+        message: response.data['message'] ?? "Signup failed",
+      );
+    } on DioException catch (e) {
+      // Internet Problems
+      if (e.type == DioExceptionType.connectionError ||
+          e.error is SocketException) {
+        return LoginResponse(success: false, message: "No internet connection");
+      }
+      // server error
+      return LoginResponse(success: false, message: "Network error occurred");
     } catch (e) {
-      throw Exception("api call error");
+      // undefined Error
+      return LoginResponse(
+        success: false,
+        message: "Unexpected error occurred",
+      );
     }
   }
 
@@ -111,53 +148,81 @@ class AuthService {
     await storage.delete(key: 'auth_token');
   }
 
-  Future<Response> forgotPassword({required String email}) async {
-    const String url = "$apiurl/api/auth/forgotPassword";
-    try {
-      return await dio.post(url, data: {"email": email});
-    } catch (e) {
-      throw Exception("forgot password api call error");
-    }
-  }
-
-  Future<Response> checkToken({required String Token}) async {
-    String url = "$apiurl/api/auth/checkToken/$Token";
-    try {
-      return await dio.post(url, data: {"Token": Token});
-    } catch (e) {
-      throw Exception("Invaild reset code");
-    }
-  }
-
-  Future<Response> resetPassword({
-    required String code,
-    required String password,
-    required String confirmpassword,
-  }) async {
-    String url = "$apiurl/api/auth/resetPassword/$code";
+  Future<LoginResponse> forgotPassword({required String email}) async {
     try {
       final response = await dio.post(
-        url,
-        data: {"password": password, "passwordConfirm": confirmpassword},
+        "$apiurl/api/auth/forgotPassword",
+        data: {"email": email},
         options: Options(
           validateStatus: (status) => status != null && status < 500,
         ),
       );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final data = response.data;
 
-        String token = data['token'];
-        await storage.write(key: 'auth_token', value: token);
-
-        final userData = data['user'];
-        User? userObj;
-        if (userData != null) {
-          userObj = User.fromJson(userData);
-        }
+      if (response.statusCode == 200) {
+        return LoginResponse(
+          success: true,
+          message: "Reset code sent to your email",
+        );
       }
-      return response;
-    } catch (e) {
-      throw Exception("forgot password api call error");
+
+      if (response.statusCode == 404) {
+        return LoginResponse(success: false, message: "Email not found");
+      }
+
+      return LoginResponse(
+        success: false,
+        message: "Failed to send reset code",
+      );
+    } on DioException {
+      return LoginResponse(success: false, message: "No internet connection");
+    }
+  }
+
+  Future<LoginResponse> checkToken({required String Token}) async {
+    try {
+      final response = await dio.post(
+        "$apiurl/api/auth/checkToken/$Token",
+        options: Options(
+          validateStatus: (status) => status != null && status < 500,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return LoginResponse(success: true, message: "Code is valid");
+      }
+      return LoginResponse(success: false, message: "Invalid or expired code");
+    } on DioException {
+      return LoginResponse(success: false, message: "No internet connection");
+    }
+  }
+
+  Future<LoginResponse> resetPassword({
+    required String code,
+    required String password,
+    required String confirmPassword,
+  }) async {
+    try {
+      final response = await dio.post(
+        "$apiurl/api/auth/resetPassword/$code",
+        data: {"password": password, "passwordConfirm": confirmPassword},
+        options: Options(
+          validateStatus: (status) => status != null && status < 500,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return LoginResponse(
+          success: true,
+          message: "Password changed successfully",
+        );
+      }
+
+      return LoginResponse(
+        success: false,
+        message: response.data['message'] ?? "Failed to reset password",
+      );
+    } on DioException {
+      return LoginResponse(success: false, message: "No internet connection");
     }
   }
 }

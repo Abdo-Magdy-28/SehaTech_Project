@@ -21,6 +21,7 @@ class _HomepageState extends State<Homepage> {
     final devwidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
+
       bottomNavigationBar: CurvedNavigationBar(
         index: _selectedIndex,
         backgroundColor: Colors.white,
@@ -58,6 +59,7 @@ class _HomepageState extends State<Homepage> {
           });
         },
       ),
+
       body: _selectedIndex == 0
           ? Homepagewidget()
           : _selectedIndex == 1

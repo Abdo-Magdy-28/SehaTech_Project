@@ -17,53 +17,59 @@ class Authcubit extends Cubit<Authstates> {
       phone;
 
   User? user;
+
   Future signup() async {
     emit(loadingstate());
-    try {
-      final response = await AuthService().signup(
-        firstname: firstname!,
-        lastname: lastname!,
-        email: email!,
-        gender: gender!,
-        confirmpassword: confirmpassword!,
-        password: password!,
-        phone: phone!,
-        role: role!,
-        username: username!,
-      );
-      if (response.statusCode == 201) {
-        emit(successstate());
-        return response;
-      } else {
-        emit(errorstate());
-      }
-    } on DioException catch (e) {
-      print('Dio error: ${e.message}');
-      print('Response data: ${e.response?.data}');
-      emit(errorstate());
-    } catch (e) {
-      print('Error: $e');
+
+    final response = await AuthService().signup(
+      firstname: firstname!,
+      lastname: lastname!,
+      email: email!,
+      gender: gender!,
+      confirmpassword: confirmpassword!,
+      password: password!,
+      phone: phone!,
+      role: role!,
+      username: username!,
+    );
+    if (response.success) {
+      emit(successstate());
+    } else {
       emit(errorstate());
     }
+    return response;
   }
 
-  Future login({required String email, required String password}) async {
+  Future<LoginResponse> login({
+    required String email,
+    required String password,
+  }) async {
     emit(loadingstate());
 
     final response = await AuthService().login(
       email: email,
       password: password,
     );
-    emit(successstate());
+
+    if (response.success) {
+      emit(successstate());
+    } else {
+      emit(errorstate());
+    }
+
     return response;
   }
 
-  Future checkToken({required String code}) async {
+  Future checkToken(String code) async {
     emit(loadingstate());
-    final response = await AuthService().checkToken(Token: code);
-    print(response);
-    emit(successstate());
-    return response;
+
+    final result = await AuthService().checkToken(Token: code);
+
+    if (result.success) {
+      emit(successstate());
+    } else {
+      emit(errorstate());
+    }
   }
 
   Future resetpassword({
@@ -73,33 +79,29 @@ class Authcubit extends Cubit<Authstates> {
   }) async {
     emit(loadingstate());
 
-    try {
-      final response = await AuthService().resetPassword(
-        code: code,
-        password: password,
-        confirmpassword: confirmpassword,
-      );
+    final response = await AuthService().resetPassword(
+      code: code,
+      password: password,
+      confirmPassword: confirmpassword,
+    );
 
-      final data = response.data;
-
-      if (response.statusCode == 200 && data['status'] == 'success') {
-        emit(successstate());
-      } else {
-        print(data['message']); // Token invalid / expired
-        emit(errorstate());
-      }
-
-      return response;
-    } catch (e) {
+    if (response.success) {
+      emit(successstate());
+    } else {
       emit(errorstate());
-      rethrow;
     }
+
+    return response;
   }
 
   Future forgotpassword({required String email}) async {
     emit(loadingstate());
     final response = await AuthService().forgotPassword(email: email);
-    emit(successstate());
+    if (response.success) {
+      emit(successstate());
+    } else {
+      emit(errorstate());
+    }
     return response;
   }
 }

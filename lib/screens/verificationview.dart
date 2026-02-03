@@ -145,7 +145,7 @@ class _VerificationviewState extends State<Verificationview> {
                     onPressed: () async {
                       final response = await BlocProvider.of<Authcubit>(
                         context,
-                      ).checkToken(code: OtpController.text);
+                      ).checkToken(OtpController.text);
                       if (response.data['status'] == 'success') {
                         Navigator.pushReplacement(
                           context,
