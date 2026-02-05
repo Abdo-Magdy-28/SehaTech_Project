@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/models/doctor.dart';
 import 'package:grad_project/widgets/alldoctors/category.dart';
+import 'package:grad_project/widgets/alldoctors/screen_category.dart';
 import 'package:grad_project/widgets/alldoctors/searchbar.dart';
 import 'package:grad_project/widgets/doctor_card.dart';
 
@@ -12,6 +13,10 @@ class Alldoctors extends StatefulWidget {
 }
 
 class _AlldoctorsState extends State<Alldoctors> {
+  TextEditingController searchController = TextEditingController();
+  bool isSearching = false;
+  String? selectedCategory;
+  List<Doctor> categoryDoctors = [];
   List<Doctor> filteredDoctors = [];
   List<Doctor> allDoctors = [
     Doctor(
@@ -20,6 +25,15 @@ class _AlldoctorsState extends State<Alldoctors> {
       hospital: "El-Demerdash Hospital",
       image: "assets/images/Pic.png",
       rate: 4.5,
+      beginDate: "10:30am",
+      endDate: "5:30pm",
+    ),
+    Doctor(
+      name: "lollo",
+      job: "Neurologist",
+      hospital: "El-Demerdash Hospital",
+      image: "assets/images/Pic.png",
+      rate: 4.8,
       beginDate: "10:30am",
       endDate: "5:30pm",
     ),
@@ -51,14 +65,27 @@ class _AlldoctorsState extends State<Alldoctors> {
       endDate: "2:30pm",
     ),
   ];
+
   @override
   void initState() {
     super.initState();
     filteredDoctors = allDoctors;
   }
 
+  void filterByCategory(String category) {
+    setState(() {
+      selectedCategory = category;
+
+      categoryDoctors = allDoctors.where((doctor) {
+        final matchesCategory = doctor.job == category;
+        return matchesCategory;
+      }).toList();
+    });
+  }
+
   void search(String query) {
     setState(() {
+      isSearching = query.isNotEmpty;
       filteredDoctors = allDoctors.where((doctor) {
         return doctor.name.toLowerCase().contains(query.toLowerCase());
       }).toList();
@@ -71,16 +98,15 @@ class _AlldoctorsState extends State<Alldoctors> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
         centerTitle: true,
-        title: Text("Doctors"),
+        title: Text("Doctors", style: TextStyle(fontWeight: FontWeight.bold)),
         toolbarHeight: 80,
         backgroundColor: Colors.white,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(1),
-          child: Container(
-            height: 1,
-            color: Colors.grey, // line color
-          ),
+          child: Container(height: 1, color: Colors.grey),
         ),
       ),
       body: ListView(
@@ -93,15 +119,21 @@ class _AlldoctorsState extends State<Alldoctors> {
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
-                    blurRadius: 8,
+                    color: Colors.black.withOpacity(0.35),
+                    blurRadius: 5,
                     offset: Offset(0, 4),
                   ),
                 ],
               ),
               child: TextField(
                 onChanged: search,
+                controller: searchController,
                 decoration: InputDecoration(
+                  focusColor: Color(0xff0D5FA7),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(color: Color(0xff0D5FA7)),
+                  ),
                   hintText: "Search...",
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
@@ -112,41 +144,123 @@ class _AlldoctorsState extends State<Alldoctors> {
               ),
             ),
           ),
-          SizedBox(
-            height: 100,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                alldoctorscategory(
-                  name: "Neurologist",
-                  image: "assets/images/alldoctors/Mask_group.png",
-                ),
-                alldoctorscategory(
-                  name: "Psychiatrist",
-                  image: "assets/images/alldoctors/Mask_group2.png",
-                ),
-                alldoctorscategory(
-                  name: "Dermatologist",
-                  image: "assets/images/alldoctors/Mask_group3.png",
-                ),
-                alldoctorscategory(
-                  name: "Cardiologist",
-                  image: "assets/images/alldoctors/Mask_group4.png",
-                ),
-                alldoctorscategory(
-                  name: "Dentist",
-                  image: "assets/images/alldoctors/Mask_group5.png",
-                ),
-              ],
-            ),
+
+          AnimatedSwitcher(
+            duration: Duration(microseconds: 300),
+            child: isSearching
+                ? SizedBox.shrink()
+                : SizedBox(
+                    height: 100,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            filterByCategory("Neurologist");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ScreenCategory(
+                                    categoryDoctors: categoryDoctors,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          child: alldoctorscategory(
+                            name: "Neurologist",
+                            image: "assets/images/alldoctors/Mask_group.png",
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            filterByCategory("Psychiatrist");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ScreenCategory(
+                                    categoryDoctors: categoryDoctors,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          child: alldoctorscategory(
+                            name: "Psychiatrist",
+                            image: "assets/images/alldoctors/Mask_group2.png",
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            filterByCategory("Dermatologist");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ScreenCategory(
+                                    categoryDoctors: categoryDoctors,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          child: alldoctorscategory(
+                            name: "Dermatologist",
+                            image: "assets/images/alldoctors/Mask_group3.png",
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            filterByCategory("Cardiologist");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ScreenCategory(
+                                    categoryDoctors: categoryDoctors,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          child: alldoctorscategory(
+                            name: "Cardiologist",
+                            image: "assets/images/alldoctors/Mask_group4.png",
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            filterByCategory("Dentist");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ScreenCategory(
+                                    categoryDoctors: categoryDoctors,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          child: alldoctorscategory(
+                            name: "Dentist",
+                            image: "assets/images/alldoctors/Mask_group5.png",
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Popular Doctors",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          if (!isSearching)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Popular Doctors",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
 
           ListView.builder(
             shrinkWrap: true,
@@ -170,6 +284,38 @@ class _AlldoctorsState extends State<Alldoctors> {
               );
             },
           ),
+          if (isSearching && filteredDoctors.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 40),
+              child: Column(
+                children: [
+                  SizedBox(height: 100),
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: Image.asset('assets/images/alldoctors/search.png'),
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    "Sorry, no results found",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    "Please try a different search term.",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
         ],
       ),
     );
