@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/models/medicineremindercardmodel.dart';
+import 'package:grad_project/screens/alldoctors.dart';
 import 'package:grad_project/widgets/categorysrow.dart';
 import 'package:grad_project/widgets/chatbotslider.dart';
 import 'package:grad_project/widgets/customappbar.dart';
@@ -63,15 +64,23 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                         fontSize: 18,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "See all",
-                        style: TextStyle(
-                          color: Color(0xff2E6FF3),
-                          fontFamily: 'Cairo',
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Alldoctors()),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "See all",
+                          style: TextStyle(
+                            color: Color(0xff2E6FF3),
+                            fontFamily: 'Cairo',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
