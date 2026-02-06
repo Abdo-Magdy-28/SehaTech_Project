@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grad_project/screens/alldoctors.dart';
 
 class categorysrow extends StatelessWidget {
   const categorysrow({super.key});
@@ -11,18 +12,26 @@ class categorysrow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            children: [
-              SvgPicture.asset('assets/images/doctor.svg'),
-              Text(
-                "Doctors",
-                style: TextStyle(
-                  color: Color(0xff0D61EC),
-                  fontFamily: 'LeagueSpartan',
-                  fontWeight: FontWeight.w500,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Alldoctors()),
+              );
+            },
+            child: Column(
+              children: [
+                SvgPicture.asset('assets/images/doctor.svg'),
+                Text(
+                  "Doctors",
+                  style: TextStyle(
+                    color: Color(0xff0D61EC),
+                    fontFamily: 'LeagueSpartan',
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Column(
             children: [

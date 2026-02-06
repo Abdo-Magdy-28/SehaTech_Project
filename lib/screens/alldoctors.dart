@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/models/doctor.dart';
+import 'package:grad_project/screens/doctor_details.dart';
 import 'package:grad_project/widgets/alldoctors/category.dart';
 import 'package:grad_project/widgets/alldoctors/screen_category.dart';
 import 'package:grad_project/widgets/alldoctors/searchbar.dart';
@@ -271,15 +272,32 @@ class _AlldoctorsState extends State<Alldoctors> {
 
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Doctorcard(
-                  devheight: devheight,
-                  doctorimage: Image.asset('assets/images/Pic.png'),
-                  job: doctor.job,
-                  hospital: doctor.hospital,
-                  name: doctor.name,
-                  rate: doctor.rate,
-                  begindate: doctor.beginDate,
-                  enddate: doctor.endDate,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DoctorDetails(
+                          name: doctor.name,
+                          begindate: doctor.beginDate,
+                          enddate: doctor.endDate,
+                          hospital: doctor.hospital,
+                          job: doctor.job,
+                          rate: doctor.rate,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Doctorcard(
+                    devheight: devheight,
+                    doctorimage: Image.asset('assets/images/Pic.png'),
+                    job: doctor.job,
+                    hospital: doctor.hospital,
+                    name: doctor.name,
+                    rate: doctor.rate,
+                    begindate: doctor.beginDate,
+                    enddate: doctor.endDate,
+                  ),
                 ),
               );
             },
