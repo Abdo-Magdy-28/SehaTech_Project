@@ -35,7 +35,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
       ),
       body: SingleChildScrollView(
         child: SizedBox(
-          height: 1000,
+          height: 950,
           child: Stack(
             children: [
               Container(color: Colors.white, height: devheight),
@@ -87,6 +87,17 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 15,
+                          right: 15,
+                          child: SizedBox(
+                            height: 35,
+                            width: 35,
+                            child: Image.asset(
+                              "assets/images/alldoctors/Frame2147226191.png",
                             ),
                           ),
                         ),
@@ -333,7 +344,10 @@ class _AppointmentPickerState extends State<AppointmentPicker> {
 
         /// AVAILABLE TIME
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12, // 👈 reduced
+          ),
           decoration: BoxDecoration(
             color: Colors.grey.shade200,
             borderRadius: BorderRadius.circular(16),
@@ -343,9 +357,11 @@ class _AppointmentPickerState extends State<AppointmentPicker> {
             children: [
               _headerRow('Available time', '6 slots'),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 8), // 👈 reduced from 12
 
               GridView.builder(
+                padding: EdgeInsets.zero, // 👈 ADD THIS
+
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: times.length,

@@ -75,6 +75,7 @@ class Historyscreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(

@@ -15,7 +15,9 @@ class _ScanscreenState extends State<Scanscreen> {
     final devwidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
 
@@ -35,7 +37,7 @@ class _ScanscreenState extends State<Scanscreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(width: devwidth, child: const Divider(thickness: 1)),
-              SizedBox(height: devheight * 0.05),
+              SizedBox(height: devheight * 0.03),
               Stack(
                 clipBehavior: Clip.none,
                 children: [
@@ -115,7 +117,7 @@ class _ScanscreenState extends State<Scanscreen> {
                   ),
                 ],
               ),
-              SizedBox(height: devheight * 0.08),
+              SizedBox(height: devheight * 0.04),
               Text(
                 'Quick Scan',
                 style: TextStyle(

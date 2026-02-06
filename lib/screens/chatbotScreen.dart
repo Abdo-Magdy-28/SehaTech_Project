@@ -51,6 +51,7 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
     return BlocProvider(
       create: (_) => ChatCubit(ChatDemoService()),
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: const Customchatbotappbar(),
         body: BlocBuilder<ChatCubit, ChatState>(
           builder: (context, state) {
