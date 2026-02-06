@@ -3,7 +3,7 @@ import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/screens/chatbotScreen.dart';
-
+import 'package:grad_project/screens/scanscreen.dart';
 import 'package:grad_project/widgets/homepage/homepagewidget.dart';
 
 class Homepage extends StatefulWidget {
@@ -61,12 +61,7 @@ class _HomepageState extends State<Homepage> {
       body: _selectedIndex == 0
           ? Homepagewidget()
           : _selectedIndex == 1
-          ? Center(
-              child: Text(
-                'scan Page',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-            )
+          ? Scanscreen()
           : _selectedIndex == 2
           ? ChatBotScreen()
           : _selectedIndex == 3

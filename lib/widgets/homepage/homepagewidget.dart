@@ -6,7 +6,7 @@ import 'package:grad_project/widgets/chatbotslider.dart';
 import 'package:grad_project/widgets/customappbar.dart';
 import 'package:grad_project/widgets/doctor_card.dart';
 import 'package:grad_project/widgets/hearttopic.dart';
-import 'package:grad_project/widgets/home_carouselcard.dart';
+import 'package:grad_project/widgets/homepage/home_carouselcard.dart';
 import 'package:grad_project/widgets/medication_management_grid.dart';
 import 'package:grad_project/widgets/medicencard.dart';
 import 'package:grad_project/widgets/medicinereminder.dart';

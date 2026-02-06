@@ -86,6 +86,7 @@ flutter:
     - assets/images/
     - assets/images/chatbot/
     - assets/images/alldoctors/
+    - assets/images/scan/
     
 
   # An image asset can refer to one or more resolution-specific "variants", see
