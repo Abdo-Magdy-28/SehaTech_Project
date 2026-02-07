@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/screens/chatbotScreen.dart';
 import 'package:grad_project/screens/scanscreen.dart';
+import 'package:grad_project/screens/searchscreen.dart';
 import 'package:grad_project/widgets/homepage/homepagewidget.dart';
 
 class Homepage extends StatefulWidget {
@@ -65,12 +66,7 @@ class _HomepageState extends State<Homepage> {
           : _selectedIndex == 2
           ? ChatBotScreen()
           : _selectedIndex == 3
-          ? Center(
-              child: Text(
-                'search Page',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-            )
+          ? Searchscreen()
           : Center(
               child: Text(
                 'Reports Page',

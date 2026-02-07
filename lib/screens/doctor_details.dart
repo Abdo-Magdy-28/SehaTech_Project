@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/screens/map.dart';
 
 class DoctorDetails extends StatefulWidget {
   DoctorDetails({
@@ -93,11 +94,21 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         Positioned(
                           top: 15,
                           right: 15,
-                          child: SizedBox(
-                            height: 35,
-                            width: 35,
-                            child: Image.asset(
-                              "assets/images/alldoctors/Frame2147226191.png",
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Mapscreen(),
+                                ),
+                              );
+                            },
+                            child: SizedBox(
+                              height: 35,
+                              width: 35,
+                              child: Image.asset(
+                                "assets/images/alldoctors/Frame2147226191.png",
+                              ),
                             ),
                           ),
                         ),
