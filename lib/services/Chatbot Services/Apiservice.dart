@@ -2,86 +2,140 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:grad_project/cubit/Chat%20bot/ChatCubit.dart';
 import 'package:grad_project/services/Chatbot%20Services/ChatService.dart';
+import 'dart:io';
 
 class ChatApiService implements ChatService {
-  final String baseUrl;
-  final String apiKey;
+  String? _threadId;
+  String _summary = "No medical history.";
 
-  ChatApiService({required this.baseUrl, required this.apiKey});
+  static const String baseUrl =
+      'https://8001-dep-01k97cftrq0d0tz2y37e2km2ge-d.cloudspaces.litng.ai';
+  static const String apiKey = 'd1414a76-13c4-4267-9b96-12b0b62425f5';
+
+  final Set<http.Client> _activeClients = {};
+
+  ChatApiService();
 
   @override
-  Future<void> sendMessage(String message, ChatCubit cubit) async {
-    try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/chat'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $apiKey',
-        },
-        body: jsonEncode({
-          'message': message,
-          'conversation_history': cubit.state.messages
-              .where((m) => !m.isLoading)
-              .map((m) => {'text': m.text, 'isUser': m.isUser})
-              .toList(),
-        }),
-      );
+  Future<void> sendMessage(
+    String message,
+    ChatCubit cubit, {
+    File? image,
+  }) async {
+    _threadId ??= _generateThreadId();
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        cubit.addBotMessage(data['response'] ?? 'No response');
+    final client = http.Client();
+    _activeClients.add(client);
+
+    try {
+      final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/chat'));
+
+      request.headers['Authorization'] = 'Bearer $apiKey';
+
+      request.fields['query'] = message;
+      request.fields['thread_id'] = _threadId!;
+      request.fields['summary'] = _summary;
+
+      if (image != null) {
+        final imageStream = http.ByteStream(image.openRead());
+        final imageLength = await image.length();
+        final multipartFile = http.MultipartFile(
+          'image',
+          imageStream,
+          imageLength,
+          filename: image.path.split('/').last,
+        );
+        request.files.add(multipartFile);
+      }
+
+      final streamedResponse = await client.send(request);
+
+      if (streamedResponse.statusCode == 200) {
+        String fullResponse = '';
+
+        await for (var value in streamedResponse.stream.transform(
+          utf8.decoder,
+        )) {
+          if (cubit.isClosed) {
+            print('Cubit is closed, stopping stream processing');
+            break;
+          }
+
+          final lines = value.split('\n');
+
+          for (var line in lines) {
+            if (line.trim().isEmpty) continue;
+
+            try {
+              final jsonData = jsonDecode(line);
+              final msgType = jsonData['type'];
+
+              switch (msgType) {
+                case 'status':
+                  final statusMsg = jsonData['content'] ?? '';
+                  if (!cubit.isClosed) {
+                    cubit.updateBotMessageStatus(statusMsg);
+                  }
+                  break;
+
+                case 'token':
+                  final content = jsonData['content'] ?? '';
+                  fullResponse += content;
+                  if (!cubit.isClosed) {
+                    cubit.updateBotMessageContent(fullResponse);
+                  }
+                  break;
+
+                case 'final':
+                  _summary = jsonData['summary'] ?? _summary;
+                  if (!cubit.isClosed) {
+                    cubit.finalizeBotMessage(fullResponse);
+                  }
+                  break;
+              }
+            } catch (e) {
+              print('Error parsing JSON line: $e');
+              continue;
+            }
+          }
+        }
+
+        if (fullResponse.isNotEmpty && !cubit.isClosed) {
+          cubit.finalizeBotMessage(fullResponse);
+        }
       } else {
-        cubit.addBotMessage('Sorry, I encountered an error. Please try again.');
+        final errorBody = await streamedResponse.stream.bytesToString();
+        if (!cubit.isClosed) {
+          cubit.addBotMessage(
+            'خطأ في الاتصال بالسيرفر: ${streamedResponse.statusCode}\n$errorBody',
+          );
+        }
       }
     } catch (e) {
-      cubit.addBotMessage(
-        'Connection error. Please check your internet and try again.',
-      );
+      if (!cubit.isClosed) {
+        cubit.addBotMessage(
+          'فشل الاتصال بالسيرفر. تأكد من اتصالك بالإنترنت وحاول مرة أخرى.\nالخطأ: $e',
+        );
+      }
+    } finally {
+      _activeClients.remove(client);
+      client.close();
     }
   }
 
-  @override
-  void runDiseaseSymptomsIntro(ChatCubit cubit) {
-    cubit.addBotMessage(
-      "Hello 👋\n\n"
-      "I'm here to help you. Let's explore your symptoms together.\n\n"
-      "Describe Your Feeling Right Now!",
-    );
+  String _generateThreadId() {
+    return 'thread_${DateTime.now().millisecondsSinceEpoch}';
   }
 
-  @override
-  void runDiagnosesIntro(ChatCubit cubit) {
-    cubit.addBotMessage(
-      "Hello! 👨‍⚕️\n\n"
-      "I can help you understand possible diagnoses based on your symptoms.\n\n"
-      "Please describe all your symptoms in detail.",
-    );
+  void resetConversation() {
+    _threadId = null;
+    _summary = "No medical history.";
   }
 
-  @override
-  void runDrugPriceIntro(ChatCubit cubit) {
-    cubit.addBotMessage(
-      "Hello! 💊\n\n"
-      "I can help you check medication prices.\n\n"
-      "What medication would you like to know the price for?",
-    );
-  }
-
-  @override
-  void runActiveIngredientIntro(ChatCubit cubit) {
-    cubit.addBotMessage(
-      "Hello! 🔬\n\n"
-      "I can help you find information about active ingredients in medications.\n\n"
-      "Which medication would you like to know about?",
-    );
-  }
-
-  @override
-  void runChronicDiseasesIntro(ChatCubit cubit) {
-    cubit.addBotMessage(
-      "Hello! 🏥\n\n"
-      "I can provide information about chronic diseases and their management.\n\n"
-      "Which chronic disease would you like to learn about?",
-    );
+  void cancelAllRequests() {
+    for (var client in _activeClients) {
+      client.close();
+    }
+    _activeClients.clear();
   }
 }

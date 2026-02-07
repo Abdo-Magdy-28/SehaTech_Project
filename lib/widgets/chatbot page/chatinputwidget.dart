@@ -4,12 +4,15 @@ import 'package:grad_project/widgets/chatbot%20page/historyscreen.dart';
 class Chatinputwidget extends StatelessWidget {
   final TextEditingController controller;
   final VoidCallback onSend;
+  final VoidCallback? onAttachImage;
 
   const Chatinputwidget({
     super.key,
     required this.controller,
     required this.onSend,
+    this.onAttachImage,
   });
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,7 +50,15 @@ class Chatinputwidget extends StatelessWidget {
                 style: TextStyle(fontSize: 12, fontFamily: 'Cairo'),
               ),
               TextButton(
-                onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) {return Historyscreen(); }));},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return Historyscreen();
+                      },
+                    ),
+                  );
+                },
                 child: Text(
                   "View Your History",
                   style: TextStyle(
@@ -75,6 +86,7 @@ class Chatinputwidget extends StatelessWidget {
             ),
             child: Row(
               children: [
+                // Attach Image Button (replaces the '+' button)
                 Container(
                   width: 36,
                   height: 36,
@@ -84,19 +96,21 @@ class Chatinputwidget extends StatelessWidget {
                   ),
                   child: Center(
                     child: GestureDetector(
-                      child: Text(
-                        '+',
-                        style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.grey.shade600,
-                          fontWeight: FontWeight.w300,
-                        ),
+                      onTap: onAttachImage,
+                      child: Icon(
+                        Icons.image_outlined,
+                        color: onAttachImage != null
+                            ? Color(0xFF0066FF)
+                            : Colors.grey.shade400,
+                        size: 20,
                       ),
                     ),
                   ),
                 ),
 
                 SizedBox(width: 16),
+
+                // Text Input Field
                 Expanded(
                   child: TextField(
                     controller: controller,
@@ -110,11 +124,15 @@ class Chatinputwidget extends StatelessWidget {
                       isDense: true,
                       contentPadding: EdgeInsets.zero,
                     ),
+                    maxLines: null,
+                    textInputAction: TextInputAction.send,
+                    onSubmitted: (_) => onSend(),
                   ),
                 ),
 
                 SizedBox(width: 12),
 
+                // Send Button
                 Container(
                   width: 36,
                   height: 36,
