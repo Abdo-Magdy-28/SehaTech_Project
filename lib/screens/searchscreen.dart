@@ -336,7 +336,7 @@ class _SearchscreenState extends State<Searchscreen> {
               padding: const EdgeInsets.only(top: 40),
               child: Column(
                 children: [
-                  SizedBox(height: 100),
+                  SizedBox(height: 70),
                   SizedBox(
                     height: 40,
                     width: 40,
@@ -360,9 +360,189 @@ class _SearchscreenState extends State<Searchscreen> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  SizedBox(height: 70),
                 ],
               ),
             ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Most Searched Medicines",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: [
+                SizedBox(
+                  width: (MediaQuery.of(context).size.width - 36 - 10) / 2,
+                  child: medicinecard(
+                    name: "Liveasy Wellness",
+                    image:
+                        "assets/images/search/liveasy-wellness-calcium-magnesium-vitamin-d3-zinc-bones-dental-health-bottle-60-tabs-6.1-1733485732.png",
+                    rate: 4.8,
+                    description: "Calcium Magnesium Vitamin",
+                    componant: "D3 & Zine",
+                  ),
+                ),
+                SizedBox(
+                  width: (MediaQuery.of(context).size.width - 36 - 10) / 2,
+                  child: medicinecard(
+                    name: "Dr.Morepen",
+                    image:
+                        "assets/images/search/liveasy-wellness-calcium-magnesium-vitamin-d3-zinc-bones-dental-health-bottle-60-tabs-6.1-1733485732q3.png",
+                    rate: 4.8,
+                    description: "Calcium Magnesium Vitamin",
+                    componant: "D3 & Zine",
+                  ),
+                ),
+                SizedBox(
+                  width: (MediaQuery.of(context).size.width - 36 - 10) / 2,
+                  child: medicinecard(
+                    name: "Pharmeasy Optima",
+                    image: "assets/images/search/lol.png",
+                    rate: 3.8,
+                    description: "Calcium Magnesium Vitamin",
+                    componant: "D3 & Zine",
+                  ),
+                ),
+                SizedBox(
+                  width: (MediaQuery.of(context).size.width - 36 - 10) / 2,
+                  child: medicinecard(
+                    name: "Juman Juice",
+                    image: "assets/images/search/21.png",
+                    rate: 4.8,
+                    description: "Calcium Magnesium Vitamin",
+                    componant: "D3 & Zine",
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 30),
+        ],
+      ),
+    );
+  }
+}
+
+class medicinecard extends StatelessWidget {
+  medicinecard({
+    super.key,
+    required this.name,
+    required this.image,
+    required this.description,
+    required this.componant,
+    required this.rate,
+  });
+
+  String name, image, description, componant;
+  double rate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Color(0xffF0F0F0),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      height: 270,
+      width: 160,
+      child: Stack(
+        children: [
+          Positioned(
+            top: 10,
+            left: 10,
+            child: SizedBox(height: 140, width: 140, child: Image.asset(image)),
+          ),
+          // Name with ellipsis
+          Positioned(
+            top: 160,
+            left: 10,
+            child: SizedBox(
+              width: 100, // Leave space for rating on the right
+              child: Text(
+                name,
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+          ),
+          Positioned(
+            right: 10,
+            top: 160,
+            child: Row(
+              children: [
+                Text(
+                  "$rate",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                ),
+                SizedBox(width: 2),
+                SizedBox(
+                  height: 15,
+                  width: 15,
+                  child: Image.asset("assets/images/Star.png"),
+                ),
+              ],
+            ),
+          ),
+          // Description with ellipsis
+          Positioned(
+            left: 10,
+            top: 185,
+            child: SizedBox(
+              width: 140, // Card width (160) - padding (10+10)
+              child: Text(
+                description,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black.withOpacity(0.7),
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+          ),
+          // Component with ellipsis
+          Positioned(
+            left: 10,
+            top: 205,
+            child: SizedBox(
+              width: 140,
+              child: Text(
+                componant,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color(0xff0D61EC),
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(12),
+                  bottomLeft: Radius.circular(12),
+                ),
+              ),
+              width: 160,
+              height: 35,
+              child: Center(
+                child: Text("View", style: TextStyle(color: Colors.white)),
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -18,6 +18,13 @@ class _ScreenCategoryState extends State<ScreenCategory> {
   bool isSearching = false;
   Widget buildsheet(BuildContext context, StateSetter setModalState) {
     return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+      ),
       padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
