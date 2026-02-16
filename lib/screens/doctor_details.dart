@@ -96,11 +96,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           right: 15,
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Mapscreen(),
-                                ),
+                              Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(builder: (_) => Mapscreen()),
                               );
                             },
                             child: SizedBox(
