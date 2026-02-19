@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/screens/loginpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -29,18 +32,21 @@ class _SplashscreenState extends State<Splashscreen>
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 5), () {
-      Navigator.push(
-        context,
-        PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 800),
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const Loginpage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-        ),
-      );
+    Future.delayed(Duration(seconds: 5), () async {
+      const storage = FlutterSecureStorage();
+      final token = await storage.read(key: 'auth_token');
+      print('Token from storage: $token');
+      if (token != null) {
+        // ✅ Has token → Go to Home
+        Navigator.of(
+          context,
+        ).pushReplacement(MaterialPageRoute(builder: (context) => Homepage()));
+      } else {
+        // ❌ No token → Go to Login
+        Navigator.of(
+          context,
+        ).pushReplacement(MaterialPageRoute(builder: (context) => Loginpage()));
+      }
     });
     // First animation (shader slide)
     _controller = AnimationController(

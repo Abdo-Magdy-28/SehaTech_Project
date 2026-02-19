@@ -95,8 +95,9 @@ class AuthService {
         final data = response.data;
 
         String token = data['token'];
+        print('Token received: $token');
         await storage.write(key: 'auth_token', value: token);
-
+        print('Token saved successfully');
         final userData = data['user'];
         User? userObj;
         if (userData != null) {

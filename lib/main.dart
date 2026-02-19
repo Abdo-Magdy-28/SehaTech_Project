@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'SEHA TECH',
         theme: ThemeData(),
-        home: Homepage(),
+        home: Splashscreen(),
       ),
     );
   }
