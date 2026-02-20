@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/models/doctor.dart';
 import 'package:grad_project/screens/alldoctors.dart';
+import 'package:grad_project/screens/doctor_details.dart';
 import 'package:grad_project/widgets/doctor_card.dart';
 
 class ScreenCategory extends StatefulWidget {
@@ -354,17 +355,34 @@ class _ScreenCategoryState extends State<ScreenCategory> {
             itemBuilder: (context, index) {
               final doctor = filteredDoctors[index];
 
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Doctorcard(
-                  devheight: devheight,
-                  doctorimage: Image.asset('assets/images/Pic.png'),
-                  job: doctor.job,
-                  hospital: doctor.hospital,
-                  name: doctor.name,
-                  rate: doctor.rate,
-                  begindate: doctor.beginDate,
-                  enddate: doctor.endDate,
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DoctorDetails(
+                        name: doctor.name,
+                        begindate: doctor.beginDate,
+                        enddate: doctor.endDate,
+                        hospital: doctor.hospital,
+                        job: doctor.job,
+                        rate: doctor.rate,
+                      ),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Doctorcard(
+                    devheight: devheight,
+                    doctorimage: Image.asset('assets/images/Pic.png'),
+                    job: doctor.job,
+                    hospital: doctor.hospital,
+                    name: doctor.name,
+                    rate: doctor.rate,
+                    begindate: doctor.beginDate,
+                    enddate: doctor.endDate,
+                  ),
                 ),
               );
             },

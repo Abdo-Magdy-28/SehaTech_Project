@@ -21,6 +21,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
   @override
   Widget build(BuildContext context) {
     final devheight = MediaQuery.of(context).size.height;
+    final devwidth = MediaQuery.of(context).size.width;
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
@@ -46,12 +47,12 @@ class _DoctorDetailsState extends State<DoctorDetails> {
               ),
               Positioned(
                 top: devheight * 0.5,
-                left: 7,
+                left: 10,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    height: 235,
-                    width: 330,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    width: MediaQuery.of(context).size.width * 0.92,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
                       color: Color(0xffF6F6F6),
