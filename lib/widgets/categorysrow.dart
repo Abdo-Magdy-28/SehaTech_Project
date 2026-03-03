@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grad_project/screens/alldoctors.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class categorysrow extends StatelessWidget {
   const categorysrow({super.key});
@@ -23,7 +24,7 @@ class categorysrow extends StatelessWidget {
               children: [
                 SvgPicture.asset('assets/images/doctor.svg'),
                 Text(
-                  "Doctors",
+                  S.of(context).doctors,
                   style: TextStyle(
                     color: Color(0xff0D61EC),
                     fontFamily: 'LeagueSpartan',
@@ -37,7 +38,7 @@ class categorysrow extends StatelessWidget {
             children: [
               SvgPicture.asset('assets/images/pharmacies.svg'),
               Text(
-                "Pharmacies",
+                S.of(context).pharmacies,
                 style: TextStyle(
                   color: Color(0xff0D61EC),
                   fontFamily: 'LeagueSpartan',
@@ -50,7 +51,7 @@ class categorysrow extends StatelessWidget {
             children: [
               SvgPicture.asset('assets/images/hospital.svg'),
               Text(
-                "Hospitals",
+                S.of(context).hospitals,
                 style: TextStyle(
                   color: Color(0xff0D61EC),
                   fontFamily: 'LeagueSpartan',
@@ -63,7 +64,7 @@ class categorysrow extends StatelessWidget {
             children: [
               SvgPicture.asset('assets/images/medicine.svg'),
               Text(
-                "Medicines",
+                S.of(context).medicines,
                 style: TextStyle(
                   color: Color(0xff0D61EC),
                   fontFamily: 'LeagueSpartan',

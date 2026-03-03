@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class Customappbar extends StatelessWidget {
   const Customappbar({super.key});
@@ -30,15 +31,16 @@ class Customappbar extends StatelessWidget {
             children: [
               Icon(Icons.location_on, size: 16),
               Text(
-                "QALUBIA,",
+                S.of(context).qalubia,
                 style: TextStyle(
                   fontFamily: 'Cairo',
                   fontWeight: FontWeight.w700,
                   color: Color(0xff111111),
                 ),
               ),
+              Text(","),
               Text(
-                "BANHA",
+                S.of(context).banha,
                 style: TextStyle(
                   fontFamily: 'Cairo',
                   fontWeight: FontWeight.w700,

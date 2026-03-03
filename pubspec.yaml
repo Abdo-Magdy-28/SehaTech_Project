@@ -30,14 +30,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2      
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   firebase_core: ^2.25.0
   google_fonts: ^6.3.2
   flutter_svg: ^2.2.1
-  slide_to_act : ^2.0.2
+  slide_to_act: ^2.0.2
   carousel_slider: ^5.1.1
   form_field_validator: ^1.1.0
   pin_code_fields: ^8.0.1
@@ -57,9 +59,6 @@ dependencies:
   shared_preferences: ^2.5.3
   image_picker: ^1.2.1
 
- 
-  
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -73,7 +72,6 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -89,14 +87,11 @@ flutter:
     - assets/images/alldoctors/
     - assets/images/scan/
     - assets/images/search/
-    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -105,14 +100,14 @@ flutter:
   fonts:
     - family: Cairo
       fonts:
-       - asset: assets/fonts/Cairo-ExtraBold.ttf
-         weight: 800
-       - asset: assets/fonts/Cairo-Bold.ttf  
-         weight: 700  
-       - asset: assets/fonts/Cairo-SemiBold.ttf  
-         weight: 600
-       - asset: assets/fonts/Cairo-Regular.ttf  
-         weight: 400   
+        - asset: assets/fonts/Cairo-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Cairo-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Cairo-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Cairo-Regular.ttf
+          weight: 400
     - family: PoltawskiNowy
       fonts:
         - asset: assets/fonts/PoltawskiNowy-Regular.ttf
@@ -120,7 +115,8 @@ flutter:
     - family: LeagueSpartan
       fonts:
         - asset: assets/fonts/LeagueSpartan-Medium.ttf
-          weight: 500      
-  #
+          weight: 500
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter_intl:
+  enabled: true

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class home_crouselcard extends StatelessWidget {
   const home_crouselcard({
@@ -65,7 +66,7 @@ class home_crouselcard extends StatelessWidget {
                   SvgPicture.asset('assets/images/calendar.svg'),
                   SizedBox(width: devwidth * 0.008),
                   Text(
-                    "Appointment Reminder",
+                    S.of(context).appointmentReminder,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
@@ -82,7 +83,7 @@ class home_crouselcard extends StatelessWidget {
           top: devheight * 0.05,
           left: devwidth * 0.04,
           child: Text(
-            "Schedule Your Next ",
+            S.of(context).scheduleYourNext,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontFamily: 'cairo',
@@ -95,7 +96,7 @@ class home_crouselcard extends StatelessWidget {
           top: devheight * 0.074,
           left: devwidth * 0.04,
           child: Text(
-            "Appointment ",
+            S.of(context).appointment,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontFamily: 'cairo',
@@ -108,7 +109,7 @@ class home_crouselcard extends StatelessWidget {
           top: devheight * 0.112,
           left: devwidth * 0.04,
           child: Text(
-            "with your preferred",
+            S.of(context).withYourPreferred,
             style: TextStyle(
               fontWeight: FontWeight.w400,
               fontFamily: 'cairo',
@@ -121,7 +122,7 @@ class home_crouselcard extends StatelessWidget {
           top: devheight * 0.135,
           left: devwidth * 0.04,
           child: Text(
-            "doctors in just a few taps.",
+            S.of(context).doctorsInJustFewTaps,
             style: TextStyle(
               fontWeight: FontWeight.w400,
               fontFamily: 'cairo',
@@ -160,7 +161,7 @@ class home_crouselcard extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  "Schedule Now",
+                  S.of(context).scheduleNow,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,

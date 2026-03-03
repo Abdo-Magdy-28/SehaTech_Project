@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class Doctorcard extends StatelessWidget {
   const Doctorcard({
@@ -51,7 +52,7 @@ class Doctorcard extends StatelessWidget {
                               spacing: 4,
                               children: [
                                 Text(
-                                  "Dr : $name",
+                                  S.of(context).doctorTitle(name),
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: Color(0xff33384B),
@@ -171,7 +172,7 @@ class Doctorcard extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          "BOOK Now",
+                          S.of(context).bookNow,
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Cairo',
@@ -196,7 +197,7 @@ class Doctorcard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "Directions",
+                        S.of(context).directions,
                         style: TextStyle(
                           fontSize: 10,
                           fontFamily: 'Cairo',

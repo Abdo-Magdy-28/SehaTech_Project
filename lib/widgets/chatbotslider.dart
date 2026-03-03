@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class chatbotslider extends StatelessWidget {
   const chatbotslider({super.key, required this.devheight});
@@ -39,7 +40,7 @@ class chatbotslider extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "Discover Our Healthcare ",
+                  S.of(context).discoverHealthcare,
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Cairo',
@@ -48,7 +49,7 @@ class chatbotslider extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "AI Assistant",
+                  S.of(context).aiAssistant,
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Cairo',

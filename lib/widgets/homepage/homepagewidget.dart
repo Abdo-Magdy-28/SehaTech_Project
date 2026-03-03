@@ -13,6 +13,7 @@ import 'package:grad_project/widgets/medicinereminder.dart';
 import 'package:grad_project/widgets/prevent_diseases.dart';
 import 'package:grad_project/widgets/weakcalender.dart';
 import 'package:grad_project/widgets/weaklystreak.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class Homepagewidget extends StatefulWidget {
   const Homepagewidget({super.key});
@@ -56,7 +57,7 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Find Doctors",
+                      S.of(context).findDoctors,
                       style: TextStyle(
                         color: Color(0xff33384B),
                         fontFamily: 'Cairo',
@@ -74,7 +75,7 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "See all",
+                          S.of(context).seeAll,
                           style: TextStyle(
                             color: Color(0xff2E6FF3),
                             fontFamily: 'Cairo',
@@ -92,19 +93,19 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                   return Doctorcard(
                     devheight: devheight,
                     doctorimage: Image.asset('assets/images/Pic.png'),
-                    job: "Neurologist",
-                    hospital: "El-Demerdash Hospital",
-                    name: "Youssef Ali",
+                    job: S.of(context).neurologist,
+                    hospital: S.of(context).elDemerdashHospital,
+                    name: S.of(context).youssefAli,
                     rate: 4.5,
-                    begindate: "10:30am",
-                    enddate: "5:30pm",
+                    begindate: S.of(context).startTime,
+                    enddate: S.of(context).endTime,
                   );
                 }, childCount: 5),
               ),
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
               SliverToBoxAdapter(
                 child: Text(
-                  "Medication Management",
+                  S.of(context).medicationManagement,
                   style: TextStyle(
                     color: Color(0xff33384B),
                     fontFamily: 'Cairo',
@@ -124,9 +125,9 @@ class _HomepagewidgetState extends State<Homepagewidget> {
               SliverToBoxAdapter(
                 child: Medicinereminder(
                   medicine: MedicineReminderCard(
-                    medicineName: 'Belladonna 30',
-                    dosage: '2 Drops | Every 2 Hour',
-                    reminderTime: '09:30 AM',
+                    medicineName: S.of(context).belladonna30,
+                    dosage: S.of(context).dosage,
+                    reminderTime: S.of(context).reminderTime,
                   ),
                 ),
               ),
@@ -139,11 +140,11 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                 delegate: SliverChildBuilderDelegate((context, index) {
                   return medicinecard(
                     image: Image.asset("assets/images/Shape10.png"),
-                    condition: 'missed',
-                    name: "Belladonna 30",
-                    quatity: "2 Drops",
-                    scheduletime: "Every 2 Hour",
-                    time: "09:30 AM",
+                    condition: S.of(context).missed,
+                    name: S.of(context).belladonna30,
+                    quatity: S.of(context).drops,
+                    scheduletime: S.of(context).everyTwoHours,
+                    time: S.of(context).reminderTime,
                   );
                 }, childCount: 3),
               ),
@@ -153,7 +154,7 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Important Topics",
+                      S.of(context).importantTopics,
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         fontWeight: FontWeight.w700,
@@ -162,7 +163,7 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                       ),
                     ),
                     Text(
-                      "See all",
+                      S.of(context).seeAll,
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         fontWeight: FontWeight.w400,

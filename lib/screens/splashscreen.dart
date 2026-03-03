@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/screens/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -237,7 +238,7 @@ class _SplashscreenState extends State<Splashscreen>
                           ),
                         ),
                     child: Text(
-                      "SEHA TECH",
+                      S.of(context).appName,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: width * 0.095,
@@ -273,7 +274,7 @@ class _SplashscreenState extends State<Splashscreen>
                           ),
                         ),
                     child: Text(
-                      " Health Comes First",
+                      S.of(context).appTagline,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: width * 0.045,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class MedicationManagementGrid extends StatelessWidget {
   const MedicationManagementGrid({
@@ -37,7 +38,7 @@ class MedicationManagementGrid extends StatelessWidget {
                   left: devwidth * 0.03,
                   top: devwidth * 0.16,
                   child: Text(
-                    "Get reminders for \nyour pills.",
+                    S.of(context).getRemindersPills,
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Cairo',
@@ -54,7 +55,7 @@ class MedicationManagementGrid extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          "Learn more",
+                          S.of(context).learnMore,
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Cairo',
@@ -92,7 +93,7 @@ class MedicationManagementGrid extends StatelessWidget {
                   left: devwidth * 0.03,
                   top: devwidth * 0.16,
                   child: Text(
-                    "Find out about your \nmedicine.",
+                    S.of(context).findAboutMedicine,
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Cairo',
@@ -109,7 +110,7 @@ class MedicationManagementGrid extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          "Learn more",
+                          S.of(context).learnMore,
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Cairo',
@@ -153,7 +154,7 @@ class MedicationManagementGrid extends StatelessWidget {
                   left: devwidth * 0.03,
                   top: devwidth * 0.16,
                   child: Text(
-                    "Set reminders for \ndifferent times.",
+                    S.of(context).setRemindersTime,
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Cairo',
@@ -170,7 +171,7 @@ class MedicationManagementGrid extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          "Learn more",
+                          S.of(context).learnMore,
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Cairo',
@@ -208,7 +209,7 @@ class MedicationManagementGrid extends StatelessWidget {
                   left: devwidth * 0.03,
                   top: devwidth * 0.16,
                   child: Text(
-                    "Keep track of what \nyou take.",
+                    S.of(context).keepTrackMedicine,
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Cairo',
@@ -225,7 +226,7 @@ class MedicationManagementGrid extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          "Learn more",
+                          S.of(context).learnMore,
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Cairo',
