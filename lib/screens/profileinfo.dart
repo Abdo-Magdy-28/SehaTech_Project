@@ -1,7 +1,28 @@
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
-class Profileinfo extends StatelessWidget {
+class Profileinfo extends StatefulWidget {
   const Profileinfo({super.key});
+
+  @override
+  State<Profileinfo> createState() => _ProfileinfoState();
+}
+
+class _ProfileinfoState extends State<Profileinfo> {
+  // Phone number variables
+  final TextEditingController phoneController = TextEditingController();
+  PhoneNumber initialNumber = PhoneNumber(isoCode: 'EG');
+  String phoneNumber = '';
+  bool isPhoneValid = false;
+  DateTime? selectedDate;
+  final TextEditingController dateController = TextEditingController();
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +47,10 @@ class Profileinfo extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         elevation: 0,
-
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -48,7 +70,7 @@ class Profileinfo extends StatelessWidget {
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
-          child: Container(color: Color(0xff111111), height: 1.0),
+          child: Container(color: const Color(0xff111111), height: 1.0),
         ),
       ),
       body: LayoutBuilder(
@@ -72,7 +94,7 @@ class Profileinfo extends StatelessWidget {
                       iconSize: iconSize,
                       editIconSize: editIconSize,
                     ),
-                    SizedBox(height: verticalSpacing * 1.2),
+                    SizedBox(height: verticalSpacing * 0.8),
                     // Delete Photo Button
                     TextButton.icon(
                       onPressed: () {},
@@ -89,7 +111,7 @@ class Profileinfo extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: verticalSpacing * 1.5),
+                    SizedBox(height: verticalSpacing * 0.8),
                     // Form Fields
                     _buildLabeledField(
                       label: 'First Name',
@@ -109,7 +131,7 @@ class Profileinfo extends StatelessWidget {
                       borderRadius: borderRadius,
                       verticalSpacing: verticalSpacing,
                     ),
-                    _buildLabeledField(
+                    _buildLabeledDate(
                       label: 'Date of birth',
                       hint: '02/07/2004',
                       labelFontSize: labelFontSize,
@@ -117,12 +139,23 @@ class Profileinfo extends StatelessWidget {
                       fieldPadding: fieldPadding,
                       borderRadius: borderRadius,
                       verticalSpacing: verticalSpacing,
-                      suffixIcon: Icon(
-                        Icons.calendar_today_outlined,
-                        color: Colors.grey,
-                        size: isTablet ? 24 : 20,
+                      suffixIcon: GestureDetector(
+                        onTap: () => _showDatePicker(context),
+                        child: AbsorbPointer(
+                          child: TextField(
+                            controller: dateController,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: selectedDate == null
+                                  ? 'DD/MM/YYYY'
+                                  : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
+                              suffixIcon: Icon(Icons.calendar_today_outlined),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
+
                     _buildPhoneField(
                       labelFontSize: labelFontSize,
                       fieldFontSize: fieldFontSize,
@@ -132,7 +165,7 @@ class Profileinfo extends StatelessWidget {
                       isTablet: isTablet,
                     ),
                     SizedBox(height: verticalSpacing * 2),
-                    // Save Button (optional - good for profile screens)
+                    // Save Button
                     _buildSaveButton(
                       borderRadius: borderRadius,
                       fieldPadding: fieldPadding,
@@ -191,6 +224,60 @@ class Profileinfo extends StatelessWidget {
     );
   }
 
+  Widget _buildLabeledDate({
+    required String label,
+    required String hint,
+    required double labelFontSize,
+    required double fieldFontSize,
+    required double fieldPadding,
+    required double borderRadius,
+    required double verticalSpacing,
+    Widget? suffixIcon,
+  }) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: verticalSpacing),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (label.isNotEmpty) ...[
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: labelFontSize,
+                color: const Color(0xFF4B4B4B),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            SizedBox(height: verticalSpacing * 0.4),
+          ],
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF4F4F6),
+              borderRadius: BorderRadius.circular(borderRadius),
+            ),
+            child: TextField(
+              style: TextStyle(fontSize: fieldFontSize),
+              decoration: InputDecoration(
+                hintText: hint,
+                hintStyle: TextStyle(
+                  color: Colors.grey,
+                  fontSize: fieldFontSize,
+                ),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: fieldPadding,
+                  vertical: fieldPadding,
+                ),
+                suffixIcon: suffixIcon,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildLabeledField({
     required String label,
     required String hint,
@@ -244,6 +331,85 @@ class Profileinfo extends StatelessWidget {
     );
   }
 
+  Future<void> _showDatePicker(BuildContext context) async {
+    final results = await showCalendarDatePicker2Dialog(
+      dialogBackgroundColor: Colors.white,
+      context: context,
+      config: CalendarDatePicker2WithActionButtonsConfig(
+        calendarType: CalendarDatePicker2Type.single,
+      ),
+      dialogSize: const Size(325, 350),
+      value: selectedDate != null ? [selectedDate!] : [],
+    );
+
+    if (results != null && results.isNotEmpty) {
+      setState(() {
+        selectedDate = results.first;
+      });
+    }
+  }
+
+  Widget _buildDateField({
+    required double labelFontSize,
+    required double fieldFontSize,
+    required double fieldPadding,
+    required double borderRadius,
+    required double verticalSpacing,
+  }) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: verticalSpacing),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Date of birth',
+            style: TextStyle(
+              fontSize: labelFontSize,
+              color: const Color(0xFF4B4B4B),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: verticalSpacing * 0.4),
+          GestureDetector(
+            onTap: () => _showDatePicker(context),
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: fieldPadding,
+                vertical: fieldPadding,
+              ),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF4F4F6),
+                borderRadius: BorderRadius.circular(borderRadius),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      selectedDate != null
+                          ? DateFormat('dd/MM/yyyy').format(selectedDate!)
+                          : '02/07/2004',
+                      style: TextStyle(
+                        fontSize: fieldFontSize,
+                        color: selectedDate != null
+                            ? Colors.black87
+                            : Colors.grey,
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.calendar_today_outlined,
+                    color: Colors.grey,
+                    size: 20,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildPhoneField({
     required double labelFontSize,
     required double fieldFontSize,
@@ -267,57 +433,67 @@ class Profileinfo extends StatelessWidget {
           ),
           SizedBox(height: verticalSpacing * 0.4),
           Container(
+            padding: EdgeInsets.symmetric(horizontal: fieldPadding),
             decoration: BoxDecoration(
               color: const Color(0xFFF4F4F6),
               borderRadius: BorderRadius.circular(borderRadius),
             ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: fieldPadding),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '+2',
-                        style: TextStyle(
-                          fontSize: fieldFontSize,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        color: Colors.grey,
-                        size: isTablet ? 24 : 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        width: 1,
-                        height: isTablet ? 28 : 24,
-                        color: Colors.grey[400],
-                      ),
-                    ],
-                  ),
+            child: InternationalPhoneNumberInput(
+              cursorColor: Colors.blue,
+              onInputChanged: (PhoneNumber number) {
+                setState(() {
+                  phoneNumber = number.phoneNumber ?? '';
+                });
+                print('Phone Number: ${number.phoneNumber}');
+              },
+              onInputValidated: (bool isValid) {
+                setState(() {
+                  isPhoneValid = isValid;
+                });
+                print('Is Valid: $isValid');
+              },
+              selectorConfig: const SelectorConfig(
+                setSelectorButtonAsPrefixIcon: true,
+                selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                useBottomSheetSafeArea: true,
+                leadingPadding: 0,
+                trailingSpace: false,
+                showFlags: false,
+              ),
+              ignoreBlank: false,
+              autoValidateMode: AutovalidateMode.always,
+              selectorTextStyle: TextStyle(
+                color: Colors.black87,
+                fontSize: fieldFontSize,
+              ),
+              textStyle: TextStyle(
+                fontSize: fieldFontSize,
+                color: Colors.black87,
+              ),
+              initialValue: initialNumber,
+              textFieldController: phoneController,
+              formatInput: true,
+              keyboardType: const TextInputType.numberWithOptions(
+                signed: true,
+                decimal: true,
+              ),
+              inputDecoration: InputDecoration(
+                hintText: '000 000 0000',
+                hintStyle: TextStyle(
+                  color: Colors.grey,
+                  fontSize: fieldFontSize,
                 ),
-                Expanded(
-                  child: TextField(
-                    style: TextStyle(fontSize: fieldFontSize),
-                    decoration: InputDecoration(
-                      hintText: '000 000 0000',
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontSize: fieldFontSize,
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: fieldPadding,
-                      ),
-                    ),
-                    keyboardType: TextInputType.phone,
-                  ),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(vertical: fieldPadding),
+              ),
+              searchBoxDecoration: InputDecoration(
+                hintText: 'Search by country name or code',
+                hintStyle: TextStyle(fontSize: fieldFontSize),
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(borderRadius),
                 ),
-              ],
+              ),
             ),
           ),
         ],
@@ -333,7 +509,10 @@ class Profileinfo extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          // Save action - you can access phoneNumber here
+          print('Saved Phone: $phoneNumber');
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blue[600],
           foregroundColor: Colors.white,
