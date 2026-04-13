@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => Authcubit(),
       child: MaterialApp(
-        locale: Locale('ar'),
+        locale: Locale('en'),
         localizationsDelegates: [
           S.delegate,
           GlobalMaterialLocalizations.delegate,

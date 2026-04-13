@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grad_project/generated/l10n.dart';
+import 'package:grad_project/screens/profile.dart';
 
 class Customappbar extends StatelessWidget {
   const Customappbar({super.key});
@@ -15,16 +16,24 @@ class Customappbar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey, width: 1),
-              shape: BoxShape.circle,
-            ),
-            child: SvgPicture.asset(
-              'assets/images/profile.svg',
-              fit: BoxFit.scaleDown,
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileScreen()),
+              );
+            },
+            child: Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey, width: 1),
+                shape: BoxShape.circle,
+              ),
+              child: SvgPicture.asset(
+                'assets/images/profile.svg',
+                fit: BoxFit.scaleDown,
+              ),
             ),
           ),
           Row(
