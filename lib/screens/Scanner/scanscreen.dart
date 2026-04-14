@@ -1,5 +1,9 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/main.dart';
+import 'package:grad_project/screens/Scanner/MedicineScanner.dart';
+import 'package:grad_project/screens/Scanner/PrescriptionScannerscreen.dart';
 
 class Scanscreen extends StatefulWidget {
   const Scanscreen({super.key});
@@ -149,7 +153,17 @@ class _ScanscreenState extends State<Scanscreen> {
                     ),
                     elevation: 0,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    if (cameras.isNotEmpty) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              Medicinescanner(camera: cameras.first),
+                        ),
+                      );
+                    }
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -182,7 +196,17 @@ class _ScanscreenState extends State<Scanscreen> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    if (cameras.isNotEmpty) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              Prescriptionscannerscreen(camera: cameras.first),
+                        ),
+                      );
+                    }
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

@@ -3,7 +3,7 @@ import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/screens/chatbotScreen.dart';
-import 'package:grad_project/screens/scanscreen.dart';
+import 'package:grad_project/screens/Scanner/scanscreen.dart';
 import 'package:grad_project/screens/searchscreen.dart';
 import 'package:grad_project/widgets/homepage/homepagewidget.dart';
 
@@ -15,7 +15,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -14,9 +15,12 @@ import 'package:grad_project/screens/splashscreen.dart';
 import 'package:grad_project/screens/verifyidentity.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+late List<CameraDescription> cameras;
+
 Future<void> main() async {
   debugPaintSizeEnabled = false;
   WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // await dotenv.load();
   runApp(const MyApp());
@@ -41,7 +45,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'SEHA TECH',
         theme: ThemeData(),
-        home: Splashscreen(),
+        home: Homepage(),
       ),
     );
   }
