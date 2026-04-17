@@ -2,6 +2,8 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:grad_project/services/Authservice.dart';
+import 'package:grad_project/models/user.dart';
 
 class Profileinfo extends StatefulWidget {
   const Profileinfo({super.key});
@@ -18,9 +20,46 @@ class _ProfileinfoState extends State<Profileinfo> {
   bool isPhoneValid = false;
   DateTime? selectedDate;
   final TextEditingController dateController = TextEditingController();
+  
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final user = await AuthService().getUserData();
+    if (user != null) {
+      firstNameController.text = user.firstname;
+      lastNameController.text = user.lastname;
+      
+      if (user.phone.isNotEmpty) {
+        try {
+          initialNumber = await PhoneNumber.getRegionInfoFromPhoneNumber(user.phone, 'EG');
+          phoneNumber = initialNumber.phoneNumber ?? '';
+        } catch (e) {
+          print("Error parsing phone number: $e");
+        }
+      }
+    }
+    
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   void dispose() {
     phoneController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    dateController.dispose();
     super.dispose();
   }
 
@@ -73,7 +112,9 @@ class _ProfileinfoState extends State<Profileinfo> {
           child: Container(color: const Color(0xff111111), height: 1.0),
         ),
       ),
-      body: LayoutBuilder(
+      body: isLoading 
+        ? const Center(child: CircularProgressIndicator(color: Colors.blue))
+        : LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(
@@ -116,6 +157,7 @@ class _ProfileinfoState extends State<Profileinfo> {
                     _buildLabeledField(
                       label: 'First Name',
                       hint: 'Youssef',
+                      controller: firstNameController,
                       labelFontSize: labelFontSize,
                       fieldFontSize: fieldFontSize,
                       fieldPadding: fieldPadding,
@@ -125,6 +167,7 @@ class _ProfileinfoState extends State<Profileinfo> {
                     _buildLabeledField(
                       label: 'Last Name',
                       hint: 'Mostafa',
+                      controller: lastNameController,
                       labelFontSize: labelFontSize,
                       fieldFontSize: fieldFontSize,
                       fieldPadding: fieldPadding,
@@ -287,6 +330,7 @@ class _ProfileinfoState extends State<Profileinfo> {
     required double borderRadius,
     required double verticalSpacing,
     Widget? suffixIcon,
+    TextEditingController? controller,
   }) {
     return Padding(
       padding: EdgeInsets.only(bottom: verticalSpacing),
@@ -310,6 +354,7 @@ class _ProfileinfoState extends State<Profileinfo> {
               borderRadius: BorderRadius.circular(borderRadius),
             ),
             child: TextField(
+              controller: controller,
               style: TextStyle(fontSize: fieldFontSize),
               decoration: InputDecoration(
                 hintText: hint,

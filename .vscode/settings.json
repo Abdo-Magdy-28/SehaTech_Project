@@ -1,3 +1,5 @@
 {
-    "cmake.sourceDirectory": "C:/flutter_projects/SehaTech_Project/linux"
+    "cmake.sourceDirectory": "C:/flutter_projects/SehaTech_Project/linux",
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "dart.flutterSdkPath": "C:\\flutter"
 }

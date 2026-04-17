@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:grad_project/cubit/Authcubit.dart';
 import 'package:grad_project/cubit/Authstates.dart';
+import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -169,31 +170,65 @@ class _Signupscreen2State extends State<Signupscreen2> {
                           width: double.infinity,
                           height: devHeight * 0.07,
                           child: ElevatedButton(
-                            onPressed: () async {
-                              if (formKey.currentState!.validate()) {
-                                final authCubit = BlocProvider.of<Authcubit>(
-                                  context,
-                                );
-                                authCubit.username = _userNameController.text;
-                                authCubit.phone = _phoneNumberController.text;
-                                authCubit.gender = selectedGender;
-                                authCubit.role = selectedjob;
-                                await authCubit.signup();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Form is valid! Signing up...',
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Please fix errors.'),
-                                  ),
-                                );
-                              }
-                            },
+                            onPressed: state is loadingstate
+                                ? null // ✅ Disable button while loading
+                                : () async {
+                                    // ✅ Validate form first
+                                    if (!formKey.currentState!.validate()) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Please fix errors.'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                      return;
+                                    }
+
+                                    // ✅ Hide keyboard
+                                    FocusScope.of(context).unfocus();
+
+                                    // ✅ Set values in cubit
+                                    final authCubit =
+                                        BlocProvider.of<Authcubit>(context);
+                                    authCubit.username = _userNameController
+                                        .text
+                                        .trim();
+                                    authCubit.phone = _phoneNumberController
+                                        .text
+                                        .trim();
+                                    authCubit.gender = selectedGender;
+                                    authCubit.role = selectedjob;
+
+                                    // ✅ Call signup and GET the response
+                                    final response = await authCubit.signup();
+
+                                    // ✅ Check if widget is still mounted
+                                    if (!mounted) return;
+
+                                    // ✅ Handle response properly
+                                    if (response.success) {
+                                      // ✅ Navigate to login or home screen
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Homepage(), // or Homepage()
+                                        ),
+                                      );
+                                    } else {
+                                      // ✅ Show error message
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(response.message),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
+                                  },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF2260FF),
                               shape: RoundedRectangleBorder(
@@ -201,15 +236,24 @@ class _Signupscreen2State extends State<Signupscreen2> {
                               ),
                               elevation: 0,
                             ),
-                            child: Text(
-                              'Sign Up',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: devWidth * 0.045,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: 'Cairo',
-                              ),
-                            ),
+                            child: state is loadingstate
+                                ? const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Text(
+                                    'Sign Up',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: devWidth * 0.045,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'Cairo',
+                                    ),
+                                  ),
                           ),
                         ),
                       ],

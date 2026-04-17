@@ -1,3 +1,4 @@
+// lib/models/user.dart
 class User {
   final String id;
   final String email;
@@ -25,34 +26,43 @@ class User {
     required this.passwordconfirm,
   });
 
+  // ✅ FIXED: Match the API response keys!
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'].toString(),
+      id: (json['_id'] ?? json['id'] ?? '').toString(), // ✅ API uses _id
       email: json['email'] ?? '',
       username: json['username'] ?? '',
-      firstname: json['firstname'] ?? '',
-      lastname: json['lastname'] ?? '',
+      firstname:
+          json['firstName'] ?? json['firstname'] ?? '', // ✅ API uses firstName
+      lastname:
+          json['lastName'] ?? json['lastname'] ?? '', // ✅ API uses lastName
       token: json['token'] ?? '',
-      phone: json['phone'] ?? '',
+      phone: (json['phoneNumber'] ?? json['phone'] ?? '')
+          .toString(), // ✅ API uses phoneNumber
       gender: json['gender'] ?? '',
       role: json['role'] ?? '',
       password: json['password'] ?? '',
-      passwordconfirm: json['passwordconfirm'] ?? '',
+      passwordconfirm: json['passwordConfirm'] ?? json['passwordconfirm'] ?? '',
     );
   }
+
+  // ✅ FIXED: Save with correct keys for later retrieval
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      '_id': id,
       'email': email,
       'username': username,
-      'firstname': firstname,
-      'lastname': lastname,
+      'firstName': firstname,
+      'lastName': lastname,
       'token': token,
-      'phone': phone,
+      'phoneNumber': phone,
       'gender': gender,
       'role': role,
       'password': password,
-      'passwordconfirm': passwordconfirm,
+      'passwordConfirm': passwordconfirm,
     };
   }
+
+  // Helper getter
+  String get fullName => '$firstname $lastname';
 }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,6 +8,31 @@ import 'package:grad_project/models/user.dart';
 class AuthService {
   final Dio dio = Dio();
   final storage = FlutterSecureStorage();
+  // ✅ Save user data
+  Future<void> saveUserData(User user) async {
+    await storage.write(key: 'user_data', value: jsonEncode(user.toJson()));
+  }
+
+  // ✅ Get user data
+  Future<User?> getUserData() async {
+    final userData = await storage.read(key: 'user_data');
+    if (userData != null) {
+      return User.fromJson(jsonDecode(userData));
+    }
+    return null;
+  }
+
+  // ✅ Get token
+  Future<String?> getToken() async {
+    return await storage.read(key: 'auth_token');
+  }
+
+  // ✅ Check if logged in
+  Future<bool> isLoggedIn() async {
+    final token = await storage.read(key: 'auth_token');
+    return token != null && token.isNotEmpty;
+  }
+
   Future<LoginResponse> signup({
     required String firstname,
     required String lastname,
@@ -36,18 +62,38 @@ class AuthService {
         },
         options: Options(
           validateStatus: (status) => status != null && status < 500,
+          sendTimeout: const Duration(seconds: 30),
+          receiveTimeout: const Duration(seconds: 30),
         ),
       );
 
-      // Sucsses Signup
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final data = response.data;
+
+        // ✅ Check if token is returned on signup
+        String? token = data['token'];
+        if (token != null) {
+          await storage.write(key: 'auth_token', value: token);
+          print('✅ Token saved');
+        }
+
+        // ✅ Check if user data is returned on signup
+        final userData = data['data']?['user'] ?? data['user'];
+        User? userObj;
+        if (userData != null) {
+          userObj = User.fromJson(userData);
+          await saveUserData(userObj);
+          print('✅ User data saved');
+        }
+
         return LoginResponse(
           success: true,
           message: 'Account created successfully',
+          token: token,
+          user: userObj,
         );
       }
 
-      // Emai or Username existed
       if (response.statusCode == 409) {
         return LoginResponse(
           success: false,
@@ -55,21 +101,17 @@ class AuthService {
         );
       }
 
-      // Validation Error
       return LoginResponse(
         success: false,
         message: response.data['message'] ?? "Signup failed",
       );
     } on DioException catch (e) {
-      // Internet Problems
       if (e.type == DioExceptionType.connectionError ||
           e.error is SocketException) {
         return LoginResponse(success: false, message: "No internet connection");
       }
-      // server error
       return LoginResponse(success: false, message: "Network error occurred");
     } catch (e) {
-      // undefined Error
       return LoginResponse(
         success: false,
         message: "Unexpected error occurred",
@@ -98,10 +140,11 @@ class AuthService {
         print('Token received: $token');
         await storage.write(key: 'auth_token', value: token);
         print('Token saved successfully');
-        final userData = data['user'];
+        final userData = data['data']?['user'];
         User? userObj;
         if (userData != null) {
           userObj = User.fromJson(userData);
+          await saveUserData(userObj);
         }
 
         return LoginResponse(
@@ -147,6 +190,7 @@ class AuthService {
 
   Future<void> logout() async {
     await storage.delete(key: 'auth_token');
+    await storage.delete(key: 'user_data');
   }
 
   Future<LoginResponse> forgotPassword({required String email}) async {

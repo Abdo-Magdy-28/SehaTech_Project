@@ -1,8 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/screens/loginpage.dart';
 import 'package:grad_project/screens/profileinfo.dart';
+import 'package:grad_project/services/Authservice.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String userName = '';
+  String subtitle = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final user = await AuthService().getUserData();
+    if (mounted) {
+      setState(() {
+        if (user != null) {
+          userName = user.fullName;
+          subtitle = user.email;
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +110,7 @@ class ProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Youssef Mostafa',
+                          userName.isEmpty ? 'Loading...' : userName,
                           style: TextStyle(
                             fontSize: nameFontSize,
                             fontWeight: FontWeight.w500,
@@ -91,7 +119,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         SizedBox(height: screenHeight * 0.005),
                         Text(
-                          '22 y.o. (02 Jul 2004)',
+                          subtitle,
                           style: TextStyle(
                             fontSize: subTextFontSize,
                             color: const Color(0xff5B5F5F),
@@ -119,6 +147,7 @@ class ProfileScreen extends StatelessWidget {
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
             chevronSize: chevronSize,
+            ontap: () {},
           ),
           _buildMenuItem(
             context,
@@ -127,6 +156,7 @@ class ProfileScreen extends StatelessWidget {
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
             chevronSize: chevronSize,
+            ontap: () {},
           ),
           _buildMenuItem(
             context,
@@ -135,6 +165,7 @@ class ProfileScreen extends StatelessWidget {
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
             chevronSize: chevronSize,
+            ontap: () {},
           ),
           _buildMenuItem(
             context,
@@ -143,6 +174,7 @@ class ProfileScreen extends StatelessWidget {
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
             chevronSize: chevronSize,
+            ontap: () {},
           ),
           _buildMenuItem(
             context,
@@ -151,6 +183,7 @@ class ProfileScreen extends StatelessWidget {
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
             chevronSize: chevronSize,
+            ontap: () {},
           ),
           _buildMenuItem(
             context,
@@ -159,6 +192,7 @@ class ProfileScreen extends StatelessWidget {
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
             chevronSize: chevronSize,
+            ontap: () {},
           ),
           _buildMenuItem(
             context,
@@ -169,6 +203,14 @@ class ProfileScreen extends StatelessWidget {
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
             chevronSize: chevronSize,
+            ontap: () {
+              AuthService().logout();
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const Loginpage()),
+                (route) => false,
+              );
+            },
           ),
         ],
       ),
@@ -184,6 +226,7 @@ class ProfileScreen extends StatelessWidget {
     required double horizontalPadding,
     required double verticalPadding,
     required double chevronSize,
+    required void Function() ontap,
   }) {
     return Column(
       children: [
@@ -207,9 +250,7 @@ class ProfileScreen extends StatelessWidget {
                   color: Colors.grey[400],
                   size: chevronSize,
                 ),
-          onTap: () {
-            // TODO: Implement menu action
-          },
+          onTap: ontap,
         ),
         Divider(height: 1, color: Colors.grey[300]),
       ],

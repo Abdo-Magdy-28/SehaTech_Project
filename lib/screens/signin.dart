@@ -172,29 +172,61 @@ class _SigninState extends State<Signin> {
                           width: double.infinity,
                           height: devHeight * 0.07,
                           child: ElevatedButton(
-                            onPressed: () async {
-                              final response =
-                                  await BlocProvider.of<Authcubit>(
-                                    context,
-                                  ).login(
-                                    email: _emailController.text,
-                                    password: _passwordController.text,
-                                  );
-                              if (response.success) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return Homepage();
-                                    },
-                                  ),
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(response.message)),
-                                );
-                              }
-                            }, ///////////////////////////////////////////////////////////////////////
+                            onPressed: state is loadingstate
+                                ? null // ✅ Disable button while loading
+                                : () async {
+                                    // ✅ Validate form first
+                                    if (!formKey.currentState!.validate()) {
+                                      return;
+                                    }
+
+                                    // ✅ Hide keyboard
+                                    FocusScope.of(context).unfocus();
+
+                                    try {
+                                      final response =
+                                          await BlocProvider.of<Authcubit>(
+                                            context,
+                                          ).login(
+                                            email: _emailController.text.trim(),
+                                            password: _passwordController.text,
+                                          );
+
+                                      // ✅ Check if widget is still mounted
+                                      if (!mounted) return;
+
+                                      if (response.success) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => Homepage(),
+                                          ),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(response.message),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      }
+                                    } catch (e) {
+                                      // ✅ Catch any unexpected errors
+                                      if (!mounted) return;
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'An error occurred: $e',
+                                          ),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
+                                  },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF2260FF),
                               shape: RoundedRectangleBorder(
@@ -202,15 +234,24 @@ class _SigninState extends State<Signin> {
                               ),
                               elevation: 0,
                             ),
-                            child: Text(
-                              'Sign In',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: devWidth * 0.045,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: 'Cairo',
-                              ),
-                            ),
+                            child: state is loadingstate
+                                ? const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Text(
+                                    'Sign In',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: devWidth * 0.045,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'Cairo',
+                                    ),
+                                  ),
                           ),
                         ),
                       ),
