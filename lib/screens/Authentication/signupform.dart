@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/Authcubit.dart';
 import 'package:grad_project/cubit/Authstates.dart';
 import 'package:grad_project/models/user.dart';
-import 'package:grad_project/screens/signin.dart';
-import 'package:grad_project/screens/signupscreen2.dart';
+import 'package:grad_project/screens/Authentication/signin.dart';
+import 'package:grad_project/screens/Authentication/signupscreen2.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 

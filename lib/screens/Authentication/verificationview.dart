@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/Authcubit.dart';
-import 'package:grad_project/screens/changepassword.dart';
+import 'package:grad_project/screens/Authentication/changepassword.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:grad_project/cubit/Authcubit.dart';
 import 'package:grad_project/cubit/Authstates.dart';

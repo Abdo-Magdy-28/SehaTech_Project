@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/cubit/Authcubit.dart';
 import 'package:grad_project/cubit/Authstates.dart';
+import 'package:grad_project/screens/Authentication/signupform.dart';
+import 'package:grad_project/screens/Authentication/signupscreen2.dart';
+import 'package:grad_project/screens/Authentication/verifyidentity.dart';
 import 'package:grad_project/screens/Homepage.dart';
-import 'package:grad_project/screens/signupform.dart';
-import 'package:grad_project/screens/signupscreen2.dart';
-import 'package:grad_project/screens/verifyidentity.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -192,15 +192,16 @@ class _SigninState extends State<Signin> {
                                             password: _passwordController.text,
                                           );
 
-                                      // ✅ Check if widget is still mounted
+                                      //✅  Check if widget is still mounted
                                       if (!mounted) return;
 
                                       if (response.success) {
-                                        Navigator.pushReplacement(
+                                        Navigator.pushAndRemoveUntil(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => Homepage(),
                                           ),
+                                          (route) => false,
                                         );
                                       } else {
                                         ScaffoldMessenger.of(

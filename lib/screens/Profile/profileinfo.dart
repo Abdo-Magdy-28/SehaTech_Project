@@ -1,5 +1,6 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
+import 'package:grad_project/widgets/profile/PopUpDialog.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:grad_project/services/Authservice.dart';
@@ -20,7 +21,7 @@ class _ProfileinfoState extends State<Profileinfo> {
   bool isPhoneValid = false;
   DateTime? selectedDate;
   final TextEditingController dateController = TextEditingController();
-  
+
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   bool isLoading = true;
@@ -36,17 +37,20 @@ class _ProfileinfoState extends State<Profileinfo> {
     if (user != null) {
       firstNameController.text = user.firstname;
       lastNameController.text = user.lastname;
-      
+
       if (user.phone.isNotEmpty) {
         try {
-          initialNumber = await PhoneNumber.getRegionInfoFromPhoneNumber(user.phone, 'EG');
+          initialNumber = await PhoneNumber.getRegionInfoFromPhoneNumber(
+            user.phone,
+            'EG',
+          );
           phoneNumber = initialNumber.phoneNumber ?? '';
         } catch (e) {
           print("Error parsing phone number: $e");
         }
       }
     }
-    
+
     if (mounted) {
       setState(() {
         isLoading = false;
@@ -96,7 +100,7 @@ class _ProfileinfoState extends State<Profileinfo> {
             color: Colors.black,
             size: isTablet ? 28 : 24,
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => showCustomDialog(context),
         ),
         title: Text(
           'Personal Info',
@@ -112,116 +116,118 @@ class _ProfileinfoState extends State<Profileinfo> {
           child: Container(color: const Color(0xff111111), height: 1.0),
         ),
       ),
-      body: isLoading 
-        ? const Center(child: CircularProgressIndicator(color: Colors.blue))
-        : LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
-              vertical: verticalSpacing,
-            ),
-            child: Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: isTablet ? 500 : double.infinity,
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(height: verticalSpacing),
-                    // Profile Picture
-                    _buildProfilePicture(
-                      profileSize: profileSize,
-                      iconSize: iconSize,
-                      editIconSize: editIconSize,
-                    ),
-                    SizedBox(height: verticalSpacing * 0.8),
-                    // Delete Photo Button
-                    TextButton.icon(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.delete_outline,
-                        color: Colors.red,
-                        size: isTablet ? 24 : (isSmallScreen ? 16 : 20),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator(color: Colors.blue))
+          : LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: horizontalPadding,
+                    vertical: verticalSpacing,
+                  ),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: isTablet ? 500 : double.infinity,
                       ),
-                      label: Text(
-                        'Delete photo',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: labelFontSize,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: verticalSpacing * 0.8),
-                    // Form Fields
-                    _buildLabeledField(
-                      label: 'First Name',
-                      hint: 'Youssef',
-                      controller: firstNameController,
-                      labelFontSize: labelFontSize,
-                      fieldFontSize: fieldFontSize,
-                      fieldPadding: fieldPadding,
-                      borderRadius: borderRadius,
-                      verticalSpacing: verticalSpacing,
-                    ),
-                    _buildLabeledField(
-                      label: 'Last Name',
-                      hint: 'Mostafa',
-                      controller: lastNameController,
-                      labelFontSize: labelFontSize,
-                      fieldFontSize: fieldFontSize,
-                      fieldPadding: fieldPadding,
-                      borderRadius: borderRadius,
-                      verticalSpacing: verticalSpacing,
-                    ),
-                    _buildLabeledDate(
-                      label: 'Date of birth',
-                      hint: '02/07/2004',
-                      labelFontSize: labelFontSize,
-                      fieldFontSize: fieldFontSize,
-                      fieldPadding: fieldPadding,
-                      borderRadius: borderRadius,
-                      verticalSpacing: verticalSpacing,
-                      suffixIcon: GestureDetector(
-                        onTap: () => _showDatePicker(context),
-                        child: AbsorbPointer(
-                          child: TextField(
-                            controller: dateController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: selectedDate == null
-                                  ? 'DD/MM/YYYY'
-                                  : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
-                              suffixIcon: Icon(Icons.calendar_today_outlined),
+                      child: Column(
+                        children: [
+                          SizedBox(height: verticalSpacing),
+                          // Profile Picture
+                          _buildProfilePicture(
+                            profileSize: profileSize,
+                            iconSize: iconSize,
+                            editIconSize: editIconSize,
+                          ),
+                          SizedBox(height: verticalSpacing * 0.8),
+                          // Delete Photo Button
+                          TextButton.icon(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.delete_outline,
+                              color: Colors.red,
+                              size: isTablet ? 24 : (isSmallScreen ? 16 : 20),
+                            ),
+                            label: Text(
+                              'Delete photo',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: labelFontSize,
+                              ),
                             ),
                           ),
-                        ),
+                          SizedBox(height: verticalSpacing * 0.8),
+                          // Form Fields
+                          _buildLabeledField(
+                            label: 'First Name',
+                            hint: 'Youssef',
+                            controller: firstNameController,
+                            labelFontSize: labelFontSize,
+                            fieldFontSize: fieldFontSize,
+                            fieldPadding: fieldPadding,
+                            borderRadius: borderRadius,
+                            verticalSpacing: verticalSpacing,
+                          ),
+                          _buildLabeledField(
+                            label: 'Last Name',
+                            hint: 'Mostafa',
+                            controller: lastNameController,
+                            labelFontSize: labelFontSize,
+                            fieldFontSize: fieldFontSize,
+                            fieldPadding: fieldPadding,
+                            borderRadius: borderRadius,
+                            verticalSpacing: verticalSpacing,
+                          ),
+                          _buildLabeledDate(
+                            label: 'Date of birth',
+                            hint: '02/07/2004',
+                            labelFontSize: labelFontSize,
+                            fieldFontSize: fieldFontSize,
+                            fieldPadding: fieldPadding,
+                            borderRadius: borderRadius,
+                            verticalSpacing: verticalSpacing,
+                            suffixIcon: GestureDetector(
+                              onTap: () => _showDatePicker(context),
+                              child: AbsorbPointer(
+                                child: TextField(
+                                  controller: dateController,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: selectedDate == null
+                                        ? 'DD/MM/YYYY'
+                                        : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
+                                    suffixIcon: Icon(
+                                      Icons.calendar_today_outlined,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          _buildPhoneField(
+                            labelFontSize: labelFontSize,
+                            fieldFontSize: fieldFontSize,
+                            fieldPadding: fieldPadding,
+                            borderRadius: borderRadius,
+                            verticalSpacing: verticalSpacing,
+                            isTablet: isTablet,
+                          ),
+                          SizedBox(height: verticalSpacing * 2),
+                          // Save Button
+                          _buildSaveButton(
+                            borderRadius: borderRadius,
+                            fieldPadding: fieldPadding,
+                            fontSize: labelFontSize + 2,
+                          ),
+                          SizedBox(height: verticalSpacing),
+                        ],
                       ),
                     ),
-
-                    _buildPhoneField(
-                      labelFontSize: labelFontSize,
-                      fieldFontSize: fieldFontSize,
-                      fieldPadding: fieldPadding,
-                      borderRadius: borderRadius,
-                      verticalSpacing: verticalSpacing,
-                      isTablet: isTablet,
-                    ),
-                    SizedBox(height: verticalSpacing * 2),
-                    // Save Button
-                    _buildSaveButton(
-                      borderRadius: borderRadius,
-                      fieldPadding: fieldPadding,
-                      fontSize: labelFontSize + 2,
-                    ),
-                    SizedBox(height: verticalSpacing),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 

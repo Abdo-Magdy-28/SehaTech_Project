@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grad_project/generated/l10n.dart';
-import 'package:grad_project/screens/profile.dart';
+import 'package:grad_project/screens/Profile/profile.dart';
 
 class Customappbar extends StatelessWidget {
   const Customappbar({super.key});

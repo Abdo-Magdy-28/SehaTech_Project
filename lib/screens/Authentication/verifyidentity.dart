@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:grad_project/cubit/Authcubit.dart';
-import 'package:grad_project/screens/verificationview.dart';
+import 'package:grad_project/screens/Authentication/verificationview.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 
 class Verifyidentity extends StatefulWidget {

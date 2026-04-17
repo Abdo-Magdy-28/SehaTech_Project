@@ -69,7 +69,7 @@ class _HomepageState extends State<Homepage> {
           ? Searchscreen()
           : Center(
               child: Text(
-                'Reports Page',
+                'Perciptions Page',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),

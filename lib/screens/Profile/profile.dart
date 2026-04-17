@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grad_project/screens/loginpage.dart';
-import 'package:grad_project/screens/profileinfo.dart';
+import 'package:grad_project/screens/Authentication/loginpage.dart';
+import 'package:grad_project/screens/Profile/profileinfo.dart';
 import 'package:grad_project/services/Authservice.dart';
 
 class ProfileScreen extends StatefulWidget {
