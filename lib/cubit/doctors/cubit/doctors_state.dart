@@ -1,9 +1,35 @@
-class DoctorsState {}
+// cubit/search_doctor_state.dart
 
-class DoctorsInitial extends DoctorsState {}
+import 'package:equatable/equatable.dart';
+import 'package:grad_project/models/doctor.dart';
 
-class successstate extends DoctorsState {}
+abstract class SearchDoctorState extends Equatable {
+  const SearchDoctorState();
 
-class loadingstate extends DoctorsState {}
+  @override
+  List<Object?> get props => [];
+}
 
-class errorstate extends DoctorsState {}
+class SearchDoctorInitial extends SearchDoctorState {}
+
+class SearchDoctorLoading extends SearchDoctorState {}
+
+class SearchDoctorSuccess extends SearchDoctorState {
+  final List<Doctor> doctors;
+
+  const SearchDoctorSuccess(this.doctors);
+
+  @override
+  List<Object?> get props => [doctors];
+}
+
+class SearchDoctorEmpty extends SearchDoctorState {}
+
+class SearchDoctorError extends SearchDoctorState {
+  final String message;
+
+  const SearchDoctorError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}

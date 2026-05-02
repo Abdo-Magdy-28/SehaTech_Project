@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/helper.dart';
 import 'package:grad_project/models/doctor.dart';
 import 'package:grad_project/widgets/doctors/doctor_details.dart';
 import 'package:grad_project/widgets/alldoctors/category.dart';
 import 'package:grad_project/widgets/alldoctors/screen_category.dart';
 import 'package:grad_project/widgets/alldoctors/searchbar.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Alldoctors extends StatefulWidget {
   const Alldoctors({super.key});
@@ -71,6 +73,7 @@ class _AlldoctorsState extends State<Alldoctors> {
   void initState() {
     super.initState();
     filteredDoctors = allDoctors;
+    printToken();
   }
 
   void filterByCategory(String category) {

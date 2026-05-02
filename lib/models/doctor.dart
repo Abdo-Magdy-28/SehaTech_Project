@@ -1,13 +1,13 @@
 class Doctor {
   final String name;
-  final String job;
-  final String hospital;
-  final String image;
-  final double rate;
   String? description;
-  String? price;
+  final String hospital;
+  final String job;
   String? phone;
   String? profile;
+  final String image;
+  String? price;
+  final double rate;
   final String beginDate;
   final String endDate;
 
@@ -24,4 +24,35 @@ class Doctor {
     required this.beginDate,
     required this.endDate,
   });
+  factory Doctor.fromJson(Map<String, dynamic> json) {
+    return Doctor(
+      name: json['name'] ?? '',
+      description: json['description'],
+      hospital: json['address'] ?? '',
+      job: json['medicalSpecialty'] ?? '',
+      phone: json['telephone'],
+      profile: json['profile_url'],
+      image: json['image'] ?? '',
+      price: json['priceRange'],
+      rate: (json['rate'] ?? 0).toDouble(),
+      beginDate: json['beginDate'] ?? '',
+      endDate: json['endDate'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'description': description,
+      'address': hospital,
+      'medicalSpecialty': job,
+      'telephone': phone,
+      'profile_url': profile,
+      'image': image,
+      'priceRange': price,
+      'rate': rate,
+      'beginDate': beginDate,
+      'endDate': endDate,
+    };
+  }
 }
