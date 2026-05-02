@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:grad_project/helper.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/doctors/cubit/doctors_cubit.dart';
+import 'package:grad_project/cubit/doctors/cubit/doctors_state.dart';
 import 'package:grad_project/models/doctor.dart';
+import 'package:grad_project/services/search%20services/doctors/search_service.dart';
 import 'package:grad_project/widgets/doctors/doctor_details.dart';
 import 'package:grad_project/widgets/alldoctors/category.dart';
 import 'package:grad_project/widgets/alldoctors/screen_category.dart';
-import 'package:grad_project/widgets/alldoctors/searchbar.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Alldoctors extends StatefulWidget {
   const Alldoctors({super.key});
@@ -17,327 +18,314 @@ class Alldoctors extends StatefulWidget {
 
 class _AlldoctorsState extends State<Alldoctors> {
   TextEditingController searchController = TextEditingController();
-  bool isSearching = false;
-  String? selectedCategory;
-  List<Doctor> categoryDoctors = [];
-  List<Doctor> filteredDoctors = [];
-  List<Doctor> allDoctors = [
-    Doctor(
-      name: "Youssef Ali",
-      job: "Neurologist",
-      hospital: "El-Demerdash Hospital",
-      image: "assets/images/Pic.png",
-      rate: 4.5,
-      beginDate: "10:30am",
-      endDate: "5:30pm",
-    ),
-    Doctor(
-      name: "lollo",
-      job: "Neurologist",
-      hospital: "El-Demerdash Hospital",
-      image: "assets/images/Pic.png",
-      rate: 4.8,
-      beginDate: "10:30am",
-      endDate: "5:30pm",
-    ),
-    Doctor(
-      name: "Ahmed Hassan",
-      job: "Cardiologist",
-      hospital: "Ain Shams Hospital",
-      image: "assets/images/Pic2.png",
-      rate: 4.2,
-      beginDate: "9:00am",
-      endDate: "4:00pm",
-    ),
-    Doctor(
-      name: "Sara Mohamed",
-      job: "Dermatologist",
-      hospital: "Cleopatra Hospital",
-      image: "assets/images/Pic3.png",
-      rate: 4.8,
-      beginDate: "11:00am",
-      endDate: "6:00pm",
-    ),
-    Doctor(
-      name: "Omar Khaled",
-      job: "Dentist",
-      hospital: "Smile Care Clinic",
-      image: "assets/images/Pic4.png",
-      rate: 4.1,
-      beginDate: "8:30am",
-      endDate: "2:30pm",
-    ),
-  ];
 
   @override
-  void initState() {
-    super.initState();
-    filteredDoctors = allDoctors;
-    printToken();
-  }
-
-  void filterByCategory(String category) {
-    setState(() {
-      selectedCategory = category;
-
-      categoryDoctors = allDoctors.where((doctor) {
-        final matchesCategory = doctor.job == category;
-        return matchesCategory;
-      }).toList();
-    });
-  }
-
-  void search(String query) {
-    setState(() {
-      isSearching = query.isNotEmpty;
-      filteredDoctors = allDoctors.where((doctor) {
-        return doctor.name.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-    });
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final devheight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
-        scrolledUnderElevation: 0,
-        centerTitle: true,
-        title: Text("Doctors", style: TextStyle(fontWeight: FontWeight.bold)),
-        toolbarHeight: 80,
-        backgroundColor: Colors.white,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: Container(height: 1, color: Colors.grey),
-        ),
-      ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.35),
-                    blurRadius: 5,
-                    offset: Offset(0, 4),
-                  ),
-                ],
+
+    return BlocProvider(
+      create: (_) => SearchDoctorCubit(searchService: SearchService()),
+      child: Builder(
+        builder: (context) {
+          final cubit = context.read<SearchDoctorCubit>();
+
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              surfaceTintColor: Colors.transparent,
+              scrolledUnderElevation: 0,
+              centerTitle: true,
+              title: Text(
+                "Doctors",
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              child: TextField(
-                onChanged: search,
-                controller: searchController,
-                decoration: InputDecoration(
-                  focusColor: Color(0xff0D5FA7),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(color: Color(0xff0D5FA7)),
-                  ),
-                  hintText: "Search...",
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(color: Colors.black87),
-                  ),
-                ),
+              toolbarHeight: 80,
+              backgroundColor: Colors.white,
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(1),
+                child: Container(height: 1, color: Colors.grey),
               ),
             ),
-          ),
-
-          AnimatedSwitcher(
-            duration: Duration(microseconds: 300),
-            child: isSearching
-                ? SizedBox.shrink()
-                : SizedBox(
-                    height: 100,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            filterByCategory("Neurologist");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return ScreenCategory(
-                                    categoryDoctors: categoryDoctors,
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          child: alldoctorscategory(
-                            name: "Neurologist",
-                            image: "assets/images/alldoctors/Mask_group.png",
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            filterByCategory("Psychiatrist");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return ScreenCategory(
-                                    categoryDoctors: categoryDoctors,
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          child: alldoctorscategory(
-                            name: "Psychiatrist",
-                            image: "assets/images/alldoctors/Mask_group2.png",
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            filterByCategory("Dermatologist");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return ScreenCategory(
-                                    categoryDoctors: categoryDoctors,
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          child: alldoctorscategory(
-                            name: "Dermatologist",
-                            image: "assets/images/alldoctors/Mask_group3.png",
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            filterByCategory("Cardiologist");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return ScreenCategory(
-                                    categoryDoctors: categoryDoctors,
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          child: alldoctorscategory(
-                            name: "Cardiologist",
-                            image: "assets/images/alldoctors/Mask_group4.png",
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            filterByCategory("Dentist");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return ScreenCategory(
-                                    categoryDoctors: categoryDoctors,
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          child: alldoctorscategory(
-                            name: "Dentist",
-                            image: "assets/images/alldoctors/Mask_group5.png",
-                          ),
+            body: ListView(
+              children: [
+                // ========================================
+                // 🔍 SEARCH BAR
+                // ========================================
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.35),
+                          blurRadius: 5,
+                          offset: Offset(0, 4),
                         ),
                       ],
                     ),
-                  ),
-          ),
-          if (!isSearching)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Popular Doctors",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: filteredDoctors.length,
-            itemBuilder: (context, index) {
-              final doctor = filteredDoctors[index];
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DoctorDetails(
-                          name: doctor.name,
-                          begindate: doctor.beginDate,
-                          enddate: doctor.endDate,
-                          hospital: doctor.hospital,
-                          job: doctor.job,
-                          rate: doctor.rate,
+                    child: TextField(
+                      controller: searchController,
+                      onChanged: (query) => cubit.onSearchChanged(query),
+                      decoration: InputDecoration(
+                        focusColor: Color(0xff0D5FA7),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(color: Color(0xff0D5FA7)),
+                        ),
+                        hintText: "Search...",
+                        prefixIcon: Icon(Icons.search),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.clear),
+                          onPressed: () {
+                            searchController.clear();
+                            cubit.clearSearch();
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(color: Colors.black87),
                         ),
                       ),
-                    );
-                  },
-                  child: Doctorcard(
-                    devheight: devheight,
-                    doctorimage: Image.asset('assets/images/Pic.png'),
-                    job: doctor.job,
-                    hospital: doctor.hospital,
-                    name: doctor.name,
-                    rate: doctor.rate,
-                    begindate: doctor.beginDate,
-                    enddate: doctor.endDate,
+                    ),
                   ),
                 ),
-              );
-            },
-          ),
-          if (isSearching && filteredDoctors.isEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Column(
-                children: [
-                  SizedBox(height: 100),
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: Image.asset('assets/images/alldoctors/search.png'),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    "Sorry, no results found",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    "Please try a different search term.",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+
+                // ========================================
+                // 📋 BLOC BUILDER
+                // ========================================
+                BlocBuilder<SearchDoctorCubit, SearchDoctorState>(
+                  builder: (context, state) {
+                    // ============================
+                    // 🟡 INITIAL — Categories only
+                    // ============================
+                    if (state is SearchDoctorInitial) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Categories
+                          SizedBox(
+                            height: 100,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                _buildCategory(
+                                  "Neurologist",
+                                  "assets/images/alldoctors/Mask_group.png",
+                                ),
+                                _buildCategory(
+                                  "Psychiatrist",
+                                  "assets/images/alldoctors/Mask_group2.png",
+                                ),
+                                _buildCategory(
+                                  "Dermatologist",
+                                  "assets/images/alldoctors/Mask_group3.png",
+                                ),
+                                _buildCategory(
+                                  "Cardiologist",
+                                  "assets/images/alldoctors/Mask_group4.png",
+                                ),
+                                _buildCategory(
+                                  "Dentist",
+                                  "assets/images/alldoctors/Mask_group5.png",
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Hint text
+                          SizedBox(height: 100),
+                          Center(
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.search,
+                                  size: 64,
+                                  color: Colors.grey.shade400,
+                                ),
+                                SizedBox(height: 12),
+                                Text(
+                                  "Search for doctors by name",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+
+                    // ============================
+                    // ⏳ LOADING
+                    // ============================
+                    if (state is SearchDoctorLoading) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 100),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: Color(0xff0D5FA7),
+                          ),
+                        ),
+                      );
+                    }
+
+                    // ============================
+                    // ✅ SUCCESS — API Results
+                    // ============================
+                    if (state is SearchDoctorSuccess) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: state.doctors.length,
+                        itemBuilder: (context, index) {
+                          final doctor = state.doctors[index];
+                          return _buildDoctorCard(doctor, devheight);
+                        },
+                      );
+                    }
+
+                    // ============================
+                    // 🔍 EMPTY — No results
+                    // ============================
+                    if (state is SearchDoctorEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 40),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 100),
+                            SizedBox(
+                              height: 40,
+                              width: 40,
+                              child: Image.asset(
+                                'assets/images/alldoctors/search.png',
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Text(
+                              "Sorry, no results found",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Text(
+                              "Please try a different search term.",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
+                    // ============================
+                    // ❌ ERROR
+                    // ============================
+                    if (state is SearchDoctorError) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 100),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              Icon(Icons.error, size: 64, color: Colors.red),
+                              SizedBox(height: 16),
+                              Text(
+                                state.message,
+                                style: TextStyle(fontSize: 16),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: () {
+                                  searchController.clear();
+                                  cubit.clearSearch();
+                                },
+                                child: Text("Try Again"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+
+                    return SizedBox.shrink();
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // ========================================
+  // 🔧 Helper: Build Category
+  // ========================================
+  Widget _buildCategory(String name, String image) {
+    return GestureDetector(
+      onTap: () {
+        // You can handle category filtering later
+      },
+      child: alldoctorscategory(name: name, image: image),
+    );
+  }
+
+  // ========================================
+  // 🔧 Helper: Build Doctor Card
+  // ========================================
+  Widget _buildDoctorCard(Doctor doctor, double devheight) {
+    Image doctorImage;
+
+    if (doctor.image.startsWith('http')) {
+      doctorImage = Image.network(doctor.image);
+    } else {
+      doctorImage = Image.asset(doctor.image);
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DoctorDetails(
+                name: doctor.name,
+                begindate: doctor.beginDate,
+                enddate: doctor.endDate,
+                hospital: doctor.hospital,
+                job: doctor.job,
+                rate: doctor.rate,
               ),
             ),
-        ],
+          );
+        },
+        child: Doctorcard(
+          devheight: devheight,
+          doctorimage: doctorImage,
+          job: doctor.job,
+          hospital: doctor.hospital,
+          name: doctor.name,
+          rate: doctor.rate,
+          begindate: doctor.beginDate,
+          enddate: doctor.endDate,
+        ),
       ),
     );
   }
