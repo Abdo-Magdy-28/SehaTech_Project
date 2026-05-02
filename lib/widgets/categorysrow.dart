@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grad_project/screens/Hospitals/allhospitals.dart';
 import 'package:grad_project/screens/alldoctors.dart';
 import 'package:grad_project/generated/l10n.dart';
+import 'package:grad_project/screens/pharmacies/allpahramcies.dart';
 
 class categorysrow extends StatelessWidget {
   const categorysrow({super.key});
@@ -34,31 +36,41 @@ class categorysrow extends StatelessWidget {
               ],
             ),
           ),
-          Column(
-            children: [
-              SvgPicture.asset('assets/images/pharmacies.svg'),
-              Text(
-                S.of(context).pharmacies,
-                style: TextStyle(
-                  color: Color(0xff0D61EC),
-                  fontFamily: 'LeagueSpartan',
-                  fontWeight: FontWeight.w500,
+          GestureDetector(
+            onTap: () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (context) => Allpahramcies())),
+            child: Column(
+              children: [
+                SvgPicture.asset('assets/images/pharmacies.svg'),
+                Text(
+                  S.of(context).pharmacies,
+                  style: TextStyle(
+                    color: Color(0xff0D61EC),
+                    fontFamily: 'LeagueSpartan',
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          Column(
-            children: [
-              SvgPicture.asset('assets/images/hospital.svg'),
-              Text(
-                S.of(context).hospitals,
-                style: TextStyle(
-                  color: Color(0xff0D61EC),
-                  fontFamily: 'LeagueSpartan',
-                  fontWeight: FontWeight.w500,
+          GestureDetector(
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => Allhospitals()),
+            ),
+            child: Column(
+              children: [
+                SvgPicture.asset('assets/images/hospital.svg'),
+                Text(
+                  S.of(context).hospitals,
+                  style: TextStyle(
+                    color: Color(0xff0D61EC),
+                    fontFamily: 'LeagueSpartan',
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Column(
             children: [

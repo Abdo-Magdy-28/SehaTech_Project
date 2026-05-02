@@ -1,33 +1,45 @@
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:grad_project/screens/chatbotScreen.dart';
-import 'package:grad_project/screens/Scanner/scanscreen.dart';
-import 'package:grad_project/screens/searchscreen.dart';
-import 'package:grad_project/widgets/homepage/homepagewidget.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grad_project/screens/Homepage.dart';
 
-class Homepage extends StatefulWidget {
-  final int initialIndex;
-  const Homepage({super.key, this.initialIndex = 0});
+class MainScaffold extends StatefulWidget {
+  final Widget child;
+  final int currentIndex;
+  const MainScaffold({
+    super.key,
+    required this.child,
+    required this.currentIndex,
+  });
+
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<MainScaffold> createState() => _MainScaffoldState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _MainScaffoldState extends State<MainScaffold> {
   late int _selectedIndex;
 
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.initialIndex;
+    _selectedIndex = widget.currentIndex;
+  }
+
+  void _onTabTapped(int index) {
+    if (index == _selectedIndex) return;
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Future.microtask(() {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => Homepage(initialIndex: index)),
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       bottomNavigationBar: CurvedNavigationBar(
         index: _selectedIndex,
         backgroundColor: Colors.white,
@@ -59,27 +71,9 @@ class _HomepageState extends State<Homepage> {
             labelStyle: TextStyle(color: Colors.white),
           ),
         ],
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
+        onTap: _onTabTapped,
       ),
-
-      body: _selectedIndex == 0
-          ? Homepagewidget()
-          : _selectedIndex == 1
-          ? Scanscreen()
-          : _selectedIndex == 2
-          ? ChatBotScreen()
-          : _selectedIndex == 3
-          ? Searchscreen()
-          : Center(
-              child: Text(
-                'Perciptions Page',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-            ),
+      body: widget.child,
     );
   }
 }

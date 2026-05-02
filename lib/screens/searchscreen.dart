@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:grad_project/models/doctor.dart';
 import 'package:grad_project/models/hospitals.dart';
 import 'package:grad_project/models/pharmacies.dart';
+import 'package:grad_project/screens/Hospitals/allhospitals.dart';
 import 'package:grad_project/screens/alldoctors.dart';
-import 'package:grad_project/screens/doctor_details.dart';
+import 'package:grad_project/screens/pharmacies/allpahramcies.dart';
+import 'package:grad_project/widgets/doctors/doctor_details.dart';
 import 'package:grad_project/widgets/alldoctors/category.dart';
-import 'package:grad_project/widgets/alldoctors/screen_category.dart';
-import 'package:grad_project/widgets/doctor_card.dart';
+import 'package:grad_project/widgets/doctors/doctor_card.dart';
+import 'package:grad_project/widgets/mainscaffold.dart';
 import 'package:grad_project/widgets/maphospitalcard.dart';
 import 'package:grad_project/widgets/mappharmacycard.dart';
 
@@ -26,24 +28,9 @@ class _SearchscreenState extends State<Searchscreen> {
   List<Hospital> filteredhospitals = [];
   List<Pharmacy> filteredpharmacies = [];
   List<Pharmacy> pharmacies = [
-    Pharmacy(
-      name: 'El-Amawy',
-      category: 'Pharmacy',
-      rating: 4.8,
-      is24Hours: true,
-    ),
-    Pharmacy(
-      name: 'Seif Pharmacy',
-      category: 'Pharmacy',
-      rating: 4.6,
-      is24Hours: true,
-    ),
-    Pharmacy(
-      name: 'El-Ezaby Pharmacy',
-      category: 'Pharmacy',
-      rating: 4.7,
-      is24Hours: false,
-    ),
+    Pharmacy(name: 'El-Amawy', rating: 4.8, is24Hours: true),
+    Pharmacy(name: 'Seif Pharmacy', rating: 4.6, is24Hours: true),
+    Pharmacy(name: 'El-Ezaby Pharmacy', rating: 4.7, is24Hours: false),
   ];
   List<Hospital> hospitals = [
     Hospital(
@@ -188,7 +175,10 @@ class _SearchscreenState extends State<Searchscreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Alldoctors()),
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            MainScaffold(currentIndex: 3, child: Alldoctors()),
+                      ),
                     );
                   },
                   child: alldoctorscategory(
@@ -197,14 +187,34 @@ class _SearchscreenState extends State<Searchscreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MainScaffold(
+                          currentIndex: 3,
+                          child: Allpahramcies(),
+                        ),
+                      ),
+                    );
+                  },
                   child: alldoctorscategory(
                     name: "Pharmacies",
                     image: "assets/images/search/Maskgroup2.png",
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MainScaffold(
+                          currentIndex: 3,
+                          child: Allhospitals(),
+                        ),
+                      ),
+                    );
+                  },
                   child: alldoctorscategory(
                     name: "Hospitals",
                     image: "assets/images/search/Maskgroup4.png",

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/models/doctor.dart';
-import 'package:grad_project/screens/doctor_details.dart';
+import 'package:grad_project/widgets/doctors/doctor_details.dart';
 import 'package:grad_project/widgets/alldoctors/category.dart';
 import 'package:grad_project/widgets/alldoctors/screen_category.dart';
 import 'package:grad_project/widgets/alldoctors/searchbar.dart';
-import 'package:grad_project/widgets/doctor_card.dart';
+import 'package:grad_project/widgets/doctors/doctor_card.dart';
 
 class Alldoctors extends StatefulWidget {
   const Alldoctors({super.key});

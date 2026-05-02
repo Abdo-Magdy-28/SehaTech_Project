@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/models/medicineremindercardmodel.dart';
 import 'package:grad_project/screens/alldoctors.dart';
+import 'package:grad_project/screens/chatbotScreen.dart';
 import 'package:grad_project/widgets/categorysrow.dart';
 import 'package:grad_project/widgets/chatbotslider.dart';
 import 'package:grad_project/widgets/customappbar.dart';
-import 'package:grad_project/widgets/doctor_card.dart';
+import 'package:grad_project/widgets/doctors/doctor_card.dart';
 import 'package:grad_project/widgets/hearttopic.dart';
 import 'package:grad_project/widgets/homepage/home_carouselcard.dart';
 import 'package:grad_project/widgets/medication_management_grid.dart';
@@ -41,7 +42,15 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                 child: SizedBox(width: devwidth, child: Divider(thickness: 1)),
               ),
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.01)),
-              SliverToBoxAdapter(child: chatbotslider(devheight: devheight)),
+              SliverToBoxAdapter(
+                child: GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChatBotScreen()),
+                  ),
+                  child: chatbotslider(devheight: devheight),
+                ),
+              ),
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
               SliverToBoxAdapter(child: categorysrow()),
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.030)),

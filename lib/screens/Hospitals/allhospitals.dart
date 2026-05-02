@@ -1,22 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:grad_project/models/doctor.dart';
-import 'package:grad_project/screens/alldoctors.dart';
-import 'package:grad_project/widgets/doctors/doctor_details.dart';
-import 'package:grad_project/widgets/doctors/doctor_card.dart';
+import 'package:grad_project/models/hospitals.dart';
+import 'package:grad_project/widgets/hosptials/hospital_card.dart';
 
-class ScreenCategory extends StatefulWidget {
-  final List<Doctor> categoryDoctors;
-  const ScreenCategory({super.key, required this.categoryDoctors});
+class Allhospitals extends StatefulWidget {
+  const Allhospitals({super.key});
 
   @override
-  State<ScreenCategory> createState() => _ScreenCategoryState();
+  State<Allhospitals> createState() => _AllhospitalsState();
 }
 
-class _ScreenCategoryState extends State<ScreenCategory> {
+class _AllhospitalsState extends State<Allhospitals> {
   TextEditingController searchController = TextEditingController();
-  String currentoption = '';
-  late List<Doctor> filteredDoctors;
   bool isSearching = false;
+  String? selectedCategory;
+  List<Hospital> categoryHospitals = [];
+  List<Hospital> filteredHospitals = [];
+  List<Hospital> allHospitals = [
+    Hospital(
+      name: 'El-Amiry Hospital',
+      category: 'Government Hospital',
+      rating: 4.8,
+      openTime: '10:30am',
+      closeTime: '5:30pm',
+    ),
+    Hospital(
+      name: 'Cairo Medical Center',
+      category: 'Private Hospital',
+      rating: 4.5,
+      openTime: '8:00am',
+      closeTime: '10:00pm',
+    ),
+    Hospital(
+      name: 'Al-Salam Hospital',
+      category: 'Government Hospital',
+      rating: 4.2,
+      openTime: '9:00am',
+      closeTime: '6:00pm',
+    ),
+  ];
+  String currentoption = '';
+
+  void sortname() {
+    setState(() {
+      filteredHospitals.sort((a, b) => a.name.compareTo(b.name));
+    });
+  }
+
+  void sortrate() {
+    setState(() {
+      filteredHospitals.sort((a, b) => b.rating.compareTo(a.rating));
+    });
+  }
+
   Widget buildsheet(BuildContext context, StateSetter setModalState) {
     return Container(
       decoration: BoxDecoration(
@@ -67,7 +102,6 @@ class _ScreenCategoryState extends State<ScreenCategory> {
               setModalState(() {
                 currentoption = 'rating';
               });
-
               sortrate();
             },
             child: Padding(
@@ -123,7 +157,6 @@ class _ScreenCategoryState extends State<ScreenCategory> {
               setModalState(() {
                 currentoption = 'name';
               });
-
               sortname();
             },
             child: Padding(
@@ -170,6 +203,7 @@ class _ScreenCategoryState extends State<ScreenCategory> {
               ),
             ),
           ),
+          Divider(color: Colors.grey, height: 1),
           SizedBox(height: 15),
           SizedBox(
             width: double.infinity,
@@ -199,31 +233,19 @@ class _ScreenCategoryState extends State<ScreenCategory> {
     );
   }
 
-  void search(String query) {
-    setState(() {
-      isSearching = query.isNotEmpty;
-      filteredDoctors = widget.categoryDoctors.where((doctor) {
-        return doctor.name.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-    });
-  }
-
-  void sortname() {
-    setState(() {
-      filteredDoctors.sort((a, b) => a.name.compareTo(b.name));
-    });
-  }
-
-  void sortrate() {
-    setState(() {
-      filteredDoctors.sort((a, b) => b.rate.compareTo(a.rate));
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    filteredDoctors = widget.categoryDoctors;
+    filteredHospitals = allHospitals;
+  }
+
+  void search(String query) {
+    setState(() {
+      isSearching = query.isNotEmpty;
+      filteredHospitals = allHospitals.where((hospital) {
+        return hospital.name.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    });
   }
 
   @override
@@ -235,7 +257,7 @@ class _ScreenCategoryState extends State<ScreenCategory> {
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
         centerTitle: true,
-        title: Text("Doctors", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text("Hospitals", style: TextStyle(fontWeight: FontWeight.bold)),
         toolbarHeight: 80,
         backgroundColor: Colors.white,
         bottom: PreferredSize(
@@ -278,27 +300,25 @@ class _ScreenCategoryState extends State<ScreenCategory> {
               ),
             ),
           ),
+          // After the search bar padding, before the "Popular Pharmacies" text
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
               children: [
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    height: 45,
-                    width: 45,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xffDDDDDD),
-                    ),
-                    child: Center(
-                      child: SizedBox(
-                        width: 25,
-                        height: 25,
-                        child: Image.asset(
-                          "assets/images/alldoctors/sort.png",
-                          fit: BoxFit.contain,
-                        ),
+                Container(
+                  height: 45,
+                  width: 45,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xffDDDDDD),
+                  ),
+                  child: Center(
+                    child: SizedBox(
+                      width: 25,
+                      height: 25,
+                      child: Image.asset(
+                        "assets/images/alldoctors/sort.png",
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),
@@ -357,47 +377,39 @@ class _ScreenCategoryState extends State<ScreenCategory> {
               ],
             ),
           ),
-          SizedBox(height: 25),
+          if (!isSearching)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Popular Hospitals",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+
           ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemCount: filteredDoctors.length,
+            itemCount: filteredHospitals.length,
             itemBuilder: (context, index) {
-              final doctor = filteredDoctors[index];
+              final hospital = filteredHospitals[index];
 
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DoctorDetails(
-                        name: doctor.name,
-                        begindate: doctor.beginDate,
-                        enddate: doctor.endDate,
-                        hospital: doctor.hospital,
-                        job: doctor.job,
-                        rate: doctor.rate,
-                      ),
-                    ),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Doctorcard(
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: HospitalCard(
                     devheight: devheight,
-                    doctorimage: Image.asset('assets/images/Pic.png'),
-                    job: doctor.job,
-                    hospital: doctor.hospital,
-                    name: doctor.name,
-                    rate: doctor.rate,
-                    begindate: doctor.beginDate,
-                    enddate: doctor.endDate,
+                    name: hospital.name,
+                    rate: hospital.rating,
+                    category: hospital.category,
+                    opendate: hospital.openTime,
+                    closedate: hospital.closeTime,
                   ),
                 ),
               );
             },
           ),
-          if (isSearching && filteredDoctors.isEmpty)
+          if (isSearching && filteredHospitals.isEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 40),
               child: Column(
