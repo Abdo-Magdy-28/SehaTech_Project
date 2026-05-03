@@ -4,9 +4,10 @@ import 'package:grad_project/models/hospitals.dart';
 import 'package:grad_project/models/pharmacies.dart';
 import 'package:grad_project/screens/Hospitals/allhospitals.dart';
 import 'package:grad_project/screens/alldoctors.dart';
+import 'package:grad_project/screens/medicines/allmedicines.dart';
 import 'package:grad_project/screens/pharmacies/allpahramcies.dart';
 import 'package:grad_project/widgets/doctors/doctor_details.dart';
-import 'package:grad_project/widgets/alldoctors/category.dart';
+import 'package:grad_project/widgets/doctors/category.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
 import 'package:grad_project/widgets/mainscaffold.dart';
 import 'package:grad_project/widgets/maphospitalcard.dart';
@@ -221,7 +222,17 @@ class _SearchscreenState extends State<Searchscreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MainScaffold(
+                          currentIndex: 3,
+                          child: Allmedicines(),
+                        ),
+                      ),
+                    );
+                  },
                   child: alldoctorscategory(
                     name: "Medicines",
                     image: "assets/images/search/Maskgroup3.png",

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/models/pharmacies.dart';
 import 'package:grad_project/widgets/pharmacies/pharmacy_card.dart';
+import 'package:grad_project/screens/pharmacies/pharmacydetails.dart';
 
 class Allpahramcies extends StatefulWidget {
   const Allpahramcies({super.key});
@@ -385,7 +386,19 @@ class _AllpahramciesState extends State<Allpahramcies> {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PharmacyDetails(
+                          name: pharmacy.name,
+                          rate: pharmacy.rating,
+                          isopen24: pharmacy.is24Hours,
+                          devheight: devheight,
+                        ),
+                      ),
+                    );
+                  },
                   child: PharmacyCard(
                     devheight: devheight,
                     name: pharmacy.name,

@@ -5,8 +5,7 @@ import 'package:grad_project/cubit/doctors/cubit/doctors_state.dart';
 import 'package:grad_project/models/doctor.dart';
 import 'package:grad_project/services/search%20services/doctors/search_service.dart';
 import 'package:grad_project/widgets/doctors/doctor_details.dart';
-import 'package:grad_project/widgets/alldoctors/category.dart';
-import 'package:grad_project/widgets/alldoctors/screen_category.dart';
+import 'package:grad_project/widgets/doctors/category.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
 
 class Alldoctors extends StatefulWidget {

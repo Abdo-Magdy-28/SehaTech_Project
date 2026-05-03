@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/models/hospitals.dart';
+import 'package:grad_project/screens/Hospitals/hospitaldetails.dart';
 import 'package:grad_project/widgets/hosptials/hospital_card.dart';
 
 class Allhospitals extends StatefulWidget {
@@ -396,7 +397,21 @@ class _AllhospitalsState extends State<Allhospitals> {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Hospitaldetails(
+                          name: hospital.name,
+                          rate: hospital.rating,
+                          opentime: hospital.openTime,
+                          closetime: hospital.closeTime,
+                          devheight: devheight,
+                          category: hospital.category,
+                        ),
+                      ),
+                    );
+                  },
                   child: HospitalCard(
                     devheight: devheight,
                     name: hospital.name,
