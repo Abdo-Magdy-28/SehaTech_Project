@@ -451,116 +451,119 @@ class _SearchscreenState extends State<Searchscreen> {
 }
 
 class medicinecard extends StatelessWidget {
-  medicinecard({
+  const medicinecard({
     super.key,
     required this.name,
     required this.image,
     required this.description,
     required this.componant,
     required this.rate,
+    this.isLarge = false, // Add this flag
   });
 
-  String name, image, description, componant;
-  double rate;
+  final String name, image, description, componant;
+  final double rate;
+  final bool isLarge;
 
   @override
   Widget build(BuildContext context) {
+    // Different sizes based on isLarge
+    final cardHeight = isLarge ? 350.0 : 270.0;
+    final cardWidth = isLarge ? 240.0 : 160.0;
+    final imageSize = isLarge ? 180.0 : 140.0;
+    final buttonHeight = isLarge ? 50.0 : 35.0;
+    final fontSize = isLarge ? 14.0 : 12.0;
+
     return Container(
       decoration: BoxDecoration(
         color: Color(0xffF0F0F0),
         borderRadius: BorderRadius.circular(12),
       ),
-      height: 270,
-      width: 160,
-      child: Stack(
+      height: cardHeight,
+      width: cardWidth,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 5,
         children: [
-          Positioned(
-            top: 10,
-            left: 10,
-            child: SizedBox(height: 140, width: 140, child: Image.asset(image)),
-          ),
-          // Name with ellipsis
-          Positioned(
-            top: 160,
-            left: 10,
+          Padding(
+            padding: const EdgeInsets.all(10),
             child: SizedBox(
-              width: 100, // Leave space for rating on the right
-              child: Text(
-                name,
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
+              height: imageSize,
+              width: imageSize,
+              child: Image.asset(image),
             ),
           ),
-          Positioned(
-            right: 10,
-            top: 160,
+          // Name & Rating
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "$rate",
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                Expanded(
+                  child: Text(
+                    name,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
-                SizedBox(width: 2),
-                SizedBox(
-                  height: 15,
-                  width: 15,
-                  child: Image.asset("assets/images/Star.png"),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("$rate", style: TextStyle(fontSize: fontSize)),
+                    SizedBox(width: 2),
+                    Image.asset(
+                      "assets/images/Star.png",
+                      height: 15,
+                      width: 15,
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-          // Description with ellipsis
-          Positioned(
-            left: 10,
-            top: 185,
-            child: SizedBox(
-              width: 140, // Card width (160) - padding (10+10)
-              child: Text(
-                description,
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black.withOpacity(0.7),
-                ),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
+          // Description
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              description,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: TextStyle(fontSize: fontSize - 2),
             ),
           ),
-          // Component with ellipsis
-          Positioned(
-            left: 10,
-            top: 205,
-            child: SizedBox(
-              width: 140,
-              child: Text(
-                componant,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
+          // Component
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              componant,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: TextStyle(fontSize: fontSize),
             ),
           ),
-          Positioned(
-            bottom: 0,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Color(0xff0D61EC),
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(12),
-                  bottomLeft: Radius.circular(12),
-                ),
+          Spacer(),
+          // Button
+          Container(
+            decoration: BoxDecoration(
+              color: Color(0xff0D61EC),
+              borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(12),
+                bottomLeft: Radius.circular(12),
               ),
-              width: 160,
-              height: 35,
-              child: Center(
-                child: Text("View", style: TextStyle(color: Colors.white)),
+            ),
+            width: cardWidth,
+            height: buttonHeight,
+            child: Center(
+              child: Text(
+                "View",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: isLarge ? 14 : 12,
+                ),
               ),
             ),
           ),

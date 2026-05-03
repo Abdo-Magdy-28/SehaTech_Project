@@ -55,6 +55,8 @@ class PharmacyCard extends StatelessWidget {
                               children: [
                                 Text(
                                   name,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Color(0xff33384B),
@@ -62,22 +64,16 @@ class PharmacyCard extends StatelessWidget {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-
-                                  children: [
-                                    Text(
-                                      "Pharmacy",
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Color(0xffAAB6C3),
-                                        fontFamily: 'Cairo',
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
+                                Text(
+                                  "Pharmacy",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xffAAB6C3),
+                                    fontFamily: 'Cairo',
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ],
                             ),
@@ -85,49 +81,54 @@ class PharmacyCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 32.0, top: 7),
-                      child: Row(
-                        spacing: 15,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "$rate",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Color(0xff33384B),
-                                  fontFamily: 'Cairo',
-                                  fontWeight: FontWeight.w400,
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 32.0),
+                        child: Row(
+                          spacing: 15,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "$rate",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Color(0xff33384B),
+                                    fontFamily: 'Cairo',
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 16,
-                                width: 16,
-                                child: Image.asset('assets/images/Star.png'),
-                              ),
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              SizedBox(
-                                height: 18,
-                                width: 18,
-                                child: Image.asset('assets/images/Time.png'),
-                              ),
-                              Text(
-                                open24,
-                                style: TextStyle(
-                                  color: Color(0xff33384B),
-                                  fontFamily: 'Cairo',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 13,
+                                SizedBox(
+                                  height: 16,
+                                  width: 16,
+                                  child: Image.asset('assets/images/Star.png'),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  height: 18,
+                                  width: 18,
+                                  child: Image.asset('assets/images/Time.png'),
+                                ),
+                                Text(
+                                  open24,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    color: Color(0xff33384B),
+                                    fontFamily: 'Cairo',
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

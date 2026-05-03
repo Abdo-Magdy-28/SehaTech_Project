@@ -270,8 +270,8 @@ class _AllmedicinesState extends State<Allmedicines> {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 0.65,
+                mainAxisSpacing: 30,
+                childAspectRatio: 0.6,
               ),
               itemCount: filteredMedicines.length,
               itemBuilder: (context, index) {
