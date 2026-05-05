@@ -3,15 +3,20 @@ import 'package:grad_project/models/doctor.dart';
 import 'package:grad_project/models/hospitals.dart';
 import 'package:grad_project/models/pharmacies.dart';
 import 'package:grad_project/screens/Hospitals/allhospitals.dart';
+import 'package:grad_project/screens/Hospitals/hospitaldetails.dart';
 import 'package:grad_project/screens/alldoctors.dart';
 import 'package:grad_project/screens/medicines/allmedicines.dart';
 import 'package:grad_project/screens/pharmacies/allpahramcies.dart';
+import 'package:grad_project/screens/pharmacies/pharmacydetails.dart';
 import 'package:grad_project/widgets/doctors/doctor_details.dart';
 import 'package:grad_project/widgets/doctors/category.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
+import 'package:grad_project/widgets/hosptials/hospital_card.dart';
 import 'package:grad_project/widgets/mainscaffold.dart';
 import 'package:grad_project/widgets/maphospitalcard.dart';
 import 'package:grad_project/widgets/mappharmacycard.dart';
+import 'package:grad_project/widgets/Medicines/medicinecard.dart';
+import 'package:grad_project/widgets/pharmacies/pharmacy_card.dart';
 
 class Searchscreen extends StatefulWidget {
   const Searchscreen({super.key});
@@ -308,11 +313,28 @@ class _SearchscreenState extends State<Searchscreen> {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: GestureDetector(
-                  onTap: () {},
-                  child: Maphospitalcard(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Hospitaldetails(
+                          name: hospital.name,
+                          rate: hospital.rating,
+                          opentime: hospital.openTime,
+                          closetime: hospital.closeTime,
+                          devheight: devheight,
+                          category: hospital.category,
+                        ),
+                      ),
+                    );
+                  },
+                  child: HospitalCard(
                     devheight: devheight,
                     rate: hospital.rating,
                     name: hospital.name,
+                    category: hospital.category,
+                    opendate: hospital.openTime,
+                    closedate: hospital.closeTime,
                   ),
                 ),
               );
@@ -338,11 +360,24 @@ class _SearchscreenState extends State<Searchscreen> {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: GestureDetector(
-                  onTap: () {},
-                  child: Mappharmacycard(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PharmacyDetails(
+                          name: pharmacy.name,
+                          rate: pharmacy.rating,
+                          isopen24: pharmacy.is24Hours,
+                          devheight: devheight,
+                        ),
+                      ),
+                    );
+                  },
+                  child: PharmacyCard(
                     devheight: devheight,
                     rate: pharmacy.rating,
                     name: pharmacy.name,
+                    isopen24: true,
                   ),
                 ),
               );
@@ -400,7 +435,7 @@ class _SearchscreenState extends State<Searchscreen> {
               children: [
                 SizedBox(
                   width: (MediaQuery.of(context).size.width - 36 - 10) / 2,
-                  child: medicinecard(
+                  child: MedicineCard(
                     name: "Liveasy Wellness",
                     image:
                         "assets/images/search/liveasy-wellness-calcium-magnesium-vitamin-d3-zinc-bones-dental-health-bottle-60-tabs-6.1-1733485732.png",
@@ -411,7 +446,7 @@ class _SearchscreenState extends State<Searchscreen> {
                 ),
                 SizedBox(
                   width: (MediaQuery.of(context).size.width - 36 - 10) / 2,
-                  child: medicinecard(
+                  child: MedicineCard(
                     name: "Dr.Morepen",
                     image:
                         "assets/images/search/liveasy-wellness-calcium-magnesium-vitamin-d3-zinc-bones-dental-health-bottle-60-tabs-6.1-1733485732q3.png",
@@ -422,7 +457,7 @@ class _SearchscreenState extends State<Searchscreen> {
                 ),
                 SizedBox(
                   width: (MediaQuery.of(context).size.width - 36 - 10) / 2,
-                  child: medicinecard(
+                  child: MedicineCard(
                     name: "Pharmeasy Optima",
                     image: "assets/images/search/lol.png",
                     rate: 3.8,
@@ -432,7 +467,7 @@ class _SearchscreenState extends State<Searchscreen> {
                 ),
                 SizedBox(
                   width: (MediaQuery.of(context).size.width - 36 - 10) / 2,
-                  child: medicinecard(
+                  child: MedicineCard(
                     name: "Juman Juice",
                     image: "assets/images/search/21.png",
                     rate: 4.8,
@@ -444,129 +479,6 @@ class _SearchscreenState extends State<Searchscreen> {
             ),
           ),
           SizedBox(height: 30),
-        ],
-      ),
-    );
-  }
-}
-
-class medicinecard extends StatelessWidget {
-  const medicinecard({
-    super.key,
-    required this.name,
-    required this.image,
-    required this.description,
-    required this.componant,
-    required this.rate,
-    this.isLarge = false, // Add this flag
-  });
-
-  final String name, image, description, componant;
-  final double rate;
-  final bool isLarge;
-
-  @override
-  Widget build(BuildContext context) {
-    // Different sizes based on isLarge
-    final cardHeight = isLarge ? 350.0 : 270.0;
-    final cardWidth = isLarge ? 240.0 : 160.0;
-    final imageSize = isLarge ? 180.0 : 140.0;
-    final buttonHeight = isLarge ? 50.0 : 35.0;
-    final fontSize = isLarge ? 14.0 : 12.0;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Color(0xffF0F0F0),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      height: cardHeight,
-      width: cardWidth,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 5,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: SizedBox(
-              height: imageSize,
-              width: imageSize,
-              child: Image.asset(image),
-            ),
-          ),
-          // Name & Rating
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    name,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: TextStyle(
-                      fontSize: fontSize,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text("$rate", style: TextStyle(fontSize: fontSize)),
-                    SizedBox(width: 2),
-                    Image.asset(
-                      "assets/images/Star.png",
-                      height: 15,
-                      width: 15,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          // Description
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              description,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: TextStyle(fontSize: fontSize - 2),
-            ),
-          ),
-          // Component
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              componant,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: TextStyle(fontSize: fontSize),
-            ),
-          ),
-          Spacer(),
-          // Button
-          Container(
-            decoration: BoxDecoration(
-              color: Color(0xff0D61EC),
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(12),
-                bottomLeft: Radius.circular(12),
-              ),
-            ),
-            width: cardWidth,
-            height: buttonHeight,
-            child: Center(
-              child: Text(
-                "View",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: isLarge ? 14 : 12,
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/models/medicine.dart';
 import 'package:grad_project/screens/medicines/medicine_details.dart';
-import 'package:grad_project/screens/searchscreen.dart';
 import 'package:grad_project/widgets/mainscaffold.dart';
+import 'package:grad_project/widgets/Medicines/medicinecard.dart';
 
 class Allmedicines extends StatefulWidget {
   const Allmedicines({super.key});
@@ -264,18 +264,10 @@ class _AllmedicinesState extends State<Allmedicines> {
           // Medicine grid
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 30,
-                childAspectRatio: 0.6,
-              ),
-              itemCount: filteredMedicines.length,
-              itemBuilder: (context, index) {
-                final medicine = filteredMedicines[index];
+            child: Wrap(
+              spacing: 10, // horizontal gap
+              runSpacing: 10, // vertical gap
+              children: filteredMedicines.map((medicine) {
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -288,7 +280,7 @@ class _AllmedicinesState extends State<Allmedicines> {
                       ),
                     );
                   },
-                  child: medicinecard(
+                  child: MedicineCard(
                     name: medicine.name,
                     image: medicine.image,
                     description: medicine.description,
@@ -296,10 +288,9 @@ class _AllmedicinesState extends State<Allmedicines> {
                     rate: medicine.rate,
                   ),
                 );
-              },
+              }).toList(),
             ),
           ),
-
           // No results
           if (isSearching && filteredMedicines.isEmpty)
             Padding(

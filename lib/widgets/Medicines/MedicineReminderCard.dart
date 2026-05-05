@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class medicinecard extends StatelessWidget {
-  const medicinecard({
+class Medicineremindercard extends StatelessWidget {
+  const Medicineremindercard({
     super.key,
     required this.name,
     required this.time,

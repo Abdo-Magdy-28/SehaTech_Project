@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/screens/chatbotScreen.dart';
 import 'package:grad_project/screens/Scanner/scanscreen.dart';
+import 'package:grad_project/screens/prescriptions/All_Prescriptions.dart';
 import 'package:grad_project/screens/searchscreen.dart';
 import 'package:grad_project/widgets/homepage/homepagewidget.dart';
 
@@ -74,12 +75,7 @@ class _HomepageState extends State<Homepage> {
           ? ChatBotScreen()
           : _selectedIndex == 3
           ? Searchscreen()
-          : Center(
-              child: Text(
-                'Perciptions Page',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-            ),
+          : AllPrescriptions(),
     );
   }
 }

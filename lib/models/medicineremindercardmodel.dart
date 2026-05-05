@@ -1,9 +1,9 @@
-class MedicineReminderCard {
+class MedicineReminderCardModel {
   final String medicineName;
   final String dosage;
   final String reminderTime;
 
-  const MedicineReminderCard({
+  const MedicineReminderCardModel({
     required this.medicineName,
     required this.dosage,
     required this.reminderTime,

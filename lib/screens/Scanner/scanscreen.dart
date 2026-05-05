@@ -76,45 +76,45 @@ class _ScanscreenState extends State<Scanscreen> {
                     ),
                   ),
                   Positioned(
-                    left: 27,
-                    top: 20,
+                    left: devwidth * 0.08,
+                    top: devheight * 0.02,
                     child: Text(
                       "Scan Prescriptions and Medications \nInstantly to Access Accurate Details,\n Dosage Instructions, and Safety\n Information",
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Cairo',
-                        fontSize: 13,
+                        fontSize: devwidth * 0.03,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                   ),
                   Positioned(
-                    top: 55,
-                    left: 222,
+                    top: devheight * 0.048,
+                    left: devwidth * 0.575,
                     child: Image.asset(
                       'assets/images/scan/Hand.png',
-                      height: 135,
-                      width: 130,
+                      height: devheight * 0.2,
+                      width: devwidth * 0.4,
                     ),
                   ),
                   Positioned(
-                    top: 55,
-                    left: 220,
+                    top: devheight * 0.04,
+                    left: devwidth * 0.6,
                     child: Image.asset(
                       'assets/images/scan/Frame 2147226235.png',
-                      height: 138,
+                      height: devheight * 0.2,
                       width: 130,
                     ),
                   ),
                   Positioned(
-                    left: 27,
-                    top: 110,
+                    left: devwidth * 0.08,
+                    top: devheight * 0.11,
                     child: Text(
                       "Easily scan any prescription or medicine QR code\n to view complete information, including usage\n guidelines, warnings, interactions, and important\n notes — all in one place, in seconds.",
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Cairo',
-                        fontSize: 10,
+                        fontSize: devwidth * 0.025,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

@@ -8,9 +8,9 @@ import 'package:grad_project/widgets/customappbar.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
 import 'package:grad_project/widgets/hearttopic.dart';
 import 'package:grad_project/widgets/homepage/home_carouselcard.dart';
-import 'package:grad_project/widgets/medication_management_grid.dart';
-import 'package:grad_project/widgets/medicencard.dart';
-import 'package:grad_project/widgets/medicinereminder.dart';
+import 'package:grad_project/widgets/homepage/medication_management_grid.dart';
+import 'package:grad_project/widgets/Medicines/MedicineReminderCard.dart';
+import 'package:grad_project/widgets/Medicines/UpcomingReminder.dart';
 import 'package:grad_project/widgets/prevent_diseases.dart';
 import 'package:grad_project/widgets/weakcalender.dart';
 import 'package:grad_project/widgets/weaklystreak.dart';
@@ -132,8 +132,8 @@ class _HomepagewidgetState extends State<Homepagewidget> {
               ),
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
               SliverToBoxAdapter(
-                child: Medicinereminder(
-                  medicine: MedicineReminderCard(
+                child: UpcomingReminder(
+                  medicine: MedicineReminderCardModel(
                     medicineName: S.of(context).belladonna30,
                     dosage: S.of(context).dosage,
                     reminderTime: S.of(context).reminderTime,
@@ -147,7 +147,7 @@ class _HomepagewidgetState extends State<Homepagewidget> {
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
               SliverList(
                 delegate: SliverChildBuilderDelegate((context, index) {
-                  return medicinecard(
+                  return Medicineremindercard(
                     image: Image.asset("assets/images/Shape10.png"),
                     condition: S.of(context).missed,
                     name: S.of(context).belladonna30,

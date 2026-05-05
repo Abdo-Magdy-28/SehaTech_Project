@@ -20,7 +20,7 @@ class HospitalCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
-        height: devheight * 0.12,
+        height: devheight * 0.11,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: Color(0xffF0F0F0),
@@ -40,7 +40,7 @@ class HospitalCard extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: SizedBox(
-                            width: 37,
+                            width: devheight * 0.06,
                             child: SvgPicture.asset(
                               "assets/images/hospitals/Frame2147226186.svg",
                             ),
@@ -56,7 +56,7 @@ class HospitalCard extends StatelessWidget {
                                 Text(
                                   S.of(context).doctorTitle(name),
                                   style: TextStyle(
-                                    fontSize: 13,
+                                    fontSize: devheight * 0.017,
                                     color: Color(0xff33384B),
                                     fontFamily: 'Cairo',
                                     fontWeight: FontWeight.w600,
@@ -71,8 +71,8 @@ class HospitalCard extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       style: TextStyle(
-                                        fontSize: 11,
-                                        color: Color(0xffAAB6C3),
+                                        fontSize: 12,
+                                        color: Color(0xff6d6d6d),
                                         fontFamily: 'Cairo',
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -86,7 +86,10 @@ class HospitalCard extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 32.0, top: 4),
+                      padding: EdgeInsets.only(
+                        left: devheight * 0.03,
+                        top: devheight * 0.00001,
+                      ),
                       child: Row(
                         spacing: 15,
                         children: [
@@ -112,8 +115,8 @@ class HospitalCard extends StatelessWidget {
                           Row(
                             children: [
                               SizedBox(
-                                height: 18,
-                                width: 18,
+                                height: devheight * 0.015,
+                                width: devheight * 0.015,
                                 child: Image.asset('assets/images/Time.png'),
                               ),
                               Text(
@@ -122,7 +125,7 @@ class HospitalCard extends StatelessWidget {
                                   color: Color(0xff33384B),
                                   fontFamily: 'Cairo',
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 13,
+                                  fontSize: devheight * 0.015,
                                 ),
                               ),
                               Text(
@@ -131,7 +134,7 @@ class HospitalCard extends StatelessWidget {
                                   color: Color(0xff33384B),
                                   fontFamily: 'Cairo',
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 13,
+                                  fontSize: devheight * 0.015,
                                 ),
                               ),
                             ],
@@ -148,7 +151,7 @@ class HospitalCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(right: 10, top: 10),
+                  padding: EdgeInsets.only(right: 10, top: devheight * 0.008),
                   child: Align(
                     alignment: Alignment.topRight,
                     child: Container(

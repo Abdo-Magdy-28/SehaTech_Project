@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/models/medicineremindercardmodel.dart';
 
-class Medicinereminder extends StatefulWidget {
-  const Medicinereminder({super.key, required this.medicine});
-  final MedicineReminderCard medicine;
+class UpcomingReminder extends StatefulWidget {
+  const UpcomingReminder({super.key, required this.medicine});
+  final MedicineReminderCardModel medicine;
 
   @override
-  State<Medicinereminder> createState() => _MedicinereminderState();
+  State<UpcomingReminder> createState() => _UpcomingReminderState();
 }
 
-class _MedicinereminderState extends State<Medicinereminder> {
+class _UpcomingReminderState extends State<UpcomingReminder> {
   @override
   Widget build(BuildContext context) {
     final devheight = MediaQuery.of(context).size.height;

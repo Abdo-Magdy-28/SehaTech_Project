@@ -20,7 +20,7 @@ class PharmacyCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
-        height: devheight * 0.12,
+        height: devheight * 0.11,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: Color(0xffF0F0F0),
@@ -48,7 +48,9 @@ class PharmacyCard extends StatelessWidget {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            padding: EdgeInsets.symmetric(
+                              vertical: devheight * 0.005,
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               spacing: 4,
@@ -69,8 +71,8 @@ class PharmacyCard extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                   style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color(0xffAAB6C3),
+                                    fontSize: devheight * 0.015,
+                                    color: Color(0xff6d6d6d),
                                     fontFamily: 'Cairo',
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -93,7 +95,7 @@ class PharmacyCard extends StatelessWidget {
                                 Text(
                                   "$rate",
                                   style: TextStyle(
-                                    fontSize: 13,
+                                    fontSize: devheight * 0.015,
                                     color: Color(0xff33384B),
                                     fontFamily: 'Cairo',
                                     fontWeight: FontWeight.w400,
@@ -110,8 +112,8 @@ class PharmacyCard extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
-                                  height: 18,
-                                  width: 18,
+                                  height: devheight * 0.015,
+                                  width: devheight * 0.015,
                                   child: Image.asset('assets/images/Time.png'),
                                 ),
                                 Text(
@@ -122,7 +124,7 @@ class PharmacyCard extends StatelessWidget {
                                     color: Color(0xff33384B),
                                     fontFamily: 'Cairo',
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 13,
+                                    fontSize: devheight * 0.015,
                                   ),
                                 ),
                               ],
@@ -136,16 +138,16 @@ class PharmacyCard extends StatelessWidget {
               ),
             ),
             Column(
-              spacing: 10,
+              spacing: devheight * 0.008,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(right: 10, top: 10),
+                  padding: EdgeInsets.only(right: 10, top: devheight * 0.01),
                   child: Align(
                     alignment: Alignment.topRight,
                     child: Container(
-                      height: 27,
-                      width: 71,
+                      height: devheight * 0.035,
+                      width: devheight * 0.09,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         color: Color(0xff0D61EC),

@@ -69,8 +69,8 @@ class Doctorcard extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       style: TextStyle(
-                                        fontSize: 11,
-                                        color: Color(0xffAAB6C3),
+                                        fontSize: 12,
+                                        color: Color(0xff6d6d6d),
                                         fontFamily: 'Cairo',
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -81,8 +81,8 @@ class Doctorcard extends StatelessWidget {
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: TextStyle(
-                                          fontSize: 11,
-                                          color: Color(0xffAAB6C3),
+                                          fontSize: 12,
+                                          color: Color(0xff6d6d6d),
                                           fontFamily: 'Cairo',
                                           fontWeight: FontWeight.w400,
                                         ),
