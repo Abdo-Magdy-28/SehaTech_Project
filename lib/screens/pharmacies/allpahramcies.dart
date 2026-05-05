@@ -400,7 +400,6 @@ class _AllpahramciesState extends State<Allpahramcies> {
                     );
                   },
                   child: PharmacyCard(
-                    devheight: devheight,
                     name: pharmacy.name,
                     rate: pharmacy.rating,
                     isopen24: pharmacy.is24Hours,

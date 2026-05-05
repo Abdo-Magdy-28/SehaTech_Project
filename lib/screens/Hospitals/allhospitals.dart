@@ -413,7 +413,6 @@ class _AllhospitalsState extends State<Allhospitals> {
                     );
                   },
                   child: HospitalCard(
-                    devheight: devheight,
                     name: hospital.name,
                     rate: hospital.rating,
                     category: hospital.category,

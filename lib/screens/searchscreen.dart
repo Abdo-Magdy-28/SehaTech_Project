@@ -329,7 +329,6 @@ class _SearchscreenState extends State<Searchscreen> {
                     );
                   },
                   child: HospitalCard(
-                    devheight: devheight,
                     rate: hospital.rating,
                     name: hospital.name,
                     category: hospital.category,
@@ -374,7 +373,6 @@ class _SearchscreenState extends State<Searchscreen> {
                     );
                   },
                   child: PharmacyCard(
-                    devheight: devheight,
                     rate: pharmacy.rating,
                     name: pharmacy.name,
                     isopen24: true,
