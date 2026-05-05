@@ -290,11 +290,30 @@ class _AlldoctorsState extends State<Alldoctors> {
   // ========================================
   Widget _buildDoctorCard(Doctor doctor, double devheight) {
     Image doctorImage;
-
-    if (doctor.image.startsWith('http')) {
-      doctorImage = Image.network(doctor.image);
+    final String imageUrl = doctor.image.trim();
+    if (imageUrl.isNotEmpty && imageUrl.startsWith('http')) {
+      doctorImage = Image.network(
+        imageUrl,
+        width: 37,
+        height: 37,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) =>
+            Image.asset('assets/images/Pic.png'),
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return SizedBox(
+            width: 37,
+            height: 37,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Color(0xff0D61EC),
+            ),
+          );
+        },
+      );
     } else {
-      doctorImage = Image.asset(doctor.image);
+      // ✅ empty string or local path — use asset fallback
+      doctorImage = Image.asset('assets/images/Pic.png');
     }
 
     return Padding(
