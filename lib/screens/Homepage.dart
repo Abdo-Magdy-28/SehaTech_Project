@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/screens/chatbotScreen.dart';
 import 'package:grad_project/screens/Scanner/scanscreen.dart';
-import 'package:grad_project/screens/prescriptions/All_Prescriptions.dart';
+import 'package:grad_project/screens/prescriptions/all_prescriptions.dart';
 import 'package:grad_project/screens/searchscreen.dart';
 import 'package:grad_project/widgets/homepage/homepagewidget.dart';
 
