@@ -8,6 +8,7 @@ import 'package:grad_project/firebase_options.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Homepage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:grad_project/screens/splashscreen.dart';
 
 late List<CameraDescription> cameras;
 
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'SEHA TECH',
         theme: ThemeData(),
-        home: Homepage(),
+        home: Splashscreen(),
       ),
     );
   }

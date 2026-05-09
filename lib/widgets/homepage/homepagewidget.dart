@@ -6,6 +6,7 @@ import 'package:grad_project/widgets/categorysrow.dart';
 import 'package:grad_project/widgets/chatbotslider.dart';
 import 'package:grad_project/widgets/customappbar.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
+import 'package:grad_project/widgets/doctors/doctor_details.dart';
 import 'package:grad_project/widgets/hearttopic.dart';
 import 'package:grad_project/widgets/homepage/home_carouselcard.dart';
 import 'package:grad_project/widgets/homepage/medication_management_grid.dart';
@@ -99,15 +100,32 @@ class _HomepagewidgetState extends State<Homepagewidget> {
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate((context, index) {
-                  return Doctorcard(
-                    devheight: devheight,
-                    doctorimage: Image.asset('assets/images/Pic.png'),
-                    job: S.of(context).neurologist,
-                    hospital: S.of(context).elDemerdashHospital,
-                    name: S.of(context).youssefAli,
-                    rate: 4.5,
-                    begindate: S.of(context).startTime,
-                    enddate: S.of(context).endTime,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DoctorDetails(
+                            name: S.of(context).youssefAli,
+                            begindate: S.of(context).startTime,
+                            enddate: S.of(context).endTime,
+                            hospital: S.of(context).elDemerdashHospital,
+                            job: S.of(context).neurologist,
+                            rate: 4.5,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Doctorcard(
+                      devheight: devheight,
+                      doctorimage: Image.asset('assets/images/Pic.png'),
+                      job: S.of(context).neurologist,
+                      hospital: S.of(context).elDemerdashHospital,
+                      name: S.of(context).youssefAli,
+                      rate: 4.5,
+                      begindate: S.of(context).startTime,
+                      enddate: S.of(context).endTime,
+                    ),
                   );
                 }, childCount: 5),
               ),
