@@ -17,7 +17,10 @@ class _MedicineDetailsState extends State<MedicineDetails> {
   @override
   void initState() {
     super.initState();
-    selectedSize = widget.medicine.sizes.first;
+    // ✅ guard: never crash when sizes is empty
+    selectedSize = widget.medicine.sizes.isNotEmpty
+        ? widget.medicine.sizes.first
+        : null;
   }
 
   @override
@@ -25,14 +28,15 @@ class _MedicineDetailsState extends State<MedicineDetails> {
     final medicine = widget.medicine;
     final devheight = MediaQuery.of(context).size.height;
     final devwidth = MediaQuery.of(context).size.width;
-    return (Scaffold(
+
+    return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
         centerTitle: true,
         title: const Text(
-          "Medicine",
+          'Medicine',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         toolbarHeight: 80,
@@ -46,7 +50,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Blue header card
+            // ── Blue header card ─────────────────────────────
             Container(
               margin: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -54,7 +58,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
+                    color: Colors.black.withOpacity(0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -62,7 +66,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
               ),
               child: Column(
                 children: [
-                  // Blue top section
+                  // Blue section
                   Container(
                     width: double.infinity,
                     decoration: const BoxDecoration(
@@ -101,46 +105,49 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        // Medicine image + sizes + rating row
+
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            // Size chips
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: medicine.sizes.map((size) {
-                                final isSelected = selectedSize == size;
-                                return GestureDetector(
-                                  onTap: () =>
-                                      setState(() => selectedSize = size),
-                                  child: Container(
-                                    margin: const EdgeInsets.only(bottom: 6),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: isSelected
-                                          ? Colors.white
-                                          : Colors.white.withValues(alpha: 0.2),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Text(
-                                      size,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontFamily: 'Cairo',
-                                        color: isSelected
-                                            ? const Color(0xff2260FF)
-                                            : Colors.white,
-                                        fontWeight: FontWeight.w600,
+                            // ✅ Only show sizes if list is not empty
+                            if (medicine.sizes.isNotEmpty)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: medicine.sizes.map((size) {
+                                  final isSel = selectedSize == size;
+                                  return GestureDetector(
+                                    onTap: () =>
+                                        setState(() => selectedSize = size),
+                                    child: Container(
+                                      margin: const EdgeInsets.only(bottom: 6),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: isSel
+                                            ? Colors.white
+                                            : Colors.white.withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Text(
+                                        size,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: 'Cairo',
+                                          color: isSel
+                                              ? const Color(0xff2260FF)
+                                              : Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
+                                  );
+                                }).toList(),
+                              ),
+
                             const Spacer(),
+
                             // Medicine image
                             SizedBox(
                               height: devheight * 0.15,
@@ -150,12 +157,14 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                                 fit: BoxFit.contain,
                               ),
                             ),
+
                             const Spacer(),
+
                             // Rating
                             Column(
                               children: [
                                 Text(
-                                  "${medicine.rate}",
+                                  '${medicine.rate}',
                                   style: const TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold,
@@ -163,15 +172,16 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                                   ),
                                 ),
                                 Row(
-                                  children: List.generate(5, (index) {
-                                    return Icon(
-                                      index < medicine.rate.floor()
+                                  children: List.generate(
+                                    5,
+                                    (i) => Icon(
+                                      i < medicine.rate.floor()
                                           ? Icons.star
                                           : Icons.star_half,
                                       color: Colors.amber,
                                       size: 16,
-                                    );
-                                  }),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -180,9 +190,10 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                       ],
                     ),
                   ),
+
                   // Add Reminder button
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16),
                     child: SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -191,12 +202,15 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MainScaffold(
+                              builder: (_) => MainScaffold(
                                 currentIndex: 4,
                                 child: ReminderScreen(
                                   medicineName: medicine.name,
                                   medicineSize:
-                                      selectedSize ?? medicine.sizes.first,
+                                      selectedSize ??
+                                      (medicine.sizes.isNotEmpty
+                                          ? medicine.sizes.first
+                                          : ''),
                                 ),
                               ),
                             ),
@@ -209,7 +223,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                           ),
                         ),
                         child: const Text(
-                          "Add Reminder",
+                          'Add Reminder',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -224,134 +238,139 @@ class _MedicineDetailsState extends State<MedicineDetails> {
               ),
             ),
 
-            // Product Overview
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "product Overview",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Cairo',
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    medicine.overview,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black87,
-                      fontFamily: 'Cairo',
-                      height: 1.6,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const Divider(height: 32, indent: 16, endIndent: 16),
-
-            // Key Benefits
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Key Benefits",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Cairo',
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  ...medicine.keyBenefits.map(
-                    (benefit) => Padding(
-                      padding: const EdgeInsets.only(bottom: 6.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "• ",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              benefit,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black87,
-                                fontFamily: 'Cairo',
-                              ),
-                            ),
-                          ),
-                        ],
+            // ── Product Overview ─────────────────────────────
+            if (medicine.overview.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Product Overview',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Cairo',
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-
-            const Divider(height: 32, indent: 16, endIndent: 16),
-
-            // Possible Side Effects
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Possible Side Effects",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Cairo',
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  ...medicine.sideEffects.map(
-                    (effect) => Padding(
-                      padding: const EdgeInsets.only(bottom: 6.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "• ",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              effect,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black87,
-                                fontFamily: 'Cairo',
-                              ),
-                            ),
-                          ),
-                        ],
+                    const SizedBox(height: 8),
+                    Text(
+                      medicine.overview,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black87,
+                        fontFamily: 'Cairo',
+                        height: 1.6,
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+
+            if (medicine.overview.isNotEmpty)
+              const Divider(height: 32, indent: 16, endIndent: 16),
+
+            // ── Key Benefits ─────────────────────────────────
+            if (medicine.keyBenefits.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Key Benefits',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Cairo',
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    ...medicine.keyBenefits.map(
+                      (b) => Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              '• ',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                b,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black87,
+                                  fontFamily: 'Cairo',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            if (medicine.keyBenefits.isNotEmpty)
+              const Divider(height: 32, indent: 16, endIndent: 16),
+
+            // ── Side Effects ─────────────────────────────────
+            if (medicine.sideEffects.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Possible Side Effects',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Cairo',
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    ...medicine.sideEffects.map(
+                      (e) => Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              '• ',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                e,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black87,
+                                  fontFamily: 'Cairo',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
             const SizedBox(height: 30),
           ],
         ),
       ),
-    ));
+    );
   }
 }

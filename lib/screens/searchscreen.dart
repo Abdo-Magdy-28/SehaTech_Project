@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/models/doctor.dart';
 import 'package:grad_project/models/hospitals.dart';
+import 'package:grad_project/models/medicine.dart';
 import 'package:grad_project/models/pharmacies.dart';
 import 'package:grad_project/screens/Hospitals/allhospitals.dart';
 import 'package:grad_project/screens/Hospitals/hospitaldetails.dart';
@@ -13,8 +14,6 @@ import 'package:grad_project/widgets/doctors/category.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
 import 'package:grad_project/widgets/hosptials/hospital_card.dart';
 import 'package:grad_project/widgets/mainscaffold.dart';
-import 'package:grad_project/widgets/maphospitalcard.dart';
-import 'package:grad_project/widgets/mappharmacycard.dart';
 import 'package:grad_project/widgets/Medicines/medicinecard.dart';
 import 'package:grad_project/widgets/pharmacies/pharmacy_card.dart';
 
@@ -26,19 +25,20 @@ class Searchscreen extends StatefulWidget {
 }
 
 class _SearchscreenState extends State<Searchscreen> {
-  @override
-  TextEditingController searchController = TextEditingController();
-  bool isSearching = false;
-  String? selectedCategory;
-  List<Doctor> filteredDoctors = [];
-  List<Hospital> filteredhospitals = [];
-  List<Pharmacy> filteredpharmacies = [];
-  List<Pharmacy> pharmacies = [
+  final TextEditingController _searchController = TextEditingController();
+  bool _isSearching = false;
+
+  List<Doctor> _filteredDoctors = [];
+  List<Hospital> _filteredHospitals = [];
+  List<Pharmacy> _filteredPharmacies = [];
+
+  final List<Pharmacy> _pharmacies = [
     Pharmacy(name: 'El-Amawy', rating: 4.8, is24Hours: true),
     Pharmacy(name: 'Seif Pharmacy', rating: 4.6, is24Hours: true),
     Pharmacy(name: 'El-Ezaby Pharmacy', rating: 4.7, is24Hours: false),
   ];
-  List<Hospital> hospitals = [
+
+  final List<Hospital> _hospitals = [
     Hospital(
       name: 'El-Amiry Hospital',
       category: 'Government Hospital',
@@ -61,424 +61,478 @@ class _SearchscreenState extends State<Searchscreen> {
       closeTime: '6:00pm',
     ),
   ];
-  List<Doctor> allDoctors = [
+
+  final List<Doctor> _allDoctors = [
     Doctor(
-      name: "Youssef Ali",
-      job: "Neurologist",
-      hospital: "El-Demerdash Hospital",
-      image: "assets/images/Pic.png",
+      name: 'Youssef Ali',
+      job: 'Neurologist',
+      hospital: 'El-Demerdash Hospital',
+      image: 'assets/images/Pic.png',
       rate: 4.5,
-      beginDate: "10:30am",
-      endDate: "5:30pm",
+      beginDate: '10:30am',
+      endDate: '5:30pm',
     ),
-
     Doctor(
-      name: "Ahmed Hassan",
-      job: "Cardiologist",
-      hospital: "Ain Shams Hospital",
-      image: "assets/images/Pic2.png",
+      name: 'Ahmed Hassan',
+      job: 'Cardiologist',
+      hospital: 'Ain Shams Hospital',
+      image: 'assets/images/Pic2.png',
       rate: 4.2,
-      beginDate: "9:00am",
-      endDate: "4:00pm",
+      beginDate: '9:00am',
+      endDate: '4:00pm',
     ),
-
     Doctor(
-      name: "Omar Khaled",
-      job: "Dentist",
-      hospital: "Smile Care Clinic",
-      image: "assets/images/Pic4.png",
+      name: 'Omar Khaled',
+      job: 'Dentist',
+      hospital: 'Smile Care Clinic',
+      image: 'assets/images/Pic4.png',
       rate: 4.1,
-      beginDate: "8:30am",
-      endDate: "2:30pm",
+      beginDate: '8:30am',
+      endDate: '2:30pm',
     ),
   ];
 
   @override
   void initState() {
     super.initState();
-    filteredDoctors = allDoctors;
-    filteredhospitals = hospitals;
-    filteredpharmacies = pharmacies;
-  }
-
-  void search(String query) {
-    setState(() {
-      isSearching = query.isNotEmpty;
-      filteredDoctors = allDoctors.where((doctor) {
-        return doctor.name.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-      filteredhospitals = hospitals.where((hospital) {
-        return hospital.name.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-      filteredpharmacies = pharmacies.where((pharmacy) {
-        return pharmacy.name.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-    });
+    _filteredDoctors = _allDoctors;
+    _filteredHospitals = _hospitals;
+    _filteredPharmacies = _pharmacies;
+    _medicines = [
+      Medicine(
+        name: 'Liveasy Wellness',
+        image:
+            'assets/images/search/liveasy-wellness-calcium-magnesium-vitamin-d3-zinc-bones-dental-health-bottle-60-tabs-6.1-1733485732.png',
+        description: 'Calcium Magnesium Vitamin',
+        component: 'D3 & Zinc',
+        rate: 4.8,
+        sizes: ['50gm', '100gm', 'Capsul', 'Syrup'],
+        category: 'Eczema',
+        overview:
+            'Liveasy Wellness Calcium Magnesium Vitamin D3 & Zinc is a daily dietary supplement designed to support strong bones, healthy teeth, muscle function, and immunity.',
+        keyBenefits: [
+          'Supports bone strength and density',
+          'Helps maintain healthy teeth',
+          'Supports muscle function and reduces cramps',
+          'Boosts immunity with Vitamin D3 and Zinc',
+        ],
+        sideEffects: [
+          'Mild stomach upset',
+          'Nausea',
+          'Constipation or diarrhea',
+          'Bloating',
+        ],
+      ),
+      Medicine(
+        name: 'Dr.Morepen',
+        image:
+            'assets/images/search/liveasy-wellness-calcium-magnesium-vitamin-d3-zinc-bones-dental-health-bottle-60-tabs-6.1-1733485732q3.png',
+        description: 'Calcium Magnesium Vitamin',
+        component: 'D3 & Zinc',
+        rate: 4.8,
+        sizes: ['50gm', '100gm', 'Capsul'],
+        category: 'Fever',
+        overview:
+            'Dr.Morepen is a trusted health supplement supporting overall wellness with essential vitamins and minerals.',
+        keyBenefits: [
+          'Supports immune system',
+          'Improves energy levels',
+          'Maintains healthy metabolism',
+        ],
+        sideEffects: ['Mild nausea', 'Headache'],
+      ),
+      Medicine(
+        name: 'Pharmeasy Optima',
+        image: 'assets/images/search/lol.png',
+        description: 'Calcium Magnesium Vitamin',
+        component: 'D3 & Zinc',
+        rate: 3.8,
+        sizes: ['100gm', 'Syrup'],
+        category: 'Nasal',
+        overview:
+            'Pharmeasy Optima is a nasal health supplement that helps relieve nasal congestion and supports respiratory health.',
+        keyBenefits: [
+          'Relieves nasal congestion',
+          'Supports respiratory health',
+          'Reduces inflammation',
+        ],
+        sideEffects: ['Dry mouth', 'Drowsiness'],
+      ),
+      Medicine(
+        name: 'Juman Juice',
+        image: 'assets/images/search/21.png',
+        description: 'Calcium Magnesium Vitamin',
+        component: 'D3 & Zinc',
+        rate: 4.8,
+        sizes: ['50gm', 'Syrup'],
+        category: 'Pain',
+        overview:
+            'Juman Juice is a natural pain relief supplement made from organic ingredients to support pain management.',
+        keyBenefits: [
+          'Natural pain relief',
+          'Reduces inflammation',
+          'Supports joint health',
+        ],
+        sideEffects: ['Mild allergic reactions', 'Stomach discomfort'],
+      ),
+    ];
   }
 
   @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _search(String query) {
+    setState(() {
+      _isSearching = query.isNotEmpty;
+      _filteredDoctors = _allDoctors
+          .where((d) => d.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      _filteredHospitals = _hospitals
+          .where((h) => h.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      _filteredPharmacies = _pharmacies
+          .where((p) => p.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+
+  late final List<Medicine> _medicines;
+
+  @override
   Widget build(BuildContext context) {
-    final devheight = MediaQuery.of(context).size.height;
+    final sw = MediaQuery.of(context).size.width;
+    final sh = MediaQuery.of(context).size.height;
+
+    final bool noResults =
+        _isSearching &&
+        _filteredDoctors.isEmpty &&
+        _filteredHospitals.isEmpty &&
+        _filteredPharmacies.isEmpty;
+
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
-        scrolledUnderElevation: 0,
-        centerTitle: true,
-        title: Text(
-          "Find What You need",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-        toolbarHeight: 80,
-        backgroundColor: Colors.white,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: Container(height: 1, color: Colors.grey),
-        ),
-      ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.35),
-                    blurRadius: 5,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: TextField(
-                onChanged: search,
-                controller: searchController,
-                decoration: InputDecoration(
-                  focusColor: Color(0xff0D5FA7),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(color: Color(0xff0D5FA7)),
-                  ),
-                  hintText: "Search...",
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(color: Colors.black87),
-                  ),
-                ),
-              ),
+      appBar: _buildAppBar(sw),
+      // ── Single CustomScrollView — no nested scrollable widgets ──
+      body: CustomScrollView(
+        slivers: [
+          // ── Search bar ───────────────────────────────────────────
+          SliverToBoxAdapter(child: _buildSearchBar(sw, sh)),
+
+          // ── Category shortcuts ───────────────────────────────────
+          SliverToBoxAdapter(child: _buildCategories(sw, sh)),
+
+          // ── Section: Doctors ─────────────────────────────────────
+          if (!_isSearching)
+            SliverToBoxAdapter(child: _sectionTitle('Popular Doctors', sw, sh)),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (_, i) => _buildDoctorTile(_filteredDoctors[i], sw, sh),
+              childCount: _filteredDoctors.length,
             ),
           ),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            MainScaffold(currentIndex: 3, child: Alldoctors()),
-                      ),
-                    );
-                  },
-                  child: alldoctorscategory(
-                    name: "Doctors",
-                    image: "assets/images/search/Maskgroup.png",
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainScaffold(
-                          currentIndex: 3,
-                          child: Allpahramcies(),
-                        ),
-                      ),
-                    );
-                  },
-                  child: alldoctorscategory(
-                    name: "Pharmacies",
-                    image: "assets/images/search/Maskgroup2.png",
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainScaffold(
-                          currentIndex: 3,
-                          child: Allhospitals(),
-                        ),
-                      ),
-                    );
-                  },
-                  child: alldoctorscategory(
-                    name: "Hospitals",
-                    image: "assets/images/search/Maskgroup4.png",
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainScaffold(
-                          currentIndex: 3,
-                          child: Allmedicines(),
-                        ),
-                      ),
-                    );
-                  },
-                  child: alldoctorscategory(
-                    name: "Medicines",
-                    image: "assets/images/search/Maskgroup3.png",
-                  ),
-                ),
-              ],
+          // ── Section: Hospitals ───────────────────────────────────
+          if (!_isSearching)
+            SliverToBoxAdapter(
+              child: _sectionTitle('Popular Hospitals', sw, sh),
+            ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (_, i) => _buildHospitalTile(_filteredHospitals[i], sw, sh),
+              childCount: _filteredHospitals.length,
             ),
           ),
-          if (!isSearching)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Popular Doctors",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+
+          // ── Section: Pharmacies ──────────────────────────────────
+          if (!_isSearching)
+            SliverToBoxAdapter(
+              child: _sectionTitle('Popular Pharmacies', sw, sh),
+            ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (_, i) => _buildPharmacyTile(_filteredPharmacies[i], sw, sh),
+              childCount: _filteredPharmacies.length,
+            ),
+          ),
+
+          // ── Empty state ──────────────────────────────────────────
+          if (noResults) SliverToBoxAdapter(child: _buildEmptyState(sw, sh)),
+
+          // ── Section: Medicines (always shown) ───────────────────
+          SliverToBoxAdapter(
+            child: _sectionTitle('Most Searched Medicines', sw, sh),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: sw * 0.045),
+            sliver: SliverGrid(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: sw * 0.025,
+                mainAxisSpacing: sw * 0.025,
+                childAspectRatio: _medicineCardRatio(sw),
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (_, i) => MedicineCard(medicine: _medicines[i]),
+                childCount: _medicines.length,
               ),
             ),
-
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: filteredDoctors.length,
-            itemBuilder: (context, index) {
-              final doctor = filteredDoctors[index];
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DoctorDetails(
-                          name: doctor.name,
-                          begindate: doctor.beginDate,
-                          enddate: doctor.endDate,
-                          hospital: doctor.hospital,
-                          job: doctor.job,
-                          rate: doctor.rate,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Doctorcard(
-                    devheight: devheight,
-                    doctorimage: Image.asset('assets/images/Pic.png'),
-                    job: doctor.job,
-                    hospital: doctor.hospital,
-                    name: doctor.name,
-                    rate: doctor.rate,
-                    begindate: doctor.beginDate,
-                    enddate: doctor.endDate,
-                  ),
-                ),
-              );
-            },
-          ),
-          if (!isSearching)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Popular Hospitals",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: filteredhospitals.length,
-            itemBuilder: (context, index) {
-              final hospital = filteredhospitals[index];
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Hospitaldetails(
-                          name: hospital.name,
-                          rate: hospital.rating,
-                          opentime: hospital.openTime,
-                          closetime: hospital.closeTime,
-                          devheight: devheight,
-                          category: hospital.category,
-                        ),
-                      ),
-                    );
-                  },
-                  child: HospitalCard(
-                    rate: hospital.rating,
-                    name: hospital.name,
-                    category: hospital.category,
-                    opendate: hospital.openTime,
-                    closedate: hospital.closeTime,
-                  ),
-                ),
-              );
-            },
           ),
 
-          if (!isSearching)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Popular Pharmacies",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: filteredpharmacies.length,
-            itemBuilder: (context, index) {
-              final pharmacy = filteredpharmacies[index];
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PharmacyDetails(
-                          name: pharmacy.name,
-                          rate: pharmacy.rating,
-                          isopen24: pharmacy.is24Hours,
-                          devheight: devheight,
-                        ),
-                      ),
-                    );
-                  },
-                  child: PharmacyCard(
-                    rate: pharmacy.rating,
-                    name: pharmacy.name,
-                    isopen24: true,
-                  ),
-                ),
-              );
-            },
-          ),
-
-          if (isSearching &&
-              filteredDoctors.isEmpty &&
-              filteredhospitals.isEmpty &&
-              filteredpharmacies.isEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Column(
-                children: [
-                  SizedBox(height: 70),
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: Image.asset('assets/images/alldoctors/search.png'),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    "Sorry, no results found",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    "Please try a different search term.",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(height: 70),
-                ],
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Most Searched Medicines",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            child: Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: [
-                SizedBox(
-                  width: (MediaQuery.of(context).size.width - 36 - 10) / 2,
-                  child: MedicineCard(
-                    name: "Liveasy Wellness",
-                    image:
-                        "assets/images/search/liveasy-wellness-calcium-magnesium-vitamin-d3-zinc-bones-dental-health-bottle-60-tabs-6.1-1733485732.png",
-                    rate: 4.8,
-                    description: "Calcium Magnesium Vitamin",
-                    componant: "D3 & Zine",
-                  ),
-                ),
-                SizedBox(
-                  width: (MediaQuery.of(context).size.width - 36 - 10) / 2,
-                  child: MedicineCard(
-                    name: "Dr.Morepen",
-                    image:
-                        "assets/images/search/liveasy-wellness-calcium-magnesium-vitamin-d3-zinc-bones-dental-health-bottle-60-tabs-6.1-1733485732q3.png",
-                    rate: 4.8,
-                    description: "Calcium Magnesium Vitamin",
-                    componant: "D3 & Zine",
-                  ),
-                ),
-                SizedBox(
-                  width: (MediaQuery.of(context).size.width - 36 - 10) / 2,
-                  child: MedicineCard(
-                    name: "Pharmeasy Optima",
-                    image: "assets/images/search/lol.png",
-                    rate: 3.8,
-                    description: "Calcium Magnesium Vitamin",
-                    componant: "D3 & Zine",
-                  ),
-                ),
-                SizedBox(
-                  width: (MediaQuery.of(context).size.width - 36 - 10) / 2,
-                  child: MedicineCard(
-                    name: "Juman Juice",
-                    image: "assets/images/search/21.png",
-                    rate: 4.8,
-                    description: "Calcium Magnesium Vitamin",
-                    componant: "D3 & Zine",
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 30),
+          SliverToBoxAdapter(child: SizedBox(height: sh * 0.04)),
         ],
       ),
     );
   }
+
+  // ── aspect ratio ─────────────────────────────────────────────────
+  // horizontal padding = sw*0.045 each side = sw*0.09 total
+  // gap between cards  = sw*0.025
+  // cardW = (sw - sw*0.09 - sw*0.025) / 2
+  //
+  // card height sections (mirrors medicinecard.dart exactly):
+  //   image SizedBox : cardW * 0.65
+  //   name row       : sw * 0.033 * 1.5  ≈ sw * 0.050
+  //   gap            : sw * 0.008
+  //   description    : sw * 0.026 * 1.5  ≈ sw * 0.039
+  //   gap            : sw * 0.005
+  //   component      : sw * 0.026 * 1.5  ≈ sw * 0.039
+  //   view btn       : sw * 0.025*2 + sw*0.034*1.5 ≈ sw * 0.101
+  //   extra buffer   : sw * 0.03   (spacer + rounding safety)
+  double _medicineCardRatio(double sw) {
+    final cardW = (sw - sw * 0.09 - sw * 0.025) / 2;
+    final cardH =
+        cardW * 0.65 +
+        sw *
+            0.050 // name
+            +
+        sw *
+            0.008 // gap
+            +
+        sw *
+            0.039 // description
+            +
+        sw *
+            0.005 // gap
+            +
+        sw *
+            0.039 // component
+            +
+        sw *
+            0.101 // view button
+            +
+        sw * 0.04; // safety buffer
+    return cardW / cardH;
+  }
+
+  // ── AppBar ───────────────────────────────────────────────────────
+  PreferredSizeWidget _buildAppBar(double sw) => AppBar(
+    surfaceTintColor: Colors.transparent,
+    scrolledUnderElevation: 0,
+    centerTitle: true,
+    title: Text(
+      'Find What You Need',
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: sw * 0.046),
+    ),
+    toolbarHeight: sw * 0.18,
+    backgroundColor: Colors.white,
+    bottom: PreferredSize(
+      preferredSize: const Size.fromHeight(1),
+      child: Container(height: 1, color: Colors.grey.shade300),
+    ),
+  );
+
+  // ── Search bar ───────────────────────────────────────────────────
+  Widget _buildSearchBar(double sw, double sh) => Padding(
+    padding: EdgeInsets.symmetric(horizontal: sw * 0.04, vertical: sh * 0.015),
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(sw * 0.08),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.12),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: _searchController,
+        onChanged: _search,
+        style: TextStyle(fontSize: sw * 0.038),
+        decoration: InputDecoration(
+          hintText: 'Search...',
+          hintStyle: TextStyle(
+            color: Colors.grey.shade400,
+            fontSize: sw * 0.038,
+          ),
+          prefixIcon: Icon(Icons.search, size: sw * 0.055),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(sw * 0.08),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding: EdgeInsets.symmetric(vertical: sh * 0.015),
+        ),
+      ),
+    ),
+  );
+
+  // ── Category row ─────────────────────────────────────────────────
+  Widget _buildCategories(double sw, double sh) {
+    final items = [
+      {
+        'label': 'Doctors',
+        'image': 'assets/images/search/Maskgroup.png',
+        'dest': () => MainScaffold(currentIndex: 3, child: const Alldoctors()),
+      },
+      {
+        'label': 'Pharmacies',
+        'image': 'assets/images/search/Maskgroup2.png',
+        'dest': () =>
+            MainScaffold(currentIndex: 3, child: const Allpahramcies()),
+      },
+      {
+        'label': 'Hospitals',
+        'image': 'assets/images/search/Maskgroup4.png',
+        'dest': () =>
+            MainScaffold(currentIndex: 3, child: const Allhospitals()),
+      },
+      {
+        'label': 'Medicines',
+        'image': 'assets/images/search/Maskgroup3.png',
+        'dest': () =>
+            MainScaffold(currentIndex: 3, child: const Allmedicines()),
+      },
+    ];
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: sw * 0.03),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: items.map((item) {
+          return GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => (item['dest'] as Function)()),
+            ),
+            child: alldoctorscategory(
+              name: item['label'] as String,
+              image: item['image'] as String,
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  // ── Section title ────────────────────────────────────────────────
+  Widget _sectionTitle(String title, double sw, double sh) => Padding(
+    padding: EdgeInsets.fromLTRB(sw * 0.04, sh * 0.018, sw * 0.04, sh * 0.006),
+    child: Text(
+      title,
+      style: TextStyle(fontSize: sw * 0.045, fontWeight: FontWeight.bold),
+    ),
+  );
+
+  // ── Doctor tile ──────────────────────────────────────────────────
+  Widget _buildDoctorTile(Doctor d, double sw, double sh) => Padding(
+    padding: EdgeInsets.symmetric(horizontal: sw * 0.03),
+    child: GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => DoctorDetails(
+            name: d.name,
+            begindate: d.beginDate,
+            enddate: d.endDate,
+            hospital: d.hospital,
+            job: d.job,
+            rate: d.rate,
+          ),
+        ),
+      ),
+      child: Doctorcard(
+        devheight: sh,
+        doctorimage: Image.asset('assets/images/Pic.png'),
+        job: d.job,
+        hospital: d.hospital,
+        name: d.name,
+        rate: d.rate,
+        begindate: d.beginDate,
+        enddate: d.endDate,
+      ),
+    ),
+  );
+
+  // ── Hospital tile ────────────────────────────────────────────────
+  Widget _buildHospitalTile(Hospital h, double sw, double sh) => Padding(
+    padding: EdgeInsets.symmetric(horizontal: sw * 0.03),
+    child: GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => Hospitaldetails(
+            name: h.name,
+            rate: h.rating,
+            opentime: h.openTime,
+            closetime: h.closeTime,
+            devheight: sh,
+            category: h.category,
+          ),
+        ),
+      ),
+      child: HospitalCard(
+        rate: h.rating,
+        name: h.name,
+        category: h.category,
+        opendate: h.openTime,
+        closedate: h.closeTime,
+      ),
+    ),
+  );
+
+  // ── Pharmacy tile ────────────────────────────────────────────────
+  Widget _buildPharmacyTile(Pharmacy p, double sw, double sh) => Padding(
+    padding: EdgeInsets.symmetric(horizontal: sw * 0.03),
+    child: GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => PharmacyDetails(
+            name: p.name,
+            rate: p.rating,
+            isopen24: p.is24Hours,
+            devheight: sh,
+          ),
+        ),
+      ),
+      child: PharmacyCard(rate: p.rating, name: p.name, isopen24: p.is24Hours),
+    ),
+  );
+
+  // ── Empty state ──────────────────────────────────────────────────
+  Widget _buildEmptyState(double sw, double sh) => Padding(
+    padding: EdgeInsets.symmetric(vertical: sh * 0.08),
+    child: Column(
+      children: [
+        SizedBox(
+          height: sw * 0.12,
+          width: sw * 0.12,
+          child: Image.asset('assets/images/alldoctors/search.png'),
+        ),
+        SizedBox(height: sh * 0.02),
+        Text(
+          'Sorry, no results found',
+          style: TextStyle(fontSize: sw * 0.045, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: sh * 0.01),
+        Text(
+          'Please try a different search term.',
+          style: TextStyle(fontSize: sw * 0.038, color: Colors.grey),
+        ),
+      ],
+    ),
+  );
 }

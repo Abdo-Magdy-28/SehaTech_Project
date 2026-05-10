@@ -12,11 +12,11 @@ class Allmedicines extends StatefulWidget {
 }
 
 class _AllmedicinesState extends State<Allmedicines> {
-  TextEditingController searchController = TextEditingController();
-  bool isSearching = false;
-  String? selectedCategory;
+  final TextEditingController _searchController = TextEditingController();
+  bool _isSearching = false;
+  String? _selectedCategory;
 
-  final List<Map<String, dynamic>> categories = [
+  final List<Map<String, dynamic>> _categories = [
     {'name': 'Eczema', 'icon': Icons.healing},
     {'name': 'Nasal', 'icon': Icons.air},
     {'name': 'Fever', 'icon': Icons.thermostat},
@@ -25,7 +25,7 @@ class _AllmedicinesState extends State<Allmedicines> {
     {'name': 'Pain', 'icon': Icons.medical_services},
   ];
 
-  final List<Medicine> allMedicines = [
+  final List<Medicine> _allMedicines = [
     Medicine(
       name: 'Liveasy Wellness',
       image:
@@ -36,7 +36,7 @@ class _AllmedicinesState extends State<Allmedicines> {
       sizes: ['50gm', '100gm', 'Capsul', 'Syrup'],
       category: 'Eczema',
       overview:
-          'Liveasy Wellness Calcium Magnesium Vitamin D3 & Zinc is a daily dietary supplement designed to support strong bones, healthy teeth, muscle function, and immunity. It helps fill nutritional gaps and supports overall wellness, especially for people with low calcium or vitamin D intake.',
+          'Liveasy Wellness Calcium Magnesium Vitamin D3 & Zinc is a daily dietary supplement designed to support strong bones, healthy teeth, muscle function, and immunity.',
       keyBenefits: [
         'Supports bone strength and density',
         'Helps maintain healthy teeth',
@@ -104,40 +104,84 @@ class _AllmedicinesState extends State<Allmedicines> {
     ),
   ];
 
-  List<Medicine> filteredMedicines = [];
+  List<Medicine> _filteredMedicines = [];
 
   @override
   void initState() {
     super.initState();
-    filteredMedicines = allMedicines;
+    _filteredMedicines = _allMedicines;
   }
 
-  void search(String query) {
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _search(String query) {
     setState(() {
-      isSearching = query.isNotEmpty;
-      filteredMedicines = allMedicines.where((medicine) {
-        final matchesQuery = medicine.name.toLowerCase().contains(
-          query.toLowerCase(),
-        );
+      _isSearching = query.isNotEmpty;
+      _filteredMedicines = _allMedicines.where((m) {
+        final matchesQuery = m.name.toLowerCase().contains(query.toLowerCase());
         final matchesCategory =
-            selectedCategory == null || medicine.category == selectedCategory;
+            _selectedCategory == null || m.category == _selectedCategory;
         return matchesQuery && matchesCategory;
       }).toList();
     });
   }
 
-  void filterByCategory(String? category) {
+  void _filterByCategory(String? category) {
     setState(() {
-      selectedCategory = category;
-      filteredMedicines = allMedicines.where((medicine) {
-        return category == null || medicine.category == category;
+      _selectedCategory = category;
+      _filteredMedicines = _allMedicines.where((m) {
+        return category == null || m.category == category;
       }).toList();
     });
   }
 
+  // horizontal padding = sw*0.03 each side = sw*0.06 total
+  // gap between cards  = sw*0.025
+  // cardW = (sw - sw*0.06 - sw*0.025) / 2
+  //
+  // card height sections (mirrors medicinecard.dart exactly):
+  //   image SizedBox : cardW * 0.65
+  //   name row       : sw * 0.033 * 1.5  ≈ sw * 0.050
+  //   gap            : sw * 0.008
+  //   description    : sw * 0.026 * 1.5  ≈ sw * 0.039
+  //   gap            : sw * 0.005
+  //   component      : sw * 0.026 * 1.5  ≈ sw * 0.039
+  //   view btn       : sw * 0.025*2 + sw*0.034*1.5 ≈ sw * 0.101
+  //   extra buffer   : sw * 0.04   (spacer + rounding safety)
+  double _cardAspectRatio(double sw) {
+    final cardW = (sw - sw * 0.06 - sw * 0.025) / 2;
+    final cardH =
+        cardW * 0.65 +
+        sw *
+            0.050 // name
+            +
+        sw *
+            0.008 // gap
+            +
+        sw *
+            0.039 // description
+            +
+        sw *
+            0.005 // gap
+            +
+        sw *
+            0.039 // component
+            +
+        sw *
+            0.101 // view button
+            +
+        sw * 0.04; // safety buffer
+    return cardW / cardH;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final devwidth = MediaQuery.of(context).size.width;
+    final sw = MediaQuery.of(context).size.width;
+    final sh = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -145,11 +189,11 @@ class _AllmedicinesState extends State<Allmedicines> {
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
         centerTitle: true,
-        title: const Text(
-          "Medicine",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          'Medicine',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: sw * 0.048),
         ),
-        toolbarHeight: 80,
+        toolbarHeight: sw * 0.18,
         backgroundColor: Colors.white,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
@@ -157,176 +201,188 @@ class _AllmedicinesState extends State<Allmedicines> {
         ),
       ),
       body: ListView(
+        padding: EdgeInsets.zero,
         children: [
-          // Search bar
+          // ── Search bar ─────────────────────────────────────────────
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.symmetric(
+              horizontal: sw * 0.04,
+              vertical: sh * 0.015,
+            ),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(sw * 0.08),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.15),
-                    blurRadius: 5,
-                    offset: const Offset(0, 4),
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
               child: TextField(
-                onChanged: search,
-                controller: searchController,
+                controller: _searchController,
+                onChanged: _search,
+                style: TextStyle(fontSize: sw * 0.038),
                 decoration: InputDecoration(
-                  focusColor: const Color(0xff0D5FA7),
+                  hintText: 'Search...',
+                  hintStyle: TextStyle(
+                    color: Colors.grey.shade400,
+                    fontSize: sw * 0.038,
+                  ),
+                  prefixIcon: Icon(Icons.search, size: sw * 0.055),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(sw * 0.08),
                     borderSide: const BorderSide(color: Color(0xff0D5FA7)),
                   ),
-                  hintText: "Search...",
-                  prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: const BorderSide(color: Colors.black87),
+                    borderRadius: BorderRadius.circular(sw * 0.08),
+                    borderSide: BorderSide.none,
                   ),
+                  contentPadding: EdgeInsets.symmetric(vertical: sh * 0.015),
                 ),
               ),
             ),
           ),
 
-          // Category chips
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: SingleChildScrollView(
+          // ── Category chips ─────────────────────────────────────────
+          SizedBox(
+            height: sw * 0.22,
+            child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              child: Row(
-                children: categories.map((category) {
-                  final isSelected = selectedCategory == category['name'];
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
-                    child: GestureDetector(
-                      onTap: () => filterByCategory(
-                        isSelected ? null : category['name'],
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: devwidth * 0.14,
-                            height: devwidth * 0.14,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: isSelected
-                                  ? const Color(0xff2260FF)
-                                  : const Color(0xffEEF2FF),
-                            ),
-                            child: Center(
-                              child: Icon(
-                                category['icon'] as IconData,
-                                color: isSelected
-                                    ? Colors.white
-                                    : const Color(0xff2260FF),
-                                size: 28,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            category['name'],
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontFamily: 'Cairo',
-                              fontWeight: FontWeight.w600,
-                              color: isSelected
-                                  ? const Color(0xff2260FF)
-                                  : const Color(0xff33384B),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          // Most Searched Medicines title
-          if (!isSearching)
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-              child: Text(
-                "Most Searched Medicines",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-
-          // Medicine grid
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Wrap(
-              spacing: 10, // horizontal gap
-              runSpacing: 10, // vertical gap
-              children: filteredMedicines.map((medicine) {
+              padding: EdgeInsets.symmetric(horizontal: sw * 0.03),
+              itemCount: _categories.length,
+              separatorBuilder: (_, __) => SizedBox(width: sw * 0.025),
+              itemBuilder: (_, i) {
+                final cat = _categories[i];
+                final sel = _selectedCategory == cat['name'];
                 return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainScaffold(
-                          currentIndex: 3,
-                          child: MedicineDetails(medicine: medicine),
+                  onTap: () => _filterByCategory(sel ? null : cat['name']),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: sw * 0.14,
+                        height: sw * 0.14,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(sw * 0.03),
+                          color: sel
+                              ? const Color(0xff2260FF)
+                              : const Color(0xffEEF2FF),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            cat['icon'] as IconData,
+                            color: sel ? Colors.white : const Color(0xff2260FF),
+                            size: sw * 0.065,
+                          ),
                         ),
                       ),
-                    );
-                  },
-                  child: MedicineCard(
-                    name: medicine.name,
-                    image: medicine.image,
-                    description: medicine.description,
-                    componant: medicine.component,
-                    rate: medicine.rate,
+                      SizedBox(height: sw * 0.015),
+                      Text(
+                        cat['name'],
+                        style: TextStyle(
+                          fontSize: sw * 0.028,
+                          fontFamily: 'Cairo',
+                          fontWeight: FontWeight.w600,
+                          color: sel
+                              ? const Color(0xff2260FF)
+                              : const Color(0xff33384B),
+                        ),
+                      ),
+                    ],
                   ),
                 );
-              }).toList(),
+              },
             ),
           ),
-          // No results
-          if (isSearching && filteredMedicines.isEmpty)
+
+          SizedBox(height: sh * 0.015),
+
+          // ── Section title ──────────────────────────────────────────
+          if (!_isSearching)
             Padding(
-              padding: const EdgeInsets.only(top: 40),
+              padding: EdgeInsets.symmetric(
+                horizontal: sw * 0.03,
+                vertical: sh * 0.008,
+              ),
+              child: Text(
+                'Most Searched Medicines',
+                style: TextStyle(
+                  fontSize: sw * 0.045,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+          // ── 2-column Medicine Grid ─────────────────────────────────
+          if (_filteredMedicines.isNotEmpty)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: sw * 0.03),
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _filteredMedicines.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: sw * 0.025,
+                  mainAxisSpacing: sw * 0.025,
+                  childAspectRatio: _cardAspectRatio(sw),
+                ),
+                itemBuilder: (_, i) {
+                  final med = _filteredMedicines[i];
+                  return GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => MainScaffold(
+                          currentIndex: 3,
+                          child: MedicineDetails(medicine: med),
+                        ),
+                      ),
+                    ),
+                    child: MedicineCard(medicine: med),
+                  );
+                },
+              ),
+            ),
+
+          // ── Empty state ────────────────────────────────────────────
+          if (_isSearching && _filteredMedicines.isEmpty)
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: sh * 0.1),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 60),
                   SizedBox(
-                    height: 40,
-                    width: 40,
+                    height: sw * 0.12,
+                    width: sw * 0.12,
                     child: Image.asset('assets/images/alldoctors/search.png'),
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    "Sorry, no results found",
+                  SizedBox(height: sh * 0.02),
+                  Text(
+                    'Sorry, no results found',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: sw * 0.045,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    "Please try a different search term.",
+                  SizedBox(height: sh * 0.01),
+                  Text(
+                    'Please try a different search term.',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: sw * 0.038,
                       color: Colors.grey,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 60),
                 ],
               ),
             ),
 
-          const SizedBox(height: 30),
+          SizedBox(height: sh * 0.04),
         ],
       ),
     );
