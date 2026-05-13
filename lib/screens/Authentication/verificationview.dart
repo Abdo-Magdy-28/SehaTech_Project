@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grad_project/cubit/Authcubit.dart';
+import 'package:grad_project/cubit/Authentication/Authcubit.dart';
 import 'package:grad_project/screens/Authentication/changepassword.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:grad_project/cubit/Authcubit.dart';
-import 'package:grad_project/cubit/Authstates.dart';
+import 'package:grad_project/cubit/Authentication/Authcubit.dart';
+import 'package:grad_project/cubit/Authentication/Authstates.dart';
 
 class Verificationview extends StatefulWidget {
   const Verificationview({super.key, required this.email});

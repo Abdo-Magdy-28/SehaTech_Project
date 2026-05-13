@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:grad_project/cubit/Authcubit.dart';
+import 'package:grad_project/cubit/Authentication/Authcubit.dart';
 import 'package:grad_project/screens/Authentication/signin.dart';
 import 'package:grad_project/screens/Authentication/signupform.dart';
 import 'package:grad_project/widgets/carousel_card.dart';

@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:grad_project/cubit/Authcubit.dart';
-import 'package:grad_project/cubit/Authstates.dart';
+import 'package:grad_project/cubit/Authentication/Authcubit.dart';
+import 'package:grad_project/cubit/Authentication/Authstates.dart';
 import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';

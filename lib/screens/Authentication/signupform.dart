@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grad_project/cubit/Authcubit.dart';
-import 'package:grad_project/cubit/Authstates.dart';
+import 'package:grad_project/cubit/Authentication/Authcubit.dart';
+import 'package:grad_project/cubit/Authentication/Authstates.dart';
 import 'package:grad_project/models/user.dart';
 import 'package:grad_project/screens/Authentication/signin.dart';
 import 'package:grad_project/screens/Authentication/signupscreen2.dart';

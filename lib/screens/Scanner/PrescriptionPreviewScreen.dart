@@ -1,5 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/Prescription%20Scan/precriptionscan_cubit.dart';
+import 'package:grad_project/screens/Scanner/Prescriptionresults.dart';
 
 class PrescriptionPreviewScreen extends StatelessWidget {
   final File imageFile;
@@ -30,10 +33,23 @@ class PrescriptionPreviewScreen extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        //  SEND TO YOUR PRESCRIPTION MODEL HERE
-                        print("Send: ${imageFile.path}");
+                        // Start the analysis
+                        context.read<PrescriptionCubit>().analyzePrescription(
+                          imageFile,
+                        );
 
-                        Navigator.pop(context);
+                        // Navigate and reuse the SAME cubit
+                        if (context.mounted) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => BlocProvider.value(
+                                value: context.read<PrescriptionCubit>(),
+                                child: const PrescriptionResultScreen(),
+                              ),
+                            ),
+                          );
+                        }
                       },
                       child: const Text("Use Photo"),
                     ),

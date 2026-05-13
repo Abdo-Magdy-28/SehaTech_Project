@@ -1,7 +1,11 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/Prescription%20Scan/precriptionscan_cubit.dart';
 import 'package:grad_project/screens/Scanner/PrescriptionPreviewScreen.dart';
+import 'package:grad_project/services/prescriptionscan_service.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Prescriptionscannerscreen extends StatefulWidget {
@@ -46,7 +50,20 @@ class _ScannerscreenState extends State<Prescriptionscannerscreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => PrescriptionPreviewScreen(imageFile: File(image.path)),
+        builder: (_) => BlocProvider(
+          create: (_) => PrescriptionCubit(
+            PrescriptionService(
+              Dio(
+                BaseOptions(
+                  baseUrl:
+                      "https://8080-dep-01kp3cxxfzs0chgwd41w54zmem-d.cloudspaces.litng.ai",
+                ),
+              ),
+            ),
+          ),
+
+          child: PrescriptionPreviewScreen(imageFile: File(image.path)),
+        ),
       ),
     );
   }
@@ -58,8 +75,20 @@ class _ScannerscreenState extends State<Prescriptionscannerscreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) =>
-              PrescriptionPreviewScreen(imageFile: File(picked.path)),
+          builder: (_) => BlocProvider(
+            create: (_) => PrescriptionCubit(
+              PrescriptionService(
+                Dio(
+                  BaseOptions(
+                    baseUrl:
+                        "https://8080-dep-01kp3cxxfzs0chgwd41w54zmem-d.cloudspaces.litng.ai",
+                  ),
+                ),
+              ),
+            ),
+
+            child: PrescriptionPreviewScreen(imageFile: File(picked.path)),
+          ),
         ),
       );
     }

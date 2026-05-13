@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grad_project/cubit/Authcubit.dart';
+import 'package:grad_project/cubit/Authentication/Authcubit.dart';
 import 'package:grad_project/firebase_options.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Homepage.dart';

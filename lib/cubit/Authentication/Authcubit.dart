@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grad_project/cubit/Authstates.dart';
+import 'package:grad_project/cubit/Authentication/Authstates.dart';
 import 'package:grad_project/models/user.dart';
 import 'package:grad_project/services/Authservice.dart';
 
