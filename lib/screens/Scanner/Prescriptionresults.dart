@@ -38,7 +38,13 @@ class _LoadingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(gradient: _kBgGradient),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFF0c5adb), Color(0xFF0a4dbb), Color(0xFF083b8f)],
+        ),
+      ),
       child: const Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -101,107 +107,186 @@ class _SuccessView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List medications = data["medications"] ?? [];
-    final screenWidth = MediaQuery.of(context).size.width;
+    final sw = MediaQuery.of(context).size.width;
+    final sh = MediaQuery.of(context).size.height;
 
-    return Column(
+    return Stack(
       children: [
-        // ── Hero Header ──────────────────────────────────────────────────────
-        _HeroHeader(data: data),
+        Positioned(
+          child: Image.asset(
+            "assets/images/scan/bg.png",
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+        ),
 
-        // ── Scrollable Body ──────────────────────────────────────────────────
-        Expanded(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: EdgeInsets.symmetric(
-              horizontal: screenWidth * 0.045,
-              vertical: 20,
+        Positioned(
+          top: sh * 0.3,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(120)),
             ),
+
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Medications heading + count badge
+                SizedBox(height: sh * 0.12),
+
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Text(
-                      "Medications",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF1A237E),
-                        letterSpacing: 0.3,
-                      ),
+                    RowCard(
+                      sw: sw,
+                      sh: sh,
+                      label: "Doctor Name",
+                      value: data["doctor_name"] ?? "Not Found",
                     ),
-                    const SizedBox(width: 10),
-                    _CountBadge(count: medications.length),
+
+                    RowCard(
+                      sw: sw,
+                      sh: sh,
+                      label: "Patient Name",
+                      value: data["patient_name"] ?? "Not Found",
+                    ),
+
+                    RowCard(
+                      sw: sw,
+                      sh: sh,
+                      label: "Date",
+                      value: data["patient_date"] ?? "Not Found",
+                    ),
                   ],
                 ),
 
-                const SizedBox(height: 14),
-
-                // Medication cards
-                ...medications.asMap().entries.map(
-                  (e) => _MedicationCard(med: e.value, index: e.key),
-                ),
-
-                // General notes
-                if (data["general_notes"] != null) ...[
-                  const SizedBox(height: 6),
-                  _NotesCard(notes: data["general_notes"]),
-                ],
-
-                // Confidence + Unreadable
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _ConfidenceChip(
-                        confidence: data["confidence"] ?? "UNKNOWN",
-                      ),
+                SizedBox(height: sh * 0.02),
+                Expanded(
+                  child: Container(
+                    width: sw * 0.95,
+                    decoration: BoxDecoration(
+                      color: Color(0xff0c5bdc),
+                      borderRadius: BorderRadius.circular(24),
                     ),
-                    if (data["unreadable_parts"] != null) ...[
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: _SmallInfoTile(
-                          icon: Icons.visibility_off_rounded,
-                          label: "Unreadable",
-                          value: data["unreadable_parts"],
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
 
-                const SizedBox(height: 28),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(height: sh * 0.015),
+                          Text(
+                            "Medications",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: sw * 0.05,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Cairo',
+                            ),
+                          ),
+                          SizedBox(height: sh * 0.01),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.circle,
+                                color: Color(0xff2cc55d),
+                                size: sw * 0.035,
+                              ),
 
-                // Back button
-                SizedBox(
-                  width: double.infinity,
-                  height: 52,
-                  child: ElevatedButton(
-                    onPressed: () =>
-                        Navigator.popUntil(context, (r) => r.isFirst),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1565C0),
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    child: const Text(
-                      "Back To Scanning",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.4,
+                              SizedBox(width: sw * 0.015),
+
+                              Text(
+                                "${medications.length} Founded",
+                                style: TextStyle(color: Color(0xffb3c4df)),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: sh * 0.02),
+
+                          if (medications.isEmpty)
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                vertical: sh * 0.02,
+                              ),
+                              child: Text(
+                                "No medications found",
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: sw * 0.04,
+                                ),
+                              ),
+                            )
+                          else
+                            ...medications.asMap().entries.map(
+                              (e) => PrescriptionCard(
+                                sw: sw,
+                                sh: sh,
+                                medication: e.value,
+                              ),
+                            ),
+                          SizedBox(height: sh * 0.02),
+                          SizedBox(
+                            width: sw * 0.8,
+                            height: sh * 0.065,
+
+                            child: ElevatedButton(
+                              onPressed: () =>
+                                  Navigator.popUntil(context, (r) => r.isFirst),
+
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+
+                                side: BorderSide(
+                                  color: Colors.white,
+                                  width: 1.5,
+                                ),
+
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                              ),
+
+                              child: Text(
+                                "Back To Scanning",
+                                style: TextStyle(
+                                  fontSize: sw * 0.045,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: sh * 0.04),
+                        ],
                       ),
                     ),
                   ),
                 ),
-
-                const SizedBox(height: 20),
               ],
             ),
+          ),
+        ),
+        Positioned(
+          left: sw * 0.075,
+          child: SizedBox(
+            width: sw * 0.8,
+            height: sh * 0.5,
+            child: Image.asset("assets/images/scan/Medicine-bro 1.png"),
+          ),
+        ),
+        Positioned(
+          top: sh * 0.05,
+          left: sw * 0.035,
+
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
           ),
         ),
       ],
@@ -209,154 +294,211 @@ class _SuccessView extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Hero Header  (blue gradient with doctor illustration area + info chips)
-// ─────────────────────────────────────────────────────────────────────────────
+class PrescriptionCard extends StatelessWidget {
+  const PrescriptionCard({
+    super.key,
+    required this.sw,
+    required this.sh,
+    required this.medication,
+  });
 
-class _HeroHeader extends StatelessWidget {
-  final dynamic data;
-  const _HeroHeader({required this.data});
-
+  final double sw;
+  final double sh;
+  final dynamic medication;
   @override
   Widget build(BuildContext context) {
-    final topPad = MediaQuery.of(context).padding.top;
-
     return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: _kBgGradient,
+      width: sw * 0.9,
+      margin: EdgeInsets.only(bottom: sh * 0.015),
+
+      decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(32),
-          bottomRight: Radius.circular(32),
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
+          bottomLeft: Radius.circular(24),
+          bottomRight: Radius.circular(24),
         ),
       ),
+
       child: Column(
         children: [
-          SizedBox(height: topPad + 4),
-
-          // AppBar row
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: Colors.white,
-                    size: 20,
-                  ),
+          SizedBox(height: sh * 0.02),
+          Row(
+            children: [
+              SizedBox(width: sw * 0.05),
+              Text(
+                "Medication : ",
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontSize: sw * 0.04,
+                  fontWeight: FontWeight.bold,
                 ),
-                const Expanded(
-                  child: Text(
-                    "Prescription",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 48), // balance the back button
-              ],
-            ),
+              ),
+              Text(
+                "${medication["name"]}",
+                style: TextStyle(color: Colors.black87, fontSize: sw * 0.04),
+              ),
+            ],
           ),
-
-          const SizedBox(height: 10),
-
-          // Illustration placeholder (doctor icon)
-          Container(
-            width: 88,
-            height: 88,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.18),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.medical_services_rounded,
-              color: Colors.white,
-              size: 44,
-            ),
+          Text(
+            "--------------------------------------------------",
+            style: TextStyle(color: Color(0xffcecece)),
           ),
-
-          const SizedBox(height: 16),
-
-          // Info chips row
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: _InfoChip(
-                    label: "Doctor Name",
-                    value: data["doctor_name"] ?? "Not Founded",
-                  ),
+          Row(
+            children: [
+              SizedBox(width: sw * 0.05),
+              Text(
+                "Dosage : ",
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontSize: sw * 0.04,
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _InfoChip(
-                    label: "Patient Name",
-                    value: data["patient_name"] ?? "Not Founded",
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _InfoChip(
-                    label: "Date",
-                    value: data["patient_date"] ?? "Not Founded",
-                  ),
-                ),
-              ],
-            ),
+              ),
+              Text(
+                "${medication["dosage"]}",
+                style: TextStyle(color: Colors.black87, fontSize: sw * 0.04),
+              ),
+            ],
           ),
+          Text(
+            "--------------------------------------------------",
+            style: TextStyle(color: Color(0xffcecece)),
+          ),
+          Row(
+            children: [
+              SizedBox(width: sw * 0.05),
+              Text(
+                "Frequency : ",
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontSize: sw * 0.04,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "${medication["frequency"]}",
+                style: TextStyle(color: Colors.black87, fontSize: sw * 0.04),
+              ),
+            ],
+          ),
+          Text(
+            "--------------------------------------------------",
+            style: TextStyle(color: Color(0xffcecece)),
+          ),
+          Row(
+            children: [
+              SizedBox(width: sw * 0.05),
+              Text(
+                "Duration : ",
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontSize: sw * 0.04,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "${medication["duration"]}",
+                style: TextStyle(color: Colors.black87, fontSize: sw * 0.04),
+              ),
+            ],
+          ),
+          SizedBox(height: sh * 0.02),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: sh * 0.15,
+                height: sh * 0.005,
+                decoration: BoxDecoration(
+                  color: Color(0XFF0d61ec),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
 
-          const SizedBox(height: 20),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: sw * 0.03),
+                child: Text(
+                  "Notes",
+                  style: TextStyle(
+                    color: Color(0xff707070),
+                    fontSize: sw * 0.04,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+
+              Container(
+                width: sh * 0.15,
+                height: sh * 0.005,
+                decoration: BoxDecoration(
+                  color: Color(0XFF0d61ec),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ],
+          ),
+          Text(
+            "${medication["notes"]}",
+            style: TextStyle(color: Color(0xff707070)),
+          ),
+          SizedBox(height: sh * 0.02),
         ],
       ),
     );
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Chips & small widgets
-// ─────────────────────────────────────────────────────────────────────────────
+class RowCard extends StatelessWidget {
+  const RowCard({
+    super.key,
+    required this.sw,
+    required this.sh,
+    required this.label,
+    required this.value,
+  });
 
-class _InfoChip extends StatelessWidget {
+  final double sw;
+  final double sh;
   final String label;
   final String value;
-  const _InfoChip({required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      width: sw * 0.315,
+      height: sh * 0.07,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.25)),
+        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFF0c5adb), Color(0xFF0a4dbb), Color(0xFF083b8f)],
+        ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             label,
-            style: const TextStyle(
-              color: Colors.white70,
-              fontSize: 10,
-              fontWeight: FontWeight.w500,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: sw * 0.03,
+              fontWeight: FontWeight.w600,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: sh * 0.005),
           Text(
             value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color(0xffc0c8d5),
+              fontSize: sw * 0.03,
+              fontWeight: FontWeight.w600,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -366,412 +508,3 @@ class _InfoChip extends StatelessWidget {
     );
   }
 }
-
-class _CountBadge extends StatelessWidget {
-  final int count;
-  const _CountBadge({required this.count});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1565C0).withOpacity(0.12),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 7,
-            height: 7,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xFF1565C0),
-            ),
-          ),
-          const SizedBox(width: 5),
-          Text(
-            "$count founded",
-            style: const TextStyle(
-              color: Color(0xFF1565C0),
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Medication Card
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _MedicationCard extends StatelessWidget {
-  final dynamic med;
-  final int index;
-  const _MedicationCard({required this.med, required this.index});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF1565C0).withOpacity(0.07),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Card header
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: const BoxDecoration(
-              color: Color(0xFFE8F0FE),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1565C0),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "${index + 1}",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    med["name"] ?? "Unknown",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF1A237E),
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 3,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1565C0),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    med["dosage"] ?? "-",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Card body
-          Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              children: [
-                _MedRow(
-                  icon: Icons.repeat_rounded,
-                  label: "Frequency",
-                  value: med["frequency"],
-                ),
-                const SizedBox(height: 8),
-                _MedRow(
-                  icon: Icons.access_time_rounded,
-                  label: "Duration",
-                  value: med["duration"],
-                ),
-                if (med["notes"] != null &&
-                    med["notes"].toString().isNotEmpty) ...[
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(
-                      height: 1,
-                      color: Color(0xFFE0E0E0),
-                      thickness: 1,
-                    ),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(
-                        Icons.info_outline_rounded,
-                        size: 15,
-                        color: Color(0xFF1565C0),
-                      ),
-                      const SizedBox(width: 6),
-                      const Text(
-                        "Notes  ",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF1565C0),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          med["notes"] ?? "-",
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF555555),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MedRow extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final dynamic value;
-  const _MedRow({required this.icon, required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, size: 15, color: const Color(0xFF90A4AE)),
-        const SizedBox(width: 6),
-        Text(
-          "$label : ",
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 13,
-            color: Color(0xFF455A64),
-          ),
-        ),
-        Expanded(
-          child: Text(
-            value?.toString() ?? "Unspecified",
-            style: TextStyle(
-              fontSize: 13,
-              color: value != null
-                  ? const Color(0xFF263238)
-                  : const Color(0xFFB0BEC5),
-              fontStyle: value == null ? FontStyle.italic : FontStyle.normal,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Notes Card
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _NotesCard extends StatelessWidget {
-  final String notes;
-  const _NotesCard({required this.notes});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFF9C4),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFF9A825).withOpacity(0.5)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Icon(
-            Icons.sticky_note_2_rounded,
-            color: Color(0xFFF9A825),
-            size: 20,
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "General Notes",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13,
-                    color: Color(0xFFF57F17),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  notes,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: Color(0xFF5D4037),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Confidence chip
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _ConfidenceChip extends StatelessWidget {
-  final String confidence;
-  const _ConfidenceChip({required this.confidence});
-
-  Color get _color {
-    switch (confidence.toUpperCase()) {
-      case "HIGH":
-        return const Color(0xFF2E7D32);
-      case "MEDIUM":
-        return const Color(0xFFE65100);
-      default:
-        return const Color(0xFFC62828);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(
-        color: _color.withOpacity(0.09),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _color.withOpacity(0.3)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.verified_rounded, color: _color, size: 16),
-          const SizedBox(width: 6),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "OCR Confidence",
-                style: TextStyle(
-                  color: _color,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Text(
-                confidence,
-                style: TextStyle(
-                  color: _color,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SmallInfoTile extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String value;
-  const _SmallInfoTile({
-    required this.icon,
-    required this.label,
-    required this.value,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFCE4EC),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE91E63).withOpacity(0.2)),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: const Color(0xFFAD1457), size: 16),
-          const SizedBox(width: 6),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: const TextStyle(
-                    color: Color(0xFFAD1457),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  value,
-                  style: const TextStyle(
-                    color: Color(0xFF880E4F),
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Shared gradient
-// ─────────────────────────────────────────────────────────────────────────────
-
-const _kBgGradient = LinearGradient(
-  begin: Alignment.topLeft,
-  end: Alignment.bottomRight,
-  colors: [Color(0xFF1565C0), Color(0xFF1E88E5), Color(0xFF42A5F5)],
-);
