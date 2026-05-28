@@ -1,7 +1,12 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/Medicine%20Scan/medicinescan_cubit.dart';
+import 'package:grad_project/screens/Scanner/MedicinePreviewScreen.dart';
 import 'package:grad_project/screens/Scanner/PrescriptionPreviewScreen.dart';
+import 'package:grad_project/services/medicinescan_service.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Medicinescanner extends StatefulWidget {
@@ -46,7 +51,11 @@ class _ScannerscreenState extends State<Medicinescanner> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => PrescriptionPreviewScreen(imageFile: File(image.path)),
+        builder: (_) => BlocProvider(
+          create: (_) =>
+              MedicineBoxCubit(medicineBoxService: MedicineBoxService()),
+          child: MedicinePreviewScreen(imageFile: File(image.path)),
+        ),
       ),
     );
   }
