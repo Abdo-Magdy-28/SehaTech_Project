@@ -25,7 +25,13 @@ class SearchService {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> body = response.data;
-        final List<dynamic> doctorsList = body['data']['doctors'];
+        final data = body['data'];
+
+        if (data == null || data['doctors'] == null) {
+          return [];
+        }
+
+        final List<dynamic> doctorsList = data['doctors'];
         return doctorsList.map((item) => Doctor.fromJson(item)).toList();
       } else {
         throw Exception('Failed to search doctors');
