@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class Medicineremindercard extends StatelessWidget {
   const Medicineremindercard({
@@ -108,7 +109,7 @@ class missed extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          "Missed",
+          S.of(context).missed,
           style: TextStyle(
             fontFamily: 'Cairo',
             fontWeight: FontWeight.w500,
@@ -138,7 +139,7 @@ class upcoming extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          "Upcoming",
+          S.of(context).Upcoming,
           style: TextStyle(
             fontFamily: 'Cairo',
             fontWeight: FontWeight.w500,
@@ -168,7 +169,7 @@ class taken extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          "Taken",
+          S.of(context).taken,
           style: TextStyle(
             fontFamily: 'Cairo',
             fontWeight: FontWeight.w500,

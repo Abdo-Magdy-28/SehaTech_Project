@@ -20,7 +20,6 @@
   "reminderTime": "09:30 صباحاً",
   "drops": "نقطتان",
   "everyTwoHours": "كل ساعتين",
-  "missed": "فائت",
   "importantTopics": "المواضيع المهمة",
   "banha":"بنها",
   "qalubia":"القليوبية",
@@ -43,5 +42,29 @@
   "getRemindersPills": "احصل على تذكيرات\nلحبوبك.",
   "findAboutMedicine": "تعرف على\nأدويتك.",
   "setRemindersTime": "اضبط التذكيرات لأوقات\nمختلفة.",
-  "keepTrackMedicine": "تتبع ما\nتتناوله."
+  "keepTrackMedicine": "تتبع ما\nتتناوله.",
+  "UpcomingReminder":"تذكير قادم",
+  "MarkasTaken": "تم التناول",
+  "RemindLater": "ذكرني لاحقاً",
+  "weeklyStreak": "السلسلة الأسبوعية",
+  "missedThisWeek": "فاتك {count} هذا الأسبوع",
+  "@missedThisWeek": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "weeklyPercentage": "{percent}%",
+  "@weeklyPercentage": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "viewWeeklyReport": "عرض التقرير الأسبوعي",
+  "TodaysSchedule": "جدول اليوم",
+  "Upcoming": "قريبا",
+  "missed": "فاتت",
+  "taken": "تم تناولها",
+  "heartTopicTitle": "كيف تتعامل مع \nالأمراض المزمنة ؟",
+  "preventDiseasesTitle": "نصائح للوقاية من \nالأمراض المعدية"
+  
 }

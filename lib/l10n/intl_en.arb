@@ -20,7 +20,6 @@
   "reminderTime": "09:30 AM",
   "drops": "2 Drops",
   "everyTwoHours": "Every 2 Hour",
-  "missed": "missed",
   "importantTopics": "Important Topics",
   "banha":"BANHA",
   "qalubia":"QALUBIA",
@@ -43,5 +42,30 @@
   "getRemindersPills": "Get reminders for\nyour pills.",
   "findAboutMedicine": "Find out about your\nmedicine.",
   "setRemindersTime": "Set reminders for\ndifferent times.",
-  "keepTrackMedicine": "Keep track of what\nyou take."
+  "keepTrackMedicine": "Keep track of what\nyou take.",
+  "UpcomingReminder":"Upcoming Reminder",
+  "MarkasTaken": "Mark as Taken",
+  "RemindLater": "Remind Later",
+  "weeklyStreak": "Weekly Streak",
+  "missedThisWeek": "{count} Missed This Week",
+  "@missedThisWeek": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "weeklyPercentage": "{percent}%",
+  "@weeklyPercentage": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "viewWeeklyReport": "View weekly report",
+  "TodaysSchedule": "Today's Schedule",
+  "Upcoming": "Upcoming",
+  "missed": "missed",
+  "taken": "Taken",
+  "heartTopicTitle": "How to deal with \nchronic diseases ?",
+  "preventDiseasesTitle": "Tips for preventing \ninfectious diseases"
+  
+
 }

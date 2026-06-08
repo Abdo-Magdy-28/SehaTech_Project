@@ -189,11 +189,6 @@ class S {
     );
   }
 
-  /// `missed`
-  String get missed {
-    return Intl.message('missed', name: 'missed', desc: '', args: []);
-  }
-
   /// `Important Topics`
   String get importantTopics {
     return Intl.message(
@@ -369,6 +364,121 @@ class S {
     return Intl.message(
       'Keep track of what\nyou take.',
       name: 'keepTrackMedicine',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upcoming Reminder`
+  String get UpcomingReminder {
+    return Intl.message(
+      'Upcoming Reminder',
+      name: 'UpcomingReminder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mark as Taken`
+  String get MarkasTaken {
+    return Intl.message(
+      'Mark as Taken',
+      name: 'MarkasTaken',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remind Later`
+  String get RemindLater {
+    return Intl.message(
+      'Remind Later',
+      name: 'RemindLater',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Weekly Streak`
+  String get weeklyStreak {
+    return Intl.message(
+      'Weekly Streak',
+      name: 'weeklyStreak',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} Missed This Week`
+  String missedThisWeek(int count) {
+    return Intl.message(
+      '$count Missed This Week',
+      name: 'missedThisWeek',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{percent}%`
+  String weeklyPercentage(int percent) {
+    return Intl.message(
+      '$percent%',
+      name: 'weeklyPercentage',
+      desc: '',
+      args: [percent],
+    );
+  }
+
+  /// `View weekly report`
+  String get viewWeeklyReport {
+    return Intl.message(
+      'View weekly report',
+      name: 'viewWeeklyReport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today's Schedule`
+  String get TodaysSchedule {
+    return Intl.message(
+      'Today\'s Schedule',
+      name: 'TodaysSchedule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upcoming`
+  String get Upcoming {
+    return Intl.message('Upcoming', name: 'Upcoming', desc: '', args: []);
+  }
+
+  /// `missed`
+  String get missed {
+    return Intl.message('missed', name: 'missed', desc: '', args: []);
+  }
+
+  /// `Taken`
+  String get taken {
+    return Intl.message('Taken', name: 'taken', desc: '', args: []);
+  }
+
+  /// `How to deal with \nchronic diseases ?`
+  String get heartTopicTitle {
+    return Intl.message(
+      'How to deal with \nchronic diseases ?',
+      name: 'heartTopicTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tips for preventing \ninfectious diseases`
+  String get preventDiseasesTitle {
+    return Intl.message(
+      'Tips for preventing \ninfectious diseases',
+      name: 'preventDiseasesTitle',
       desc: '',
       args: [],
     );

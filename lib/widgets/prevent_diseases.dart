@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class prevent_diseases extends StatelessWidget {
   const prevent_diseases({super.key});
@@ -17,7 +18,7 @@ class prevent_diseases extends StatelessWidget {
             top: 20,
             left: 10,
             child: Text(
-              "Tips for preventing \ninfectious diseases",
+              S.of(context).preventDiseasesTitle,
               style: TextStyle(
                 color: Color(0xff111111),
                 fontFamily: 'Cairo',
@@ -46,7 +47,7 @@ class prevent_diseases extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    "Learn more",
+                    S.of(context).learnMore,
                     style: TextStyle(
                       color: Color(0xff111111),
                       fontSize: 13,

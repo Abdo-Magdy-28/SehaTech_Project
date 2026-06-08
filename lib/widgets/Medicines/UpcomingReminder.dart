@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/medicineremindercardmodel.dart';
 
 class UpcomingReminder extends StatefulWidget {
@@ -37,12 +38,20 @@ class _UpcomingReminderState extends State<UpcomingReminder> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SvgPicture.asset('assets/images/i.svg'),
-                    SizedBox(width: devwidth * 0.01),
-                    Text(
-                      'Upcoming Reminder',
-                      style: TextStyle(color: Color(0xff707070), fontSize: 14),
+                    Row(
+                      children: [
+                        SvgPicture.asset('assets/images/i.svg'),
+                        SizedBox(width: devwidth * 0.02),
+                        Text(
+                          S.of(context).UpcomingReminder,
+                          style: TextStyle(
+                            color: Color(0xff707070),
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(width: devwidth * 0.2),
                     Container(
@@ -97,7 +106,7 @@ class _UpcomingReminderState extends State<UpcomingReminder> {
                     Icon(Icons.alarm, color: Color(0xfff9783c), size: 25),
                     SizedBox(width: devwidth * 0.008),
                     Text(
-                      'Remind Later',
+                      S.of(context).RemindLater,
                       style: TextStyle(
                         color: Color(0xfff9783c),
                         fontFamily: 'cairo',
@@ -120,7 +129,7 @@ class _UpcomingReminderState extends State<UpcomingReminder> {
                     Icon(Icons.check, color: Color(0xff2260ff), size: 25),
                     SizedBox(width: devwidth * 0.008),
                     Text(
-                      'Remind Later',
+                      S.of(context).MarkasTaken,
                       style: TextStyle(
                         color: Color(0xff2260ff),
                         fontFamily: 'cairo',

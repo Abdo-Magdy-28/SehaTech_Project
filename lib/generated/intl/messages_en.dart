@@ -22,8 +22,19 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(name) => "Dr : ${name}";
 
+  static String m1(count) => "${count} Missed This Week";
+
+  static String m2(percent) => "${percent}%";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "MarkasTaken": MessageLookupByLibrary.simpleMessage("Mark as Taken"),
+    "RemindLater": MessageLookupByLibrary.simpleMessage("Remind Later"),
+    "TodaysSchedule": MessageLookupByLibrary.simpleMessage("Today\'s Schedule"),
+    "Upcoming": MessageLookupByLibrary.simpleMessage("Upcoming"),
+    "UpcomingReminder": MessageLookupByLibrary.simpleMessage(
+      "Upcoming Reminder",
+    ),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("AI Assistant"),
     "appName": MessageLookupByLibrary.simpleMessage("SEHA TECH"),
     "appTagline": MessageLookupByLibrary.simpleMessage("Health Comes First"),
@@ -57,6 +68,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "getRemindersPills": MessageLookupByLibrary.simpleMessage(
       "Get reminders for\nyour pills.",
     ),
+    "heartTopicTitle": MessageLookupByLibrary.simpleMessage(
+      "How to deal with \nchronic diseases ?",
+    ),
     "hello": MessageLookupByLibrary.simpleMessage("Hello"),
     "hospitals": MessageLookupByLibrary.simpleMessage("Hospitals"),
     "importantTopics": MessageLookupByLibrary.simpleMessage("Important Topics"),
@@ -71,8 +85,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "medicines": MessageLookupByLibrary.simpleMessage("Medicines"),
     "missed": MessageLookupByLibrary.simpleMessage("missed"),
+    "missedThisWeek": m1,
     "neurologist": MessageLookupByLibrary.simpleMessage("Neurologist"),
     "pharmacies": MessageLookupByLibrary.simpleMessage("Pharmacies"),
+    "preventDiseasesTitle": MessageLookupByLibrary.simpleMessage(
+      "Tips for preventing \ninfectious diseases",
+    ),
     "qalubia": MessageLookupByLibrary.simpleMessage("QALUBIA"),
     "reminderTime": MessageLookupByLibrary.simpleMessage("09:30 AM"),
     "scheduleNow": MessageLookupByLibrary.simpleMessage("Schedule Now"),
@@ -85,6 +103,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "startTime": MessageLookupByLibrary.simpleMessage("10:30am"),
+    "taken": MessageLookupByLibrary.simpleMessage("Taken"),
+    "viewWeeklyReport": MessageLookupByLibrary.simpleMessage(
+      "View weekly report",
+    ),
+    "weeklyPercentage": m2,
+    "weeklyStreak": MessageLookupByLibrary.simpleMessage("Weekly Streak"),
     "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
     "withYourPreferred": MessageLookupByLibrary.simpleMessage(
       "with your preferred",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class WeekScheduleWidget extends StatefulWidget {
   const WeekScheduleWidget({Key? key}) : super(key: key);
@@ -75,7 +76,7 @@ class _WeekScheduleWidgetState extends State<WeekScheduleWidget> {
               ),
               Flexible(
                 child: Text(
-                  "Today's Schedule",
+                  S.of(context).TodaysSchedule,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: headerFontSize,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/language/locale_cubit.dart';
 import 'package:grad_project/models/medicineremindercardmodel.dart';
 import 'package:grad_project/screens/alldoctors.dart';
 import 'package:grad_project/screens/chatbotScreen.dart';
@@ -35,14 +37,33 @@ class _HomepagewidgetState extends State<Homepagewidget> {
           width: devwidth * 0.9,
           child: CustomScrollView(
             physics: BouncingScrollPhysics(),
-
             slivers: [
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.02)),
               SliverToBoxAdapter(child: Customappbar()),
               SliverToBoxAdapter(
                 child: SizedBox(width: devwidth, child: Divider(thickness: 1)),
               ),
+              SliverToBoxAdapter(
+                child: GestureDetector(
+                  onTap: () => _showLanguageSheet(context),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.language, size: 20),
+                      const SizedBox(width: 6),
+                      BlocBuilder<LocaleCubit, Locale>(
+                        builder: (context, locale) => Text(
+                          locale.languageCode == 'en' ? 'English' : 'عربية',
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                      ),
+                      const Icon(Icons.keyboard_arrow_down, size: 18),
+                    ],
+                  ),
+                ),
+              ),
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.01)),
+
               SliverToBoxAdapter(
                 child: GestureDetector(
                   onTap: () => Navigator.push(
@@ -203,19 +224,116 @@ class _HomepagewidgetState extends State<Homepagewidget> {
               ),
 
               SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 170,
-                  child: ListView(
-                    clipBehavior: Clip.none,
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.only(right: 20, bottom: 15, top: 15),
-                    children: [hearttopic(), prevent_diseases()],
+                child: Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: SizedBox(
+                    height: 170,
+                    child: ListView(
+                      clipBehavior: Clip.none,
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.only(right: 20, bottom: 15, top: 15),
+                      children: [hearttopic(), prevent_diseases()],
+                    ),
                   ),
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+void _showLanguageSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.white,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) {
+      return BlocBuilder<LocaleCubit, Locale>(
+        builder: (context, locale) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 36,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Select language',
+                  style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+                ),
+                const SizedBox(height: 14),
+                _LangOption(
+                  code: 'en',
+                  flag: '🇬🇧',
+                  name: 'English',
+                  native: 'English',
+                  selected: locale.languageCode == 'en',
+                ),
+                _LangOption(
+                  code: 'ar',
+                  flag: '🇸🇦',
+                  name: 'Arabic',
+                  native: 'عربية',
+                  selected: locale.languageCode == 'ar',
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
+class _LangOption extends StatelessWidget {
+  final String code, flag, name, native;
+  final bool selected;
+
+  const _LangOption({
+    required this.code,
+    required this.flag,
+    required this.name,
+    required this.native,
+    required this.selected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: selected ? const Color(0xFFEFF6FF) : Colors.transparent,
+        border: Border.all(
+          color: selected ? const Color(0xFFBFDBFE) : Colors.transparent,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: ListTile(
+        onTap: () {
+          context.read<LocaleCubit>().setLocale(code);
+          Navigator.pop(context);
+        },
+        leading: Text(flag, style: const TextStyle(fontSize: 28)),
+        title: Text(
+          name,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        subtitle: Text(native, style: const TextStyle(fontSize: 13)),
+        trailing: selected
+            ? const Icon(Icons.check, color: Color(0xFF2563EB), size: 20)
+            : null,
       ),
     );
   }

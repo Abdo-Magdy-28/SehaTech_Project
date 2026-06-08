@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class Weaklystreak extends StatefulWidget {
   const Weaklystreak({super.key});
@@ -36,7 +37,7 @@ class _WeaklystreakState extends State<Weaklystreak> {
                   SvgPicture.asset('assets/images/Frame 3.svg'),
                   SizedBox(width: devwidth * 0.03),
                   Text(
-                    'Weekly Streak',
+                    S.of(context).weeklyStreak,
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Cairo',
@@ -53,7 +54,7 @@ class _WeaklystreakState extends State<Weaklystreak> {
                 children: [
                   SizedBox(width: devwidth * 0.01),
                   Text(
-                    '72%',
+                    S.of(context).weeklyPercentage(72),
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Cairo',
@@ -65,7 +66,7 @@ class _WeaklystreakState extends State<Weaklystreak> {
                   SvgPicture.asset('assets/images/Frame 2147226112.svg'),
                   SizedBox(width: devwidth * 0.004),
                   Text(
-                    "3 Missed This Week",
+                    S.of(context).missedThisWeek(3),
                     style: TextStyle(
                       color: Color(0xffef4444),
                       fontFamily: 'Cairo',
@@ -83,7 +84,7 @@ class _WeaklystreakState extends State<Weaklystreak> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "View weekly report",
+                      S.of(context).viewWeeklyReport,
                       style: TextStyle(
                         color: Color(0xff0d61ec),
                         fontFamily: 'Cairo',

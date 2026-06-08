@@ -7,6 +7,7 @@ import 'package:grad_project/services/search%20services/doctors/search_service.d
 import 'package:grad_project/widgets/doctors/doctor_details.dart';
 import 'package:grad_project/widgets/doctors/category.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Alldoctors extends StatefulWidget {
   const Alldoctors({super.key});
@@ -168,11 +169,61 @@ class _AlldoctorsState extends State<Alldoctors> {
                     // ⏳ LOADING
                     // ============================
                     if (state is SearchDoctorLoading) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 100),
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: Color(0xff0D5FA7),
+                      return Skeletonizer(
+                        enabled: true,
+                        child: Column(
+                          children: List.generate(
+                            5,
+                            (index) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: ListTile(
+                                  contentPadding: const EdgeInsets.all(12),
+                                  leading: Container(
+                                    width: 60,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  title: Container(
+                                    height: 14,
+                                    width: 120,
+                                    color: Colors.grey,
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 6),
+                                      Container(
+                                        height: 12,
+                                        width: 80,
+                                        color: Colors.grey,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Container(
+                                        height: 12,
+                                        width: 100,
+                                        color: Colors.grey,
+                                      ),
+                                    ],
+                                  ),
+                                  trailing: Container(
+                                    height: 12,
+                                    width: 30,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       );

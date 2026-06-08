@@ -22,8 +22,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(name) => "د : ${name}";
 
+  static String m1(count) => "فاتك ${count} هذا الأسبوع";
+
+  static String m2(percent) => "${percent}%";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "MarkasTaken": MessageLookupByLibrary.simpleMessage("تم التناول"),
+    "RemindLater": MessageLookupByLibrary.simpleMessage("ذكرني لاحقاً"),
+    "TodaysSchedule": MessageLookupByLibrary.simpleMessage("جدول اليوم"),
+    "Upcoming": MessageLookupByLibrary.simpleMessage("قريبا"),
+    "UpcomingReminder": MessageLookupByLibrary.simpleMessage("تذكير قادم"),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("مساعد ذكي"),
     "appName": MessageLookupByLibrary.simpleMessage("صحة تك"),
     "appTagline": MessageLookupByLibrary.simpleMessage("الصحة تأتي أولاً"),
@@ -57,6 +66,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "getRemindersPills": MessageLookupByLibrary.simpleMessage(
       "احصل على تذكيرات\nلحبوبك.",
     ),
+    "heartTopicTitle": MessageLookupByLibrary.simpleMessage(
+      "كيف تتعامل مع \nالأمراض المزمنة ؟",
+    ),
     "hello": MessageLookupByLibrary.simpleMessage("مرحبا"),
     "hospitals": MessageLookupByLibrary.simpleMessage("المستشفيات"),
     "importantTopics": MessageLookupByLibrary.simpleMessage("المواضيع المهمة"),
@@ -70,9 +82,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "إدارة الأدوية",
     ),
     "medicines": MessageLookupByLibrary.simpleMessage("الأدوية"),
-    "missed": MessageLookupByLibrary.simpleMessage("فائت"),
+    "missed": MessageLookupByLibrary.simpleMessage("فاتت"),
+    "missedThisWeek": m1,
     "neurologist": MessageLookupByLibrary.simpleMessage("طبيب أعصاب"),
     "pharmacies": MessageLookupByLibrary.simpleMessage("الصيدليات"),
+    "preventDiseasesTitle": MessageLookupByLibrary.simpleMessage(
+      "نصائح للوقاية من \nالأمراض المعدية",
+    ),
     "qalubia": MessageLookupByLibrary.simpleMessage("القليوبية"),
     "reminderTime": MessageLookupByLibrary.simpleMessage("09:30 صباحاً"),
     "scheduleNow": MessageLookupByLibrary.simpleMessage("جدول الآن"),
@@ -85,6 +101,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),
     "startTime": MessageLookupByLibrary.simpleMessage("10:30 صباحاً"),
+    "taken": MessageLookupByLibrary.simpleMessage("تم تناولها"),
+    "viewWeeklyReport": MessageLookupByLibrary.simpleMessage(
+      "عرض التقرير الأسبوعي",
+    ),
+    "weeklyPercentage": m2,
+    "weeklyStreak": MessageLookupByLibrary.simpleMessage("السلسلة الأسبوعية"),
     "welcome": MessageLookupByLibrary.simpleMessage("أهلا وسهلا"),
     "withYourPreferred": MessageLookupByLibrary.simpleMessage(
       "مع طبيبك المفضل",

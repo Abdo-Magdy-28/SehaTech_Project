@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class hearttopic extends StatelessWidget {
   const hearttopic({super.key});
@@ -18,7 +19,7 @@ class hearttopic extends StatelessWidget {
               top: 20,
               left: 10,
               child: Text(
-                "How to deal with \nchronic diseases ?",
+                S.of(context).heartTopicTitle,
                 style: TextStyle(
                   color: Colors.white,
                   fontFamily: 'Cairo',
@@ -47,7 +48,7 @@ class hearttopic extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      "Learn more",
+                      S.of(context).learnMore,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 13,
