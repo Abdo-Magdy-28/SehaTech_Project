@@ -1,10 +1,13 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
+import 'package:grad_project/services/profile/update_service.dart';
 import 'package:grad_project/widgets/profile/PopUpDialog.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:grad_project/services/Authservice.dart';
 import 'package:grad_project/models/user.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class Profileinfo extends StatefulWidget {
   const Profileinfo({super.key});
@@ -14,6 +17,8 @@ class Profileinfo extends StatefulWidget {
 }
 
 class _ProfileinfoState extends State<Profileinfo> {
+  File? _profileImage;
+  bool isSaving = false;
   // Phone number variables
   final TextEditingController phoneController = TextEditingController();
   PhoneNumber initialNumber = PhoneNumber(isoCode: 'EG');
@@ -151,20 +156,18 @@ class _ProfileinfoState extends State<Profileinfo> {
                           SizedBox(height: verticalSpacing * 0.8),
                           // Delete Photo Button
                           TextButton.icon(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.delete_outline,
-                              color: Colors.red,
-                              size: isTablet ? 24 : (isSmallScreen ? 16 : 20),
-                            ),
+                            onPressed: () {
+                              setState(() {
+                                _profileImage = null;
+                              });
+                            },
+                            icon: Icon(Icons.delete_outline, color: Colors.red),
                             label: Text(
                               'Delete photo',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: labelFontSize,
-                              ),
+                              style: TextStyle(color: Colors.red),
                             ),
                           ),
+
                           SizedBox(height: verticalSpacing * 0.8),
                           // Form Fields
                           _buildLabeledField(
@@ -187,16 +190,12 @@ class _ProfileinfoState extends State<Profileinfo> {
                             borderRadius: borderRadius,
                             verticalSpacing: verticalSpacing,
                           ),
-                          _buildLabeledDate(
-                            label: 'Date of birth',
-                            hint: 'DD/MM/YYYY',
-                            controller: dateController,
+                          _buildDateField(
                             labelFontSize: labelFontSize,
                             fieldFontSize: fieldFontSize,
                             fieldPadding: fieldPadding,
                             borderRadius: borderRadius,
                             verticalSpacing: verticalSpacing,
-                            onTap: () => _showDatePicker(context),
                           ),
                           _buildLabeledField(
                             label: 'Address',
@@ -244,37 +243,50 @@ class _ProfileinfoState extends State<Profileinfo> {
       clipBehavior: Clip.none,
       alignment: Alignment.bottomCenter,
       children: [
-        Container(
-          width: profileSize,
-          height: profileSize,
-          decoration: BoxDecoration(
-            color: Colors.blue[600],
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Icon(Icons.person, size: iconSize, color: Colors.white),
-          ),
+        CircleAvatar(
+          radius: profileSize / 2,
+          backgroundColor: Colors.grey[200],
+          backgroundImage: _profileImage != null
+              ? FileImage(_profileImage!)
+              : null,
+          child: _profileImage == null
+              ? Icon(Icons.person, size: iconSize, color: Colors.white)
+              : null,
         ),
         Positioned(
           bottom: -editIconSize / 2,
-          child: Container(
-            padding: EdgeInsets.all(editIconSize * 0.35),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 4,
-                  spreadRadius: 1,
-                ),
-              ],
+          child: GestureDetector(
+            onTap: _pickImageFromGallery,
+            child: Container(
+              padding: EdgeInsets.all(editIconSize * 0.35),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: Icon(Icons.edit, size: editIconSize, color: Colors.blue),
             ),
-            child: Icon(Icons.edit, size: editIconSize, color: Colors.blue),
           ),
         ),
       ],
     );
+  }
+
+  Future<void> _pickImageFromGallery() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        _profileImage = File(pickedFile.path);
+      });
+    }
   }
 
   Widget _buildLabeledDate({
@@ -304,30 +316,22 @@ class _ProfileinfoState extends State<Profileinfo> {
           SizedBox(height: verticalSpacing * 0.4),
           GestureDetector(
             onTap: onTap,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF4F4F6),
-                borderRadius: BorderRadius.circular(borderRadius),
-              ),
-              child: AbsorbPointer(
-                child: TextField(
-                  controller: controller, // uses the controller
-                  style: TextStyle(fontSize: fieldFontSize),
-                  decoration: InputDecoration(
-                    hintText: hint,
-                    hintStyle: TextStyle(
-                      color: Colors.grey,
-                      fontSize: fieldFontSize,
-                    ),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: fieldPadding,
-                      vertical: fieldPadding,
-                    ),
-                    suffixIcon: const Icon(Icons.calendar_today_outlined),
-                  ),
+            child: TextField(
+              controller: controller,
+              readOnly: true, // prevents manual typing but keeps normal look
+              style: TextStyle(fontSize: fieldFontSize),
+              decoration: InputDecoration(
+                hintText: hint,
+                hintStyle: TextStyle(
+                  color: Colors.grey,
+                  fontSize: fieldFontSize,
                 ),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: fieldPadding,
+                  vertical: fieldPadding,
+                ),
+                suffixIcon: const Icon(Icons.calendar_today_outlined),
               ),
             ),
           ),
@@ -564,6 +568,51 @@ class _ProfileinfoState extends State<Profileinfo> {
     );
   }
 
+  Future<void> _saveChanges() async {
+    setState(() => isSaving = true);
+
+    try {
+      final success = await updateMe(
+        firstName: firstNameController.text.trim(),
+        lastName: lastNameController.text.trim(),
+        phone: phoneNumber,
+        address: addressController.text.trim(),
+        dateOfBirth: selectedDate != null
+            ? DateFormat('yyyy-MM-dd').format(selectedDate!)
+            : null,
+        imageFile: _profileImage,
+      );
+
+      if (!mounted) return;
+
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Profile updated successfully'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to update profile. Please try again.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('An error occurred: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => isSaving = false);
+    }
+  }
+
   Widget _buildSaveButton({
     required double borderRadius,
     required double fieldPadding,
@@ -572,10 +621,7 @@ class _ProfileinfoState extends State<Profileinfo> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
-          // Save action - you can access phoneNumber here
-          print('Saved Phone: $phoneNumber');
-        },
+        onPressed: isSaving ? null : _saveChanges,
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blue[600],
           foregroundColor: Colors.white,
@@ -585,10 +631,22 @@ class _ProfileinfoState extends State<Profileinfo> {
           ),
           elevation: 0,
         ),
-        child: Text(
-          'Save Changes',
-          style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w600),
-        ),
+        child: isSaving
+            ? const SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            : Text(
+                'Save Changes',
+                style: TextStyle(
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
       ),
     );
   }

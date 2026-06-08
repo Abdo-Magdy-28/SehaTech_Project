@@ -394,22 +394,5 @@ class _SigninState extends State<Signin> {
     );
   }
 
-  void _submitForm() {
-    if (formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Form is valid! Signing up...')),
-      );
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) {
-            return Signupscreen2();
-          },
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please fix errors.')));
-    }
-  }
+  void _submitForm() {}
 }
