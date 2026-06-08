@@ -32,32 +32,33 @@ class _HomepageState extends State<Homepage> {
       bottomNavigationBar: CurvedNavigationBar(
         index: _selectedIndex,
         backgroundColor: Colors.white,
-        color: Color(0xff1555d8),
+        color: const Color(0xff1555d8),
+        buttonBackgroundColor: const Color(0xff1555d8),
         items: [
           CurvedNavigationBarItem(
             child: SvgPicture.asset('assets/images/home-2.svg'),
-            label: _selectedIndex == 0 ? 'Home' : '',
-            labelStyle: TextStyle(color: Colors.white),
+            label: 'Home',
+            labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
           ),
           CurvedNavigationBarItem(
             child: SvgPicture.asset('assets/images/mingcute_scan-line.svg'),
-            label: _selectedIndex == 1 ? 'Scan' : '',
-            labelStyle: TextStyle(color: Colors.white),
+            label: 'Scan',
+            labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
           ),
           CurvedNavigationBarItem(
             child: SvgPicture.asset('assets/images/Frame 48095567.svg'),
-            label: _selectedIndex == 2 ? 'Chatbot' : '',
-            labelStyle: TextStyle(color: Colors.white),
+            label: 'Chatbot',
+            labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
           ),
           CurvedNavigationBarItem(
             child: SvgPicture.asset('assets/images/search.svg'),
-            label: _selectedIndex == 3 ? 'Search' : '',
-            labelStyle: TextStyle(color: Colors.white),
+            label: 'Search',
+            labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
           ),
           CurvedNavigationBarItem(
             child: SvgPicture.asset('assets/images/reports.svg'),
-            label: _selectedIndex == 4 ? 'Preciptions' : '',
-            labelStyle: TextStyle(color: Colors.white),
+            label: 'Prescriptions',
+            labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
           ),
         ],
         onTap: (index) {

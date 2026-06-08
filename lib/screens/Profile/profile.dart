@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/screens/Authentication/loginpage.dart';
+import 'package:grad_project/screens/Profile/NotificationsettingsScreen.dart';
 import 'package:grad_project/screens/Profile/profileinfo.dart';
 import 'package:grad_project/services/Authservice.dart';
 
@@ -156,38 +157,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
             chevronSize: chevronSize,
-            ontap: () {},
+            ontap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NotificationSettingsScreen(),
+                ),
+              );
+            },
           ),
-          _buildMenuItem(
-            context,
-            'Health Matrix',
-            menuFontSize: menuFontSize,
-            horizontalPadding: horizontalPadding,
-            verticalPadding: verticalPadding * 0.3,
-            chevronSize: chevronSize,
-            ontap: () {},
-          ),
-          _buildMenuItem(
-            context,
-            'Payment settings',
-            menuFontSize: menuFontSize,
-            horizontalPadding: horizontalPadding,
-            verticalPadding: verticalPadding * 0.3,
-            chevronSize: chevronSize,
-            ontap: () {},
-          ),
-          _buildMenuItem(
-            context,
-            'Change email',
-            menuFontSize: menuFontSize,
-            horizontalPadding: horizontalPadding,
-            verticalPadding: verticalPadding * 0.3,
-            chevronSize: chevronSize,
-            ontap: () {},
-          ),
+
           _buildMenuItem(
             context,
             'Security settings',
+            menuFontSize: menuFontSize,
+            horizontalPadding: horizontalPadding,
+            verticalPadding: verticalPadding * 0.3,
+            chevronSize: chevronSize,
+            ontap: () {},
+          ),
+          _buildMenuItem(
+            context,
+            'Langauge settings',
             menuFontSize: menuFontSize,
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,

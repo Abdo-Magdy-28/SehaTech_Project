@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
+import 'package:grad_project/cubit/language/locale_cubit.dart';
 import 'package:grad_project/screens/Authentication/signin.dart';
 import 'package:grad_project/screens/Authentication/signupform.dart';
 import 'package:grad_project/widgets/carousel_card.dart';
@@ -33,8 +34,32 @@ class _LoginpageState extends State<Loginpage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: devheight * 0.2),
+            SizedBox(height: devheight * 0.1),
 
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(width: devwidth * 0.05),
+                GestureDetector(
+                  onTap: () => _showLanguageSheet(context),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.language, size: 20),
+                      const SizedBox(width: 6),
+                      BlocBuilder<LocaleCubit, Locale>(
+                        builder: (context, locale) => Text(
+                          locale.languageCode == 'en' ? 'English' : 'عربية',
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                      ),
+                      const Icon(Icons.keyboard_arrow_down, size: 18),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: devheight * 0.1),
             // ================= CAROUSEL ================= //
             Stack(
               clipBehavior: Clip.none,
@@ -257,6 +282,95 @@ class _LoginpageState extends State<Loginpage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+void _showLanguageSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.white,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) {
+      return BlocBuilder<LocaleCubit, Locale>(
+        builder: (context, locale) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 36,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Select language',
+                  style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+                ),
+                const SizedBox(height: 14),
+                _LangOption(
+                  code: 'en',
+                  name: 'English',
+                  selected: locale.languageCode == 'en',
+                ),
+                _LangOption(
+                  code: 'ar',
+                  name: 'العربية',
+                  selected: locale.languageCode == 'ar',
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
+class _LangOption extends StatelessWidget {
+  final String code, name;
+  final bool selected;
+
+  const _LangOption({
+    required this.code,
+    required this.name,
+    required this.selected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: selected ? const Color(0xFFEFF6FF) : Colors.transparent,
+        border: Border.all(
+          color: selected ? const Color(0xFFBFDBFE) : Colors.transparent,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: ListTile(
+        onTap: () {
+          context.read<LocaleCubit>().setLocale(code);
+          Navigator.pop(context);
+        },
+        title: Center(
+          child: Text(
+            name,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+        ),
+
+        trailing: selected
+            ? const Icon(Icons.check, color: Color(0xFF2563EB), size: 20)
+            : null,
       ),
     );
   }

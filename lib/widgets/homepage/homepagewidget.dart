@@ -276,16 +276,12 @@ void _showLanguageSheet(BuildContext context) {
                 const SizedBox(height: 14),
                 _LangOption(
                   code: 'en',
-                  flag: '🇬🇧',
                   name: 'English',
-                  native: 'English',
                   selected: locale.languageCode == 'en',
                 ),
                 _LangOption(
                   code: 'ar',
-                  flag: '🇸🇦',
-                  name: 'Arabic',
-                  native: 'عربية',
+                  name: 'العربية',
                   selected: locale.languageCode == 'ar',
                 ),
               ],
@@ -298,14 +294,12 @@ void _showLanguageSheet(BuildContext context) {
 }
 
 class _LangOption extends StatelessWidget {
-  final String code, flag, name, native;
+  final String code, name;
   final bool selected;
 
   const _LangOption({
     required this.code,
-    required this.flag,
     required this.name,
-    required this.native,
     required this.selected,
   });
 
@@ -325,12 +319,13 @@ class _LangOption extends StatelessWidget {
           context.read<LocaleCubit>().setLocale(code);
           Navigator.pop(context);
         },
-        leading: Text(flag, style: const TextStyle(fontSize: 28)),
-        title: Text(
-          name,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        title: Center(
+          child: Text(
+            name,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
         ),
-        subtitle: Text(native, style: const TextStyle(fontSize: 13)),
+
         trailing: selected
             ? const Icon(Icons.check, color: Color(0xFF2563EB), size: 20)
             : null,
