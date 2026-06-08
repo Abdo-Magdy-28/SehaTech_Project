@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
-import 'package:grad_project/screens/Authentication/changepassword.dart';
+import 'package:grad_project/screens/Authentication/forgetpassword.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
 import 'package:grad_project/cubit/Authentication/Authstates.dart';
@@ -151,7 +151,7 @@ class _VerificationviewState extends State<Verificationview> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return Changepassword(pin: OtpController.text);
+                              return Forgetpassword(pin: OtpController.text);
                             },
                           ),
                         );

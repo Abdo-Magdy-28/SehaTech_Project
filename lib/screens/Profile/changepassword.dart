@@ -8,16 +8,18 @@ import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 
 class Changepassword extends StatefulWidget {
-  const Changepassword({super.key, required this.pin});
-  final String pin;
+  const Changepassword({super.key, required this.password});
+  final String password;
   @override
   State<Changepassword> createState() => _ChangepasswordState();
 }
 
 class _ChangepasswordState extends State<Changepassword> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final _currentpasswordController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmController = TextEditingController();
+  final _currentpasswordFocus = FocusNode();
   final _passwordFocus = FocusNode();
   final _confirmFocus = FocusNode();
   @override
@@ -49,14 +51,38 @@ class _ChangepasswordState extends State<Changepassword> {
                   children: [
                     SizedBox(height: devHeight * 0.04),
                     Text(
-                      "Verify Your Identity",
+                      "Change Password",
                       style: TextStyle(
                         fontSize: devWidth * 0.06,
                         fontWeight: FontWeight.w800,
                         fontFamily: 'Cairo',
                       ),
                     ),
+                    SizedBox(height: devHeight * 0.01),
                     Text("Enter your new password"),
+                    SizedBox(height: devHeight * 0.04),
+                    Textformfield(
+                      controller: _currentpasswordController,
+                      focusNode: _currentpasswordFocus,
+                      hinttext: 'Current Password',
+                      ispassword: true,
+                      validator: MultiValidator([
+                        RequiredValidator(errorText: "Password required"),
+                        MinLengthValidator(
+                          6,
+                          errorText: 'Password must be at least 6 characters',
+                        ),
+                      ]),
+                      obsecure: true,
+                      bordercolor: const Color(0xFFF3F1F7),
+                      prefixicon:
+                          "assets/images/teenyicons_password-outline.svg",
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) =>
+                          FocusScope.of(context).requestFocus(_passwordFocus),
+                    ),
+                    SizedBox(height: devHeight * 0.01),
+
                     Textformfield(
                       controller: _passwordController,
                       focusNode: _passwordFocus,
@@ -77,6 +103,7 @@ class _ChangepasswordState extends State<Changepassword> {
                       onFieldSubmitted: (_) =>
                           FocusScope.of(context).requestFocus(_confirmFocus),
                     ),
+                    SizedBox(height: devHeight * 0.01),
 
                     // Confirm Password
                     Textformfield(
@@ -106,30 +133,7 @@ class _ChangepasswordState extends State<Changepassword> {
                       width: double.infinity,
                       height: devHeight * 0.07,
                       child: ElevatedButton(
-                        onPressed: () async {
-                          final response =
-                              await BlocProvider.of<Authcubit>(
-                                context,
-                              ).resetpassword(
-                                code: widget.pin,
-                                password: _passwordController.text,
-                                confirmpassword: _confirmController.text,
-                              );
-                          if (response.data['status'] == "success") {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return Homepage();
-                                },
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(response.data['message'])),
-                            );
-                          }
-                        },
+                        onPressed: () async {},
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF2260FF),
                           shape: RoundedRectangleBorder(

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/language/locale_cubit.dart';
 import 'package:grad_project/screens/Authentication/loginpage.dart';
+import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/screens/Profile/NotificationsettingsScreen.dart';
+import 'package:grad_project/screens/Profile/changepassword.dart';
 import 'package:grad_project/screens/Profile/profileinfo.dart';
 import 'package:grad_project/services/Authservice.dart';
 
@@ -148,7 +152,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
             chevronSize: chevronSize,
-            ontap: () {},
+            ontap: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Homepage(initialIndex: 4),
+                ),
+                (route) => false,
+              );
+            },
           ),
           _buildMenuItem(
             context,
@@ -174,7 +186,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
             chevronSize: chevronSize,
-            ontap: () {},
+            ontap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Changepassword(password: ''),
+                ),
+              );
+            },
           ),
           _buildMenuItem(
             context,
@@ -183,7 +202,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
             chevronSize: chevronSize,
-            ontap: () {},
+            ontap: () {
+              _showLanguageSheet(context);
+            },
           ),
           _buildMenuItem(
             context,
@@ -245,6 +266,95 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         Divider(height: 1, color: Colors.grey[300]),
       ],
+    );
+  }
+}
+
+void _showLanguageSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.white,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) {
+      return BlocBuilder<LocaleCubit, Locale>(
+        builder: (context, locale) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 36,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Select language',
+                  style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+                ),
+                const SizedBox(height: 14),
+                _LangOption(
+                  code: 'en',
+                  name: 'English',
+                  selected: locale.languageCode == 'en',
+                ),
+                _LangOption(
+                  code: 'ar',
+                  name: 'العربية',
+                  selected: locale.languageCode == 'ar',
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
+class _LangOption extends StatelessWidget {
+  final String code, name;
+  final bool selected;
+
+  const _LangOption({
+    required this.code,
+    required this.name,
+    required this.selected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: selected ? const Color(0xFFEFF6FF) : Colors.transparent,
+        border: Border.all(
+          color: selected ? const Color(0xFFBFDBFE) : Colors.transparent,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: ListTile(
+        onTap: () {
+          context.read<LocaleCubit>().setLocale(code);
+          Navigator.pop(context);
+        },
+        title: Center(
+          child: Text(
+            name,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+        ),
+
+        trailing: selected
+            ? const Icon(Icons.check, color: Color(0xFF2563EB), size: 20)
+            : null,
+      ),
     );
   }
 }

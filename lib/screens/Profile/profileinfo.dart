@@ -21,8 +21,8 @@ class _ProfileinfoState extends State<Profileinfo> {
   bool isPhoneValid = false;
   DateTime? selectedDate;
   final TextEditingController dateController = TextEditingController();
-
   final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   bool isLoading = true;
 
@@ -37,7 +37,16 @@ class _ProfileinfoState extends State<Profileinfo> {
     if (user != null) {
       firstNameController.text = user.firstname;
       lastNameController.text = user.lastname;
-
+      addressController.text = user.address;
+      if (user.date != null && user.date.isNotEmpty) {
+        try {
+          final parsedDate = DateFormat('yyyy-MM-dd').parse(user.date);
+          selectedDate = parsedDate;
+          dateController.text = DateFormat('dd/MM/yyyy').format(parsedDate);
+        } catch (e) {
+          print("Error parsing date: $e");
+        }
+      }
       if (user.phone.isNotEmpty) {
         try {
           initialNumber = await PhoneNumber.getRegionInfoFromPhoneNumber(
@@ -180,29 +189,24 @@ class _ProfileinfoState extends State<Profileinfo> {
                           ),
                           _buildLabeledDate(
                             label: 'Date of birth',
-                            hint: '02/07/2004',
+                            hint: 'DD/MM/YYYY',
+                            controller: dateController,
                             labelFontSize: labelFontSize,
                             fieldFontSize: fieldFontSize,
                             fieldPadding: fieldPadding,
                             borderRadius: borderRadius,
                             verticalSpacing: verticalSpacing,
-                            suffixIcon: GestureDetector(
-                              onTap: () => _showDatePicker(context),
-                              child: AbsorbPointer(
-                                child: TextField(
-                                  controller: dateController,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: selectedDate == null
-                                        ? 'DD/MM/YYYY'
-                                        : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
-                                    suffixIcon: Icon(
-                                      Icons.calendar_today_outlined,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                            onTap: () => _showDatePicker(context),
+                          ),
+                          _buildLabeledField(
+                            label: 'Address',
+                            hint: 'Atreeb, Abdelhaleem mosque street',
+                            controller: addressController,
+                            labelFontSize: labelFontSize,
+                            fieldFontSize: fieldFontSize,
+                            fieldPadding: fieldPadding,
+                            borderRadius: borderRadius,
+                            verticalSpacing: verticalSpacing,
                           ),
 
                           _buildPhoneField(
@@ -276,49 +280,54 @@ class _ProfileinfoState extends State<Profileinfo> {
   Widget _buildLabeledDate({
     required String label,
     required String hint,
+    required TextEditingController controller, // add this
     required double labelFontSize,
     required double fieldFontSize,
     required double fieldPadding,
     required double borderRadius,
     required double verticalSpacing,
-    Widget? suffixIcon,
+    VoidCallback? onTap, // add this
   }) {
     return Padding(
       padding: EdgeInsets.only(bottom: verticalSpacing),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (label.isNotEmpty) ...[
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: labelFontSize,
-                color: const Color(0xFF4B4B4B),
-                fontWeight: FontWeight.w500,
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: labelFontSize,
+              color: const Color(0xFF4B4B4B),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: verticalSpacing * 0.4),
+          GestureDetector(
+            onTap: onTap,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF4F4F6),
+                borderRadius: BorderRadius.circular(borderRadius),
               ),
-            ),
-            SizedBox(height: verticalSpacing * 0.4),
-          ],
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF4F4F6),
-              borderRadius: BorderRadius.circular(borderRadius),
-            ),
-            child: TextField(
-              style: TextStyle(fontSize: fieldFontSize),
-              decoration: InputDecoration(
-                hintText: hint,
-                hintStyle: TextStyle(
-                  color: Colors.grey,
-                  fontSize: fieldFontSize,
+              child: AbsorbPointer(
+                child: TextField(
+                  controller: controller, // uses the controller
+                  style: TextStyle(fontSize: fieldFontSize),
+                  decoration: InputDecoration(
+                    hintText: hint,
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: fieldFontSize,
+                    ),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: fieldPadding,
+                      vertical: fieldPadding,
+                    ),
+                    suffixIcon: const Icon(Icons.calendar_today_outlined),
+                  ),
                 ),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: fieldPadding,
-                  vertical: fieldPadding,
-                ),
-                suffixIcon: suffixIcon,
               ),
             ),
           ),
@@ -396,6 +405,9 @@ class _ProfileinfoState extends State<Profileinfo> {
     if (results != null && results.isNotEmpty) {
       setState(() {
         selectedDate = results.first;
+        dateController.text = DateFormat(
+          'dd/MM/yyyy',
+        ).format(selectedDate!); // sync controller
       });
     }
   }
