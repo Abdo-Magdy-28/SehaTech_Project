@@ -7,10 +7,13 @@ class User {
   final String lastname;
   final String token;
   final String phone;
+  final String address;
   final String gender;
   final String role;
   final String password;
   final String passwordconfirm;
+  final String image;
+  final String date;
 
   const User({
     required this.id,
@@ -24,6 +27,9 @@ class User {
     required this.role,
     required this.password,
     required this.passwordconfirm,
+    required this.address,
+    required this.image,
+    required this.date,
   });
 
   // ✅ FIXED: Match the API response keys!
@@ -43,6 +49,9 @@ class User {
       role: json['role'] ?? '',
       password: json['password'] ?? '',
       passwordconfirm: json['passwordConfirm'] ?? json['passwordconfirm'] ?? '',
+      address: json['address'] ?? '',
+      image: json['photo'] ?? '',
+      date: json['date'] ?? '',
     );
   }
 
@@ -60,6 +69,9 @@ class User {
       'role': role,
       'password': password,
       'passwordConfirm': passwordconfirm,
+      'address': address,
+      'date': date,
+      'photo': image,
     };
   }
 
