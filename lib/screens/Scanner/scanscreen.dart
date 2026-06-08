@@ -1,6 +1,6 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/main.dart';
 import 'package:grad_project/screens/Scanner/MedicineScanner.dart';
 import 'package:grad_project/screens/Scanner/PrescriptionScannerscreen.dart';
@@ -123,7 +123,7 @@ class _ScanscreenState extends State<Scanscreen> {
               ),
               SizedBox(height: devheight * 0.04),
               Text(
-                'Quick Scan',
+                S.of(context).quickScan,
                 style: TextStyle(
                   fontFamily: 'Cairo',
                   fontSize: 24,

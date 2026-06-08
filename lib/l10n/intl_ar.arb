@@ -48,6 +48,7 @@
   "RemindLater": "ذكرني لاحقاً",
   "weeklyStreak": "السلسلة الأسبوعية",
   "missedThisWeek": "فاتك {count} هذا الأسبوع",
+  "quickScan":"مسح سريع",
   "@missedThisWeek": {
     "placeholders": {
       "count": { "type": "int" }
