@@ -9,7 +9,7 @@ class ChatApiService implements ChatService {
   String _summary = "No medical history.";
 
   static const String baseUrl =
-      'https://8001-dep-01k97cftrq0d0tz2y37e2km2ge-d.cloudspaces.litng.ai';
+      'https://8080-dep-01kp3cxxfzs0chgwd41w54zmem-d.cloudspaces.litng.ai';
   static const String apiKey = 'd1414a76-13c4-4267-9b96-12b0b62425f5';
 
   final Set<http.Client> _activeClients = {};
