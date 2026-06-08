@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Profile/profile.dart';
+import 'package:grad_project/screens/notifications/notification_screen.dart';
 
 class Customappbar extends StatelessWidget {
   const Customappbar({super.key});
@@ -58,19 +59,27 @@ class Customappbar extends StatelessWidget {
               ),
             ],
           ),
-          Badge(
-            backgroundColor: Colors.red,
-            smallSize: 13,
-            child: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 1),
-                shape: BoxShape.circle,
-              ),
-              child: SvgPicture.asset(
-                'assets/images/bell.svg',
-                fit: BoxFit.scaleDown,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationScreen()),
+              );
+            },
+            child: Badge(
+              backgroundColor: Colors.red,
+              smallSize: 13,
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey, width: 1),
+                  shape: BoxShape.circle,
+                ),
+                child: SvgPicture.asset(
+                  'assets/images/bell.svg',
+                  fit: BoxFit.scaleDown,
+                ),
               ),
             ),
           ),
