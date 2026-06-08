@@ -46,7 +46,7 @@
   "UpcomingReminder":"Upcoming Reminder",
   "MarkasTaken": "Mark as Taken",
   "RemindLater": "Remind Later",
-  "quickScan":"Quick Scan",
+  "quickscan":"Quick Scan",
   "weeklyStreak": "Weekly Streak",
   "missedThisWeek": "{count} Missed This Week",
   "@missedThisWeek": {

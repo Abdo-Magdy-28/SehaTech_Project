@@ -90,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "نصائح للوقاية من \nالأمراض المعدية",
     ),
     "qalubia": MessageLookupByLibrary.simpleMessage("القليوبية"),
+    "quickscan": MessageLookupByLibrary.simpleMessage("مسح سريع"),
     "reminderTime": MessageLookupByLibrary.simpleMessage("09:30 صباحاً"),
     "scheduleNow": MessageLookupByLibrary.simpleMessage("جدول الآن"),
     "scheduleYourNext": MessageLookupByLibrary.simpleMessage(

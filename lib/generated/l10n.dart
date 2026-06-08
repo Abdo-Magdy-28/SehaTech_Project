@@ -399,6 +399,11 @@ class S {
     );
   }
 
+  /// `Quick Scan`
+  String get quickscan {
+    return Intl.message('Quick Scan', name: 'quickscan', desc: '', args: []);
+  }
+
   /// `Weekly Streak`
   String get weeklyStreak {
     return Intl.message(

@@ -123,7 +123,7 @@ class _ScanscreenState extends State<Scanscreen> {
               ),
               SizedBox(height: devheight * 0.04),
               Text(
-                S.of(context).quickScan,
+                S.of(context).quickscan,
                 style: TextStyle(
                   fontFamily: 'Cairo',
                   fontSize: 24,
