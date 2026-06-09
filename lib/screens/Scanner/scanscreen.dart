@@ -114,7 +114,7 @@ class _ScanscreenState extends State<Scanscreen> {
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Cairo',
-                        fontSize: devwidth * 0.025,
+                        fontSize: devwidth * 0.02,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -171,7 +171,7 @@ class _ScanscreenState extends State<Scanscreen> {
                       SvgPicture.asset('assets/images/scan/mdi_line-scan.svg'),
                       SizedBox(width: devwidth * 0.04),
                       Text(
-                        "Scan the Medicine",
+                        S.of(context).scanmedicines,
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Cairo',
@@ -214,7 +214,7 @@ class _ScanscreenState extends State<Scanscreen> {
                       SvgPicture.asset('assets/images/scan/scanpaper.svg'),
                       SizedBox(width: devwidth * 0.04),
                       Text(
-                        "Scan prescription.",
+                        S.of(context).scanperscriptions,
                         style: TextStyle(
                           color: Colors.grey,
                           fontFamily: 'Cairo',

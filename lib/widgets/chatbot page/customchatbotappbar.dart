@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class Customchatbotappbar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -13,7 +14,7 @@ class Customchatbotappbar extends StatelessWidget
       centerTitle: true,
 
       title: Text(
-        "Chat Bot",
+        S.of(context).chatbot,
         style: TextStyle(
           fontFamily: 'Cairo',
           fontWeight: FontWeight.w700,

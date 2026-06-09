@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/medicine.dart';
 import 'package:grad_project/screens/prescriptions/reminder_screen.dart';
 import 'package:grad_project/widgets/mainscaffold.dart';
@@ -35,8 +36,8 @@ class _MedicineDetailsState extends State<MedicineDetails> {
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Medicine',
+        title: Text(
+          S.of(context).medicineinfo,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         toolbarHeight: 80,
@@ -222,8 +223,8 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
-                          'Add Reminder',
+                        child: Text(
+                          S.of(context).addreminder,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -245,8 +246,8 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Product Overview',
+                    Text(
+                      S.of(context).productoverview,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -277,8 +278,8 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Key Benefits',
+                    Text(
+                      S.of(context).keybenefits,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -327,8 +328,8 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Possible Side Effects',
+                    Text(
+                      S.of(context).sideeffects,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

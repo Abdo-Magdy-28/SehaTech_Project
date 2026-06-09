@@ -15,7 +15,9 @@ class PharmacyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String open24 = isopen24 ? "24-hours" : "Closed";
+    final String open24 = isopen24
+        ? S.of(context).hours24
+        : S.of(context).closed;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
@@ -68,7 +70,7 @@ class PharmacyCard extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    "Pharmacy",
+                                    S.of(context).pharmacy,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     style: TextStyle(
@@ -153,7 +155,7 @@ class PharmacyCard extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            "View",
+                            S.of(context).view,
                             style: TextStyle(
                               color: Colors.white,
                               fontFamily: 'Cairo',

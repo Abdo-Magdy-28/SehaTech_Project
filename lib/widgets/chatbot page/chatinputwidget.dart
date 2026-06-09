@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/widgets/chatbot%20page/historyscreen.dart';
 
 class Chatinputwidget extends StatelessWidget {
@@ -46,7 +47,7 @@ class Chatinputwidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Ask Ai Assistant Any Thing You need",
+                S.of(context).askaiassistant,
                 style: TextStyle(fontSize: 12, fontFamily: 'Cairo'),
               ),
               TextButton(
@@ -60,7 +61,7 @@ class Chatinputwidget extends StatelessWidget {
                   );
                 },
                 child: Text(
-                  "View Your History",
+                  S.of(context).viewyourhistory,
                   style: TextStyle(
                     fontSize: 12,
                     fontFamily: 'Cairo',
@@ -115,7 +116,7 @@ class Chatinputwidget extends StatelessWidget {
                   child: TextField(
                     controller: controller,
                     decoration: InputDecoration(
-                      hintText: 'Ask anything',
+                      hintText: S.of(context).askanything,
                       hintStyle: TextStyle(
                         color: Colors.grey.shade400,
                         fontSize: 16,

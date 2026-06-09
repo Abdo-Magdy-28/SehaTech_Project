@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/map.dart';
 import 'package:grad_project/widgets/pharmacies/ourservicescard.dart';
 
@@ -32,8 +33,8 @@ class _HospitaldetailsState extends State<Hospitaldetails> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          "Hospital Information",
+        title: Text(
+          S.of(context).hospitalinfo,
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
         ),
         backgroundColor: Colors.transparent,
@@ -181,7 +182,7 @@ class _HospitaldetailsState extends State<Hospitaldetails> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    "Experience",
+                                    S.of(context).experience,
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.6),
                                       fontSize: 16,
@@ -216,7 +217,7 @@ class _HospitaldetailsState extends State<Hospitaldetails> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    "Work",
+                                    S.of(context).worktime,
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.6),
                                       fontSize: 16,
@@ -242,7 +243,7 @@ class _HospitaldetailsState extends State<Hospitaldetails> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    "Branches",
+                                    S.of(context).branches,
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.6),
                                       fontSize: 16,
@@ -290,8 +291,8 @@ class _HospitaldetailsState extends State<Hospitaldetails> {
                                           ),
                                         ),
                                       ),
-                                      child: const Text(
-                                        'Contact Us',
+                                      child: Text(
+                                        S.of(context).contactus,
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,
@@ -321,8 +322,8 @@ class _HospitaldetailsState extends State<Hospitaldetails> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Our Services",
+                  Text(
+                    S.of(context).ourservices,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 16),

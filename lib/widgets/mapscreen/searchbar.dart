@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 
-Container searchbar() {
+Container searchbar(BuildContext context) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(30),
@@ -15,7 +16,7 @@ Container searchbar() {
     ),
     child: TextField(
       decoration: InputDecoration(
-        hintText: 'Search...',
+        hintText: S.of(context).searching,
         prefixIcon: Icon(Icons.search, color: Colors.grey),
         filled: true,
         fillColor: Colors.white,

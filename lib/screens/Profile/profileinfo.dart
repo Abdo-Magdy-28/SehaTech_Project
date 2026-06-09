@@ -1,5 +1,6 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/services/profile/update_service.dart';
 import 'package:grad_project/widgets/profile/PopUpDialog.dart';
 import 'package:intl/intl.dart';
@@ -117,7 +118,7 @@ class _ProfileinfoState extends State<Profileinfo> {
           onPressed: () => showCustomDialog(context),
         ),
         title: Text(
-          'Personal Info',
+          S.of(context).personalinfo,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -163,7 +164,7 @@ class _ProfileinfoState extends State<Profileinfo> {
                             },
                             icon: Icon(Icons.delete_outline, color: Colors.red),
                             label: Text(
-                              'Delete photo',
+                              S.of(context).deletephoto,
                               style: TextStyle(color: Colors.red),
                             ),
                           ),
@@ -171,7 +172,7 @@ class _ProfileinfoState extends State<Profileinfo> {
                           SizedBox(height: verticalSpacing * 0.8),
                           // Form Fields
                           _buildLabeledField(
-                            label: 'First Name',
+                            label: S.of(context).firstname,
                             hint: 'Youssef',
                             controller: firstNameController,
                             labelFontSize: labelFontSize,
@@ -181,7 +182,7 @@ class _ProfileinfoState extends State<Profileinfo> {
                             verticalSpacing: verticalSpacing,
                           ),
                           _buildLabeledField(
-                            label: 'Last Name',
+                            label: S.of(context).lastname,
                             hint: 'Mostafa',
                             controller: lastNameController,
                             labelFontSize: labelFontSize,
@@ -198,7 +199,7 @@ class _ProfileinfoState extends State<Profileinfo> {
                             verticalSpacing: verticalSpacing,
                           ),
                           _buildLabeledField(
-                            label: 'Address',
+                            label: S.of(context).address,
                             hint: 'Atreeb, Abdelhaleem mosque street',
                             controller: addressController,
                             labelFontSize: labelFontSize,
@@ -429,7 +430,7 @@ class _ProfileinfoState extends State<Profileinfo> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Date of birth',
+            S.of(context).dateofbirth,
             style: TextStyle(
               fontSize: labelFontSize,
               color: const Color(0xFF4B4B4B),
@@ -491,7 +492,7 @@ class _ProfileinfoState extends State<Profileinfo> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Phone number',
+            S.of(context).phonenumber,
             style: TextStyle(
               fontSize: labelFontSize,
               color: const Color(0xFF4B4B4B),
@@ -587,15 +588,15 @@ class _ProfileinfoState extends State<Profileinfo> {
 
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Profile updated successfully'),
+          SnackBar(
+            content: Text(S.of(context).profileupdatedsuccessfully),
             backgroundColor: Colors.green,
           ),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to update profile. Please try again.'),
+          SnackBar(
+            content: Text(S.of(context).failedtoupdateprofilepleasetryagain),
             backgroundColor: Colors.red,
           ),
         );
@@ -604,7 +605,7 @@ class _ProfileinfoState extends State<Profileinfo> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('An error occurred: $e'),
+          content: Text('${S.of(context).erroroccured} $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -641,7 +642,7 @@ class _ProfileinfoState extends State<Profileinfo> {
                 ),
               )
             : Text(
-                'Save Changes',
+                S.of(context).savechanges,
                 style: TextStyle(
                   fontSize: fontSize,
                   fontWeight: FontWeight.w600,

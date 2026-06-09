@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/Chatbot%20Models/chatmodel.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -12,11 +13,14 @@ class ChatBubble extends StatelessWidget {
     Clipboard.setData(ClipboardData(text: text));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Row(
+        content: Row(
           children: [
             Icon(Icons.check_circle, color: Colors.white, size: 20),
             SizedBox(width: 8),
-            Text('Copied to clipboard', style: TextStyle(fontFamily: 'Cairo')),
+            Text(
+              S.of(context).copiedtoclipboard,
+              style: TextStyle(fontFamily: 'Cairo'),
+            ),
           ],
         ),
         backgroundColor: Colors.green,
@@ -100,7 +104,7 @@ class ChatBubble extends StatelessWidget {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              "Typing...",
+                              S.of(context).typing,
                               style: TextStyle(
                                 fontFamily: 'Cairo',
                                 color: Colors.grey.shade600,

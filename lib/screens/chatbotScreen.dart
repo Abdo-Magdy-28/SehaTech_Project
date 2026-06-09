@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/cubit/Chat%20bot/ChatCubit.dart';
 import 'package:grad_project/cubit/Chat%20bot/ChatStates.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/services/Chatbot%20Services/Apiservice.dart';
 import 'package:grad_project/widgets/chatbot%20page/BubbleWidget.dart';
 import 'package:grad_project/widgets/chatbot%20page/chatinputwidget.dart';
@@ -70,7 +71,7 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to select image: $e'),
+            content: Text('${S.of(context).failedtoselectimage}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -104,7 +105,7 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    'Attach Image',
+                    S.of(context).attachimage,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -122,7 +123,7 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
                       child: Icon(Icons.camera_alt, color: Color(0xFF0066FF)),
                     ),
                     title: Text(
-                      'Take Photo',
+                      S.of(context).takephoto,
                       style: TextStyle(fontFamily: 'Cairo'),
                     ),
                     onTap: () {
@@ -143,7 +144,7 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
                       ),
                     ),
                     title: Text(
-                      'Choose from Gallery',
+                      S.of(context).chooseimage,
                       style: TextStyle(fontFamily: 'Cairo'),
                     ),
                     onTap: () {
@@ -328,7 +329,7 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
               SvgPicture.asset("assets/images/chatbot/sparkles-sharp.svg"),
               SizedBox(width: devwidth * 0.04),
               Text(
-                "What Can I Help With?",
+                S.of(context).whaticanhelp,
                 style: TextStyle(
                   fontFamily: 'Cairo',
                   fontWeight: FontWeight.w600,
@@ -343,18 +344,23 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Chatsuggestedbuttons(
-                func: () => _handleSuggestedButton(cubit, "Diagnoses"),
-                name: "Diagnoses",
+                func: () =>
+                    _handleSuggestedButton(cubit, S.of(context).diagnoses),
+                name: S.of(context).diagnoses,
               ),
               SizedBox(width: devwidth * 0.02),
               Chatsuggestedbuttons(
-                func: () => _handleSuggestedButton(cubit, "Drug Price"),
-                name: "Drug Price",
+                func: () =>
+                    _handleSuggestedButton(cubit, S.of(context).drugprice),
+                name: S.of(context).drugprice,
               ),
               SizedBox(width: devwidth * 0.02),
               Chatsuggestedbuttons(
-                func: () => _handleSuggestedButton(cubit, "Active Ingredient"),
-                name: "Active Ingredient",
+                func: () => _handleSuggestedButton(
+                  cubit,
+                  S.of(context).activeingredients,
+                ),
+                name: S.of(context).activeingredients,
               ),
             ],
           ),
@@ -363,13 +369,19 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Chatsuggestedbuttons(
-                func: () => _handleSuggestedButton(cubit, "Disease symptoms"),
-                name: "Disease symptoms",
+                func: () => _handleSuggestedButton(
+                  cubit,
+                  S.of(context).diseasessymptoms,
+                ),
+                name: S.of(context).diseasessymptoms,
               ),
               SizedBox(width: devwidth * 0.02),
               Chatsuggestedbuttons(
-                func: () => _handleSuggestedButton(cubit, "Chronic diseases"),
-                name: "Chronic diseases",
+                func: () => _handleSuggestedButton(
+                  cubit,
+                  S.of(context).chronicdiseases,
+                ),
+                name: S.of(context).chronicdiseases,
               ),
             ],
           ),

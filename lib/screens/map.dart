@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
 import 'package:grad_project/widgets/mapdoctorcard.dart';
 import 'package:grad_project/widgets/mapdoctorcarddetail.dart';
@@ -22,7 +23,7 @@ class Mapscreen extends StatefulWidget {
 
 class MapState extends State<Mapscreen> {
   LatLng? currentLocation;
-  String selectedCategory = 'Hospitals';
+  late String selectedCategory = S.of(context).pharmacies;
   Map<String, dynamic>? selectedDoctor;
   bool modalshowed = false;
   @override
@@ -110,7 +111,7 @@ class MapState extends State<Mapscreen> {
                     top: MediaQuery.of(context).padding.top + 90,
                     left: 16,
                     right: 16,
-                    child: searchbar(),
+                    child: searchbar(context),
                   ),
 
                   // Floating Buttons
@@ -207,7 +208,7 @@ class MapState extends State<Mapscreen> {
                     children: [
                       Expanded(
                         child: _buildTabButton(
-                          'Doctors',
+                          S.of(context).doctors,
                           Icons.person,
                           setModalState,
                         ),
@@ -215,7 +216,7 @@ class MapState extends State<Mapscreen> {
                       SizedBox(width: 8),
                       Expanded(
                         child: _buildTabButton(
-                          'Hospitals',
+                          S.of(context).hospitals,
                           Icons.local_hospital,
                           setModalState,
                         ),
@@ -223,7 +224,7 @@ class MapState extends State<Mapscreen> {
                       SizedBox(width: 8),
                       Expanded(
                         child: _buildTabButton(
-                          'Pharmacy',
+                          S.of(context).pharmacies,
                           Icons.medical_services,
                           setModalState,
                         ),
@@ -254,7 +255,7 @@ class MapState extends State<Mapscreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Nearest $selectedCategory',
+                                  '${S.of(context).nearest} $selectedCategory',
                                   style: TextStyle(
                                     fontSize: 13,
                                     fontFamily: 'Cairo',
@@ -264,7 +265,7 @@ class MapState extends State<Mapscreen> {
                                 TextButton(
                                   onPressed: () {},
                                   child: Text(
-                                    'See all..',
+                                    S.of(context).seeall,
                                     style: TextStyle(
                                       color: Color(0xff2260FF),
                                       fontFamily: 'Cairo',
@@ -281,7 +282,8 @@ class MapState extends State<Mapscreen> {
                             width: 350,
                             child: ListView(
                               padding: EdgeInsets.symmetric(horizontal: 16),
-                              children: selectedCategory == 'Doctors'
+                              children:
+                                  selectedCategory == S.of(context).doctors
                                   ? [
                                       Mapdoctorcard(
                                         devheight: devheight,
@@ -380,7 +382,7 @@ class MapState extends State<Mapscreen> {
                                         },
                                       ),
                                     ]
-                                  : selectedCategory == 'Hospitals'
+                                  : selectedCategory == S.of(context).hospitals
                                   ? [
                                       Maphospitalcard(
                                         name: 'El-Amawy',
@@ -579,7 +581,7 @@ class MapState extends State<Mapscreen> {
               ),
             ),
             child: Text(
-              'Book Appointment',
+              S.of(context).bookappointment,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

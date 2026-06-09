@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/homepage.dart';
 
 // ─────────────────────────────────────────────
@@ -229,7 +230,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
         centerTitle: true,
-        title: Text("Hospitals", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          S.of(context).notifications,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         toolbarHeight: 80,
         backgroundColor: Colors.white,
         bottom: PreferredSize(

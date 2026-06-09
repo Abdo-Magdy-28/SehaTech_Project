@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Authentication/loginpage.dart';
 import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/screens/Profile/NotificationsettingsScreen.dart';
@@ -69,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
         ),
         title: Text(
-          'Profile',
+          S.of(context).profile,
           style: TextStyle(
             color: Colors.black,
             fontSize: titleFontSize,
@@ -147,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Menu Items
           _buildMenuItem(
             context,
-            'Perceptions',
+            S.of(context).perscriptions,
             menuFontSize: menuFontSize,
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
@@ -164,7 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           _buildMenuItem(
             context,
-            'Notification settings',
+            S.of(context).notificationssettings,
             menuFontSize: menuFontSize,
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
@@ -181,7 +182,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           _buildMenuItem(
             context,
-            'Security settings',
+            S.of(context).securitysettings,
             menuFontSize: menuFontSize,
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
@@ -189,15 +190,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ontap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => const Changepassword(password: ''),
-                ),
+                MaterialPageRoute(builder: (context) => const Changepassword()),
               );
             },
           ),
           _buildMenuItem(
             context,
-            'Langauge settings',
+            S.of(context).languagesettings,
             menuFontSize: menuFontSize,
             horizontalPadding: horizontalPadding,
             verticalPadding: verticalPadding * 0.3,
@@ -208,7 +207,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           _buildMenuItem(
             context,
-            'Log out',
+            S.of(context).logout,
             isDestructive: true,
             hideChevron: true,
             menuFontSize: menuFontSize,
@@ -295,18 +294,18 @@ void _showLanguageSheet(BuildContext context) {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Select language',
+                  S.of(context).selectlanguage,
                   style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
                 ),
                 const SizedBox(height: 14),
                 _LangOption(
                   code: 'en',
-                  name: 'English',
+                  name: S.of(context).english,
                   selected: locale.languageCode == 'en',
                 ),
                 _LangOption(
                   code: 'ar',
-                  name: 'العربية',
+                  name: S.of(context).arabic,
                   selected: locale.languageCode == 'ar',
                 ),
               ],

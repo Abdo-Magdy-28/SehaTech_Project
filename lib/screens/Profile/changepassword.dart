@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 
 class Changepassword extends StatefulWidget {
-  const Changepassword({super.key, required this.password});
-  final String password;
+  const Changepassword({super.key});
   @override
   State<Changepassword> createState() => _ChangepasswordState();
 }
@@ -51,7 +51,7 @@ class _ChangepasswordState extends State<Changepassword> {
                   children: [
                     SizedBox(height: devHeight * 0.04),
                     Text(
-                      "Change Password",
+                      S.of(context).changepassword,
                       style: TextStyle(
                         fontSize: devWidth * 0.06,
                         fontWeight: FontWeight.w800,
@@ -59,18 +59,20 @@ class _ChangepasswordState extends State<Changepassword> {
                       ),
                     ),
                     SizedBox(height: devHeight * 0.01),
-                    Text("Enter your new password"),
+                    Text(S.of(context).enternewpassword),
                     SizedBox(height: devHeight * 0.04),
                     Textformfield(
                       controller: _currentpasswordController,
                       focusNode: _currentpasswordFocus,
-                      hinttext: 'Current Password',
+                      hinttext: S.of(context).currentpassword,
                       ispassword: true,
                       validator: MultiValidator([
-                        RequiredValidator(errorText: "Password required"),
+                        RequiredValidator(
+                          errorText: S.of(context).currentpasswordrequiered,
+                        ),
                         MinLengthValidator(
                           6,
-                          errorText: 'Password must be at least 6 characters',
+                          errorText: S.of(context).passwordmustbeatleast,
                         ),
                       ]),
                       obsecure: true,
@@ -86,13 +88,15 @@ class _ChangepasswordState extends State<Changepassword> {
                     Textformfield(
                       controller: _passwordController,
                       focusNode: _passwordFocus,
-                      hinttext: 'New Password',
+                      hinttext: S.of(context).newpassword,
                       ispassword: true,
                       validator: MultiValidator([
-                        RequiredValidator(errorText: "Password required"),
+                        RequiredValidator(
+                          errorText: S.of(context).newpasswordrequiered,
+                        ),
                         MinLengthValidator(
                           6,
-                          errorText: 'Password must be at least 6 characters',
+                          errorText: S.of(context).passwordmustbeatleast,
                         ),
                       ]),
                       obsecure: true,
@@ -109,12 +113,12 @@ class _ChangepasswordState extends State<Changepassword> {
                     Textformfield(
                       controller: _confirmController,
                       focusNode: _confirmFocus,
-                      hinttext: 'Confirm Password',
+                      hinttext: S.of(context).confirmpassword,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please confirm your password';
+                          return S.of(context).confirmpasswordrequiered;
                         } else if (value != _passwordController.text) {
-                          return 'Passwords do not match';
+                          return S.of(context).passwordnotmatch;
                         }
                         return null;
                       },
@@ -142,7 +146,7 @@ class _ChangepasswordState extends State<Changepassword> {
                           elevation: 0,
                         ),
                         child: Text(
-                          'Finish',
+                          S.of(context).finish,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: devWidth * 0.045,

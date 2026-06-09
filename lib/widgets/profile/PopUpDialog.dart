@@ -1,6 +1,7 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 void showCustomDialog(BuildContext context) {
   showDialog(
@@ -30,7 +31,7 @@ void showCustomDialog(BuildContext context) {
               SizedBox(height: size.height * 0.02),
 
               Text(
-                "Discard changes?",
+                S.of(context).discardchanges,
                 style: TextStyle(
                   fontSize: size.width * 0.05,
                   fontFamily: 'Syne',
@@ -41,7 +42,7 @@ void showCustomDialog(BuildContext context) {
               SizedBox(height: 8),
 
               Text(
-                "Unsaved changes will be lost.",
+                S.of(context).unsavedchangeswillbelost,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: size.width * 0.035,
@@ -68,7 +69,7 @@ void showCustomDialog(BuildContext context) {
                     backgroundColor: Color(0xff2260ff),
                   ),
                   child: Text(
-                    "Yes, discard",
+                    S.of(context).yesdiscard,
                     style: TextStyle(
                       fontSize: size.width * 0.04,
                       color: Color(0xffffffff),
@@ -92,7 +93,7 @@ void showCustomDialog(BuildContext context) {
                     ),
                   ),
                   child: Text(
-                    "No, keep",
+                    S.of(context).nokeepchanges,
                     style: TextStyle(
                       fontSize: size.width * 0.04,
                       color: Color(0xff2260ff),

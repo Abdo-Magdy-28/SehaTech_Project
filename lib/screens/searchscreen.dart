@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/doctor.dart';
 import 'package:grad_project/models/hospitals.dart';
 import 'package:grad_project/models/medicine.dart';
@@ -226,7 +227,9 @@ class _SearchscreenState extends State<Searchscreen> {
 
           // ── Section: Doctors ─────────────────────────────────────
           if (!_isSearching)
-            SliverToBoxAdapter(child: _sectionTitle('Popular Doctors', sw, sh)),
+            SliverToBoxAdapter(
+              child: _sectionTitle(S.of(context).populardoctors, sw, sh),
+            ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (_, i) => _buildDoctorTile(_filteredDoctors[i], sw, sh),
@@ -237,7 +240,7 @@ class _SearchscreenState extends State<Searchscreen> {
           // ── Section: Hospitals ───────────────────────────────────
           if (!_isSearching)
             SliverToBoxAdapter(
-              child: _sectionTitle('Popular Hospitals', sw, sh),
+              child: _sectionTitle(S.of(context).popularhospitals, sw, sh),
             ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -249,7 +252,7 @@ class _SearchscreenState extends State<Searchscreen> {
           // ── Section: Pharmacies ──────────────────────────────────
           if (!_isSearching)
             SliverToBoxAdapter(
-              child: _sectionTitle('Popular Pharmacies', sw, sh),
+              child: _sectionTitle(S.of(context).popularpharmacies, sw, sh),
             ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -263,7 +266,7 @@ class _SearchscreenState extends State<Searchscreen> {
 
           // ── Section: Medicines (always shown) ───────────────────
           SliverToBoxAdapter(
-            child: _sectionTitle('Most Searched Medicines', sw, sh),
+            child: _sectionTitle(S.of(context).mostsearchedmedicines, sw, sh),
           ),
           SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: sw * 0.045),
@@ -333,7 +336,7 @@ class _SearchscreenState extends State<Searchscreen> {
     scrolledUnderElevation: 0,
     centerTitle: true,
     title: Text(
-      'Find What You Need',
+      S.of(context).findwhatyouneed,
       style: TextStyle(fontWeight: FontWeight.bold, fontSize: sw * 0.046),
     ),
     toolbarHeight: sw * 0.18,
@@ -364,7 +367,7 @@ class _SearchscreenState extends State<Searchscreen> {
         onChanged: _search,
         style: TextStyle(fontSize: sw * 0.038),
         decoration: InputDecoration(
-          hintText: 'Search...',
+          hintText: S.of(context).searching,
           hintStyle: TextStyle(
             color: Colors.grey.shade400,
             fontSize: sw * 0.038,
@@ -384,24 +387,24 @@ class _SearchscreenState extends State<Searchscreen> {
   Widget _buildCategories(double sw, double sh) {
     final items = [
       {
-        'label': 'Doctors',
+        'label': S.of(context).doctors,
         'image': 'assets/images/search/Maskgroup.png',
         'dest': () => MainScaffold(currentIndex: 3, child: const Alldoctors()),
       },
       {
-        'label': 'Pharmacies',
+        'label': S.of(context).pharmacies,
         'image': 'assets/images/search/Maskgroup2.png',
         'dest': () =>
             MainScaffold(currentIndex: 3, child: const Allpahramcies()),
       },
       {
-        'label': 'Hospitals',
+        'label': S.of(context).hospitals,
         'image': 'assets/images/search/Maskgroup4.png',
         'dest': () =>
             MainScaffold(currentIndex: 3, child: const Allhospitals()),
       },
       {
-        'label': 'Medicines',
+        'label': S.of(context).medicines,
         'image': 'assets/images/search/Maskgroup3.png',
         'dest': () =>
             MainScaffold(currentIndex: 3, child: const Allmedicines()),
@@ -524,12 +527,12 @@ class _SearchscreenState extends State<Searchscreen> {
         ),
         SizedBox(height: sh * 0.02),
         Text(
-          'Sorry, no results found',
+          S.of(context).sorrynoresultfound,
           style: TextStyle(fontSize: sw * 0.045, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: sh * 0.01),
         Text(
-          'Please try a different search term.',
+          S.of(context).trydifferentsearchterm,
           style: TextStyle(fontSize: sw * 0.038, color: Colors.grey),
         ),
       ],

@@ -158,7 +158,7 @@ class HospitalCard extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            "View",
+                            S.of(context).view,
                             style: TextStyle(
                               color: Colors.white,
                               fontFamily: 'Cairo',

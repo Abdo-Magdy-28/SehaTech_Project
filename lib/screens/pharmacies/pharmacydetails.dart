@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/map.dart';
 import 'package:grad_project/widgets/pharmacies/ourservicescard.dart';
 
@@ -29,8 +30,8 @@ class _PharmacydetailsState extends State<PharmacyDetails> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          "Pharmacy Information",
+        title: Text(
+          S.of(context).pharmacyinfo,
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
         ),
         backgroundColor: Colors.transparent,
@@ -98,10 +99,10 @@ class _PharmacydetailsState extends State<PharmacyDetails> {
                             Positioned(
                               top: devheight * 0.065,
                               left: devwidth * 0.035,
-                              child: const SizedBox(
+                              child: SizedBox(
                                 width: 280,
                                 child: Text(
-                                  "Pharmacy",
+                                  S.of(context).pharmacy,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -167,8 +168,8 @@ class _PharmacydetailsState extends State<PharmacyDetails> {
                             Positioned(
                               top: devheight * 0.1,
                               left: devwidth * 0.25,
-                              child: const Text(
-                                "Delivering 10:30am - 1:00am",
+                              child: Text(
+                                "${S.of(context).deliviringtime}: 10:30am - 1:00am",
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
@@ -192,7 +193,7 @@ class _PharmacydetailsState extends State<PharmacyDetails> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    "Experience",
+                                    S.of(context).experience,
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.6),
                                       fontSize: 16,
@@ -227,7 +228,7 @@ class _PharmacydetailsState extends State<PharmacyDetails> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    "Work",
+                                    S.of(context).worktime,
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.6),
                                       fontSize: 16,
@@ -253,7 +254,7 @@ class _PharmacydetailsState extends State<PharmacyDetails> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    "Branches",
+                                    S.of(context).branches,
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.6),
                                       fontSize: 16,
@@ -301,8 +302,8 @@ class _PharmacydetailsState extends State<PharmacyDetails> {
                                           ),
                                         ),
                                       ),
-                                      child: const Text(
-                                        'Contact Us',
+                                      child: Text(
+                                        S.of(context).contactus,
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,
@@ -333,8 +334,8 @@ class _PharmacydetailsState extends State<PharmacyDetails> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Our Services",
+                  Text(
+                    S.of(context).ourservices,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 16),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/medicine.dart';
 import 'package:grad_project/screens/medicines/medicine_details.dart';
 import 'package:grad_project/widgets/mainscaffold.dart';
@@ -10,7 +11,7 @@ class MedicineCard extends StatelessWidget {
 
   // safe: never called with an empty-sizes Medicine again,
   // but guard here as last resort
-  static Medicine _safe(Medicine m) => Medicine(
+  Medicine _safe(BuildContext context, Medicine m) => Medicine(
     name: m.name,
     image: m.image,
     description: m.description,
@@ -20,7 +21,7 @@ class MedicineCard extends StatelessWidget {
     overview: m.overview,
     keyBenefits: m.keyBenefits,
     sideEffects: m.sideEffects,
-    sizes: m.sizes.isNotEmpty ? m.sizes : ['Capsule'],
+    sizes: m.sizes.isNotEmpty ? m.sizes : [(S.of(context).capsule)],
   );
 
   void _navigate(BuildContext context) {
@@ -29,7 +30,7 @@ class MedicineCard extends StatelessWidget {
       MaterialPageRoute(
         builder: (_) => MainScaffold(
           currentIndex: 3,
-          child: MedicineDetails(medicine: _safe(medicine)),
+          child: MedicineDetails(medicine: _safe(context, medicine)),
         ),
       ),
     );
@@ -146,7 +147,7 @@ class MedicineCard extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    'View',
+                    S.of(context).view,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: sw * 0.034,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class NotificationSettingsScreen extends StatefulWidget {
   const NotificationSettingsScreen({super.key});
@@ -47,7 +48,7 @@ class _NotificationSettingsScreenState
 
             // Title
             Text(
-              'Notification',
+              S.of(context).notificationssettings,
               style: TextStyle(
                 fontSize: sw * 0.065,
                 fontWeight: FontWeight.bold,
@@ -59,7 +60,7 @@ class _NotificationSettingsScreenState
 
             // Subtitle
             Text(
-              'Change Notification Settings',
+              S.of(context).changenotificationsettings,
               style: TextStyle(
                 fontSize: sw * 0.035,
                 color: Colors.black,
@@ -77,7 +78,7 @@ class _NotificationSettingsScreenState
                   _NotificationTile(
                     icon: Icons.medication_outlined,
                     iconBgColor: const Color(0xFF2260FF),
-                    label: 'Medication Reminder',
+                    label: S.of(context).medicationreminder,
                     value: medicationReminder,
                     onChanged: (v) => setState(() => medicationReminder = v),
                     sw: sw,
@@ -89,7 +90,7 @@ class _NotificationSettingsScreenState
                     iconBgColor: const Color(0xFF2260FF),
                     iconImageAsset:
                         'assets/images/Profile/logos_google-gmail.svg',
-                    label: 'Email Notification',
+                    label: S.of(context).emailnotification,
                     value: emailNotification,
                     onChanged: (v) => setState(() => emailNotification = v),
                     sw: sw,
@@ -99,7 +100,7 @@ class _NotificationSettingsScreenState
                   _NotificationTile(
                     icon: Icons.sms_outlined,
                     iconBgColor: const Color(0xFF2260FF),
-                    label: 'SMS Notification',
+                    label: S.of(context).smsnotification,
                     value: smsNotification,
                     onChanged: (v) => setState(() => smsNotification = v),
                     sw: sw,
@@ -109,7 +110,7 @@ class _NotificationSettingsScreenState
                   _NotificationTile(
                     icon: Icons.phone_android_outlined,
                     iconBgColor: const Color(0xFF2260FF),
-                    label: 'Push Notification',
+                    label: S.of(context).pushnotification,
                     value: pushNotification,
                     onChanged: (v) => setState(() => pushNotification = v),
                     sw: sw,
@@ -119,7 +120,7 @@ class _NotificationSettingsScreenState
                   _NotificationTile(
                     icon: Icons.lock_outline,
                     iconBgColor: const Color(0xFF2260FF),
-                    label: 'Security Notification',
+                    label: S.of(context).securitynotification,
                     value: securityNotification,
                     onChanged: (v) => setState(() => securityNotification = v),
                     sw: sw,

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class blurred_appbar extends StatelessWidget {
   const blurred_appbar({super.key});
@@ -35,7 +36,7 @@ class blurred_appbar extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      'Explore Nearby',
+                      S.of(context).explorenearby,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

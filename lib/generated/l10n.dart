@@ -234,9 +234,29 @@ class S {
     return Intl.message('Doctors', name: 'doctors', desc: '', args: []);
   }
 
+  /// `Popular Doctors`
+  String get populardoctors {
+    return Intl.message(
+      'Popular Doctors',
+      name: 'populardoctors',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Pharmacies`
   String get pharmacies {
     return Intl.message('Pharmacies', name: 'pharmacies', desc: '', args: []);
+  }
+
+  /// `Popular Pharmacies`
+  String get popularpharmacies {
+    return Intl.message(
+      'Popular Pharmacies',
+      name: 'popularpharmacies',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Hospitals`
@@ -244,9 +264,29 @@ class S {
     return Intl.message('Hospitals', name: 'hospitals', desc: '', args: []);
   }
 
+  /// `Popular Hospitals`
+  String get popularhospitals {
+    return Intl.message(
+      'Popular Hospitals',
+      name: 'popularhospitals',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Medicines`
   String get medicines {
     return Intl.message('Medicines', name: 'medicines', desc: '', args: []);
+  }
+
+  /// `Most Searched Medicines`
+  String get mostsearchedmedicines {
+    return Intl.message(
+      'Most Searched Medicines',
+      name: 'mostsearchedmedicines',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Appointment Reminder`
@@ -477,6 +517,776 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Scan the Medicine`
+  String get scanmedicines {
+    return Intl.message(
+      'Scan the Medicine',
+      name: 'scanmedicines',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scan the Perscriptions`
+  String get scanperscriptions {
+    return Intl.message(
+      'Scan the Perscriptions',
+      name: 'scanperscriptions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications`
+  String get notifications {
+    return Intl.message(
+      'Notifications',
+      name: 'notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message('Profile', name: 'profile', desc: '', args: []);
+  }
+
+  /// `Notification settings`
+  String get notificationssettings {
+    return Intl.message(
+      'Notification settings',
+      name: 'notificationssettings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Security Settings`
+  String get securitysettings {
+    return Intl.message(
+      'Security Settings',
+      name: 'securitysettings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language Settings`
+  String get languagesettings {
+    return Intl.message(
+      'Language Settings',
+      name: 'languagesettings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Language`
+  String get selectlanguage {
+    return Intl.message(
+      'Select Language',
+      name: 'selectlanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `English`
+  String get english {
+    return Intl.message('English', name: 'english', desc: '', args: []);
+  }
+
+  /// `Arabic`
+  String get arabic {
+    return Intl.message('Arabic', name: 'arabic', desc: '', args: []);
+  }
+
+  /// `Personal Info`
+  String get personalinfo {
+    return Intl.message(
+      'Personal Info',
+      name: 'personalinfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Photo`
+  String get deletephoto {
+    return Intl.message(
+      'Delete Photo',
+      name: 'deletephoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First Name`
+  String get firstname {
+    return Intl.message('First Name', name: 'firstname', desc: '', args: []);
+  }
+
+  /// `Last Name`
+  String get lastname {
+    return Intl.message('Last Name', name: 'lastname', desc: '', args: []);
+  }
+
+  /// `Email`
+  String get email {
+    return Intl.message('Email', name: 'email', desc: '', args: []);
+  }
+
+  /// `Phone Number`
+  String get phonenumber {
+    return Intl.message(
+      'Phone Number',
+      name: 'phonenumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address`
+  String get address {
+    return Intl.message('Address', name: 'address', desc: '', args: []);
+  }
+
+  /// `Date of Birth`
+  String get dateofbirth {
+    return Intl.message(
+      'Date of Birth',
+      name: 'dateofbirth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get password {
+    return Intl.message('Password', name: 'password', desc: '', args: []);
+  }
+
+  /// `Confirm Password`
+  String get confirmpassword {
+    return Intl.message(
+      'Confirm Password',
+      name: 'confirmpassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Password`
+  String get changepassword {
+    return Intl.message(
+      'Change Password',
+      name: 'changepassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Current Password`
+  String get currentpassword {
+    return Intl.message(
+      'Current Password',
+      name: 'currentpassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Password`
+  String get newpassword {
+    return Intl.message(
+      'New Password',
+      name: 'newpassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Your New Password`
+  String get enternewpassword {
+    return Intl.message(
+      'Enter Your New Password',
+      name: 'enternewpassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Current Password is required`
+  String get currentpasswordrequiered {
+    return Intl.message(
+      'Current Password is required',
+      name: 'currentpasswordrequiered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Password Required`
+  String get newpasswordrequiered {
+    return Intl.message(
+      'New Password Required',
+      name: 'newpasswordrequiered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Password is required`
+  String get confirmpasswordrequiered {
+    return Intl.message(
+      'Confirm Password is required',
+      name: 'confirmpasswordrequiered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password doesn't match`
+  String get passwordnotmatch {
+    return Intl.message(
+      'Password doesn\'t match',
+      name: 'passwordnotmatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password Must be atleast 6 Characters`
+  String get passwordmustbeatleast {
+    return Intl.message(
+      'Password Must be atleast 6 Characters',
+      name: 'passwordmustbeatleast',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Finish`
+  String get finish {
+    return Intl.message('Finish', name: 'finish', desc: '', args: []);
+  }
+
+  /// `Blood Type`
+  String get bloodtype {
+    return Intl.message('Blood Type', name: 'bloodtype', desc: '', args: []);
+  }
+
+  /// `Profile Updated Successfully`
+  String get profileupdatedsuccessfully {
+    return Intl.message(
+      'Profile Updated Successfully',
+      name: 'profileupdatedsuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to update profile. please try again`
+  String get failedtoupdateprofilepleasetryagain {
+    return Intl.message(
+      'Failed to update profile. please try again',
+      name: 'failedtoupdateprofilepleasetryagain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An error occurred, please try again later`
+  String get erroroccured {
+    return Intl.message(
+      'An error occurred, please try again later',
+      name: 'erroroccured',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save Changes`
+  String get savechanges {
+    return Intl.message(
+      'Save Changes',
+      name: 'savechanges',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discard Changes ?`
+  String get discardchanges {
+    return Intl.message(
+      'Discard Changes ?',
+      name: 'discardchanges',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unsaved changes will be lost`
+  String get unsavedchangeswillbelost {
+    return Intl.message(
+      'Unsaved changes will be lost',
+      name: 'unsavedchangeswillbelost',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes, Discard`
+  String get yesdiscard {
+    return Intl.message('Yes, Discard', name: 'yesdiscard', desc: '', args: []);
+  }
+
+  /// `No, Keep Changes`
+  String get nokeepchanges {
+    return Intl.message(
+      'No, Keep Changes',
+      name: 'nokeepchanges',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Notification Settings`
+  String get changenotificationsettings {
+    return Intl.message(
+      'Change Notification Settings',
+      name: 'changenotificationsettings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Medication Reminder`
+  String get medicationreminder {
+    return Intl.message(
+      'Medication Reminder',
+      name: 'medicationreminder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email Notification`
+  String get emailnotification {
+    return Intl.message(
+      'Email Notification',
+      name: 'emailnotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Push Notification`
+  String get pushnotification {
+    return Intl.message(
+      'Push Notification',
+      name: 'pushnotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Security Notification`
+  String get securitynotification {
+    return Intl.message(
+      'Security Notification',
+      name: 'securitynotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SMS Notification`
+  String get smsnotification {
+    return Intl.message(
+      'SMS Notification',
+      name: 'smsnotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What can help you?`
+  String get whaticanhelp {
+    return Intl.message(
+      'What can help you?',
+      name: 'whaticanhelp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Diagnoses`
+  String get diagnoses {
+    return Intl.message('Diagnoses', name: 'diagnoses', desc: '', args: []);
+  }
+
+  /// `Active Ingredients`
+  String get activeingredients {
+    return Intl.message(
+      'Active Ingredients',
+      name: 'activeingredients',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Drug Price`
+  String get drugprice {
+    return Intl.message('Drug Price', name: 'drugprice', desc: '', args: []);
+  }
+
+  /// `Chronic Diseases`
+  String get chronicdiseases {
+    return Intl.message(
+      'Chronic Diseases',
+      name: 'chronicdiseases',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Diseases symptoms`
+  String get diseasessymptoms {
+    return Intl.message(
+      'Diseases symptoms',
+      name: 'diseasessymptoms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View Your History`
+  String get viewyourhistory {
+    return Intl.message(
+      'View Your History',
+      name: 'viewyourhistory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ask AI Assistant Any Thing You Need`
+  String get askaiassistant {
+    return Intl.message(
+      'Ask AI Assistant Any Thing You Need',
+      name: 'askaiassistant',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ask Anything`
+  String get askanything {
+    return Intl.message(
+      'Ask Anything',
+      name: 'askanything',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copied to clipboard`
+  String get copiedtoclipboard {
+    return Intl.message(
+      'Copied to clipboard',
+      name: 'copiedtoclipboard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Typing...`
+  String get typing {
+    return Intl.message('Typing...', name: 'typing', desc: '', args: []);
+  }
+
+  /// `Search...`
+  String get searching {
+    return Intl.message('Search...', name: 'searching', desc: '', args: []);
+  }
+
+  /// `Find what you need`
+  String get findwhatyouneed {
+    return Intl.message(
+      'Find what you need',
+      name: 'findwhatyouneed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to select image`
+  String get failedtoselectimage {
+    return Intl.message(
+      'Failed to select image',
+      name: 'failedtoselectimage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Attach Image`
+  String get attachimage {
+    return Intl.message(
+      'Attach Image',
+      name: 'attachimage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Take Photo`
+  String get takephoto {
+    return Intl.message('Take Photo', name: 'takephoto', desc: '', args: []);
+  }
+
+  /// `Choose Image from gallery`
+  String get chooseimage {
+    return Intl.message(
+      'Choose Image from gallery',
+      name: 'chooseimage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try different search term`
+  String get trydifferentsearchterm {
+    return Intl.message(
+      'Try different search term',
+      name: 'trydifferentsearchterm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sorry, no result found`
+  String get sorrynoresultfound {
+    return Intl.message(
+      'Sorry, no result found',
+      name: 'sorrynoresultfound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View`
+  String get view {
+    return Intl.message('View', name: 'view', desc: '', args: []);
+  }
+
+  /// `Pharmacy`
+  String get pharmacy {
+    return Intl.message('Pharmacy', name: 'pharmacy', desc: '', args: []);
+  }
+
+  /// `Hospital`
+  String get hospital {
+    return Intl.message('Hospital', name: 'hospital', desc: '', args: []);
+  }
+
+  /// `Closed`
+  String get closed {
+    return Intl.message('Closed', name: 'closed', desc: '', args: []);
+  }
+
+  /// `24 hours`
+  String get hours24 {
+    return Intl.message('24 hours', name: 'hours24', desc: '', args: []);
+  }
+
+  /// `Rating`
+  String get rating {
+    return Intl.message('Rating', name: 'rating', desc: '', args: []);
+  }
+
+  /// `Capsule`
+  String get capsule {
+    return Intl.message('Capsule', name: 'capsule', desc: '', args: []);
+  }
+
+  /// `Medicine Information`
+  String get medicineinfo {
+    return Intl.message(
+      'Medicine Information',
+      name: 'medicineinfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Reminder`
+  String get addreminder {
+    return Intl.message(
+      'Add Reminder',
+      name: 'addreminder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Product Overview`
+  String get productoverview {
+    return Intl.message(
+      'Product Overview',
+      name: 'productoverview',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Key Benefits`
+  String get keybenefits {
+    return Intl.message(
+      'Key Benefits',
+      name: 'keybenefits',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Side Effects`
+  String get sideeffects {
+    return Intl.message(
+      'Side Effects',
+      name: 'sideeffects',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Book Appointment`
+  String get bookappointment {
+    return Intl.message(
+      'Book Appointment',
+      name: 'bookappointment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Available Time`
+  String get availabletime {
+    return Intl.message(
+      'Available Time',
+      name: 'availabletime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Doctor Details`
+  String get doctordetails {
+    return Intl.message(
+      'Doctor Details',
+      name: 'doctordetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Experience`
+  String get experience {
+    return Intl.message('Experience', name: 'experience', desc: '', args: []);
+  }
+
+  /// `Treated`
+  String get treated {
+    return Intl.message('Treated', name: 'treated', desc: '', args: []);
+  }
+
+  /// `Hourly Rate`
+  String get hourlyrate {
+    return Intl.message('Hourly Rate', name: 'hourlyrate', desc: '', args: []);
+  }
+
+  /// `6 Slots`
+  String get slots6 {
+    return Intl.message('6 Slots', name: 'slots6', desc: '', args: []);
+  }
+
+  /// `Hospital Information`
+  String get hospitalinfo {
+    return Intl.message(
+      'Hospital Information',
+      name: 'hospitalinfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pharmacy Information`
+  String get pharmacyinfo {
+    return Intl.message(
+      'Pharmacy Information',
+      name: 'pharmacyinfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact Us`
+  String get contactus {
+    return Intl.message('Contact Us', name: 'contactus', desc: '', args: []);
+  }
+
+  /// `Our Services`
+  String get ourservices {
+    return Intl.message(
+      'Our Services',
+      name: 'ourservices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Branches`
+  String get branches {
+    return Intl.message('Branches', name: 'branches', desc: '', args: []);
+  }
+
+  /// `Work time`
+  String get worktime {
+    return Intl.message('Work time', name: 'worktime', desc: '', args: []);
+  }
+
+  /// `Delivering`
+  String get deliviringtime {
+    return Intl.message(
+      'Delivering',
+      name: 'deliviringtime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Explore Nearby`
+  String get explorenearby {
+    return Intl.message(
+      'Explore Nearby',
+      name: 'explorenearby',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nearest`
+  String get nearest {
+    return Intl.message('Nearest', name: 'nearest', desc: '', args: []);
+  }
+
+  /// `See All...`
+  String get seeall {
+    return Intl.message('See All...', name: 'seeall', desc: '', args: []);
   }
 
   /// `{count} Missed This Week`

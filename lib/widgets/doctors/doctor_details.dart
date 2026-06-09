@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/map.dart';
 
 class DoctorDetails extends StatefulWidget {
@@ -28,7 +29,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Doctor Details",
+          S.of(context).doctordetails,
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
         ),
         backgroundColor: Colors.transparent,
@@ -167,7 +168,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                               ),
                               SizedBox(height: 5),
                               Text(
-                                "Experience",
+                                S.of(context).experience,
                                 style: TextStyle(
                                   color: Colors.black.withOpacity(0.6),
                                   fontSize: 16,
@@ -191,7 +192,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                               ),
                               SizedBox(height: 5),
                               Text(
-                                "Treated",
+                                S.of(context).treated,
                                 style: TextStyle(
                                   color: Colors.black.withOpacity(0.6),
                                   fontSize: 16,
@@ -215,7 +216,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                               ),
                               SizedBox(height: 5),
                               Text(
-                                "Hourly Rate",
+                                S.of(context).hourlyrate,
                                 style: TextStyle(
                                   color: Colors.black.withOpacity(0.6),
                                   fontSize: 16,
@@ -258,8 +259,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                 ),
-                                child: const Text(
-                                  'Book Appointment',
+                                child: Text(
+                                  S.of(context).bookappointment,
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w600,
@@ -324,7 +325,7 @@ class _AppointmentPickerState extends State<AppointmentPicker> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// DATE HEADER
-        _headerRow('Jan2024', '6 slots'),
+        _headerRow('Jan2026', S.of(context).slots6),
 
         const SizedBox(height: 12),
 
@@ -364,7 +365,7 @@ class _AppointmentPickerState extends State<AppointmentPicker> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _headerRow('Available time', '6 slots'),
+              _headerRow(S.of(context).availabletime, S.of(context).slots6),
 
               const SizedBox(height: 8), // 👈 reduced from 12
 
