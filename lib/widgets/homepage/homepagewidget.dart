@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/doctors/popular/popular_states.dart';
+import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
 import 'package:grad_project/models/medicineremindercardmodel.dart';
 import 'package:grad_project/screens/alldoctors.dart';
@@ -18,6 +20,7 @@ import 'package:grad_project/widgets/prevent_diseases.dart';
 import 'package:grad_project/widgets/weakcalender.dart';
 import 'package:grad_project/widgets/weaklystreak.dart';
 import 'package:grad_project/generated/l10n.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Homepagewidget extends StatefulWidget {
   const Homepagewidget({super.key});
@@ -101,37 +104,75 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                   ],
                 ),
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DoctorDetails(
-                            name: S.of(context).youssefAli,
-                            begindate: S.of(context).startTime,
-                            enddate: S.of(context).endTime,
-                            hospital: S.of(context).elDemerdashHospital,
-                            job: S.of(context).neurologist,
-                            rate: 4.5,
+              BlocBuilder<DoctorCubit, DoctorState>(
+                builder: (context, state) {
+                  if (state is DoctorLoading) {
+                    // Skeleton shimmer while loading
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return Skeletonizer(
+                            child: Doctorcard(
+                              devheight: devheight,
+                              doctorimage: Image.asset('assets/images/Pic.png'),
+                              job: "Loading...",
+                              hospital: "Loading...",
+                              name: "Loading...",
+                              rate: 0,
+                              begindate: "--:--",
+                              enddate: "--:--",
+                            ),
+                          );
+                        },
+                        childCount: 5, // show 5 skeletons
+                      ),
+                    );
+                  } else if (state is DoctorLoaded) {
+                    // Real doctors list
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final doctor = state.doctors[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DoctorDetails(
+                                  name: doctor.name,
+                                  begindate: doctor.beginDate,
+                                  enddate: doctor.endDate,
+                                  hospital: doctor.hospital,
+                                  job: doctor.job,
+                                  rate: doctor.rate,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Doctorcard(
+                            devheight: devheight,
+                            doctorimage: Image.network(doctor.image),
+                            job: doctor.job,
+                            hospital: doctor.hospital,
+                            name: doctor.name,
+                            rate: doctor.rate,
+                            begindate: doctor.beginDate,
+                            enddate: doctor.endDate,
                           ),
-                        ),
-                      );
-                    },
-                    child: Doctorcard(
-                      devheight: devheight,
-                      doctorimage: Image.asset('assets/images/Pic.png'),
-                      job: S.of(context).neurologist,
-                      hospital: S.of(context).elDemerdashHospital,
-                      name: S.of(context).youssefAli,
-                      rate: 4.5,
-                      begindate: S.of(context).startTime,
-                      enddate: S.of(context).endTime,
-                    ),
-                  );
-                }, childCount: 5),
+                        );
+                      }, childCount: state.doctors.length),
+                    );
+                  } else if (state is DoctorError) {
+                    return SliverToBoxAdapter(
+                      child: Center(child: Text("Error: ${state.message}")),
+                    );
+                  } else {
+                    return SliverToBoxAdapter(
+                      child: Center(child: Text("No data")),
+                    );
+                  }
+                },
               ),
+
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
               SliverToBoxAdapter(
                 child: Text(

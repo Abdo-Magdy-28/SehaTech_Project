@@ -34,7 +34,7 @@ class Doctor {
       profile: json['profile_url'],
       image: json['image'] ?? '',
       price: json['priceRange'],
-      rate: (json['rate'] ?? 0).toDouble(),
+      rate: (json['rating'] ?? 0).toDouble(),
       beginDate: json['beginDate'] ?? '',
       endDate: json['endDate'] ?? '',
     );

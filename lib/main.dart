@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
+import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
 import 'package:grad_project/firebase_options.dart';
 import 'package:grad_project/generated/l10n.dart';
@@ -29,8 +30,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => Authcubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => DoctorCubit()),
+        BlocProvider(create: (_) => Authcubit()),
+      ],
+
       child: BlocBuilder<LocaleCubit, Locale>(
         builder: (context, locale) {
           return MaterialApp(

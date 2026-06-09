@@ -1,10 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Authentication/loginpage.dart';
 import 'package:grad_project/screens/Homepage.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -39,9 +42,12 @@ class _SplashscreenState extends State<Splashscreen>
       print('Token from storage: $token');
       if (token != null) {
         // ✅ Has token → Go to Home
-        Navigator.of(
+        context.read<DoctorCubit>().loadDoctors();
+        Navigator.pushReplacement(
           context,
-        ).pushReplacement(MaterialPageRoute(builder: (context) => Homepage()));
+          MaterialPageRoute(builder: (_) => Homepage()),
+        );
+        ;
       } else {
         // ❌ No token → Go to Login
         Navigator.of(

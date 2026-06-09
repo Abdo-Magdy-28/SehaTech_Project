@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:grad_project/constants.dart';
 import 'package:grad_project/models/doctor.dart';
 
@@ -11,7 +12,22 @@ class SearchService {
       receiveTimeout: const Duration(seconds: 30), // ✅ Increased
     ),
   );
+  SearchService() {
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          // Read token from secure storage
+          const storage = FlutterSecureStorage();
+          final token = await storage.read(key: 'auth_token');
 
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          return handler.next(options);
+        },
+      ),
+    );
+  }
   Future<List<Doctor>> searchDoctors(String query) async {
     try {
       print('🔍 URL: ${_dio.options.baseUrl}/doctors/search?query=$query');
@@ -53,6 +69,21 @@ class SearchService {
     } catch (e) {
       print('❌ UNKNOWN ERROR: $e');
       throw Exception('Something went wrong: $e');
+    }
+  }
+
+  Future<List<Doctor>> fetchDoctors() async {
+    try {
+      final response = await _dio.get('/doctors');
+
+      if (response.statusCode == 200) {
+        final data = response.data['data']['doctors'] as List<dynamic>;
+        return data.map((json) => Doctor.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed with status: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Network error: ${e.response?.statusCode} ${e.message}');
     }
   }
 }
