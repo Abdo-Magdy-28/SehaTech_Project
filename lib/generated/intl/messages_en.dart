@@ -38,9 +38,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "activeingredients": MessageLookupByLibrary.simpleMessage(
       "Active Ingredients",
     ),
+    "actual": MessageLookupByLibrary.simpleMessage("Actual"),
     "addreminder": MessageLookupByLibrary.simpleMessage("Add Reminder"),
     "address": MessageLookupByLibrary.simpleMessage("Address"),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("AI Assistant"),
+    "allperscriptions": MessageLookupByLibrary.simpleMessage(
+      "All Perscriptions",
+    ),
     "appName": MessageLookupByLibrary.simpleMessage("SEHA TECH"),
     "appTagline": MessageLookupByLibrary.simpleMessage("Health Comes First"),
     "appointment": MessageLookupByLibrary.simpleMessage("Appointment"),
@@ -144,6 +148,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "How to deal with \nchronic diseases ?",
     ),
     "hello": MessageLookupByLibrary.simpleMessage("Hello"),
+    "history": MessageLookupByLibrary.simpleMessage("History"),
     "home": MessageLookupByLibrary.simpleMessage("Home"),
     "hospital": MessageLookupByLibrary.simpleMessage("Hospital"),
     "hospitalinfo": MessageLookupByLibrary.simpleMessage(
@@ -186,6 +191,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "New Password Required",
     ),
     "nokeepchanges": MessageLookupByLibrary.simpleMessage("No, Keep Changes"),
+    "noperscriptionsfound": MessageLookupByLibrary.simpleMessage(
+      "No perscriptions found",
+    ),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "notificationssettings": MessageLookupByLibrary.simpleMessage(
       "Notification settings",

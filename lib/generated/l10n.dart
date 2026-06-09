@@ -1289,6 +1289,36 @@ class S {
     return Intl.message('See All...', name: 'seeall', desc: '', args: []);
   }
 
+  /// `Actual`
+  String get actual {
+    return Intl.message('Actual', name: 'actual', desc: '', args: []);
+  }
+
+  /// `History`
+  String get history {
+    return Intl.message('History', name: 'history', desc: '', args: []);
+  }
+
+  /// `All Perscriptions`
+  String get allperscriptions {
+    return Intl.message(
+      'All Perscriptions',
+      name: 'allperscriptions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No perscriptions found`
+  String get noperscriptionsfound {
+    return Intl.message(
+      'No perscriptions found',
+      name: 'noperscriptionsfound',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `{count} Missed This Week`
   String missedThisWeek(int count) {
     return Intl.message(

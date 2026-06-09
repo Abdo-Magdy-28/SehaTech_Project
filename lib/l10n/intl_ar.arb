@@ -155,7 +155,10 @@
   "explorenearby":"استكشف حولك",
   "nearest":"اقرب",
   "seeall":"اظهار الكل ...",
-  "missedThisWeek": "{count} فاتت هذا الاسبوع",
+  "actual":"الحالي",
+  "history":"السجل",
+  "allperscriptions":"كل الوصفات",
+  "noperscriptionsfound":"لم يتم العثور على وصفات",
   "@missedThisWeek": {
     "placeholders": {
       "count": { "type": "int" }

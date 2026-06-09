@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class PrescriptionsSearchBar extends StatelessWidget {
   final ValueChanged<String> onChanged;
@@ -38,7 +39,7 @@ class PrescriptionsSearchBar extends StatelessWidget {
           onChanged: onChanged,
           style: TextStyle(fontSize: devwidth * 0.038, fontFamily: 'Cairo'),
           decoration: InputDecoration(
-            hintText: 'Search...',
+            hintText: S.of(context).searching,
             hintStyle: TextStyle(
               color: Color(0xff686868),
               fontSize: devwidth * 0.038,

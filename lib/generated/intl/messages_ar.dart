@@ -22,7 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(name) => "د : ${name}";
 
-  static String m1(count) => "${count} فاتت هذا الاسبوع";
+  static String m1(count) => "فاتك ${count} هذا الأسبوع";
 
   static String m2(percent) => "${percent}%";
 
@@ -36,9 +36,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "activeingredients": MessageLookupByLibrary.simpleMessage(
       "المكونات النشطة",
     ),
+    "actual": MessageLookupByLibrary.simpleMessage("الحالي"),
     "addreminder": MessageLookupByLibrary.simpleMessage("اضافة تذكير"),
     "address": MessageLookupByLibrary.simpleMessage("العنوان"),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("مساعد ذكي"),
+    "allperscriptions": MessageLookupByLibrary.simpleMessage("كل الوصفات"),
     "appName": MessageLookupByLibrary.simpleMessage("صحة تك"),
     "appTagline": MessageLookupByLibrary.simpleMessage("الصحة تأتي أولاً"),
     "appointment": MessageLookupByLibrary.simpleMessage("موعد"),
@@ -142,6 +144,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "كيف تتعامل مع \nالأمراض المزمنة ؟",
     ),
     "hello": MessageLookupByLibrary.simpleMessage("مرحبا"),
+    "history": MessageLookupByLibrary.simpleMessage("السجل"),
     "home": MessageLookupByLibrary.simpleMessage("الصفحة الرئيسية"),
     "hospital": MessageLookupByLibrary.simpleMessage("مستشفى"),
     "hospitalinfo": MessageLookupByLibrary.simpleMessage("تفاصيل المستشفى"),
@@ -176,6 +179,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "كلمة المرور الجديدة مطلوبة",
     ),
     "nokeepchanges": MessageLookupByLibrary.simpleMessage("لا، حفظ التغييرات"),
+    "noperscriptionsfound": MessageLookupByLibrary.simpleMessage(
+      "لم يتم العثور على وصفات",
+    ),
     "notifications": MessageLookupByLibrary.simpleMessage("الاشعارات"),
     "notificationssettings": MessageLookupByLibrary.simpleMessage(
       "اعدادات الاشعارات",

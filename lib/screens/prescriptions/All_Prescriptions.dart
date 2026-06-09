@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/prescription_model.dart';
 import 'package:grad_project/screens/prescriptions/reminder_screen.dart';
 import 'package:grad_project/widgets/prescriptions/prescriptioncard.dart';
@@ -149,7 +150,7 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
         scrolledUnderElevation: 0,
         centerTitle: true,
         title: Text(
-          "Prescriptions",
+          S.of(context).perscriptions,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         toolbarHeight: 80,
@@ -186,9 +187,9 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
               unselectedLabelColor: Colors.grey,
               indicatorColor: const Color(0xFF2260FF),
               indicatorWeight: 2.5,
-              tabs: const [
-                Tab(text: 'Actual'),
-                Tab(text: 'History'),
+              tabs: [
+                Tab(text: S.of(context).actual),
+                Tab(text: S.of(context).history),
               ],
             ),
           ),
@@ -230,7 +231,7 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'All Perceptions',
+                S.of(context).allperscriptions,
                 style: TextStyle(
                   fontFamily: 'Cairo',
                   fontWeight: FontWeight.w700,
@@ -283,7 +284,7 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
             vertical: devwidth * 0.03,
           ),
           child: Text(
-            'History Perceptions',
+            '${S.of(context).history} ${S.of(context).perscriptions}',
             style: TextStyle(
               fontFamily: 'Cairo',
               fontWeight: FontWeight.w700,
@@ -311,7 +312,7 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
             ),
             SizedBox(height: devwidth * 0.04),
             Text(
-              'No prescriptions found',
+              S.of(context).noperscriptionsfound,
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: devwidth * 0.04,
