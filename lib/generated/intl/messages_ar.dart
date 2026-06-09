@@ -43,6 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "banha": MessageLookupByLibrary.simpleMessage("بنها"),
     "belladonna30": MessageLookupByLibrary.simpleMessage("بيلادونا 30"),
     "bookNow": MessageLookupByLibrary.simpleMessage("احجز الآن"),
+    "chatbot": MessageLookupByLibrary.simpleMessage("بوت الطبي"),
     "directions": MessageLookupByLibrary.simpleMessage("الاتجاهات"),
     "discoverHealthcare": MessageLookupByLibrary.simpleMessage(
       "اكتشف مساعدنا الصحي",
@@ -70,6 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "كيف تتعامل مع \nالأمراض المزمنة ؟",
     ),
     "hello": MessageLookupByLibrary.simpleMessage("مرحبا"),
+    "home": MessageLookupByLibrary.simpleMessage("الصفحة الرئيسية"),
     "hospitals": MessageLookupByLibrary.simpleMessage("المستشفيات"),
     "importantTopics": MessageLookupByLibrary.simpleMessage("المواضيع المهمة"),
     "keepTrackMedicine": MessageLookupByLibrary.simpleMessage(
@@ -85,6 +87,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "missed": MessageLookupByLibrary.simpleMessage("فاتت"),
     "missedThisWeek": m1,
     "neurologist": MessageLookupByLibrary.simpleMessage("طبيب أعصاب"),
+    "perscriptions": MessageLookupByLibrary.simpleMessage("وصفات"),
     "pharmacies": MessageLookupByLibrary.simpleMessage("الصيدليات"),
     "preventDiseasesTitle": MessageLookupByLibrary.simpleMessage(
       "نصائح للوقاية من \nالأمراض المعدية",
@@ -92,10 +95,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "qalubia": MessageLookupByLibrary.simpleMessage("القليوبية"),
     "quickscan": MessageLookupByLibrary.simpleMessage("مسح سريع"),
     "reminderTime": MessageLookupByLibrary.simpleMessage("09:30 صباحاً"),
+    "scan": MessageLookupByLibrary.simpleMessage("مسح"),
+    "scanarticle1": MessageLookupByLibrary.simpleMessage(
+      "مسح وصفاتك وادويةك \nبسرعة لحصول على تفاصيل\nمقبولة، وتعليمات الادوية، ومعلومات\nالاستخدام",
+    ),
+    "scanarticle2": MessageLookupByLibrary.simpleMessage(
+      "”يمكنك بسهولة مسح أي وصفة طبية أو رمز QR خاص بدواء ما\n لعرض المعلومات الكاملة، بما في ذلك إرشادات الاستخدام\n والتحذيرات والتفاعلات والملاحظات المهمة\n — كل ذلك في مكان واحد، وفي غضون ثوانٍ.“",
+    ),
+    "scanarticle3": MessageLookupByLibrary.simpleMessage(
+      "وجّه كاميرا هاتفك نحو رمز الاستجابة السريعة (QR code)\n واحصل على الملف الدوائي الكامل في ثوانٍ.",
+    ),
+    "scanning": MessageLookupByLibrary.simpleMessage("مسح"),
     "scheduleNow": MessageLookupByLibrary.simpleMessage("جدول الآن"),
     "scheduleYourNext": MessageLookupByLibrary.simpleMessage(
       "جدول موعدك التالي",
     ),
+    "search": MessageLookupByLibrary.simpleMessage("البحث"),
     "seeAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
     "setRemindersTime": MessageLookupByLibrary.simpleMessage(
       "اضبط التذكيرات لأوقات\nمختلفة.",

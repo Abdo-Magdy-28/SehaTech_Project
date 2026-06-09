@@ -45,6 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "banha": MessageLookupByLibrary.simpleMessage("BANHA"),
     "belladonna30": MessageLookupByLibrary.simpleMessage("Belladonna 30"),
     "bookNow": MessageLookupByLibrary.simpleMessage("BOOK Now"),
+    "chatbot": MessageLookupByLibrary.simpleMessage("Chatbot"),
     "directions": MessageLookupByLibrary.simpleMessage("Directions"),
     "discoverHealthcare": MessageLookupByLibrary.simpleMessage(
       "Discover Our Healthcare",
@@ -72,6 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "How to deal with \nchronic diseases ?",
     ),
     "hello": MessageLookupByLibrary.simpleMessage("Hello"),
+    "home": MessageLookupByLibrary.simpleMessage("Home"),
     "hospitals": MessageLookupByLibrary.simpleMessage("Hospitals"),
     "importantTopics": MessageLookupByLibrary.simpleMessage("Important Topics"),
     "keepTrackMedicine": MessageLookupByLibrary.simpleMessage(
@@ -87,6 +89,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "missed": MessageLookupByLibrary.simpleMessage("missed"),
     "missedThisWeek": m1,
     "neurologist": MessageLookupByLibrary.simpleMessage("Neurologist"),
+    "perscriptions": MessageLookupByLibrary.simpleMessage("Perscriptions"),
     "pharmacies": MessageLookupByLibrary.simpleMessage("Pharmacies"),
     "preventDiseasesTitle": MessageLookupByLibrary.simpleMessage(
       "Tips for preventing \ninfectious diseases",
@@ -94,10 +97,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "qalubia": MessageLookupByLibrary.simpleMessage("QALUBIA"),
     "quickscan": MessageLookupByLibrary.simpleMessage("Quick Scan"),
     "reminderTime": MessageLookupByLibrary.simpleMessage("09:30 AM"),
+    "scan": MessageLookupByLibrary.simpleMessage("Scan"),
+    "scanarticle1": MessageLookupByLibrary.simpleMessage(
+      "Scan your perscriptions and medications \nInstantly to Access Accurate Details,\n Dosage Instructions, and Safety\n Information",
+    ),
+    "scanarticle2": MessageLookupByLibrary.simpleMessage(
+      "Easily scan any prescription or medicine QR code\n to view complete information, including usage\n guidelines, warnings, interactions, and important\n notes — all in one place, in seconds.",
+    ),
+    "scanarticle3": MessageLookupByLibrary.simpleMessage(
+      " \'Point your camera at the QR code and get the full\n medication profile in seconds.\'",
+    ),
+    "scanning": MessageLookupByLibrary.simpleMessage("Scanning"),
     "scheduleNow": MessageLookupByLibrary.simpleMessage("Schedule Now"),
     "scheduleYourNext": MessageLookupByLibrary.simpleMessage(
       "Schedule Your Next",
     ),
+    "search": MessageLookupByLibrary.simpleMessage("Search"),
     "seeAll": MessageLookupByLibrary.simpleMessage("See all"),
     "setRemindersTime": MessageLookupByLibrary.simpleMessage(
       "Set reminders for\ndifferent times.",

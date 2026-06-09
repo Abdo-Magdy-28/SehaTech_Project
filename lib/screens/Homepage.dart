@@ -58,7 +58,7 @@ class _HomepageState extends State<Homepage> {
           ),
           CurvedNavigationBarItem(
             child: SvgPicture.asset('assets/images/reports.svg'),
-            label: S.of(context).prescriptions,
+            label: S.of(context).perscriptions,
             labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
           ),
         ],

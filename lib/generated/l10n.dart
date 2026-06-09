@@ -414,6 +414,71 @@ class S {
     );
   }
 
+  /// `Home`
+  String get home {
+    return Intl.message('Home', name: 'home', desc: '', args: []);
+  }
+
+  /// `Scan`
+  String get scan {
+    return Intl.message('Scan', name: 'scan', desc: '', args: []);
+  }
+
+  /// `Chatbot`
+  String get chatbot {
+    return Intl.message('Chatbot', name: 'chatbot', desc: '', args: []);
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message('Search', name: 'search', desc: '', args: []);
+  }
+
+  /// `Perscriptions`
+  String get perscriptions {
+    return Intl.message(
+      'Perscriptions',
+      name: 'perscriptions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scanning`
+  String get scanning {
+    return Intl.message('Scanning', name: 'scanning', desc: '', args: []);
+  }
+
+  /// `Scan your perscriptions and medications \nInstantly to Access Accurate Details,\n Dosage Instructions, and Safety\n Information`
+  String get scanarticle1 {
+    return Intl.message(
+      'Scan your perscriptions and medications \nInstantly to Access Accurate Details,\n Dosage Instructions, and Safety\n Information',
+      name: 'scanarticle1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Easily scan any prescription or medicine QR code\n to view complete information, including usage\n guidelines, warnings, interactions, and important\n notes — all in one place, in seconds.`
+  String get scanarticle2 {
+    return Intl.message(
+      'Easily scan any prescription or medicine QR code\n to view complete information, including usage\n guidelines, warnings, interactions, and important\n notes — all in one place, in seconds.',
+      name: 'scanarticle2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` 'Point your camera at the QR code and get the full\n medication profile in seconds.'`
+  String get scanarticle3 {
+    return Intl.message(
+      ' \'Point your camera at the QR code and get the full\n medication profile in seconds.\'',
+      name: 'scanarticle3',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `{count} Missed This Week`
   String missedThisWeek(int count) {
     return Intl.message(
