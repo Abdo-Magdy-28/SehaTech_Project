@@ -146,7 +146,7 @@ class AuthService {
           userObj = User.fromJson(userData);
           await saveUserData(userObj);
         }
-
+        await storage.write(key: 'login_method', value: 'local');
         return LoginResponse(
           success: true,
           message: 'Login successful',
