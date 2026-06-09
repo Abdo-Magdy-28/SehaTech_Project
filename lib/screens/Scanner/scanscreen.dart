@@ -26,7 +26,7 @@ class _ScanscreenState extends State<Scanscreen> {
           centerTitle: true,
 
           title: Text(
-            "Scanning",
+            S.of(context).scanning,
             style: TextStyle(
               fontFamily: 'Cairo',
               fontWeight: FontWeight.w700,
@@ -79,7 +79,7 @@ class _ScanscreenState extends State<Scanscreen> {
                     left: devwidth * 0.08,
                     top: devheight * 0.02,
                     child: Text(
-                      "Scan Prescriptions and Medications \nInstantly to Access Accurate Details,\n Dosage Instructions, and Safety\n Information",
+                      S.of(context).scanarticle1,
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Cairo',
@@ -110,7 +110,7 @@ class _ScanscreenState extends State<Scanscreen> {
                     left: devwidth * 0.08,
                     top: devheight * 0.11,
                     child: Text(
-                      "Easily scan any prescription or medicine QR code\n to view complete information, including usage\n guidelines, warnings, interactions, and important\n notes — all in one place, in seconds.",
+                      S.of(context).scanarticle2,
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Cairo',
@@ -132,7 +132,7 @@ class _ScanscreenState extends State<Scanscreen> {
               ),
               SizedBox(height: devheight * 0.02),
               Text(
-                'Point your camera at the QR code and get the full\n medication profile in seconds.',
+                S.of(context).scanarticle3,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xff808080),

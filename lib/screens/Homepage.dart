@@ -7,6 +7,7 @@ import 'package:grad_project/screens/Scanner/scanscreen.dart';
 import 'package:grad_project/screens/prescriptions/all_prescriptions.dart';
 import 'package:grad_project/screens/searchscreen.dart';
 import 'package:grad_project/widgets/homepage/homepagewidget.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class Homepage extends StatefulWidget {
   final int initialIndex;
@@ -37,27 +38,27 @@ class _HomepageState extends State<Homepage> {
         items: [
           CurvedNavigationBarItem(
             child: SvgPicture.asset('assets/images/home-2.svg'),
-            label: 'Home',
+            label: S.of(context).home,
             labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
           ),
           CurvedNavigationBarItem(
             child: SvgPicture.asset('assets/images/mingcute_scan-line.svg'),
-            label: 'Scan',
+            label: S.of(context).scan,
             labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
           ),
           CurvedNavigationBarItem(
             child: SvgPicture.asset('assets/images/Frame 48095567.svg'),
-            label: 'Chatbot',
+            label: S.of(context).chatbot,
             labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
           ),
           CurvedNavigationBarItem(
             child: SvgPicture.asset('assets/images/search.svg'),
-            label: 'Search',
+            label: S.of(context).search,
             labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
           ),
           CurvedNavigationBarItem(
             child: SvgPicture.asset('assets/images/reports.svg'),
-            label: 'Prescriptions',
+            label: S.of(context).prescriptions,
             labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
           ),
         ],

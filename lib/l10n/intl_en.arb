@@ -48,6 +48,15 @@
   "RemindLater": "Remind Later",
   "quickscan":"Quick Scan",
   "weeklyStreak": "Weekly Streak",
+  "home": "Home",
+  "scan": "Scan",
+  "chatbot": "Chatbot",
+  "search":"Search",
+  "perscriptions":"Perscriptions",
+  "scanning":"Scanning",
+  "scanarticle1":"Scan your perscriptions and medications \nInstantly to Access Accurate Details,\n Dosage Instructions, and Safety\n Information",
+  "scanarticle2":"Easily scan any prescription or medicine QR code\n to view complete information, including usage\n guidelines, warnings, interactions, and important\n notes — all in one place, in seconds.",
+  "scanarticle3":" 'Point your camera at the QR code and get the full\n medication profile in seconds.'",
   "missedThisWeek": "{count} Missed This Week",
   "@missedThisWeek": {
     "placeholders": {
