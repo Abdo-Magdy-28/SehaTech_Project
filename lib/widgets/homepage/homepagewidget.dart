@@ -43,10 +43,29 @@ class _HomepagewidgetState extends State<Homepagewidget> {
             slivers: [
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.02)),
               SliverToBoxAdapter(child: Customappbar()),
+
               SliverToBoxAdapter(
                 child: SizedBox(width: devwidth, child: Divider(thickness: 1)),
               ),
-
+              SliverToBoxAdapter(
+                child: GestureDetector(
+                  onTap: () => _showLanguageSheet(context),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.language, size: 20),
+                      const SizedBox(width: 6),
+                      BlocBuilder<LocaleCubit, Locale>(
+                        builder: (context, locale) => Text(
+                          locale.languageCode == 'en' ? 'English' : 'عربية',
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                      ),
+                      const Icon(Icons.keyboard_arrow_down, size: 18),
+                    ],
+                  ),
+                ),
+              ),
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.01)),
 
               SliverToBoxAdapter(
