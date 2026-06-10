@@ -24,7 +24,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(count) => "فاتك ${count} هذا الأسبوع";
 
-  static String m2(percent) => "${percent}%";
+  static String m2(count) => "يمكنك اختيار ${count} وقت فقط";
+
+  static String m3(percent) => "${percent}%";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -376,7 +378,37 @@ class MessageLookup extends MessageLookupByLibrary {
     "ratingtheworstfirst": MessageLookupByLibrary.simpleMessage(
       "تقييم: الاقل اولا",
     ),
+    "reminderButtonCancel": MessageLookupByLibrary.simpleMessage(
+      "إلغاء التذكير",
+    ),
+    "reminderButtonRefill": MessageLookupByLibrary.simpleMessage("إضافة"),
+    "reminderFreqOnce": MessageLookupByLibrary.simpleMessage("مرة واحدة"),
+    "reminderFreqThreeTimes": MessageLookupByLibrary.simpleMessage("ثلاث مرات"),
+    "reminderFreqTwice": MessageLookupByLibrary.simpleMessage("مرتان"),
+    "reminderFrom": MessageLookupByLibrary.simpleMessage("من:"),
+    "reminderInfoTitle": MessageLookupByLibrary.simpleMessage(
+      "معلومات التذكير",
+    ),
+    "reminderLabelDosage": MessageLookupByLibrary.simpleMessage("الجرعة:"),
+    "reminderLabelDuration": MessageLookupByLibrary.simpleMessage("المدة:"),
+    "reminderLabelFrequency": MessageLookupByLibrary.simpleMessage("التكرار:"),
+    "reminderLabelName": MessageLookupByLibrary.simpleMessage("الاسم:"),
+    "reminderLabelType": MessageLookupByLibrary.simpleMessage("النوع:"),
+    "reminderMaxTimes": MessageLookupByLibrary.simpleMessage(
+      "الحد الأقصى 3 مرات",
+    ),
+    "reminderMaxTimesError": m2,
+    "reminderPeriodEveryDay": MessageLookupByLibrary.simpleMessage("كل يوم"),
+    "reminderPeriodEveryMonth": MessageLookupByLibrary.simpleMessage("كل شهر"),
+    "reminderPeriodEveryWeek": MessageLookupByLibrary.simpleMessage("كل أسبوع"),
+    "reminderProvideInfo": MessageLookupByLibrary.simpleMessage(
+      "أدخل المعلومات",
+    ),
+    "reminderSelectTime": MessageLookupByLibrary.simpleMessage("اختر الوقت"),
     "reminderTime": MessageLookupByLibrary.simpleMessage("09:30 صباحاً"),
+    "reminderTo": MessageLookupByLibrary.simpleMessage("إلى:"),
+    "reminderTypeCapsule": MessageLookupByLibrary.simpleMessage("كبسولة"),
+    "reminderTypeSyrup": MessageLookupByLibrary.simpleMessage("شراب"),
     "resend": MessageLookupByLibrary.simpleMessage("إعادة إرسال"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "savechanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
@@ -462,7 +494,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "عرض التقرير الأسبوعي",
     ),
     "viewyourhistory": MessageLookupByLibrary.simpleMessage("عرض سجلك"),
-    "weeklyPercentage": m2,
+    "weeklyPercentage": m3,
     "weeklyStreak": MessageLookupByLibrary.simpleMessage("السلسلة الأسبوعية"),
     "welcome": MessageLookupByLibrary.simpleMessage("أهلا وسهلا"),
     "wesentyouanemail": MessageLookupByLibrary.simpleMessage(

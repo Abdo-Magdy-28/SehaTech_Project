@@ -24,7 +24,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(count) => "${count} Missed This Week";
 
-  static String m2(percent) => "${percent}%";
+  static String m2(count) => "You can only select ${count} time(s)";
+
+  static String m3(percent) => "${percent}%";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -389,7 +391,41 @@ class MessageLookup extends MessageLookupByLibrary {
     "ratingtheworstfirst": MessageLookupByLibrary.simpleMessage(
       "Rating : The worst first",
     ),
+    "reminderButtonCancel": MessageLookupByLibrary.simpleMessage(
+      "Cancel Reminder",
+    ),
+    "reminderButtonRefill": MessageLookupByLibrary.simpleMessage("Refill"),
+    "reminderFreqOnce": MessageLookupByLibrary.simpleMessage("Once"),
+    "reminderFreqThreeTimes": MessageLookupByLibrary.simpleMessage(
+      "Three times",
+    ),
+    "reminderFreqTwice": MessageLookupByLibrary.simpleMessage("Twice"),
+    "reminderFrom": MessageLookupByLibrary.simpleMessage("From:"),
+    "reminderInfoTitle": MessageLookupByLibrary.simpleMessage("Reminder Info"),
+    "reminderLabelDosage": MessageLookupByLibrary.simpleMessage("Dosage :"),
+    "reminderLabelDuration": MessageLookupByLibrary.simpleMessage("Duration:"),
+    "reminderLabelFrequency": MessageLookupByLibrary.simpleMessage(
+      "Frequency :",
+    ),
+    "reminderLabelName": MessageLookupByLibrary.simpleMessage("Name:"),
+    "reminderLabelType": MessageLookupByLibrary.simpleMessage("Type :"),
+    "reminderMaxTimes": MessageLookupByLibrary.simpleMessage("Maximum 3 times"),
+    "reminderMaxTimesError": m2,
+    "reminderPeriodEveryDay": MessageLookupByLibrary.simpleMessage("Every Day"),
+    "reminderPeriodEveryMonth": MessageLookupByLibrary.simpleMessage(
+      "Every Month",
+    ),
+    "reminderPeriodEveryWeek": MessageLookupByLibrary.simpleMessage(
+      "Every Week",
+    ),
+    "reminderProvideInfo": MessageLookupByLibrary.simpleMessage(
+      "Provide Information",
+    ),
+    "reminderSelectTime": MessageLookupByLibrary.simpleMessage("Select time"),
     "reminderTime": MessageLookupByLibrary.simpleMessage("09:30 AM"),
+    "reminderTo": MessageLookupByLibrary.simpleMessage("To:"),
+    "reminderTypeCapsule": MessageLookupByLibrary.simpleMessage("Capsule"),
+    "reminderTypeSyrup": MessageLookupByLibrary.simpleMessage("Syrup"),
     "resend": MessageLookupByLibrary.simpleMessage("Resend"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "savechanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
@@ -481,7 +517,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "viewyourhistory": MessageLookupByLibrary.simpleMessage(
       "View Your History",
     ),
-    "weeklyPercentage": m2,
+    "weeklyPercentage": m3,
     "weeklyStreak": MessageLookupByLibrary.simpleMessage("Weekly Streak"),
     "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
     "wesentyouanemail": MessageLookupByLibrary.simpleMessage(

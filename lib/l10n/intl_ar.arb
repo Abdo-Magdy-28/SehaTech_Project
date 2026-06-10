@@ -282,7 +282,35 @@
   "coderequired": "الرمز مطلوب",
   "enteremailtoreceivecode": "أدخل البريد الإلكتروني للحصول على الرمز",
   "continuee": "متابعة", 
-  "verifiyyouridentity": "التحقق من هويتك"
-  
+  "verifiyyouridentity": "التحقق من هويتك","reminderInfoTitle": "معلومات التذكير",
+  "reminderProvideInfo": "أدخل المعلومات",
+  "reminderLabelName": "الاسم:",
+  "reminderLabelDosage": "الجرعة:",
+  "reminderLabelFrequency": "التكرار:",
+  "reminderLabelType": "النوع:",
+  "reminderLabelDuration": "المدة:",
+  "reminderFrom": "من:",
+  "reminderTo": "إلى:",
+  "reminderSelectTime": "اختر الوقت",
+  "reminderMaxTimes": "الحد الأقصى 3 مرات",
+  "reminderMaxTimesError": "يمكنك اختيار {count} وقت فقط",
+  "@reminderMaxTimesError": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderButtonRefill": "إضافة",
+  "reminderButtonCancel": "إلغاء التذكير",
+  "reminderFreqOnce": "مرة واحدة",
+  "reminderFreqTwice": "مرتان",
+  "reminderFreqThreeTimes": "ثلاث مرات",
+  "reminderPeriodEveryDay": "كل يوم",
+  "reminderPeriodEveryWeek": "كل أسبوع",
+  "reminderPeriodEveryMonth": "كل شهر",
+  "reminderTypeCapsule": "كبسولة",
+  "reminderTypeSyrup": "شراب"
+
 
 }

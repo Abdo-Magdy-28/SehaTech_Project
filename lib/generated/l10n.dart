@@ -2208,6 +2208,196 @@ class S {
       args: [],
     );
   }
+
+  /// `Reminder Info`
+  String get reminderInfoTitle {
+    return Intl.message(
+      'Reminder Info',
+      name: 'reminderInfoTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Provide Information`
+  String get reminderProvideInfo {
+    return Intl.message(
+      'Provide Information',
+      name: 'reminderProvideInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name:`
+  String get reminderLabelName {
+    return Intl.message('Name:', name: 'reminderLabelName', desc: '', args: []);
+  }
+
+  /// `Dosage :`
+  String get reminderLabelDosage {
+    return Intl.message(
+      'Dosage :',
+      name: 'reminderLabelDosage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Frequency :`
+  String get reminderLabelFrequency {
+    return Intl.message(
+      'Frequency :',
+      name: 'reminderLabelFrequency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type :`
+  String get reminderLabelType {
+    return Intl.message(
+      'Type :',
+      name: 'reminderLabelType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Duration:`
+  String get reminderLabelDuration {
+    return Intl.message(
+      'Duration:',
+      name: 'reminderLabelDuration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `From:`
+  String get reminderFrom {
+    return Intl.message('From:', name: 'reminderFrom', desc: '', args: []);
+  }
+
+  /// `To:`
+  String get reminderTo {
+    return Intl.message('To:', name: 'reminderTo', desc: '', args: []);
+  }
+
+  /// `Select time`
+  String get reminderSelectTime {
+    return Intl.message(
+      'Select time',
+      name: 'reminderSelectTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Maximum 3 times`
+  String get reminderMaxTimes {
+    return Intl.message(
+      'Maximum 3 times',
+      name: 'reminderMaxTimes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can only select {count} time(s)`
+  String reminderMaxTimesError(int count) {
+    return Intl.message(
+      'You can only select $count time(s)',
+      name: 'reminderMaxTimesError',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Refill`
+  String get reminderButtonRefill {
+    return Intl.message(
+      'Refill',
+      name: 'reminderButtonRefill',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel Reminder`
+  String get reminderButtonCancel {
+    return Intl.message(
+      'Cancel Reminder',
+      name: 'reminderButtonCancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Once`
+  String get reminderFreqOnce {
+    return Intl.message('Once', name: 'reminderFreqOnce', desc: '', args: []);
+  }
+
+  /// `Twice`
+  String get reminderFreqTwice {
+    return Intl.message('Twice', name: 'reminderFreqTwice', desc: '', args: []);
+  }
+
+  /// `Three times`
+  String get reminderFreqThreeTimes {
+    return Intl.message(
+      'Three times',
+      name: 'reminderFreqThreeTimes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Every Day`
+  String get reminderPeriodEveryDay {
+    return Intl.message(
+      'Every Day',
+      name: 'reminderPeriodEveryDay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Every Week`
+  String get reminderPeriodEveryWeek {
+    return Intl.message(
+      'Every Week',
+      name: 'reminderPeriodEveryWeek',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Every Month`
+  String get reminderPeriodEveryMonth {
+    return Intl.message(
+      'Every Month',
+      name: 'reminderPeriodEveryMonth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Capsule`
+  String get reminderTypeCapsule {
+    return Intl.message(
+      'Capsule',
+      name: 'reminderTypeCapsule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Syrup`
+  String get reminderTypeSyrup {
+    return Intl.message('Syrup', name: 'reminderTypeSyrup', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -280,6 +280,34 @@
    "coderequired": "Code is required",
    "enteremailtoreceivecode": "Enter your email to receive reset code",
    "continuee": "Continue",
-   "verifiyyouridentity": "Verify Your Identity"
+   "verifiyyouridentity": "Verify Your Identity","reminderInfoTitle": "Reminder Info",
+  "reminderProvideInfo": "Provide Information",
+  "reminderLabelName": "Name:",
+  "reminderLabelDosage": "Dosage :",
+  "reminderLabelFrequency": "Frequency :",
+  "reminderLabelType": "Type :",
+  "reminderLabelDuration": "Duration:",
+  "reminderFrom": "From:",
+  "reminderTo": "To:",
+  "reminderSelectTime": "Select time",
+  "reminderMaxTimes": "Maximum 3 times",
+  "reminderMaxTimesError": "You can only select {count} time(s)",
+  "@reminderMaxTimesError": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderButtonRefill": "Refill",
+  "reminderButtonCancel": "Cancel Reminder",
+  "reminderFreqOnce": "Once",
+  "reminderFreqTwice": "Twice",
+  "reminderFreqThreeTimes": "Three times",
+  "reminderPeriodEveryDay": "Every Day",
+  "reminderPeriodEveryWeek": "Every Week",
+  "reminderPeriodEveryMonth": "Every Month",
+  "reminderTypeCapsule": "Capsule",
+  "reminderTypeSyrup": "Syrup"
 }   
   

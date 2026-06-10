@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:grad_project/cubit/Reminder/ReminderCubit.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/medication_reminder.dart';
 import 'package:grad_project/widgets/prescriptions/reminderactivated.dart';
 
@@ -24,68 +25,138 @@ class ReminderScreen extends StatefulWidget {
   State<ReminderScreen> createState() => _ReminderScreenState();
 }
 
+// ── Backend-safe constants (always English, never localized) ─
+// These are the values that go to the API regardless of UI language.
+
+const _kFreqTimesEn = ['Once', 'Twice', 'Three times'];
+const _kFreqPeriodEn = ['Every Day', 'Every Week', 'Every Month'];
+const _kDosageUnits = ['500gm', '250gm', '100gm', '50gm'];
+const _kTypesEn = ['Capsule', 'Syrup'];
+
+const _kTimes = [
+  '06:00',
+  '07:00',
+  '08:00',
+  '09:00',
+  '10:00',
+  '11:00',
+  '12:00',
+  '13:00',
+  '14:00',
+  '15:00',
+  '16:00',
+  '17:00',
+  '18:00',
+  '19:00',
+  '20:00',
+  '21:00',
+];
+
+const _kMonths = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+// ── Localized label helpers ──────────────────────────────────
+// Each helper maps the English backend key → localized display label.
+
+List<String> _freqTimesLabels(S s) => [
+  s.reminderFreqOnce,
+  s.reminderFreqTwice,
+  s.reminderFreqThreeTimes,
+];
+
+List<String> _freqPeriodLabels(S s) => [
+  s.reminderPeriodEveryDay,
+  s.reminderPeriodEveryWeek,
+  s.reminderPeriodEveryMonth,
+];
+
+List<String> _typeLabels(S s) => [s.reminderTypeCapsule, s.reminderTypeSyrup];
+
+// Convert localized type label → English backend value
+String _typeToBackend(String localizedType, S s) {
+  if (localizedType == s.reminderTypeSyrup) return 'Syrup';
+  return 'Capsule';
+}
+
+// Convert localized freqTimes label → max selectable int
+int _maxTimesFromLabel(String localizedLabel, S s) {
+  if (localizedLabel == s.reminderFreqTwice) return 2;
+  if (localizedLabel == s.reminderFreqThreeTimes) return 3;
+  return 1;
+}
+
+// ── Screen ───────────────────────────────────────────────────
+
 class _ReminderScreenState extends State<ReminderScreen> {
   String monthToNumber(String m) {
     const map = {
-      "Jan": "01",
-      "Feb": "02",
-      "Mar": "03",
-      "Apr": "04",
-      "May": "05",
-      "Jun": "06",
-      "Jul": "07",
-      "Aug": "08",
-      "Sep": "09",
-      "Oct": "10",
-      "Nov": "11",
-      "Dec": "12",
+      'Jan': '01',
+      'Feb': '02',
+      'Mar': '03',
+      'Apr': '04',
+      'May': '05',
+      'Jun': '06',
+      'Jul': '07',
+      'Aug': '08',
+      'Sep': '09',
+      'Oct': '10',
+      'Nov': '11',
+      'Dec': '12',
     };
     return map[m]!;
   }
 
-  int get maxSelectableTimes {
-    switch (_freqTimes) {
-      case 'Once':
-        return 1;
-      case 'Twice':
-        return 2;
-      case 'Three times':
-        return 3;
-      default:
-        return 1;
-    }
-  }
+  int get maxSelectableTimes =>
+      _maxTimesFromLabel(_freqTimesLabel, S.of(context));
 
   void _submitReminder() async {
-    // If widget.medicineName is empty, fallback to the text field
+    // Resolve English backend values from the currently selected labels
+    final s = S.of(context);
+
     final medName = widget.medicineName.isNotEmpty
         ? widget.medicineName
-        : _nameController.text.trim().split(" ").first;
+        : _nameController.text.trim().split(' ').first;
 
     final generic = widget.medicineName.isNotEmpty
         ? widget.medicineName
-        : _nameController.text.trim().split(" ").first;
+        : _nameController.text.trim().split(' ').first;
+
+    // _selectedTypeLabel is a localized string; convert to English for API
+    final backendType = _typeToBackend(_selectedTypeLabel, s);
 
     final reminder = MedicationReminder(
       medicationName: medName,
       genericName: generic,
-      form: _selectedType.toLowerCase(),
-      strength: _dosageUnit.replaceAll("gm", "mg"),
-      instructions: "Take as prescribed",
+      form: backendType.toLowerCase(), // english → api
+      strength: _dosageUnit.replaceAll('gm', 'mg'), // unit stays as-is
+      instructions: 'Take as prescribed',
       startDate:
-          "${_fromYear}-${monthToNumber(_fromMonth)}-${_fromDay.toString().padLeft(2, '0')}",
+          '$_fromYear-${monthToNumber(_fromMonth)}-${_fromDay.toString().padLeft(2, '0')}',
       endDate:
-          "${_toYear}-${monthToNumber(_toMonth)}-${_toDay.toString().padLeft(2, '0')}",
+          '$_toYear-${monthToNumber(_toMonth)}-${_toDay.toString().padLeft(2, '0')}',
       daysOfWeek: [1, 2, 3, 4, 5],
       doseTimes: _selectedTimes
           .map(
             (t) => DoseTime(
               time: t,
-              dosage: "$_dosageQty ${_selectedType.toLowerCase()}s",
+              // dosage uses English type
+              dosage: '1 ${backendType.toLowerCase()}',
             ),
           )
           .toList(),
-      color: "#1a9f5a",
+      color: '#1a9f5a',
     );
 
     context.read<ReminderCubit>().submitReminder(reminder);
@@ -97,9 +168,12 @@ class _ReminderScreenState extends State<ReminderScreen> {
 
   int _dosageQty = 1;
   String _dosageUnit = '500gm';
-  String _freqTimes = 'Once';
-  String _freqPeriod = 'Every Day';
-  String _selectedType = 'Capsule';
+
+  // These hold the *localized* label the user sees.
+  // They are initialized in didChangeDependencies so we have context/locale.
+  late String _freqTimesLabel;
+  late String _freqPeriodLabel;
+  late String _selectedTypeLabel;
 
   late int _fromDay;
   late String _fromMonth;
@@ -110,53 +184,31 @@ class _ReminderScreenState extends State<ReminderScreen> {
 
   List<String> _selectedTimes = [];
 
-  static const _times = [
-    '06:00',
-    '07:00',
-    '08:00',
-    '09:00',
-    '10:00',
-    '11:00',
-    '12:00',
-    '13:00',
-    '14:00',
-    '15:00',
-    '16:00',
-    '17:00',
-    '18:00',
-    '19:00',
-    '20:00',
-    '21:00',
-  ];
-  static const _months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-  static const _freqTimeList = ['Once', 'Twice', 'Three times'];
-  static const _freqPeriodList = ['Every Day', 'Every Week', 'Every Month'];
-  static const _dosageUnits = ['500gm', '250gm', '100gm', '50gm'];
-  static const _types = ['Capsule', 'Syrup'];
+  bool _labelsInitialized = false;
 
   @override
   void initState() {
     super.initState();
     final now = DateTime.now();
     _fromDay = now.day;
-    _fromMonth = _months[now.month - 1]; // because list is 0-based
+    _fromMonth = _kMonths[now.month - 1];
     _fromYear = now.year;
     _nameController = TextEditingController(
       text: '${widget.medicineName} ${widget.medicineSize}',
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Initialize localized labels once (safe because context is available here)
+    if (!_labelsInitialized) {
+      final s = S.of(context);
+      _freqTimesLabel = s.reminderFreqOnce;
+      _freqPeriodLabel = s.reminderPeriodEveryDay;
+      _selectedTypeLabel = s.reminderTypeCapsule;
+      _labelsInitialized = true;
+    }
   }
 
   @override
@@ -165,7 +217,6 @@ class _ReminderScreenState extends State<ReminderScreen> {
     super.dispose();
   }
 
-  // ── helpers ────────────────────────────────────────────
   void _onRefill() {
     final times = _selectedTimes.isEmpty
         ? ['8:00']
@@ -176,16 +227,14 @@ class _ReminderScreenState extends State<ReminderScreen> {
       barrierDismissible: false,
       builder: (_) => ReminderActivatedDialog(
         selectedTimes: times,
-        onGoHome: () {
-          Navigator.of(context).popUntil((r) => r.isFirst);
-        },
+        onGoHome: () => Navigator.of(context).popUntil((r) => r.isFirst),
       ),
     );
   }
 
-  // ── build ───────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     final sw = MediaQuery.of(context).size.width;
     final sh = MediaQuery.of(context).size.height;
 
@@ -196,11 +245,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
         } else {
           setState(() => _isLoading = false);
         }
-
-        if (state is ReminderSuccess) {
-          _onRefill(); // your dialog
-        }
-
+        if (state is ReminderSuccess) _onRefill();
         if (state is ReminderError) {
           ScaffoldMessenger.of(
             context,
@@ -214,13 +259,13 @@ class _ReminderScreenState extends State<ReminderScreen> {
           scrolledUnderElevation: 0,
           centerTitle: true,
           title: Text(
-            "Reminder Info",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            s.reminderInfoTitle, // ← localized
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           toolbarHeight: 80,
           backgroundColor: Colors.white,
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(1),
+            preferredSize: const Size.fromHeight(1),
             child: Container(height: 1, color: Colors.grey),
           ),
         ),
@@ -232,13 +277,13 @@ class _ReminderScreenState extends State<ReminderScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _SectionTitle(text: 'Provide Information', sw: sw),
+              _SectionTitle(text: s.reminderProvideInfo, sw: sw), // ← localized
               SizedBox(height: sh * 0.022),
 
               // Name
               _InfoRow(
                 icon: Icons.medication_outlined,
-                label: 'Name:',
+                label: s.reminderLabelName, // ← localized
                 sw: sw,
                 sh: sh,
                 child: _GreyField(controller: _nameController, sw: sw, sh: sh),
@@ -248,7 +293,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
               // Dosage
               _InfoRow(
                 icon: Icons.local_pharmacy_outlined,
-                label: 'Dosage :',
+                label: s.reminderLabelDosage, // ← localized
                 sw: sw,
                 sh: sh,
                 child: _DosageField(
@@ -256,7 +301,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                   sh: sh,
                   qty: _dosageQty,
                   unit: _dosageUnit,
-                  units: _dosageUnits,
+                  units: _kDosageUnits, // units stay as-is (mg values)
                   onDecrease: () => setState(() {
                     if (_dosageQty > 1) _dosageQty--;
                   }),
@@ -269,24 +314,22 @@ class _ReminderScreenState extends State<ReminderScreen> {
               // Frequency
               _InfoRow(
                 icon: Icons.repeat,
-                label: 'Frequency :',
+                label: s.reminderLabelFrequency, // ← localized
                 sw: sw,
                 sh: sh,
                 child: Row(
                   children: [
                     Expanded(
                       child: _StyledDropdown(
-                        value: _freqTimes,
-                        items: _freqTimeList,
+                        value: _freqTimesLabel,
+                        items: _freqTimesLabels(s), // ← localized list
                         onChanged: (v) {
                           setState(() {
-                            _freqTimes = v!;
-
-                            // If user selected fewer times than allowed, keep them
-                            // If more, trim the list
-                            if (_selectedTimes.length > maxSelectableTimes) {
+                            _freqTimesLabel = v!;
+                            final max = _maxTimesFromLabel(v, s);
+                            if (_selectedTimes.length > max) {
                               _selectedTimes = _selectedTimes
-                                  .take(maxSelectableTimes)
+                                  .take(max)
                                   .toList();
                             }
                           });
@@ -298,9 +341,9 @@ class _ReminderScreenState extends State<ReminderScreen> {
                     SizedBox(width: sw * 0.02),
                     Expanded(
                       child: _StyledDropdown(
-                        value: _freqPeriod,
-                        items: _freqPeriodList,
-                        onChanged: (v) => setState(() => _freqPeriod = v!),
+                        value: _freqPeriodLabel,
+                        items: _freqPeriodLabels(s), // ← localized list
+                        onChanged: (v) => setState(() => _freqPeriodLabel = v!),
                         sw: sw,
                         sh: sh,
                       ),
@@ -313,16 +356,17 @@ class _ReminderScreenState extends State<ReminderScreen> {
               // Type (Capsule / Syrup)
               _InfoRow(
                 icon: Icons.category_outlined,
-                label: 'Frequency :',
+                label: s
+                    .reminderLabelType, // ← localized (was wrongly "Frequency" before)
                 sw: sw,
                 sh: sh,
                 child: Row(
-                  children: _types.map((t) {
-                    final sel = _selectedType == t;
+                  children: _typeLabels(s).map((t) {
+                    final sel = _selectedTypeLabel == t;
                     return Padding(
                       padding: EdgeInsets.only(right: sw * 0.025),
                       child: GestureDetector(
-                        onTap: () => setState(() => _selectedType = t),
+                        onTap: () => setState(() => _selectedTypeLabel = t),
                         child: Container(
                           padding: EdgeInsets.symmetric(
                             horizontal: sw * 0.05,
@@ -335,7 +379,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                             borderRadius: BorderRadius.circular(sw * 0.02),
                           ),
                           child: Text(
-                            t,
+                            t, // localized label
                             style: TextStyle(
                               fontSize: sw * 0.035,
                               fontFamily: 'Cairo',
@@ -361,7 +405,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                 toDay: _toDay,
                 toMonth: _toMonth,
                 toYear: _toYear,
-                months: _months,
+                months: _kMonths,
                 onFromDayChanged: (v) =>
                     setState(() => _fromDay = int.parse(v!)),
                 onFromMonthChanged: (v) => setState(() => _fromMonth = v!),
@@ -374,10 +418,10 @@ class _ReminderScreenState extends State<ReminderScreen> {
               SizedBox(height: sh * 0.028),
 
               // Select time
-              _SectionTitle(text: 'Select time', sw: sw),
+              _SectionTitle(text: s.reminderSelectTime, sw: sw), // ← localized
               SizedBox(height: sh * 0.005),
               Text(
-                'Maximum 3 times',
+                s.reminderMaxTimes, // ← localized
                 style: TextStyle(
                   fontSize: sw * 0.032,
                   color: Colors.grey.shade500,
@@ -387,7 +431,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
               SizedBox(height: sh * 0.015),
 
               _TimeGrid(
-                times: _times,
+                times: _kTimes,
                 selected: _selectedTimes,
                 sw: sw,
                 sh: sh,
@@ -401,9 +445,9 @@ class _ReminderScreenState extends State<ReminderScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            'You can only select $maxSelectableTimes time(s)',
+                            s.reminderMaxTimesError(maxSelectableTimes),
                           ),
-                          duration: Duration(seconds: 1),
+                          duration: const Duration(seconds: 1),
                         ),
                       );
                     }
@@ -414,7 +458,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
 
               // Refill button
               _ActionButton(
-                label: 'Refill',
+                label: s.reminderButtonRefill, // ← localized
                 color: const Color(0xFF2260FF),
                 sw: sw,
                 sh: sh,
@@ -425,7 +469,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
 
               // Cancel button
               _ActionButton(
-                label: 'Cancel Reminder',
+                label: s.reminderButtonCancel, // ← localized
                 color: Colors.red,
                 sw: sw,
                 sh: sh,
@@ -441,10 +485,9 @@ class _ReminderScreenState extends State<ReminderScreen> {
 }
 
 // ============================================================
-// SMALL REUSABLE WIDGETS
+// SMALL REUSABLE WIDGETS  (unchanged — no strings inside them)
 // ============================================================
 
-// ── Section title ───────────────────────────────────────────
 class _SectionTitle extends StatelessWidget {
   final String text;
   final double sw;
@@ -461,7 +504,6 @@ class _SectionTitle extends StatelessWidget {
   );
 }
 
-// ── Icon + Label + child row ────────────────────────────────
 class _InfoRow extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -496,7 +538,6 @@ class _InfoRow extends StatelessWidget {
   );
 }
 
-// ── Grey text field ─────────────────────────────────────────
 class _GreyField extends StatelessWidget {
   final TextEditingController controller;
   final double sw, sh;
@@ -525,7 +566,6 @@ class _GreyField extends StatelessWidget {
   );
 }
 
-// ── Dosage field ────────────────────────────────────────────
 class _DosageField extends StatelessWidget {
   final int qty;
   final String unit;
@@ -592,7 +632,6 @@ class _DosageField extends StatelessWidget {
   );
 }
 
-// ── Styled dropdown ─────────────────────────────────────────
 class _StyledDropdown extends StatelessWidget {
   final String value;
   final List<String> items;
@@ -633,7 +672,6 @@ class _StyledDropdown extends StatelessWidget {
   );
 }
 
-// ── Duration section ────────────────────────────────────────
 class _DurationSection extends StatelessWidget {
   final double sw, sh;
   final int fromDay, fromYear, toDay, toYear;
@@ -717,54 +755,56 @@ class _DurationSection extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Icon(
-        Icons.calendar_today_outlined,
-        color: const Color(0xFF2260FF),
-        size: sw * 0.055,
-      ),
-      SizedBox(width: sw * 0.02),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Duration:',
-              style: TextStyle(
-                fontSize: sw * 0.037,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Cairo',
-              ),
-            ),
-            SizedBox(height: sh * 0.01),
-            _dateRow(
-              label: 'From:',
-              day: fromDay,
-              month: fromMonth,
-              year: fromYear,
-              onDay: onFromDayChanged,
-              onMonth: onFromMonthChanged,
-              onYear: onFromYearChanged,
-            ),
-            _dateRow(
-              label: 'To:',
-              day: toDay,
-              month: toMonth,
-              year: toYear,
-              onDay: onToDayChanged,
-              onMonth: onToMonthChanged,
-              onYear: onToYearChanged,
-            ),
-          ],
+  Widget build(BuildContext context) {
+    final s = S.of(context);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(
+          Icons.calendar_today_outlined,
+          color: const Color(0xFF2260FF),
+          size: sw * 0.055,
         ),
-      ),
-    ],
-  );
+        SizedBox(width: sw * 0.02),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                s.reminderLabelDuration, // ← localized
+                style: TextStyle(
+                  fontSize: sw * 0.037,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Cairo',
+                ),
+              ),
+              SizedBox(height: sh * 0.01),
+              _dateRow(
+                label: s.reminderFrom, // ← localized
+                day: fromDay,
+                month: fromMonth,
+                year: fromYear,
+                onDay: onFromDayChanged,
+                onMonth: onFromMonthChanged,
+                onYear: onFromYearChanged,
+              ),
+              _dateRow(
+                label: s.reminderTo, // ← localized
+                day: toDay,
+                month: toMonth,
+                year: toYear,
+                onDay: onToDayChanged,
+                onMonth: onToMonthChanged,
+                onYear: onToYearChanged,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
 
-// ── Time grid ───────────────────────────────────────────────
 class _TimeGrid extends StatelessWidget {
   final List<String> times, selected;
   final ValueChanged<String> onTap;
@@ -816,7 +856,6 @@ class _TimeGrid extends StatelessWidget {
   );
 }
 
-// ── Action button ───────────────────────────────────────────
 class _ActionButton extends StatelessWidget {
   final String label;
   final Color color;
@@ -834,38 +873,36 @@ class _ActionButton extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: sh * 0.065,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(sw * 0.03),
-          ),
+  Widget build(BuildContext context) => SizedBox(
+    width: double.infinity,
+    height: sh * 0.065,
+    child: ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(sw * 0.03),
         ),
-        child: isLoading
-            ? SizedBox(
-                width: sw * 0.05,
-                height: sw * 0.05,
-                child: const CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2,
-                ),
-              )
-            : Text(
-                label,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: sw * 0.042,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Cairo',
-                ),
-              ),
       ),
-    );
-  }
+      child: isLoading
+          ? SizedBox(
+              width: sw * 0.05,
+              height: sw * 0.05,
+              child: const CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 2,
+              ),
+            )
+          : Text(
+              label,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: sw * 0.042,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Cairo',
+              ),
+            ),
+    ),
+  );
 }
