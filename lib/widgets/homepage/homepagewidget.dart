@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
 import 'package:grad_project/cubit/doctors/popular/popular_states.dart';
 import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
@@ -224,20 +225,52 @@ class _HomepagewidgetState extends State<Homepagewidget> {
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
               SliverToBoxAdapter(child: Weaklystreak()),
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
-              SliverToBoxAdapter(child: WeekScheduleWidget()),
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
-              SliverList(
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  return Medicineremindercard(
-                    image: Image.asset("assets/images/Shape10.png"),
-                    condition: S.of(context).missed,
-                    name: S.of(context).belladonna30,
-                    quatity: S.of(context).drops,
-                    scheduletime: S.of(context).everyTwoHours,
-                    time: S.of(context).reminderTime,
-                  );
-                }, childCount: 3),
+              SliverToBoxAdapter(
+                child: WeekScheduleWidget(
+                  onDateSelected: (selectedDate) {
+                    context.read<DailyScheduleCubit>().loadSchedule(
+                      selectedDate,
+                    );
+                  },
+                ),
               ),
+              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
+              BlocBuilder<DailyScheduleCubit, DailyScheduleState>(
+                builder: (context, state) {
+                  if (state is DailyScheduleLoading) {
+                    return SliverToBoxAdapter(
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+
+                  if (state is DailyScheduleError) {
+                    return SliverToBoxAdapter(
+                      child: Center(child: Text("Error loading medications")),
+                    );
+                  }
+
+                  if (state is DailyScheduleLoaded) {
+                    final meds = state.medications;
+
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final med = meds[index];
+                        return Medicineremindercard(
+                          image: Image.asset("assets/images/Shape10.png"),
+                          condition: med.status,
+                          name: med.medicationName,
+                          quatity: med.dosage,
+                          scheduletime: "",
+                          time: med.time,
+                        );
+                      }, childCount: meds.length),
+                    );
+                  }
+
+                  return SliverToBoxAdapter(child: SizedBox());
+                },
+              ),
+
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
               SliverToBoxAdapter(
                 child: Row(

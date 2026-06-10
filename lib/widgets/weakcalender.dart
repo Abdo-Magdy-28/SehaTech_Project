@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:grad_project/generated/l10n.dart';
 
 class WeekScheduleWidget extends StatefulWidget {
-  const WeekScheduleWidget({Key? key}) : super(key: key);
+  final Function(DateTime) onDateSelected;
+
+  const WeekScheduleWidget({Key? key, required this.onDateSelected})
+    : super(key: key);
 
   @override
   State<WeekScheduleWidget> createState() => _WeekScheduleWidgetState();
@@ -10,16 +13,29 @@ class WeekScheduleWidget extends StatefulWidget {
 
 class _WeekScheduleWidgetState extends State<WeekScheduleWidget> {
   DateTime selectedDate = DateTime.now();
+  late int currentMonth;
+  late int currentYear;
   late DateTime weekStart;
 
   @override
   void initState() {
     super.initState();
-    weekStart = _getWeekStart(selectedDate);
+
+    currentMonth = DateTime.now().month;
+    currentYear = DateTime.now().year;
+    weekStart = _getWeekStart(DateTime.now());
+  }
+
+  bool _weekContainsMonth(DateTime start, int month) {
+    for (int i = 0; i < 7; i++) {
+      if (start.add(Duration(days: i)).month == month) return true;
+    }
+    return false;
   }
 
   DateTime _getWeekStart(DateTime date) {
-    return date.subtract(Duration(days: date.weekday % 7));
+    int diff = date.weekday == 7 ? 0 : date.weekday;
+    return date.subtract(Duration(days: diff));
   }
 
   List<DateTime> _getWeekDays() {
@@ -27,15 +43,19 @@ class _WeekScheduleWidgetState extends State<WeekScheduleWidget> {
   }
 
   void _previousWeek() {
-    setState(() {
-      weekStart = weekStart.subtract(const Duration(days: 7));
-    });
+    final prev = weekStart.subtract(Duration(days: 7));
+
+    // If previous week is still in the same month → allow
+    if (prev.month == currentMonth) {
+      setState(() => weekStart = prev);
+    }
   }
 
   void _nextWeek() {
-    setState(() {
-      weekStart = weekStart.add(const Duration(days: 7));
-    });
+    final next = weekStart.add(Duration(days: 7));
+    if (_weekContainsMonth(next, currentMonth)) {
+      setState(() => weekStart = next);
+    }
   }
 
   String _getDayName(int weekday) {
@@ -113,6 +133,7 @@ class _WeekScheduleWidgetState extends State<WeekScheduleWidget> {
                     setState(() {
                       selectedDate = date;
                     });
+                    widget.onDateSelected(date);
                   },
                   child: Container(
                     width: dayWidth.clamp(45, 60),
