@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
 import 'package:grad_project/cubit/Authentication/Authstates.dart';
+import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
+import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/widgets/textformfield.dart';
@@ -213,6 +215,11 @@ class _Signupscreen2State extends State<Signupscreen2> {
                                     // ✅ Handle response properly
                                     if (response.success) {
                                       // ✅ Navigate to login or home screen
+                                      final today = DateTime.now();
+                                      context.read<DoctorCubit>().loadDoctors();
+                                      context
+                                          .read<DailyScheduleCubit>()
+                                          .loadSchedule(today);
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
