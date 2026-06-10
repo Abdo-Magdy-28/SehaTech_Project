@@ -1319,6 +1319,16 @@ class S {
     );
   }
 
+  /// `Health Matrix`
+  String get healthmatrix {
+    return Intl.message(
+      'Health Matrix',
+      name: 'healthmatrix',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `{count} Missed This Week`
   String missedThisWeek(int count) {
     return Intl.message(
@@ -1392,6 +1402,421 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Allergies`
+  String get allergies {
+    return Intl.message('Allergies', name: 'allergies', desc: '', args: []);
+  }
+
+  /// `+ Add Allergies`
+  String get addAllergies {
+    return Intl.message(
+      '+ Add Allergies',
+      name: 'addAllergies',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `+ Add Condition`
+  String get addCondition {
+    return Intl.message(
+      '+ Add Condition',
+      name: 'addCondition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Type`
+  String get changeType {
+    return Intl.message('Change Type', name: 'changeType', desc: '', args: []);
+  }
+
+  /// `A Positive`
+  String get aPositive {
+    return Intl.message('A Positive', name: 'aPositive', desc: '', args: []);
+  }
+
+  /// `You Are A Positive Blood Type`
+  String get aPositiveBloodTypeDesc {
+    return Intl.message(
+      'You Are A Positive Blood Type',
+      name: 'aPositiveBloodTypeDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Always Inform Healthcare About Your Allergies`
+  String get alwaysInformHealthcare {
+    return Intl.message(
+      'Always Inform Healthcare About Your Allergies',
+      name: 'alwaysInformHealthcare',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Keep Your Condition Under Control And Follow Your Care Plan`
+  String get keepConditionUnderControl {
+    return Intl.message(
+      'Keep Your Condition Under Control And Follow Your Care Plan',
+      name: 'keepConditionUnderControl',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Managed`
+  String get managed {
+    return Intl.message('Managed', name: 'managed', desc: '', args: []);
+  }
+
+  /// `Mild`
+  String get mild {
+    return Intl.message('Mild', name: 'mild', desc: '', args: []);
+  }
+
+  /// `Moderate`
+  String get moderate {
+    return Intl.message('Moderate', name: 'moderate', desc: '', args: []);
+  }
+
+  /// `Severe`
+  String get severe {
+    return Intl.message('Severe', name: 'severe', desc: '', args: []);
+  }
+
+  /// `Antibiotic`
+  String get antibiotic {
+    return Intl.message('Antibiotic', name: 'antibiotic', desc: '', args: []);
+  }
+
+  /// `Seasonal Allergy`
+  String get seasonalAllergy {
+    return Intl.message(
+      'Seasonal Allergy',
+      name: 'seasonalAllergy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Food Allergy`
+  String get foodAllergy {
+    return Intl.message(
+      'Food Allergy',
+      name: 'foodAllergy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Penicillin`
+  String get penicillin {
+    return Intl.message('Penicillin', name: 'penicillin', desc: '', args: []);
+  }
+
+  /// `Pollen`
+  String get pollen {
+    return Intl.message('Pollen', name: 'pollen', desc: '', args: []);
+  }
+
+  /// `Shellfish`
+  String get shellfish {
+    return Intl.message('Shellfish', name: 'shellfish', desc: '', args: []);
+  }
+
+  /// `Diabetes`
+  String get diabetes {
+    return Intl.message('Diabetes', name: 'diabetes', desc: '', args: []);
+  }
+
+  /// `Hypertension`
+  String get hypertension {
+    return Intl.message(
+      'Hypertension',
+      name: 'hypertension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Severity`
+  String get severity {
+    return Intl.message('Severity', name: 'severity', desc: '', args: []);
+  }
+
+  /// `Psychiatrist`
+  String get psychiatrist {
+    return Intl.message(
+      'Psychiatrist',
+      name: 'psychiatrist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dentist`
+  String get dentist {
+    return Intl.message('Dentist', name: 'dentist', desc: '', args: []);
+  }
+
+  /// `Cardiologist`
+  String get cardiologist {
+    return Intl.message(
+      'Cardiologist',
+      name: 'cardiologist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dermatologist`
+  String get dermatologist {
+    return Intl.message(
+      'Dermatologist',
+      name: 'dermatologist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search for Doctors by Name`
+  String get searchfordoctorsbyname {
+    return Intl.message(
+      'Search for Doctors by Name',
+      name: 'searchfordoctorsbyname',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search for Hospitals by Name`
+  String get searchforhospitalsbyname {
+    return Intl.message(
+      'Search for Hospitals by Name',
+      name: 'searchforhospitalsbyname',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search for Pharmacies by Name`
+  String get searchforpharmaciesbyname {
+    return Intl.message(
+      'Search for Pharmacies by Name',
+      name: 'searchforpharmaciesbyname',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try Again`
+  String get tryagain {
+    return Intl.message('Try Again', name: 'tryagain', desc: '', args: []);
+  }
+
+  /// `Location`
+  String get location {
+    return Intl.message('Location', name: 'location', desc: '', args: []);
+  }
+
+  /// `Location :nearest first`
+  String get locationnearestfirst {
+    return Intl.message(
+      'Location :nearest first',
+      name: 'locationnearestfirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rating : The best first`
+  String get ratingthebestfirst {
+    return Intl.message(
+      'Rating : The best first',
+      name: 'ratingthebestfirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rating : The worst first`
+  String get ratingtheworstfirst {
+    return Intl.message(
+      'Rating : The worst first',
+      name: 'ratingtheworstfirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price`
+  String get price {
+    return Intl.message('Price', name: 'price', desc: '', args: []);
+  }
+
+  /// `Price: Low to high`
+  String get pricelowtohigh {
+    return Intl.message(
+      'Price: Low to high',
+      name: 'pricelowtohigh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price: High to low`
+  String get pricehightolow {
+    return Intl.message(
+      'Price: High to low',
+      name: 'pricehightolow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Distance`
+  String get distance {
+    return Intl.message('Distance', name: 'distance', desc: '', args: []);
+  }
+
+  /// `Nearest first`
+  String get nearestfirst {
+    return Intl.message(
+      'Nearest first',
+      name: 'nearestfirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Farthest first`
+  String get farthestfirst {
+    return Intl.message(
+      'Farthest first',
+      name: 'farthestfirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get name {
+    return Intl.message('Name', name: 'name', desc: '', args: []);
+  }
+
+  /// `Alphabet: From A>Z`
+  String get alphabetfromatoz {
+    return Intl.message(
+      'Alphabet: From A>Z',
+      name: 'alphabetfromatoz',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Experience: More experience first`
+  String get moreexperinencefirst {
+    return Intl.message(
+      'Experience: More experience first',
+      name: 'moreexperinencefirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Experience: Less experience first`
+  String get lessexperinencefirst {
+    return Intl.message(
+      'Experience: Less experience first',
+      name: 'lessexperinencefirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message('Save', name: 'save', desc: '', args: []);
+  }
+
+  /// `By Location`
+  String get bylocation {
+    return Intl.message('By Location', name: 'bylocation', desc: '', args: []);
+  }
+
+  /// `By Rating`
+  String get byrating {
+    return Intl.message('By Rating', name: 'byrating', desc: '', args: []);
+  }
+
+  /// `By Distance`
+  String get bydistance {
+    return Intl.message('By Distance', name: 'bydistance', desc: '', args: []);
+  }
+
+  /// `By Name`
+  String get byname {
+    return Intl.message('By Name', name: 'byname', desc: '', args: []);
+  }
+
+  /// `Alphabetically`
+  String get byalphabet {
+    return Intl.message(
+      'Alphabetically',
+      name: 'byalphabet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `By Experience`
+  String get byexperience {
+    return Intl.message(
+      'By Experience',
+      name: 'byexperience',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `By Price`
+  String get byprice {
+    return Intl.message('By Price', name: 'byprice', desc: '', args: []);
+  }
+
+  /// `Eczema`
+  String get eczema {
+    return Intl.message('Eczema', name: 'eczema', desc: '', args: []);
+  }
+
+  /// `Nasal`
+  String get nasal {
+    return Intl.message('Nasal', name: 'nasal', desc: '', args: []);
+  }
+
+  /// `Fever`
+  String get fever {
+    return Intl.message('Fever', name: 'fever', desc: '', args: []);
+  }
+
+  /// `Infection`
+  String get infection {
+    return Intl.message('Infection', name: 'infection', desc: '', args: []);
+  }
+
+  /// `Spasm`
+  String get spasm {
+    return Intl.message('Spasm', name: 'spasm', desc: '', args: []);
+  }
+
+  /// `Pain`
+  String get pain {
+    return Intl.message('Pain', name: 'pain', desc: '', args: []);
   }
 }
 

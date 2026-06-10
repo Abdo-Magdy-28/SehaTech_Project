@@ -81,6 +81,7 @@ class AuthService {
         final userData = data['data']?['user'] ?? data['user'];
         User? userObj;
         if (userData != null) {
+          userData['token'] = token;
           userObj = User.fromJson(userData);
           await saveUserData(userObj);
           print('✅ User data saved');
@@ -143,6 +144,7 @@ class AuthService {
         final userData = data['data']?['user'];
         User? userObj;
         if (userData != null) {
+          userData['token'] = token;
           userObj = User.fromJson(userData);
           await saveUserData(userObj);
         }

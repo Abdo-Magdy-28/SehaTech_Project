@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/doctors/cubit/doctors_cubit.dart';
 import 'package:grad_project/cubit/doctors/cubit/doctors_state.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/doctor.dart';
 import 'package:grad_project/services/search%20services/doctors/search_service.dart';
 import 'package:grad_project/widgets/doctors/doctor_details.dart';
@@ -42,7 +43,7 @@ class _AlldoctorsState extends State<Alldoctors> {
               scrolledUnderElevation: 0,
               centerTitle: true,
               title: Text(
-                "Doctors",
+                S.of(context).doctors,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               toolbarHeight: 80,
@@ -80,7 +81,7 @@ class _AlldoctorsState extends State<Alldoctors> {
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide(color: Color(0xff0D5FA7)),
                         ),
-                        hintText: "Search...",
+                        hintText: S.of(context).searching,
                         prefixIcon: Icon(Icons.search),
                         suffixIcon: IconButton(
                           icon: Icon(Icons.clear),
@@ -117,23 +118,23 @@ class _AlldoctorsState extends State<Alldoctors> {
                               scrollDirection: Axis.horizontal,
                               children: [
                                 _buildCategory(
-                                  "Neurologist",
+                                  S.of(context).neurologist,
                                   "assets/images/alldoctors/Mask_group.png",
                                 ),
                                 _buildCategory(
-                                  "Psychiatrist",
+                                  S.of(context).psychiatrist,
                                   "assets/images/alldoctors/Mask_group2.png",
                                 ),
                                 _buildCategory(
-                                  "Dermatologist",
+                                  S.of(context).dermatologist,
                                   "assets/images/alldoctors/Mask_group3.png",
                                 ),
                                 _buildCategory(
-                                  "Cardiologist",
+                                  S.of(context).cardiologist,
                                   "assets/images/alldoctors/Mask_group4.png",
                                 ),
                                 _buildCategory(
-                                  "Dentist",
+                                  S.of(context).dentist,
                                   "assets/images/alldoctors/Mask_group5.png",
                                 ),
                               ],
@@ -152,7 +153,7 @@ class _AlldoctorsState extends State<Alldoctors> {
                                 ),
                                 SizedBox(height: 12),
                                 Text(
-                                  "Search for doctors by name",
+                                  S.of(context).searchfordoctorsbyname,
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.grey,
@@ -262,7 +263,7 @@ class _AlldoctorsState extends State<Alldoctors> {
                             ),
                             SizedBox(height: 12),
                             Text(
-                              "Sorry, no results found",
+                              S.of(context).sorrynoresultfound,
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.black,
@@ -271,7 +272,7 @@ class _AlldoctorsState extends State<Alldoctors> {
                             ),
                             SizedBox(height: 12),
                             Text(
-                              "Please try a different search term.",
+                              S.of(context).trydifferentsearchterm,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey,
@@ -305,7 +306,7 @@ class _AlldoctorsState extends State<Alldoctors> {
                                   searchController.clear();
                                   cubit.clearSearch();
                                 },
-                                child: Text("Try Again"),
+                                child: Text(S.of(context).tryagain),
                               ),
                             ],
                           ),

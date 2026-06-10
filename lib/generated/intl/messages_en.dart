@@ -35,16 +35,30 @@ class MessageLookup extends MessageLookupByLibrary {
     "UpcomingReminder": MessageLookupByLibrary.simpleMessage(
       "Upcoming Reminder",
     ),
+    "aPositive": MessageLookupByLibrary.simpleMessage("A Positive"),
+    "aPositiveBloodTypeDesc": MessageLookupByLibrary.simpleMessage(
+      "You Are A Positive Blood Type",
+    ),
     "activeingredients": MessageLookupByLibrary.simpleMessage(
       "Active Ingredients",
     ),
     "actual": MessageLookupByLibrary.simpleMessage("Actual"),
+    "addAllergies": MessageLookupByLibrary.simpleMessage("+ Add Allergies"),
+    "addCondition": MessageLookupByLibrary.simpleMessage("+ Add Condition"),
     "addreminder": MessageLookupByLibrary.simpleMessage("Add Reminder"),
     "address": MessageLookupByLibrary.simpleMessage("Address"),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("AI Assistant"),
+    "allergies": MessageLookupByLibrary.simpleMessage("Allergies"),
     "allperscriptions": MessageLookupByLibrary.simpleMessage(
       "All Perscriptions",
     ),
+    "alphabetfromatoz": MessageLookupByLibrary.simpleMessage(
+      "Alphabet: From A>Z",
+    ),
+    "alwaysInformHealthcare": MessageLookupByLibrary.simpleMessage(
+      "Always Inform Healthcare About Your Allergies",
+    ),
+    "antibiotic": MessageLookupByLibrary.simpleMessage("Antibiotic"),
     "appName": MessageLookupByLibrary.simpleMessage("SEHA TECH"),
     "appTagline": MessageLookupByLibrary.simpleMessage("Health Comes First"),
     "appointment": MessageLookupByLibrary.simpleMessage("Appointment"),
@@ -64,7 +78,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "bookNow": MessageLookupByLibrary.simpleMessage("BOOK Now"),
     "bookappointment": MessageLookupByLibrary.simpleMessage("Book Appointment"),
     "branches": MessageLookupByLibrary.simpleMessage("Branches"),
+    "byalphabet": MessageLookupByLibrary.simpleMessage("Alphabetically"),
+    "bydistance": MessageLookupByLibrary.simpleMessage("By Distance"),
+    "byexperience": MessageLookupByLibrary.simpleMessage("By Experience"),
+    "bylocation": MessageLookupByLibrary.simpleMessage("By Location"),
+    "byname": MessageLookupByLibrary.simpleMessage("By Name"),
+    "byprice": MessageLookupByLibrary.simpleMessage("By Price"),
+    "byrating": MessageLookupByLibrary.simpleMessage("By Rating"),
     "capsule": MessageLookupByLibrary.simpleMessage("Capsule"),
+    "cardiologist": MessageLookupByLibrary.simpleMessage("Cardiologist"),
+    "changeType": MessageLookupByLibrary.simpleMessage("Change Type"),
     "changenotificationsettings": MessageLookupByLibrary.simpleMessage(
       "Change Notification Settings",
     ),
@@ -90,6 +113,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "dateofbirth": MessageLookupByLibrary.simpleMessage("Date of Birth"),
     "deletephoto": MessageLookupByLibrary.simpleMessage("Delete Photo"),
     "deliviringtime": MessageLookupByLibrary.simpleMessage("Delivering"),
+    "dentist": MessageLookupByLibrary.simpleMessage("Dentist"),
+    "dermatologist": MessageLookupByLibrary.simpleMessage("Dermatologist"),
+    "diabetes": MessageLookupByLibrary.simpleMessage("Diabetes"),
     "diagnoses": MessageLookupByLibrary.simpleMessage("Diagnoses"),
     "directions": MessageLookupByLibrary.simpleMessage("Directions"),
     "discardchanges": MessageLookupByLibrary.simpleMessage("Discard Changes ?"),
@@ -99,6 +125,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "diseasessymptoms": MessageLookupByLibrary.simpleMessage(
       "Diseases symptoms",
     ),
+    "distance": MessageLookupByLibrary.simpleMessage("Distance"),
     "doctorTitle": m0,
     "doctordetails": MessageLookupByLibrary.simpleMessage("Doctor Details"),
     "doctors": MessageLookupByLibrary.simpleMessage("Doctors"),
@@ -108,6 +135,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dosage": MessageLookupByLibrary.simpleMessage("2 Drops | Every 2 Hour"),
     "drops": MessageLookupByLibrary.simpleMessage("2 Drops"),
     "drugprice": MessageLookupByLibrary.simpleMessage("Drug Price"),
+    "eczema": MessageLookupByLibrary.simpleMessage("Eczema"),
     "elDemerdashHospital": MessageLookupByLibrary.simpleMessage(
       "El-Demerdash Hospital",
     ),
@@ -132,6 +160,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedtoupdateprofilepleasetryagain": MessageLookupByLibrary.simpleMessage(
       "Failed to update profile. please try again",
     ),
+    "farthestfirst": MessageLookupByLibrary.simpleMessage("Farthest first"),
+    "fever": MessageLookupByLibrary.simpleMessage("Fever"),
     "findAboutMedicine": MessageLookupByLibrary.simpleMessage(
       "Find out about your\nmedicine.",
     ),
@@ -141,9 +171,11 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "finish": MessageLookupByLibrary.simpleMessage("Finish"),
     "firstname": MessageLookupByLibrary.simpleMessage("First Name"),
+    "foodAllergy": MessageLookupByLibrary.simpleMessage("Food Allergy"),
     "getRemindersPills": MessageLookupByLibrary.simpleMessage(
       "Get reminders for\nyour pills.",
     ),
+    "healthmatrix": MessageLookupByLibrary.simpleMessage("Health Matrix"),
     "heartTopicTitle": MessageLookupByLibrary.simpleMessage(
       "How to deal with \nchronic diseases ?",
     ),
@@ -157,7 +189,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "hospitals": MessageLookupByLibrary.simpleMessage("Hospitals"),
     "hourlyrate": MessageLookupByLibrary.simpleMessage("Hourly Rate"),
     "hours24": MessageLookupByLibrary.simpleMessage("24 hours"),
+    "hypertension": MessageLookupByLibrary.simpleMessage("Hypertension"),
     "importantTopics": MessageLookupByLibrary.simpleMessage("Important Topics"),
+    "infection": MessageLookupByLibrary.simpleMessage("Infection"),
+    "keepConditionUnderControl": MessageLookupByLibrary.simpleMessage(
+      "Keep Your Condition Under Control And Follow Your Care Plan",
+    ),
     "keepTrackMedicine": MessageLookupByLibrary.simpleMessage(
       "Keep track of what\nyou take.",
     ),
@@ -167,8 +204,16 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "lastname": MessageLookupByLibrary.simpleMessage("Last Name"),
     "learnMore": MessageLookupByLibrary.simpleMessage("Learn more"),
+    "lessexperinencefirst": MessageLookupByLibrary.simpleMessage(
+      "Experience: Less experience first",
+    ),
+    "location": MessageLookupByLibrary.simpleMessage("Location"),
+    "locationnearestfirst": MessageLookupByLibrary.simpleMessage(
+      "Location :nearest first",
+    ),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "logout": MessageLookupByLibrary.simpleMessage("Logout"),
+    "managed": MessageLookupByLibrary.simpleMessage("Managed"),
     "medicationManagement": MessageLookupByLibrary.simpleMessage(
       "Medication Management",
     ),
@@ -179,12 +224,20 @@ class MessageLookup extends MessageLookupByLibrary {
       "Medicine Information",
     ),
     "medicines": MessageLookupByLibrary.simpleMessage("Medicines"),
+    "mild": MessageLookupByLibrary.simpleMessage("Mild"),
     "missed": MessageLookupByLibrary.simpleMessage("missed"),
     "missedThisWeek": m1,
+    "moderate": MessageLookupByLibrary.simpleMessage("Moderate"),
+    "moreexperinencefirst": MessageLookupByLibrary.simpleMessage(
+      "Experience: More experience first",
+    ),
     "mostsearchedmedicines": MessageLookupByLibrary.simpleMessage(
       "Most Searched Medicines",
     ),
+    "name": MessageLookupByLibrary.simpleMessage("Name"),
+    "nasal": MessageLookupByLibrary.simpleMessage("Nasal"),
     "nearest": MessageLookupByLibrary.simpleMessage("Nearest"),
+    "nearestfirst": MessageLookupByLibrary.simpleMessage("Nearest first"),
     "neurologist": MessageLookupByLibrary.simpleMessage("Neurologist"),
     "newpassword": MessageLookupByLibrary.simpleMessage("New Password"),
     "newpasswordrequiered": MessageLookupByLibrary.simpleMessage(
@@ -199,6 +252,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Notification settings",
     ),
     "ourservices": MessageLookupByLibrary.simpleMessage("Our Services"),
+    "pain": MessageLookupByLibrary.simpleMessage("Pain"),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
     "passwordmustbeatleast": MessageLookupByLibrary.simpleMessage(
       "Password Must be atleast 6 Characters",
@@ -206,6 +260,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordnotmatch": MessageLookupByLibrary.simpleMessage(
       "Password doesn\'t match",
     ),
+    "penicillin": MessageLookupByLibrary.simpleMessage("Penicillin"),
     "perscriptions": MessageLookupByLibrary.simpleMessage("Perscriptions"),
     "personalinfo": MessageLookupByLibrary.simpleMessage("Personal Info"),
     "pharmacies": MessageLookupByLibrary.simpleMessage("Pharmacies"),
@@ -214,6 +269,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Pharmacy Information",
     ),
     "phonenumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
+    "pollen": MessageLookupByLibrary.simpleMessage("Pollen"),
     "populardoctors": MessageLookupByLibrary.simpleMessage("Popular Doctors"),
     "popularhospitals": MessageLookupByLibrary.simpleMessage(
       "Popular Hospitals",
@@ -224,18 +280,33 @@ class MessageLookup extends MessageLookupByLibrary {
     "preventDiseasesTitle": MessageLookupByLibrary.simpleMessage(
       "Tips for preventing \ninfectious diseases",
     ),
+    "price": MessageLookupByLibrary.simpleMessage("Price"),
+    "pricehightolow": MessageLookupByLibrary.simpleMessage(
+      "Price: High to low",
+    ),
+    "pricelowtohigh": MessageLookupByLibrary.simpleMessage(
+      "Price: Low to high",
+    ),
     "productoverview": MessageLookupByLibrary.simpleMessage("Product Overview"),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "profileupdatedsuccessfully": MessageLookupByLibrary.simpleMessage(
       "Profile Updated Successfully",
     ),
+    "psychiatrist": MessageLookupByLibrary.simpleMessage("Psychiatrist"),
     "pushnotification": MessageLookupByLibrary.simpleMessage(
       "Push Notification",
     ),
     "qalubia": MessageLookupByLibrary.simpleMessage("QALUBIA"),
     "quickscan": MessageLookupByLibrary.simpleMessage("Quick Scan"),
     "rating": MessageLookupByLibrary.simpleMessage("Rating"),
+    "ratingthebestfirst": MessageLookupByLibrary.simpleMessage(
+      "Rating : The best first",
+    ),
+    "ratingtheworstfirst": MessageLookupByLibrary.simpleMessage(
+      "Rating : The worst first",
+    ),
     "reminderTime": MessageLookupByLibrary.simpleMessage("09:30 AM"),
+    "save": MessageLookupByLibrary.simpleMessage("Save"),
     "savechanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
     "scan": MessageLookupByLibrary.simpleMessage("Scan"),
     "scanarticle1": MessageLookupByLibrary.simpleMessage(
@@ -257,7 +328,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Schedule Your Next",
     ),
     "search": MessageLookupByLibrary.simpleMessage("Search"),
+    "searchfordoctorsbyname": MessageLookupByLibrary.simpleMessage(
+      "Search for Doctors by Name",
+    ),
+    "searchforhospitalsbyname": MessageLookupByLibrary.simpleMessage(
+      "Search for Hospitals by Name",
+    ),
+    "searchforpharmaciesbyname": MessageLookupByLibrary.simpleMessage(
+      "Search for Pharmacies by Name",
+    ),
     "searching": MessageLookupByLibrary.simpleMessage("Search..."),
+    "seasonalAllergy": MessageLookupByLibrary.simpleMessage("Seasonal Allergy"),
     "securitynotification": MessageLookupByLibrary.simpleMessage(
       "Security Notification",
     ),
@@ -271,16 +352,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "Set reminders for\ndifferent times.",
     ),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+    "severe": MessageLookupByLibrary.simpleMessage("Severe"),
+    "severity": MessageLookupByLibrary.simpleMessage("Severity"),
+    "shellfish": MessageLookupByLibrary.simpleMessage("Shellfish"),
     "sideeffects": MessageLookupByLibrary.simpleMessage("Side Effects"),
     "slots6": MessageLookupByLibrary.simpleMessage("6 Slots"),
     "smsnotification": MessageLookupByLibrary.simpleMessage("SMS Notification"),
     "sorrynoresultfound": MessageLookupByLibrary.simpleMessage(
       "Sorry, no result found",
     ),
+    "spasm": MessageLookupByLibrary.simpleMessage("Spasm"),
     "startTime": MessageLookupByLibrary.simpleMessage("10:30am"),
     "taken": MessageLookupByLibrary.simpleMessage("Taken"),
     "takephoto": MessageLookupByLibrary.simpleMessage("Take Photo"),
     "treated": MessageLookupByLibrary.simpleMessage("Treated"),
+    "tryagain": MessageLookupByLibrary.simpleMessage("Try Again"),
     "trydifferentsearchterm": MessageLookupByLibrary.simpleMessage(
       "Try different search term",
     ),

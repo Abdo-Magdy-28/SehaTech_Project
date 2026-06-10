@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/pharmacies.dart';
 import 'package:grad_project/widgets/pharmacies/pharmacy_card.dart';
 import 'package:grad_project/screens/pharmacies/pharmacydetails.dart';
@@ -60,7 +61,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
           InkWell(
             onTap: () {
               setModalState(() {
-                currentoption = 'location';
+                currentoption = S.of(context).location;
               });
             },
             child: Padding(
@@ -68,11 +69,8 @@ class _AllpahramciesState extends State<Allpahramcies> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Location: nearest first",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  if (currentoption == 'location')
+                  Text(S.of(context).location, style: TextStyle(fontSize: 16)),
+                  if (currentoption == S.of(context).location)
                     SizedBox(
                       height: 16,
                       child: Image.asset(
@@ -87,7 +85,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
           InkWell(
             onTap: () {
               setModalState(() {
-                currentoption = 'rating';
+                currentoption = S.of(context).rating;
               });
               sortrate();
             },
@@ -97,10 +95,10 @@ class _AllpahramciesState extends State<Allpahramcies> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Rating: The Best First",
+                    S.of(context).ratingthebestfirst,
                     style: TextStyle(fontSize: 16),
                   ),
-                  if (currentoption == 'rating')
+                  if (currentoption == S.of(context).rating)
                     SizedBox(
                       height: 16,
                       child: Image.asset(
@@ -115,7 +113,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
           InkWell(
             onTap: () {
               setModalState(() {
-                currentoption = 'price';
+                currentoption = S.of(context).price;
               });
             },
             child: Padding(
@@ -124,10 +122,10 @@ class _AllpahramciesState extends State<Allpahramcies> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Price: From Low To Hight",
+                    S.of(context).pricelowtohigh,
                     style: TextStyle(fontSize: 16),
                   ),
-                  if (currentoption == 'price')
+                  if (currentoption == S.of(context).price)
                     SizedBox(
                       height: 16,
                       child: Image.asset(
@@ -142,7 +140,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
           InkWell(
             onTap: () {
               setModalState(() {
-                currentoption = 'name';
+                currentoption = S.of(context).name;
               });
               sortname();
             },
@@ -151,8 +149,11 @@ class _AllpahramciesState extends State<Allpahramcies> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Alphabet: From A>Z", style: TextStyle(fontSize: 16)),
-                  if (currentoption == 'name')
+                  Text(
+                    S.of(context).alphabetfromatoz,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  if (currentoption == S.of(context).name)
                     SizedBox(
                       height: 16,
                       child: Image.asset(
@@ -167,7 +168,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
           InkWell(
             onTap: () {
               setModalState(() {
-                currentoption = 'experience';
+                currentoption = S.of(context).experience;
               });
             },
             child: Padding(
@@ -176,10 +177,10 @@ class _AllpahramciesState extends State<Allpahramcies> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Experience: More Experience First",
+                    S.of(context).moreexperinencefirst,
                     style: TextStyle(fontSize: 16),
                   ),
-                  if (currentoption == 'experience')
+                  if (currentoption == S.of(context).experience)
                     SizedBox(
                       height: 16,
                       child: Image.asset(
@@ -205,8 +206,8 @@ class _AllpahramciesState extends State<Allpahramcies> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: const Text(
-                'Save',
+              child: Text(
+                S.of(context).save,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -245,7 +246,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
         scrolledUnderElevation: 0,
         centerTitle: true,
         title: Text(
-          "Pharmacies",
+          S.of(context).pharmacies,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         toolbarHeight: 80,
@@ -280,7 +281,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide(color: Color(0xff0D5FA7)),
                   ),
-                  hintText: "Search...",
+                  hintText: S.of(context).searching,
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -316,17 +317,18 @@ class _AllpahramciesState extends State<Allpahramcies> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    currentoption == '' || currentoption == 'location'
-                        ? "By Location"
-                        : currentoption == 'rating'
-                        ? "By Rating"
-                        : currentoption == 'price'
-                        ? "By Price"
-                        : currentoption == 'name'
-                        ? "Alphabetically"
-                        : currentoption == 'experience'
-                        ? "By Experience"
-                        : "By Location",
+                    currentoption == '' ||
+                            currentoption == S.of(context).location
+                        ? S.of(context).bylocation
+                        : currentoption == S.of(context).rating
+                        ? S.of(context).byrating
+                        : currentoption == S.of(context).price
+                        ? S.of(context).byprice
+                        : currentoption == S.of(context).name
+                        ? S.of(context).byname
+                        : currentoption == S.of(context).experience
+                        ? S.of(context).byexperience
+                        : S.of(context).bylocation,
                     style: TextStyle(
                       color: Color(0xff111111).withValues(alpha: 0.6),
                       fontSize: 16,
@@ -371,7 +373,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Popular Pharmacies",
+                S.of(context).popularpharmacies,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
@@ -421,7 +423,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
                   ),
                   SizedBox(height: 12),
                   Text(
-                    "Sorry, no results found",
+                    S.of(context).sorrynoresultfound,
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.black,
@@ -430,7 +432,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
                   ),
                   SizedBox(height: 12),
                   Text(
-                    "Please try a different search term.",
+                    S.of(context).trydifferentsearchterm,
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey,

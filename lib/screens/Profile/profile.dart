@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
+import 'package:grad_project/cubit/profile/Health%20Matrix/HealthmatrixCubit.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Authentication/loginpage.dart';
 import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/screens/Profile/NotificationsettingsScreen.dart';
 import 'package:grad_project/screens/Profile/changepassword.dart';
+import 'package:grad_project/screens/Profile/healthmatrix.dart';
 import 'package:grad_project/screens/Profile/profileinfo.dart';
 import 'package:grad_project/services/Authservice.dart';
 
@@ -19,6 +21,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   String userName = '';
   String subtitle = '';
+  String id = '';
+  String token = '';
 
   @override
   void initState() {
@@ -27,14 +31,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _loadUserData() async {
-    final user = await AuthService().getUserData();
-    if (mounted) {
-      setState(() {
-        if (user != null) {
-          userName = user.fullName;
-          subtitle = user.email;
-        }
-      });
+    try {
+      final user = await AuthService().getUserData();
+      if (mounted) {
+        setState(() {
+          if (user != null) {
+            userName = user.fullName;
+            subtitle = user.email;
+            id = user.id;
+            token = user.token;
+          }
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to load profile. Please restart the app.'),
+          ),
+        );
+      }
     }
   }
 
@@ -53,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final avatarRadius = screenWidth * 0.07;
     final avatarIconSize = screenWidth * 0.09;
     final chevronSize = screenWidth * 0.05;
-
+    final isLoaded = id.isNotEmpty && token.isNotEmpty;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -160,6 +176,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   builder: (context) => const Homepage(initialIndex: 4),
                 ),
                 (route) => false,
+              );
+            },
+          ),
+          _buildMenuItem(
+            context,
+            S.of(context).healthmatrix,
+            menuFontSize: menuFontSize,
+            horizontalPadding: horizontalPadding,
+            verticalPadding: verticalPadding * 0.3,
+            chevronSize: chevronSize,
+            ontap: () {
+              if (!isLoaded) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please wait, loading user data...'),
+                  ),
+                );
+                return;
+              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BlocProvider(
+                    create: (_) =>
+                        HealthMatrixCubit(userId: id, token: token)
+                          ..loadHealthMatrix(),
+                    child: const HealthMatrixScreen(),
+                  ),
+                ),
               );
             },
           ),

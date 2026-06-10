@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/medicine.dart';
 import 'package:grad_project/screens/medicines/medicine_details.dart';
 import 'package:grad_project/widgets/mainscaffold.dart';
@@ -16,13 +17,13 @@ class _AllmedicinesState extends State<Allmedicines> {
   bool _isSearching = false;
   String? _selectedCategory;
 
-  final List<Map<String, dynamic>> _categories = [
-    {'name': 'Eczema', 'icon': Icons.healing},
-    {'name': 'Nasal', 'icon': Icons.air},
-    {'name': 'Fever', 'icon': Icons.thermostat},
-    {'name': 'Infection', 'icon': Icons.coronavirus},
-    {'name': 'Spasm', 'icon': Icons.electric_bolt},
-    {'name': 'Pain', 'icon': Icons.medical_services},
+  late final List<Map<String, dynamic>> _categories = [
+    {'name': S.of(context).eczema, 'icon': Icons.healing},
+    {'name': S.of(context).nasal, 'icon': Icons.air},
+    {'name': S.of(context).fever, 'icon': Icons.thermostat},
+    {'name': S.of(context).infection, 'icon': Icons.coronavirus},
+    {'name': S.of(context).spasm, 'icon': Icons.electric_bolt},
+    {'name': S.of(context).pain, 'icon': Icons.medical_services},
   ];
 
   final List<Medicine> _allMedicines = [
@@ -190,7 +191,7 @@ class _AllmedicinesState extends State<Allmedicines> {
         scrolledUnderElevation: 0,
         centerTitle: true,
         title: Text(
-          'Medicine',
+          S.of(context).medicines,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: sw * 0.048),
         ),
         toolbarHeight: sw * 0.18,
@@ -226,7 +227,7 @@ class _AllmedicinesState extends State<Allmedicines> {
                 onChanged: _search,
                 style: TextStyle(fontSize: sw * 0.038),
                 decoration: InputDecoration(
-                  hintText: 'Search...',
+                  hintText: S.of(context).searching,
                   hintStyle: TextStyle(
                     color: Colors.grey.shade400,
                     fontSize: sw * 0.038,
@@ -308,7 +309,7 @@ class _AllmedicinesState extends State<Allmedicines> {
                 vertical: sh * 0.008,
               ),
               child: Text(
-                'Most Searched Medicines',
+                S.of(context).mostsearchedmedicines,
                 style: TextStyle(
                   fontSize: sw * 0.045,
                   fontWeight: FontWeight.bold,
@@ -362,7 +363,7 @@ class _AllmedicinesState extends State<Allmedicines> {
                   ),
                   SizedBox(height: sh * 0.02),
                   Text(
-                    'Sorry, no results found',
+                    S.of(context).sorrynoresultfound,
                     style: TextStyle(
                       fontSize: sw * 0.045,
                       color: Colors.black,
@@ -371,7 +372,7 @@ class _AllmedicinesState extends State<Allmedicines> {
                   ),
                   SizedBox(height: sh * 0.01),
                   Text(
-                    'Please try a different search term.',
+                    S.of(context).trydifferentsearchterm,
                     style: TextStyle(
                       fontSize: sw * 0.038,
                       color: Colors.grey,

@@ -33,14 +33,28 @@ class MessageLookup extends MessageLookupByLibrary {
     "TodaysSchedule": MessageLookupByLibrary.simpleMessage("جدول اليوم"),
     "Upcoming": MessageLookupByLibrary.simpleMessage("قريبا"),
     "UpcomingReminder": MessageLookupByLibrary.simpleMessage("تذكير قادم"),
+    "aPositive": MessageLookupByLibrary.simpleMessage("A موجب"),
+    "aPositiveBloodTypeDesc": MessageLookupByLibrary.simpleMessage(
+      "فصيلة دمك A موجب",
+    ),
     "activeingredients": MessageLookupByLibrary.simpleMessage(
       "المكونات النشطة",
     ),
     "actual": MessageLookupByLibrary.simpleMessage("الحالي"),
+    "addAllergies": MessageLookupByLibrary.simpleMessage("+ إضافة حساسية"),
+    "addCondition": MessageLookupByLibrary.simpleMessage("+ إضافة مرض"),
     "addreminder": MessageLookupByLibrary.simpleMessage("اضافة تذكير"),
     "address": MessageLookupByLibrary.simpleMessage("العنوان"),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("مساعد ذكي"),
+    "allergies": MessageLookupByLibrary.simpleMessage("الحساسية"),
     "allperscriptions": MessageLookupByLibrary.simpleMessage("كل الوصفات"),
+    "alphabetfromatoz": MessageLookupByLibrary.simpleMessage(
+      "الحرف: من A إلى Z",
+    ),
+    "alwaysInformHealthcare": MessageLookupByLibrary.simpleMessage(
+      "أخبر دائماً فريق الرعاية الصحية بحساسيتك",
+    ),
+    "antibiotic": MessageLookupByLibrary.simpleMessage("مضاد حيوي"),
     "appName": MessageLookupByLibrary.simpleMessage("صحة تك"),
     "appTagline": MessageLookupByLibrary.simpleMessage("الصحة تأتي أولاً"),
     "appointment": MessageLookupByLibrary.simpleMessage("موعد"),
@@ -60,7 +74,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "bookNow": MessageLookupByLibrary.simpleMessage("احجز الآن"),
     "bookappointment": MessageLookupByLibrary.simpleMessage("حجز موعد"),
     "branches": MessageLookupByLibrary.simpleMessage("فروعنا"),
+    "bydistance": MessageLookupByLibrary.simpleMessage("بالمسافة"),
+    "byexperience": MessageLookupByLibrary.simpleMessage("بالخبرة"),
+    "bylocation": MessageLookupByLibrary.simpleMessage("بالموقع"),
+    "byname": MessageLookupByLibrary.simpleMessage("بالاسم"),
+    "byprice": MessageLookupByLibrary.simpleMessage("بالسعر"),
+    "byrating": MessageLookupByLibrary.simpleMessage("بالتقييم"),
     "capsule": MessageLookupByLibrary.simpleMessage("كابسول"),
+    "cardiologist": MessageLookupByLibrary.simpleMessage("طبيب القلوية"),
+    "changeType": MessageLookupByLibrary.simpleMessage("تغيير النوع"),
     "changenotificationsettings": MessageLookupByLibrary.simpleMessage(
       "تغيير اعدادات الاشعارات",
     ),
@@ -88,6 +110,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "dateofbirth": MessageLookupByLibrary.simpleMessage("تاريخ الميلاد"),
     "deletephoto": MessageLookupByLibrary.simpleMessage("حذف الصورة"),
     "deliviringtime": MessageLookupByLibrary.simpleMessage("وقت التوصيل"),
+    "dentist": MessageLookupByLibrary.simpleMessage("طبيب الاسنان"),
+    "dermatologist": MessageLookupByLibrary.simpleMessage("طبيب الجلدية"),
+    "diabetes": MessageLookupByLibrary.simpleMessage("السكري"),
     "diagnoses": MessageLookupByLibrary.simpleMessage("التشخيصات"),
     "directions": MessageLookupByLibrary.simpleMessage("الاتجاهات"),
     "discardchanges": MessageLookupByLibrary.simpleMessage("تجاهل التغييرات ؟"),
@@ -95,6 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "اكتشف مساعدنا الصحي",
     ),
     "diseasessymptoms": MessageLookupByLibrary.simpleMessage("اعراض الامراض"),
+    "distance": MessageLookupByLibrary.simpleMessage("المسافة"),
     "doctorTitle": m0,
     "doctordetails": MessageLookupByLibrary.simpleMessage("تفاصيل الطبيب"),
     "doctors": MessageLookupByLibrary.simpleMessage("الأطباء"),
@@ -104,6 +130,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dosage": MessageLookupByLibrary.simpleMessage("نقطتان | كل ساعتين"),
     "drops": MessageLookupByLibrary.simpleMessage("نقطتان"),
     "drugprice": MessageLookupByLibrary.simpleMessage("سعر الدواء"),
+    "eczema": MessageLookupByLibrary.simpleMessage("مرض جلدي"),
     "elDemerdashHospital": MessageLookupByLibrary.simpleMessage(
       "مستشفى الدمرداش",
     ),
@@ -128,6 +155,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedtoupdateprofilepleasetryagain": MessageLookupByLibrary.simpleMessage(
       "فشل تحديث الملف الشخصي، يرجى المحاولة مرة اخرى",
     ),
+    "farthestfirst": MessageLookupByLibrary.simpleMessage("الاقرب اولا"),
+    "fever": MessageLookupByLibrary.simpleMessage("حمى"),
     "findAboutMedicine": MessageLookupByLibrary.simpleMessage(
       "تعرف على\nأدويتك.",
     ),
@@ -137,9 +166,11 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "finish": MessageLookupByLibrary.simpleMessage("انهاء"),
     "firstname": MessageLookupByLibrary.simpleMessage("الاسم الاول"),
+    "foodAllergy": MessageLookupByLibrary.simpleMessage("حساسية غذائية"),
     "getRemindersPills": MessageLookupByLibrary.simpleMessage(
       "احصل على تذكيرات\nلحبوبك.",
     ),
+    "healthmatrix": MessageLookupByLibrary.simpleMessage("الملف الصحي"),
     "heartTopicTitle": MessageLookupByLibrary.simpleMessage(
       "كيف تتعامل مع \nالأمراض المزمنة ؟",
     ),
@@ -151,7 +182,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "hospitals": MessageLookupByLibrary.simpleMessage("المستشفيات"),
     "hourlyrate": MessageLookupByLibrary.simpleMessage("سعر الكشف"),
     "hours24": MessageLookupByLibrary.simpleMessage("24 ساعة"),
+    "hypertension": MessageLookupByLibrary.simpleMessage("ضغط الدم"),
     "importantTopics": MessageLookupByLibrary.simpleMessage("المواضيع المهمة"),
+    "infection": MessageLookupByLibrary.simpleMessage("عدوى"),
+    "keepConditionUnderControl": MessageLookupByLibrary.simpleMessage(
+      "ابقِ حالتك تحت السيطرة واتبع خطة العلاج",
+    ),
     "keepTrackMedicine": MessageLookupByLibrary.simpleMessage(
       "تتبع ما\nتتناوله.",
     ),
@@ -159,20 +195,36 @@ class MessageLookup extends MessageLookupByLibrary {
     "languagesettings": MessageLookupByLibrary.simpleMessage("اعدادات اللغة"),
     "lastname": MessageLookupByLibrary.simpleMessage("الاسم الاخير"),
     "learnMore": MessageLookupByLibrary.simpleMessage("تعرف على المزيد"),
+    "lessexperinencefirst": MessageLookupByLibrary.simpleMessage(
+      "الخبرة: الاقل",
+    ),
+    "location": MessageLookupByLibrary.simpleMessage("الموقع"),
+    "locationnearestfirst": MessageLookupByLibrary.simpleMessage(
+      "الموقع: الاقرب اولا",
+    ),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "logout": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
+    "managed": MessageLookupByLibrary.simpleMessage("تحت السيطرة"),
     "medicationManagement": MessageLookupByLibrary.simpleMessage(
       "إدارة الأدوية",
     ),
     "medicationreminder": MessageLookupByLibrary.simpleMessage("تذكير الادوية"),
     "medicineinfo": MessageLookupByLibrary.simpleMessage("تفاصيل الدواء"),
     "medicines": MessageLookupByLibrary.simpleMessage("الأدوية"),
+    "mild": MessageLookupByLibrary.simpleMessage("خفيف"),
     "missed": MessageLookupByLibrary.simpleMessage("فاتت"),
     "missedThisWeek": m1,
+    "moderate": MessageLookupByLibrary.simpleMessage("متوسط"),
+    "moreexperinencefirst": MessageLookupByLibrary.simpleMessage(
+      "الخبرة: الاكثر",
+    ),
     "mostsearchedmedicines": MessageLookupByLibrary.simpleMessage(
       "الأدوية المشهورة",
     ),
+    "name": MessageLookupByLibrary.simpleMessage("الاسم"),
+    "nasal": MessageLookupByLibrary.simpleMessage("انف"),
     "nearest": MessageLookupByLibrary.simpleMessage("اقرب"),
+    "nearestfirst": MessageLookupByLibrary.simpleMessage("الاقرب اولا"),
     "neurologist": MessageLookupByLibrary.simpleMessage("طبيب أعصاب"),
     "newpassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
     "newpasswordrequiered": MessageLookupByLibrary.simpleMessage(
@@ -187,6 +239,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "اعدادات الاشعارات",
     ),
     "ourservices": MessageLookupByLibrary.simpleMessage("خدماتنا"),
+    "pain": MessageLookupByLibrary.simpleMessage("مسكن الالام"),
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
     "passwordmustbeatleast": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور يجب الا تقل عن 6 حروف",
@@ -194,12 +247,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordnotmatch": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور غير متطابقة",
     ),
+    "penicillin": MessageLookupByLibrary.simpleMessage("بنسلين"),
     "perscriptions": MessageLookupByLibrary.simpleMessage("الوصفات"),
     "personalinfo": MessageLookupByLibrary.simpleMessage("معلومات شخصية"),
     "pharmacies": MessageLookupByLibrary.simpleMessage("الصيدليات"),
     "pharmacy": MessageLookupByLibrary.simpleMessage("صيدلية"),
     "pharmacyinfo": MessageLookupByLibrary.simpleMessage("تفاصيل الصيدلية"),
     "phonenumber": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
+    "pollen": MessageLookupByLibrary.simpleMessage("حبوب اللقاح"),
     "populardoctors": MessageLookupByLibrary.simpleMessage("الاطباء المشهورين"),
     "popularhospitals": MessageLookupByLibrary.simpleMessage(
       "المستشفيات المشهورة",
@@ -210,6 +265,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "preventDiseasesTitle": MessageLookupByLibrary.simpleMessage(
       "نصائح للوقاية من \nالأمراض المعدية",
     ),
+    "price": MessageLookupByLibrary.simpleMessage("السعر"),
+    "pricehightolow": MessageLookupByLibrary.simpleMessage(
+      "السعر: من الاعلى الى الاقل",
+    ),
+    "pricelowtohigh": MessageLookupByLibrary.simpleMessage(
+      "السعر: من الاقل الى الاعلى",
+    ),
     "productoverview": MessageLookupByLibrary.simpleMessage(
       "نظرة عامة عن المنتج",
     ),
@@ -217,11 +279,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "profileupdatedsuccessfully": MessageLookupByLibrary.simpleMessage(
       "تم تحديث الملف الشخصي بنجاح",
     ),
+    "psychiatrist": MessageLookupByLibrary.simpleMessage("طبيب نفساني"),
     "pushnotification": MessageLookupByLibrary.simpleMessage("اشعارات خارجية "),
     "qalubia": MessageLookupByLibrary.simpleMessage("القليوبية"),
     "quickscan": MessageLookupByLibrary.simpleMessage("مسح سريع"),
     "rating": MessageLookupByLibrary.simpleMessage("التقييم"),
+    "ratingthebestfirst": MessageLookupByLibrary.simpleMessage(
+      "تقييم: الاعلى اولا",
+    ),
+    "ratingtheworstfirst": MessageLookupByLibrary.simpleMessage(
+      "تقييم: الاقل اولا",
+    ),
     "reminderTime": MessageLookupByLibrary.simpleMessage("09:30 صباحاً"),
+    "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "savechanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
     "scan": MessageLookupByLibrary.simpleMessage("مسح"),
     "scanarticle1": MessageLookupByLibrary.simpleMessage(
@@ -241,7 +311,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "جدول موعدك التالي",
     ),
     "search": MessageLookupByLibrary.simpleMessage("البحث"),
+    "searchfordoctorsbyname": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن طبيب بالاسم",
+    ),
+    "searchforhospitalsbyname": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن مستشفى بالاسم",
+    ),
+    "searchforpharmaciesbyname": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن صيدلية بالاسم",
+    ),
     "searching": MessageLookupByLibrary.simpleMessage("ابحث ..."),
+    "seasonalAllergy": MessageLookupByLibrary.simpleMessage("حساسية موسمية"),
     "securitynotification": MessageLookupByLibrary.simpleMessage(
       "اشعارات الامان",
     ),
@@ -253,7 +333,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "اضبط التذكيرات لأوقات\nمختلفة.",
     ),
     "settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),
-    "sideeffects": MessageLookupByLibrary.simpleMessage("الأثرات الجانبية"),
+    "severe": MessageLookupByLibrary.simpleMessage("شديد"),
+    "severity": MessageLookupByLibrary.simpleMessage("درجة الحساسية"),
+    "shellfish": MessageLookupByLibrary.simpleMessage("المحار"),
+    "sideeffects": MessageLookupByLibrary.simpleMessage("الأثار الجانبية"),
     "slots6": MessageLookupByLibrary.simpleMessage("6 مواعيد"),
     "smsnotification": MessageLookupByLibrary.simpleMessage(
       "اشعارات الرسائل النصية",
@@ -261,10 +344,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "sorrynoresultfound": MessageLookupByLibrary.simpleMessage(
       "عذرا، لا يوجد نتائج",
     ),
+    "spasm": MessageLookupByLibrary.simpleMessage("تشنج"),
     "startTime": MessageLookupByLibrary.simpleMessage("10:30 صباحاً"),
     "taken": MessageLookupByLibrary.simpleMessage("تم تناولها"),
     "takephoto": MessageLookupByLibrary.simpleMessage("أخذ صورة"),
     "treated": MessageLookupByLibrary.simpleMessage("عالج"),
+    "tryagain": MessageLookupByLibrary.simpleMessage("حاول مرة اخرى"),
     "trydifferentsearchterm": MessageLookupByLibrary.simpleMessage(
       "حاول بحث اخر",
     ),
