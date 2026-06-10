@@ -27,6 +27,18 @@ class AuthService {
     return await storage.read(key: 'auth_token');
   }
 
+  Future<String?> getUserId() async {
+    const storage = FlutterSecureStorage();
+    final userDataString = await storage.read(key: 'user_data');
+
+    if (userDataString != null) {
+      final Map<String, dynamic> userData = jsonDecode(userDataString);
+      // Assuming your JSON looks like: { "id": "123", "name": "..." }
+      return userData['_id'] ?? userData['id'];
+    }
+    return null;
+  }
+
   // ✅ Check if logged in
   Future<bool> isLoggedIn() async {
     final token = await storage.read(key: 'auth_token');

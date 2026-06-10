@@ -2,7 +2,13 @@
 // lib/screens/prescriptions/reminder_screen.dart
 // ============================================================
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:grad_project/cubit/Reminder/ReminderCubit.dart';
+import 'package:grad_project/models/medication_reminder.dart';
 import 'package:grad_project/widgets/prescriptions/reminderactivated.dart';
 
 class ReminderScreen extends StatefulWidget {
@@ -20,6 +26,74 @@ class ReminderScreen extends StatefulWidget {
 }
 
 class _ReminderScreenState extends State<ReminderScreen> {
+  String monthToNumber(String m) {
+    const map = {
+      "Jan": "01",
+      "Feb": "02",
+      "Mar": "03",
+      "Apr": "04",
+      "May": "05",
+      "Jun": "06",
+      "Jul": "07",
+      "Aug": "08",
+      "Sep": "09",
+      "Oct": "10",
+      "Nov": "11",
+      "Dec": "12",
+    };
+    return map[m]!;
+  }
+
+  int get maxSelectableTimes {
+    switch (_freqTimes) {
+      case 'Once':
+        return 1;
+      case 'Twice':
+        return 2;
+      case 'Three times':
+        return 3;
+      default:
+        return 1;
+    }
+  }
+
+  void _submitReminder() async {
+    // If widget.medicineName is empty, fallback to the text field
+    final medName = widget.medicineName.isNotEmpty
+        ? widget.medicineName
+        : _nameController.text.trim().split(" ").first;
+
+    final generic = widget.medicineName.isNotEmpty
+        ? widget.medicineName
+        : _nameController.text.trim().split(" ").first;
+
+    final reminder = MedicationReminder(
+      medicationName: medName,
+      genericName: generic,
+      form: _selectedType.toLowerCase(),
+      strength: _dosageUnit.replaceAll("gm", "mg"),
+      instructions: "Take as prescribed",
+      startDate:
+          "${_fromYear}-${monthToNumber(_fromMonth)}-${_fromDay.toString().padLeft(2, '0')}",
+      endDate:
+          "${_toYear}-${monthToNumber(_toMonth)}-${_toDay.toString().padLeft(2, '0')}",
+      daysOfWeek: [1, 2, 3, 4, 5],
+      doseTimes: _selectedTimes
+          .map(
+            (t) => DoseTime(
+              time: t,
+              dosage: "$_dosageQty ${_selectedType.toLowerCase()}s",
+            ),
+          )
+          .toList(),
+      color: "#1a9f5a",
+    );
+
+    context.read<ReminderCubit>().submitReminder(reminder);
+  }
+
+  bool _isLoading = false;
+
   late TextEditingController _nameController;
 
   int _dosageQty = 1;
@@ -28,9 +102,9 @@ class _ReminderScreenState extends State<ReminderScreen> {
   String _freqPeriod = 'Every Day';
   String _selectedType = 'Capsule';
 
-  int _fromDay = 1;
-  String _fromMonth = 'Feb';
-  int _fromYear = 2026;
+  late int _fromDay;
+  late String _fromMonth;
+  late int _fromYear;
   int _toDay = 6;
   String _toMonth = 'Feb';
   int _toYear = 2026;
@@ -77,6 +151,10 @@ class _ReminderScreenState extends State<ReminderScreen> {
   @override
   void initState() {
     super.initState();
+    final now = DateTime.now();
+    _fromDay = now.day;
+    _fromMonth = _months[now.month - 1]; // because list is 0-based
+    _fromYear = now.year;
     _nameController = TextEditingController(
       text: '${widget.medicineName} ${widget.medicineSize}',
     );
@@ -93,6 +171,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
     final times = _selectedTimes.isEmpty
         ? ['8:00']
         : List<String>.from(_selectedTimes);
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -111,216 +190,251 @@ class _ReminderScreenState extends State<ReminderScreen> {
     final sw = MediaQuery.of(context).size.width;
     final sh = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
-        scrolledUnderElevation: 0,
-        centerTitle: true,
-        title: Text(
-          "Reminder Info",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-        toolbarHeight: 80,
+    return BlocListener<ReminderCubit, ReminderState>(
+      listener: (context, state) {
+        if (state is ReminderLoading) {
+          setState(() => _isLoading = true);
+        } else {
+          setState(() => _isLoading = false);
+        }
+
+        if (state is ReminderSuccess) {
+          _onRefill(); // your dialog
+        }
+
+        if (state is ReminderError) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
+        }
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: Container(height: 1, color: Colors.grey),
+        appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
+          scrolledUnderElevation: 0,
+          centerTitle: true,
+          title: Text(
+            "Reminder Info",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+          toolbarHeight: 80,
+          backgroundColor: Colors.white,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(1),
+            child: Container(height: 1, color: Colors.grey),
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          horizontal: sw * 0.045,
-          vertical: sh * 0.02,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _SectionTitle(text: 'Provide Information', sw: sw),
-            SizedBox(height: sh * 0.022),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: sw * 0.045,
+            vertical: sh * 0.02,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _SectionTitle(text: 'Provide Information', sw: sw),
+              SizedBox(height: sh * 0.022),
 
-            // Name
-            _InfoRow(
-              icon: Icons.medication_outlined,
-              label: 'Name:',
-              sw: sw,
-              sh: sh,
-              child: _GreyField(controller: _nameController, sw: sw, sh: sh),
-            ),
-            SizedBox(height: sh * 0.018),
-
-            // Dosage
-            _InfoRow(
-              icon: Icons.local_pharmacy_outlined,
-              label: 'Dosage :',
-              sw: sw,
-              sh: sh,
-              child: _DosageField(
+              // Name
+              _InfoRow(
+                icon: Icons.medication_outlined,
+                label: 'Name:',
                 sw: sw,
                 sh: sh,
-                qty: _dosageQty,
-                unit: _dosageUnit,
-                units: _dosageUnits,
-                onDecrease: () => setState(() {
-                  if (_dosageQty > 1) _dosageQty--;
-                }),
-                onIncrease: () => setState(() => _dosageQty++),
-                onUnitChanged: (v) => setState(() => _dosageUnit = v!),
+                child: _GreyField(controller: _nameController, sw: sw, sh: sh),
               ),
-            ),
-            SizedBox(height: sh * 0.018),
+              SizedBox(height: sh * 0.018),
 
-            // Frequency
-            _InfoRow(
-              icon: Icons.repeat,
-              label: 'Frequency :',
-              sw: sw,
-              sh: sh,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: _StyledDropdown(
-                      value: _freqTimes,
-                      items: _freqTimeList,
-                      onChanged: (v) => setState(() => _freqTimes = v!),
-                      sw: sw,
-                      sh: sh,
-                    ),
-                  ),
-                  SizedBox(width: sw * 0.02),
-                  Expanded(
-                    child: _StyledDropdown(
-                      value: _freqPeriod,
-                      items: _freqPeriodList,
-                      onChanged: (v) => setState(() => _freqPeriod = v!),
-                      sw: sw,
-                      sh: sh,
-                    ),
-                  ),
-                ],
+              // Dosage
+              _InfoRow(
+                icon: Icons.local_pharmacy_outlined,
+                label: 'Dosage :',
+                sw: sw,
+                sh: sh,
+                child: _DosageField(
+                  sw: sw,
+                  sh: sh,
+                  qty: _dosageQty,
+                  unit: _dosageUnit,
+                  units: _dosageUnits,
+                  onDecrease: () => setState(() {
+                    if (_dosageQty > 1) _dosageQty--;
+                  }),
+                  onIncrease: () => setState(() => _dosageQty++),
+                  onUnitChanged: (v) => setState(() => _dosageUnit = v!),
+                ),
               ),
-            ),
-            SizedBox(height: sh * 0.018),
+              SizedBox(height: sh * 0.018),
 
-            // Type (Capsule / Syrup)
-            _InfoRow(
-              icon: Icons.category_outlined,
-              label: 'Frequency :',
-              sw: sw,
-              sh: sh,
-              child: Row(
-                children: _types.map((t) {
-                  final sel = _selectedType == t;
-                  return Padding(
-                    padding: EdgeInsets.only(right: sw * 0.025),
-                    child: GestureDetector(
-                      onTap: () => setState(() => _selectedType = t),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: sw * 0.05,
-                          vertical: sh * 0.012,
-                        ),
-                        decoration: BoxDecoration(
-                          color: sel
-                              ? const Color(0xFF2260FF)
-                              : const Color(0xFFF0F0F0),
-                          borderRadius: BorderRadius.circular(sw * 0.02),
-                        ),
-                        child: Text(
-                          t,
-                          style: TextStyle(
-                            fontSize: sw * 0.035,
-                            fontFamily: 'Cairo',
-                            fontWeight: FontWeight.w600,
-                            color: sel ? Colors.white : Colors.black87,
+              // Frequency
+              _InfoRow(
+                icon: Icons.repeat,
+                label: 'Frequency :',
+                sw: sw,
+                sh: sh,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _StyledDropdown(
+                        value: _freqTimes,
+                        items: _freqTimeList,
+                        onChanged: (v) {
+                          setState(() {
+                            _freqTimes = v!;
+
+                            // If user selected fewer times than allowed, keep them
+                            // If more, trim the list
+                            if (_selectedTimes.length > maxSelectableTimes) {
+                              _selectedTimes = _selectedTimes
+                                  .take(maxSelectableTimes)
+                                  .toList();
+                            }
+                          });
+                        },
+                        sw: sw,
+                        sh: sh,
+                      ),
+                    ),
+                    SizedBox(width: sw * 0.02),
+                    Expanded(
+                      child: _StyledDropdown(
+                        value: _freqPeriod,
+                        items: _freqPeriodList,
+                        onChanged: (v) => setState(() => _freqPeriod = v!),
+                        sw: sw,
+                        sh: sh,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: sh * 0.018),
+
+              // Type (Capsule / Syrup)
+              _InfoRow(
+                icon: Icons.category_outlined,
+                label: 'Frequency :',
+                sw: sw,
+                sh: sh,
+                child: Row(
+                  children: _types.map((t) {
+                    final sel = _selectedType == t;
+                    return Padding(
+                      padding: EdgeInsets.only(right: sw * 0.025),
+                      child: GestureDetector(
+                        onTap: () => setState(() => _selectedType = t),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: sw * 0.05,
+                            vertical: sh * 0.012,
+                          ),
+                          decoration: BoxDecoration(
+                            color: sel
+                                ? const Color(0xFF2260FF)
+                                : const Color(0xFFF0F0F0),
+                            borderRadius: BorderRadius.circular(sw * 0.02),
+                          ),
+                          child: Text(
+                            t,
+                            style: TextStyle(
+                              fontSize: sw * 0.035,
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.w600,
+                              color: sel ? Colors.white : Colors.black87,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-            SizedBox(height: sh * 0.018),
-
-            // Duration
-            _DurationSection(
-              sw: sw,
-              sh: sh,
-              fromDay: _fromDay,
-              fromMonth: _fromMonth,
-              fromYear: _fromYear,
-              toDay: _toDay,
-              toMonth: _toMonth,
-              toYear: _toYear,
-              months: _months,
-              onFromDayChanged: (v) => setState(() => _fromDay = int.parse(v!)),
-              onFromMonthChanged: (v) => setState(() => _fromMonth = v!),
-              onFromYearChanged: (v) =>
-                  setState(() => _fromYear = int.parse(v!)),
-              onToDayChanged: (v) => setState(() => _toDay = int.parse(v!)),
-              onToMonthChanged: (v) => setState(() => _toMonth = v!),
-              onToYearChanged: (v) => setState(() => _toYear = int.parse(v!)),
-            ),
-            SizedBox(height: sh * 0.028),
-
-            // Select time
-            _SectionTitle(text: 'Select time', sw: sw),
-            SizedBox(height: sh * 0.005),
-            Text(
-              'Maximum 3 times',
-              style: TextStyle(
-                fontSize: sw * 0.032,
-                color: Colors.grey.shade500,
-                fontFamily: 'Cairo',
-              ),
-            ),
-            SizedBox(height: sh * 0.015),
-
-            _TimeGrid(
-              times: _times,
-              selected: _selectedTimes,
-              sw: sw,
-              sh: sh,
-              onTap: (t) {
-                setState(() {
-                  if (_selectedTimes.contains(t)) {
-                    _selectedTimes.remove(t);
-                  } else if (_selectedTimes.length < 3) {
-                    _selectedTimes.add(t);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Maximum 3 times allowed'),
-                        duration: Duration(seconds: 1),
-                      ),
                     );
-                  }
-                });
-              },
-            ),
-            SizedBox(height: sh * 0.03),
+                  }).toList(),
+                ),
+              ),
+              SizedBox(height: sh * 0.018),
 
-            // Refill button
-            _ActionButton(
-              label: 'Refill',
-              color: const Color(0xFF2260FF),
-              sw: sw,
-              sh: sh,
-              onPressed: _onRefill,
-            ),
-            SizedBox(height: sh * 0.015),
+              // Duration
+              _DurationSection(
+                sw: sw,
+                sh: sh,
+                fromDay: _fromDay,
+                fromMonth: _fromMonth,
+                fromYear: _fromYear,
+                toDay: _toDay,
+                toMonth: _toMonth,
+                toYear: _toYear,
+                months: _months,
+                onFromDayChanged: (v) =>
+                    setState(() => _fromDay = int.parse(v!)),
+                onFromMonthChanged: (v) => setState(() => _fromMonth = v!),
+                onFromYearChanged: (v) =>
+                    setState(() => _fromYear = int.parse(v!)),
+                onToDayChanged: (v) => setState(() => _toDay = int.parse(v!)),
+                onToMonthChanged: (v) => setState(() => _toMonth = v!),
+                onToYearChanged: (v) => setState(() => _toYear = int.parse(v!)),
+              ),
+              SizedBox(height: sh * 0.028),
 
-            // Cancel button
-            _ActionButton(
-              label: 'Cancel Reminder',
-              color: Colors.red,
-              sw: sw,
-              sh: sh,
-              onPressed: () => Navigator.pop(context),
-            ),
-            SizedBox(height: sh * 0.04),
-          ],
+              // Select time
+              _SectionTitle(text: 'Select time', sw: sw),
+              SizedBox(height: sh * 0.005),
+              Text(
+                'Maximum 3 times',
+                style: TextStyle(
+                  fontSize: sw * 0.032,
+                  color: Colors.grey.shade500,
+                  fontFamily: 'Cairo',
+                ),
+              ),
+              SizedBox(height: sh * 0.015),
+
+              _TimeGrid(
+                times: _times,
+                selected: _selectedTimes,
+                sw: sw,
+                sh: sh,
+                onTap: (t) {
+                  setState(() {
+                    if (_selectedTimes.contains(t)) {
+                      _selectedTimes.remove(t);
+                    } else if (_selectedTimes.length < maxSelectableTimes) {
+                      _selectedTimes.add(t);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'You can only select $maxSelectableTimes time(s)',
+                          ),
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
+                    }
+                  });
+                },
+              ),
+              SizedBox(height: sh * 0.03),
+
+              // Refill button
+              _ActionButton(
+                label: 'Refill',
+                color: const Color(0xFF2260FF),
+                sw: sw,
+                sh: sh,
+                onPressed: _isLoading ? null : _submitReminder,
+                isLoading: _isLoading,
+              ),
+              SizedBox(height: sh * 0.015),
+
+              // Cancel button
+              _ActionButton(
+                label: 'Cancel Reminder',
+                color: Colors.red,
+                sw: sw,
+                sh: sh,
+                onPressed: () => Navigator.pop(context),
+              ),
+              SizedBox(height: sh * 0.04),
+            ],
+          ),
         ),
       ),
     );
@@ -707,8 +821,9 @@ class _TimeGrid extends StatelessWidget {
 class _ActionButton extends StatelessWidget {
   final String label;
   final Color color;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double sw, sh;
+  final bool isLoading;
 
   const _ActionButton({
     required this.label,
@@ -716,30 +831,42 @@ class _ActionButton extends StatelessWidget {
     required this.onPressed,
     required this.sw,
     required this.sh,
+    this.isLoading = false,
   });
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    width: double.infinity,
-    height: sh * 0.065,
-    child: ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(sw * 0.03),
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: sh * 0.065,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(sw * 0.03),
+          ),
         ),
+        child: isLoading
+            ? SizedBox(
+                width: sw * 0.05,
+                height: sw * 0.05,
+                child: const CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            : Text(
+                label,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: sw * 0.042,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Cairo',
+                ),
+              ),
       ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: sw * 0.042,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'Cairo',
-        ),
-      ),
-    ),
-  );
+    );
+  }
 }

@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:grad_project/cubit/Chat%20bot/ChatCubit.dart';
 import 'package:grad_project/services/Chatbot%20Services/ChatService.dart';
 import 'dart:io';
+import 'package:grad_project/services/Authservice.dart';
 
 class ChatApiService implements ChatService {
   String? _threadId;
@@ -22,6 +24,9 @@ class ChatApiService implements ChatService {
     ChatCubit cubit, {
     File? image,
   }) async {
+    AuthService authService = AuthService();
+    const storage = FlutterSecureStorage();
+    String userid = await authService.getUserId() ?? 'unknown_user';
     _threadId ??= _generateThreadId();
 
     final client = http.Client();
@@ -31,11 +36,10 @@ class ChatApiService implements ChatService {
       final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/chat'));
 
       request.headers['Authorization'] = 'Bearer $apiKey';
-
       request.fields['query'] = message;
       request.fields['thread_id'] = _threadId!;
       request.fields['summary'] = _summary;
-
+      request.fields['user_id'] = userid;
       if (image != null) {
         final imageStream = http.ByteStream(image.openRead());
         final imageLength = await image.length();
