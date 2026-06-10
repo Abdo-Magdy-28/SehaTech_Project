@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
 import 'package:grad_project/cubit/Authentication/Authstates.dart';
+import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
+import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Authentication/signupform.dart';
 import 'package:grad_project/screens/Authentication/signupscreen2.dart';
@@ -203,6 +205,13 @@ class _SigninState extends State<Signin> {
                                       if (!mounted) return;
 
                                       if (response.success) {
+                                        final today = DateTime.now();
+                                        context
+                                            .read<DoctorCubit>()
+                                            .loadDoctors();
+                                        context
+                                            .read<DailyScheduleCubit>()
+                                            .loadSchedule(today);
                                         Navigator.pushAndRemoveUntil(
                                           context,
                                           MaterialPageRoute(
