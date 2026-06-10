@@ -10,6 +10,7 @@ import 'package:grad_project/widgets/carousel_card.dart';
 import 'package:grad_project/widgets/carouselcard2.dart';
 import 'package:grad_project/widgets/carouselcard3.dart';
 import 'package:grad_project/widgets/customgradientslide.dart';
+import 'package:grad_project/generated/l10n.dart';
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
@@ -81,23 +82,19 @@ class _LoginpageState extends State<Loginpage> {
                   ),
                   items: [
                     CarouselCard(
-                      title: 'Easily Consult Top Doctors Online & In-Person.',
-                      hint:
-                          'Consult today. Find top doctors. Start your health journey with ease and confidence now!',
+                      title: S.of(context).carousel1,
+                      hint: S.of(context).carousel1hint,
                       image: 'assets/images/Card01-illu2.png',
                     ),
                     CarouselCard2(
-                      title:
-                          'Easily Access a Smart Chatbot for Instant Support & Guidance',
-                      hint:
-                          '“Get instant support. Receive guided medical advice with confidence now!"',
+                      title: S.of(context).carousel2,
+                      hint: S.of(context).carousel2hint,
                       image:
                           'assets/images/AI assistant and chat interface.png',
                     ),
                     CarouselCard3(
-                      title: 'Easily Access Top Hospitals Online & In-Person',
-                      hint:
-                          '"Find trusted hospitals. Start your treatment journey with ease and confidence now!"',
+                      title: S.of(context).carousel3,
+                      hint: S.of(context).carousel3hint,
                       image: 'assets/images/Layer 7.png',
                     ),
                   ],
@@ -139,7 +136,7 @@ class _LoginpageState extends State<Loginpage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "SEHA TECH",
+                    S.of(context).appName,
                     style: TextStyle(
                       fontSize: devwidth * 0.06,
                       fontFamily: 'Cairo',
@@ -147,8 +144,8 @@ class _LoginpageState extends State<Loginpage> {
                     ),
                   ),
                   Text(
-                    'SEHA TECH helps you track, manage, and improve your\n'
-                    'health with smart tools designed for every stage of life.',
+                    S.of(context).logindescription1 +
+                        S.of(context).logindescription2,
                     style: TextStyle(
                       fontSize: devwidth * 0.025,
                       fontWeight: FontWeight.w400,
@@ -176,7 +173,7 @@ class _LoginpageState extends State<Loginpage> {
                           SvgPicture.asset("assets/images/Icons2.svg"),
                           SizedBox(width: devwidth * 0.01),
                           Text(
-                            "Sign Up With Google",
+                            S.of(context).signupwithgoogle,
                             style: TextStyle(
                               color: Color(0xFF676767),
                               fontSize: devwidth * 0.045,
@@ -192,35 +189,6 @@ class _LoginpageState extends State<Loginpage> {
                   SizedBox(height: devheight * 0.02),
 
                   // FACEBOOK BUTTON
-                  SizedBox(
-                    width: devwidth * 0.9,
-                    height: devheight * 0.075,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff0d61ec),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset("assets/images/Icons.svg"),
-                          SizedBox(width: devwidth * 0.01),
-                          Text(
-                            "Sign Up With Facebook",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: devwidth * 0.045,
-                              fontFamily: 'Cairo',
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
 
                   // ALREADY HAVE ACCOUNT
                   Padding(
@@ -229,7 +197,7 @@ class _LoginpageState extends State<Loginpage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Already have an account?",
+                          S.of(context).alreadyhaveanaccount,
                           style: TextStyle(
                             color: Colors.black87,
                             fontFamily: 'Cairo',
@@ -251,7 +219,7 @@ class _LoginpageState extends State<Loginpage> {
                             minimumSize: Size.zero,
                           ),
                           child: Text(
-                            "Sign In",
+                            S.of(context).signin,
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -269,7 +237,7 @@ class _LoginpageState extends State<Loginpage> {
                   GradientSlideToAct(
                     width: devwidth * 0.9,
                     height: devheight * 0.075,
-                    text: "Swap To Create Account",
+                    text: S.of(context).swiptocreateaccount,
                     onSubmit: () {
                       Navigator.push(
                         context,
@@ -312,18 +280,18 @@ void _showLanguageSheet(BuildContext context) {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Select language',
+                  S.of(context).selectlanguage,
                   style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
                 ),
                 const SizedBox(height: 14),
                 _LangOption(
                   code: 'en',
-                  name: 'English',
+                  name: S.of(context).english,
                   selected: locale.languageCode == 'en',
                 ),
                 _LangOption(
                   code: 'ar',
-                  name: 'العربية',
+                  name: S.of(context).arabic,
                   selected: locale.languageCode == 'ar',
                 ),
               ],

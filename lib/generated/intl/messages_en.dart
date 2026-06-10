@@ -47,6 +47,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "addCondition": MessageLookupByLibrary.simpleMessage("+ Add Condition"),
     "addreminder": MessageLookupByLibrary.simpleMessage("Add Reminder"),
     "address": MessageLookupByLibrary.simpleMessage("Address"),
+    "addressrequired": MessageLookupByLibrary.simpleMessage(
+      "Address is required",
+    ),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("AI Assistant"),
     "allergies": MessageLookupByLibrary.simpleMessage("Allergies"),
     "allperscriptions": MessageLookupByLibrary.simpleMessage(
@@ -54,6 +57,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "alphabetfromatoz": MessageLookupByLibrary.simpleMessage(
       "Alphabet: From A>Z",
+    ),
+    "alreadyhaveanaccount": MessageLookupByLibrary.simpleMessage(
+      "Already have an account?",
     ),
     "alwaysInformHealthcare": MessageLookupByLibrary.simpleMessage(
       "Always Inform Healthcare About Your Allergies",
@@ -87,6 +93,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "byrating": MessageLookupByLibrary.simpleMessage("By Rating"),
     "capsule": MessageLookupByLibrary.simpleMessage("Capsule"),
     "cardiologist": MessageLookupByLibrary.simpleMessage("Cardiologist"),
+    "carousel1": MessageLookupByLibrary.simpleMessage(
+      "Easily Consult Top Doctors Online & In-Person.",
+    ),
+    "carousel1hint": MessageLookupByLibrary.simpleMessage(
+      "Consult today. Find top doctors. Start your health journey with ease and confidence now!",
+    ),
+    "carousel2": MessageLookupByLibrary.simpleMessage(
+      "Easily Access a Smart Chatbot for Instant Support & Guidance.",
+    ),
+    "carousel2hint": MessageLookupByLibrary.simpleMessage(
+      "Get instant support. Receive guided medical advice with confidence now!",
+    ),
+    "carousel3": MessageLookupByLibrary.simpleMessage(
+      "Easily Access Top Hospitals Online & In-Person",
+    ),
+    "carousel3hint": MessageLookupByLibrary.simpleMessage(
+      "Find trusted hospitals. Start your treatment journey with ease and confidence now!",
+    ),
+    "change": MessageLookupByLibrary.simpleMessage("Change"),
     "changeType": MessageLookupByLibrary.simpleMessage("Change Type"),
     "changenotificationsettings": MessageLookupByLibrary.simpleMessage(
       "Change Notification Settings",
@@ -98,11 +123,16 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "chronicdiseases": MessageLookupByLibrary.simpleMessage("Chronic Diseases"),
     "closed": MessageLookupByLibrary.simpleMessage("Closed"),
+    "coderequired": MessageLookupByLibrary.simpleMessage("Code is required"),
     "confirmpassword": MessageLookupByLibrary.simpleMessage("Confirm Password"),
     "confirmpasswordrequiered": MessageLookupByLibrary.simpleMessage(
       "Confirm Password is required",
     ),
+    "confirmpasswordrequired": MessageLookupByLibrary.simpleMessage(
+      "Confirm Password is required",
+    ),
     "contactus": MessageLookupByLibrary.simpleMessage("Contact Us"),
+    "continuee": MessageLookupByLibrary.simpleMessage("Continue"),
     "copiedtoclipboard": MessageLookupByLibrary.simpleMessage(
       "Copied to clipboard",
     ),
@@ -111,12 +141,18 @@ class MessageLookup extends MessageLookupByLibrary {
       "Current Password is required",
     ),
     "dateofbirth": MessageLookupByLibrary.simpleMessage("Date of Birth"),
+    "dateofbirthrequired": MessageLookupByLibrary.simpleMessage(
+      "Date of Birth is required",
+    ),
     "deletephoto": MessageLookupByLibrary.simpleMessage("Delete Photo"),
     "deliviringtime": MessageLookupByLibrary.simpleMessage("Delivering"),
     "dentist": MessageLookupByLibrary.simpleMessage("Dentist"),
     "dermatologist": MessageLookupByLibrary.simpleMessage("Dermatologist"),
     "diabetes": MessageLookupByLibrary.simpleMessage("Diabetes"),
     "diagnoses": MessageLookupByLibrary.simpleMessage("Diagnoses"),
+    "didnotreceiveemail": MessageLookupByLibrary.simpleMessage(
+      "Didn\'t receive the email?",
+    ),
     "directions": MessageLookupByLibrary.simpleMessage("Directions"),
     "discardchanges": MessageLookupByLibrary.simpleMessage("Discard Changes ?"),
     "discoverHealthcare": MessageLookupByLibrary.simpleMessage(
@@ -126,11 +162,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "Diseases symptoms",
     ),
     "distance": MessageLookupByLibrary.simpleMessage("Distance"),
+    "doctor": MessageLookupByLibrary.simpleMessage("Doctor"),
     "doctorTitle": m0,
     "doctordetails": MessageLookupByLibrary.simpleMessage("Doctor Details"),
     "doctors": MessageLookupByLibrary.simpleMessage("Doctors"),
     "doctorsInJustFewTaps": MessageLookupByLibrary.simpleMessage(
       "doctors in just a few taps.",
+    ),
+    "donothaveanaccount": MessageLookupByLibrary.simpleMessage(
+      "Don\'t have an account?",
     ),
     "dosage": MessageLookupByLibrary.simpleMessage("2 Drops | Every 2 Hour"),
     "drops": MessageLookupByLibrary.simpleMessage("2 Drops"),
@@ -140,11 +180,19 @@ class MessageLookup extends MessageLookupByLibrary {
       "El-Demerdash Hospital",
     ),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
+    "emailisnotvalid": MessageLookupByLibrary.simpleMessage("Email is invaild"),
     "emailnotification": MessageLookupByLibrary.simpleMessage(
       "Email Notification",
     ),
+    "emailrequired": MessageLookupByLibrary.simpleMessage("Email is required"),
+    "emailvarification": MessageLookupByLibrary.simpleMessage(
+      "Email Verification",
+    ),
     "endTime": MessageLookupByLibrary.simpleMessage("5:30pm"),
     "english": MessageLookupByLibrary.simpleMessage("English"),
+    "enteremailtoreceivecode": MessageLookupByLibrary.simpleMessage(
+      "Enter your email to receive reset code",
+    ),
     "enternewpassword": MessageLookupByLibrary.simpleMessage(
       "Enter Your New Password",
     ),
@@ -161,6 +209,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Failed to update profile. please try again",
     ),
     "farthestfirst": MessageLookupByLibrary.simpleMessage("Farthest first"),
+    "female": MessageLookupByLibrary.simpleMessage("Female"),
     "fever": MessageLookupByLibrary.simpleMessage("Fever"),
     "findAboutMedicine": MessageLookupByLibrary.simpleMessage(
       "Find out about your\nmedicine.",
@@ -170,8 +219,16 @@ class MessageLookup extends MessageLookupByLibrary {
       "Find what you need",
     ),
     "finish": MessageLookupByLibrary.simpleMessage("Finish"),
+    "first": MessageLookupByLibrary.simpleMessage("First"),
     "firstname": MessageLookupByLibrary.simpleMessage("First Name"),
+    "firstnamerequired": MessageLookupByLibrary.simpleMessage(
+      "First Name is required",
+    ),
     "foodAllergy": MessageLookupByLibrary.simpleMessage("Food Allergy"),
+    "forgotpassword": MessageLookupByLibrary.simpleMessage("Forgot Password?"),
+    "formisvalid": MessageLookupByLibrary.simpleMessage(
+      "Form is valid! Signing up...",
+    ),
     "getRemindersPills": MessageLookupByLibrary.simpleMessage(
       "Get reminders for\nyour pills.",
     ),
@@ -192,6 +249,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "hypertension": MessageLookupByLibrary.simpleMessage("Hypertension"),
     "importantTopics": MessageLookupByLibrary.simpleMessage("Important Topics"),
     "infection": MessageLookupByLibrary.simpleMessage("Infection"),
+    "invaliphonenumber": MessageLookupByLibrary.simpleMessage(
+      "Invalid Phone Number",
+    ),
     "keepConditionUnderControl": MessageLookupByLibrary.simpleMessage(
       "Keep Your Condition Under Control And Follow Your Care Plan",
     ),
@@ -203,6 +263,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Language Settings",
     ),
     "lastname": MessageLookupByLibrary.simpleMessage("Last Name"),
+    "lastnamerequired": MessageLookupByLibrary.simpleMessage(
+      "Last Name is required",
+    ),
     "learnMore": MessageLookupByLibrary.simpleMessage("Learn more"),
     "lessexperinencefirst": MessageLookupByLibrary.simpleMessage(
       "Experience: Less experience first",
@@ -212,7 +275,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Location :nearest first",
     ),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
+    "logindescription1": MessageLookupByLibrary.simpleMessage(
+      "SEHA TECH helps you track, manage, and improve your\n",
+    ),
+    "logindescription2": MessageLookupByLibrary.simpleMessage(
+      "health with smart tools designed for every stage of life.",
+    ),
     "logout": MessageLookupByLibrary.simpleMessage("Logout"),
+    "male": MessageLookupByLibrary.simpleMessage("Male"),
     "managed": MessageLookupByLibrary.simpleMessage("Managed"),
     "medicationManagement": MessageLookupByLibrary.simpleMessage(
       "Medication Management",
@@ -234,6 +304,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "mostsearchedmedicines": MessageLookupByLibrary.simpleMessage(
       "Most Searched Medicines",
     ),
+    "mustbe11numbers": MessageLookupByLibrary.simpleMessage(
+      "Must be 11 numbers",
+    ),
     "name": MessageLookupByLibrary.simpleMessage("Name"),
     "nasal": MessageLookupByLibrary.simpleMessage("Nasal"),
     "nearest": MessageLookupByLibrary.simpleMessage("Nearest"),
@@ -251,6 +324,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "notificationssettings": MessageLookupByLibrary.simpleMessage(
       "Notification settings",
     ),
+    "or": MessageLookupByLibrary.simpleMessage("Or"),
     "ourservices": MessageLookupByLibrary.simpleMessage("Our Services"),
     "pain": MessageLookupByLibrary.simpleMessage("Pain"),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
@@ -260,6 +334,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordnotmatch": MessageLookupByLibrary.simpleMessage(
       "Password doesn\'t match",
     ),
+    "passwordrequired": MessageLookupByLibrary.simpleMessage(
+      "Password is required",
+    ),
+    "patient": MessageLookupByLibrary.simpleMessage("Patient"),
     "penicillin": MessageLookupByLibrary.simpleMessage("Penicillin"),
     "perscriptions": MessageLookupByLibrary.simpleMessage("Perscriptions"),
     "personalinfo": MessageLookupByLibrary.simpleMessage("Personal Info"),
@@ -269,6 +347,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Pharmacy Information",
     ),
     "phonenumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
+    "phonenumberrequired": MessageLookupByLibrary.simpleMessage(
+      "Phone Number is required",
+    ),
+    "plsfixformerrors": MessageLookupByLibrary.simpleMessage(
+      "Please fix errors",
+    ),
     "pollen": MessageLookupByLibrary.simpleMessage("Pollen"),
     "populardoctors": MessageLookupByLibrary.simpleMessage("Popular Doctors"),
     "popularhospitals": MessageLookupByLibrary.simpleMessage(
@@ -306,6 +390,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Rating : The worst first",
     ),
     "reminderTime": MessageLookupByLibrary.simpleMessage("09:30 AM"),
+    "resend": MessageLookupByLibrary.simpleMessage("Resend"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "savechanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
     "scan": MessageLookupByLibrary.simpleMessage("Scan"),
@@ -356,6 +441,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "severity": MessageLookupByLibrary.simpleMessage("Severity"),
     "shellfish": MessageLookupByLibrary.simpleMessage("Shellfish"),
     "sideeffects": MessageLookupByLibrary.simpleMessage("Side Effects"),
+    "signin": MessageLookupByLibrary.simpleMessage("Sign in"),
+    "signup": MessageLookupByLibrary.simpleMessage("Sign up"),
+    "signupwithgoogle": MessageLookupByLibrary.simpleMessage(
+      "Sign up with Google",
+    ),
     "slots6": MessageLookupByLibrary.simpleMessage("6 Slots"),
     "smsnotification": MessageLookupByLibrary.simpleMessage("SMS Notification"),
     "sorrynoresultfound": MessageLookupByLibrary.simpleMessage(
@@ -363,6 +453,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "spasm": MessageLookupByLibrary.simpleMessage("Spasm"),
     "startTime": MessageLookupByLibrary.simpleMessage("10:30am"),
+    "swiptocreateaccount": MessageLookupByLibrary.simpleMessage(
+      "Swipe to create an account",
+    ),
     "taken": MessageLookupByLibrary.simpleMessage("Taken"),
     "takephoto": MessageLookupByLibrary.simpleMessage("Take Photo"),
     "treated": MessageLookupByLibrary.simpleMessage("Treated"),
@@ -374,6 +467,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "unsavedchangeswillbelost": MessageLookupByLibrary.simpleMessage(
       "Unsaved changes will be lost",
     ),
+    "username": MessageLookupByLibrary.simpleMessage("Username"),
+    "usernamerequired": MessageLookupByLibrary.simpleMessage(
+      "Username is required",
+    ),
+    "verifiyyouridentity": MessageLookupByLibrary.simpleMessage(
+      "Verify Your Identity",
+    ),
     "view": MessageLookupByLibrary.simpleMessage("View"),
     "viewWeeklyReport": MessageLookupByLibrary.simpleMessage(
       "View weekly report",
@@ -384,6 +484,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "weeklyPercentage": m2,
     "weeklyStreak": MessageLookupByLibrary.simpleMessage("Weekly Streak"),
     "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
+    "wesentyouanemail": MessageLookupByLibrary.simpleMessage(
+      "We sent you an email with a verification code.",
+    ),
     "whaticanhelp": MessageLookupByLibrary.simpleMessage("What can help you?"),
     "withYourPreferred": MessageLookupByLibrary.simpleMessage(
       "with your preferred",

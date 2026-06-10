@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
 import 'package:grad_project/cubit/Authentication/Authstates.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Homepage.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -76,9 +77,9 @@ class _Signupscreen2State extends State<Signupscreen2> {
                             focusNode: _userNameFocus,
                             controller: _userNameController,
                             validator: RequiredValidator(
-                              errorText: "User Name Requiered",
+                              errorText: S.of(context).usernamerequired,
                             ),
-                            hinttext: 'User Name',
+                            hinttext: S.of(context).username,
                             bordercolor: const Color(0xFF727880),
                             prefixicon:
                                 "assets/images/iconamoon_profile-light.svg",
@@ -100,22 +101,22 @@ class _Signupscreen2State extends State<Signupscreen2> {
                             controller: _phoneNumberController,
                             validator: MultiValidator([
                               RequiredValidator(
-                                errorText: "Phone Number Requiered",
+                                errorText: S.of(context).phonenumberrequired,
                               ),
                               MinLengthValidator(
                                 11,
-                                errorText: "Must Be 11 Numbers ",
+                                errorText: S.of(context).mustbe11numbers,
                               ),
                               PatternValidator(
                                 r'^01[0-9]+$',
-                                errorText: "Invalid Phone Number",
+                                errorText: S.of(context).invaliphonenumber,
                               ),
                               MaxLengthValidator(
                                 11,
-                                errorText: "Must be 11 Numbers",
+                                errorText: S.of(context).mustbe11numbers,
                               ),
                             ]),
-                            hinttext: 'Phone Number',
+                            hinttext: S.of(context).phonenumber,
                             bordercolor: const Color(0xFF727880),
                             prefixicon: "assets/images/carbon_phone.svg",
                             textInputAction: TextInputAction.next,
@@ -134,14 +135,14 @@ class _Signupscreen2State extends State<Signupscreen2> {
                               onChanged: (value) =>
                                   setState(() => selectedGender = value),
                             ),
-                            const Text("Male"),
+                            Text(S.of(context).male),
                             Radio<String>(
                               value: "female",
                               groupValue: selectedGender,
                               onChanged: (value) =>
                                   setState(() => selectedGender = value),
                             ),
-                            const Text("Female"),
+                            Text(S.of(context).female),
                           ],
                         ),
 
@@ -155,14 +156,14 @@ class _Signupscreen2State extends State<Signupscreen2> {
                               onChanged: (value) =>
                                   setState(() => selectedjob = value),
                             ),
-                            const Text("Doctor"),
+                            Text(S.of(context).doctor),
                             Radio<String>(
                               value: "patient",
                               groupValue: selectedjob,
                               onChanged: (value) =>
                                   setState(() => selectedjob = value),
                             ),
-                            const Text("Patient"),
+                            Text(S.of(context).patient),
                           ],
                         ),
                         SizedBox(height: devHeight * 0.04),
@@ -178,8 +179,10 @@ class _Signupscreen2State extends State<Signupscreen2> {
                                       ScaffoldMessenger.of(
                                         context,
                                       ).showSnackBar(
-                                        const SnackBar(
-                                          content: Text('Please fix errors.'),
+                                        SnackBar(
+                                          content: Text(
+                                            S.of(context).plsfixformerrors,
+                                          ),
                                           backgroundColor: Colors.red,
                                         ),
                                       );
@@ -246,7 +249,7 @@ class _Signupscreen2State extends State<Signupscreen2> {
                                     ),
                                   )
                                 : Text(
-                                    'Sign Up',
+                                    S.of(context).signup,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: devWidth * 0.045,

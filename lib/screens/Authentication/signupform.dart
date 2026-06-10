@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
 import 'package:grad_project/cubit/Authentication/Authstates.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/user.dart';
 import 'package:grad_project/screens/Authentication/signin.dart';
 import 'package:grad_project/screens/Authentication/signupscreen2.dart';
@@ -78,7 +79,7 @@ class _SignupformState extends State<Signupform> {
               children: [
                 SizedBox(height: devHeight * 0.02),
                 Text(
-                  'SIGN UP',
+                  S.of(context).signup,
                   style: TextStyle(
                     fontSize: devWidth * 0.08,
                     fontWeight: FontWeight.w700,
@@ -91,13 +92,13 @@ class _SignupformState extends State<Signupform> {
                 Textformfield(
                   controller: _firstController,
                   focusNode: _firstFocus,
-                  hinttext: 'First Name',
+                  hinttext: S.of(context).firstname,
                   onchange: (value) {
                     Firstname = value;
                     // BlocProvider.of<Authcubit>(context).firstname = value;
                   },
                   validator: RequiredValidator(
-                    errorText: "First Name required",
+                    errorText: S.of(context).firstnamerequired,
                   ),
                   bordercolor: const Color(0xFFF3F1F7),
                   prefixicon: "assets/images/iconamoon_profile-light.svg",
@@ -110,12 +111,14 @@ class _SignupformState extends State<Signupform> {
                 Textformfield(
                   controller: _lastController,
                   focusNode: _lastFocus,
-                  hinttext: 'Last Name',
+                  hinttext: S.of(context).lastname,
                   onchange: (value) {
                     Lastname = value;
                     // BlocProvider.of<Authcubit>(context).lastname = value;
                   },
-                  validator: RequiredValidator(errorText: "Last Name required"),
+                  validator: RequiredValidator(
+                    errorText: S.of(context).lastnamerequired,
+                  ),
                   bordercolor: const Color(0xFFF3F1F7),
                   prefixicon: "assets/images/iconamoon_profile-light.svg",
                   textInputAction: TextInputAction.next,
@@ -127,14 +130,14 @@ class _SignupformState extends State<Signupform> {
                 Textformfield(
                   controller: _emailController,
                   focusNode: _emailFocus,
-                  hinttext: 'Email',
+                  hinttext: S.of(context).email,
                   onchange: (value) {
                     Email = value;
                     // BlocProvider.of<Authcubit>(context).email = value;
                   },
                   validator: MultiValidator([
-                    RequiredValidator(errorText: "Email required "),
-                    EmailValidator(errorText: "Email Is Invalid"),
+                    RequiredValidator(errorText: S.of(context).emailrequired),
+                    EmailValidator(errorText: S.of(context).emailisnotvalid),
                   ]),
                   bordercolor: const Color(0xFFF3F1F7),
                   prefixicon: "assets/images/carbon_email.svg",
@@ -147,17 +150,19 @@ class _SignupformState extends State<Signupform> {
                 Textformfield(
                   controller: _passwordController,
                   focusNode: _passwordFocus,
-                  hinttext: 'Password',
+                  hinttext: S.of(context).password,
                   ispassword: true,
                   onchange: (value) {
                     Password = value;
                     // BlocProvider.of<Authcubit>(context).password = value;
                   },
                   validator: MultiValidator([
-                    RequiredValidator(errorText: "Password required"),
+                    RequiredValidator(
+                      errorText: S.of(context).passwordrequired,
+                    ),
                     MinLengthValidator(
                       8,
-                      errorText: 'Password must be at least 8 characters',
+                      errorText: S.of(context).passwordmustbeatleast,
                     ),
                   ]),
                   obsecure: true,
@@ -172,7 +177,7 @@ class _SignupformState extends State<Signupform> {
                 Textformfield(
                   controller: _confirmController,
                   focusNode: _confirmFocus,
-                  hinttext: 'Confirm Password',
+                  hinttext: S.of(context).confirmpassword,
                   onchange: (value) {
                     confirmpassword = value;
                     // BlocProvider.of<Authcubit>(context).confirmpassword =
@@ -180,9 +185,9 @@ class _SignupformState extends State<Signupform> {
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please confirm your password';
+                      return S.of(context).confirmpasswordrequired;
                     } else if (value != _passwordController.text) {
-                      return 'Passwords do not match';
+                      return S.of(context).passwordnotmatch;
                     }
                     return null;
                   },
@@ -196,7 +201,7 @@ class _SignupformState extends State<Signupform> {
 
                 SizedBox(height: devHeight * 0.04),
                 Hero(
-                  tag: 'first',
+                  tag: S.of(context).first,
                   child: SizedBox(
                     width: double.infinity,
                     height: devHeight * 0.07,
@@ -210,9 +215,7 @@ class _SignupformState extends State<Signupform> {
                           authCubit.password = _passwordController.text;
                           authCubit.confirmpassword = _confirmController.text;
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Form is valid! Signing up...'),
-                            ),
+                            SnackBar(content: Text(S.of(context).formisvalid)),
                           );
                           Navigator.push(
                             context,
@@ -225,7 +228,9 @@ class _SignupformState extends State<Signupform> {
                           );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Please fix errors.')),
+                            SnackBar(
+                              content: Text(S.of(context).plsfixformerrors),
+                            ),
                           );
                         }
                       }, /////////////////////
@@ -237,7 +242,7 @@ class _SignupformState extends State<Signupform> {
                         elevation: 0,
                       ),
                       child: Text(
-                        'Sign Up',
+                        S.of(context).signup,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: devWidth * 0.045,
@@ -255,7 +260,7 @@ class _SignupformState extends State<Signupform> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("Already have an account?"),
+                      Text(S.of(context).alreadyhaveanaccount),
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
@@ -289,7 +294,7 @@ class _SignupformState extends State<Signupform> {
                           minimumSize: Size.zero,
                         ),
                         child: Text(
-                          "Sign In",
+                          S.of(context).signin,
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,

@@ -1818,6 +1818,396 @@ class S {
   String get pain {
     return Intl.message('Pain', name: 'pain', desc: '', args: []);
   }
+
+  /// `Easily Consult Top Doctors Online & In-Person.`
+  String get carousel1 {
+    return Intl.message(
+      'Easily Consult Top Doctors Online & In-Person.',
+      name: 'carousel1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Consult today. Find top doctors. Start your health journey with ease and confidence now!`
+  String get carousel1hint {
+    return Intl.message(
+      'Consult today. Find top doctors. Start your health journey with ease and confidence now!',
+      name: 'carousel1hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Easily Access a Smart Chatbot for Instant Support & Guidance.`
+  String get carousel2 {
+    return Intl.message(
+      'Easily Access a Smart Chatbot for Instant Support & Guidance.',
+      name: 'carousel2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get instant support. Receive guided medical advice with confidence now!`
+  String get carousel2hint {
+    return Intl.message(
+      'Get instant support. Receive guided medical advice with confidence now!',
+      name: 'carousel2hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Easily Access Top Hospitals Online & In-Person`
+  String get carousel3 {
+    return Intl.message(
+      'Easily Access Top Hospitals Online & In-Person',
+      name: 'carousel3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find trusted hospitals. Start your treatment journey with ease and confidence now!`
+  String get carousel3hint {
+    return Intl.message(
+      'Find trusted hospitals. Start your treatment journey with ease and confidence now!',
+      name: 'carousel3hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SEHA TECH helps you track, manage, and improve your\n`
+  String get logindescription1 {
+    return Intl.message(
+      'SEHA TECH helps you track, manage, and improve your\n',
+      name: 'logindescription1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `health with smart tools designed for every stage of life.`
+  String get logindescription2 {
+    return Intl.message(
+      'health with smart tools designed for every stage of life.',
+      name: 'logindescription2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign up with Google`
+  String get signupwithgoogle {
+    return Intl.message(
+      'Sign up with Google',
+      name: 'signupwithgoogle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Already have an account?`
+  String get alreadyhaveanaccount {
+    return Intl.message(
+      'Already have an account?',
+      name: 'alreadyhaveanaccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign in`
+  String get signin {
+    return Intl.message('Sign in', name: 'signin', desc: '', args: []);
+  }
+
+  /// `Sign up`
+  String get signup {
+    return Intl.message('Sign up', name: 'signup', desc: '', args: []);
+  }
+
+  /// `Swipe to create an account`
+  String get swiptocreateaccount {
+    return Intl.message(
+      'Swipe to create an account',
+      name: 'swiptocreateaccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot Password?`
+  String get forgotpassword {
+    return Intl.message(
+      'Forgot Password?',
+      name: 'forgotpassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email is required`
+  String get emailrequired {
+    return Intl.message(
+      'Email is required',
+      name: 'emailrequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password is required`
+  String get passwordrequired {
+    return Intl.message(
+      'Password is required',
+      name: 'passwordrequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Password is required`
+  String get confirmpasswordrequired {
+    return Intl.message(
+      'Confirm Password is required',
+      name: 'confirmpasswordrequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email is invaild`
+  String get emailisnotvalid {
+    return Intl.message(
+      'Email is invaild',
+      name: 'emailisnotvalid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't have an account?`
+  String get donothaveanaccount {
+    return Intl.message(
+      'Don\'t have an account?',
+      name: 'donothaveanaccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First`
+  String get first {
+    return Intl.message('First', name: 'first', desc: '', args: []);
+  }
+
+  /// `Or`
+  String get or {
+    return Intl.message('Or', name: 'or', desc: '', args: []);
+  }
+
+  /// `First Name is required`
+  String get firstnamerequired {
+    return Intl.message(
+      'First Name is required',
+      name: 'firstnamerequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last Name is required`
+  String get lastnamerequired {
+    return Intl.message(
+      'Last Name is required',
+      name: 'lastnamerequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone Number is required`
+  String get phonenumberrequired {
+    return Intl.message(
+      'Phone Number is required',
+      name: 'phonenumberrequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address is required`
+  String get addressrequired {
+    return Intl.message(
+      'Address is required',
+      name: 'addressrequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date of Birth is required`
+  String get dateofbirthrequired {
+    return Intl.message(
+      'Date of Birth is required',
+      name: 'dateofbirthrequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Form is valid! Signing up...`
+  String get formisvalid {
+    return Intl.message(
+      'Form is valid! Signing up...',
+      name: 'formisvalid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please fix errors`
+  String get plsfixformerrors {
+    return Intl.message(
+      'Please fix errors',
+      name: 'plsfixformerrors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username`
+  String get username {
+    return Intl.message('Username', name: 'username', desc: '', args: []);
+  }
+
+  /// `Username is required`
+  String get usernamerequired {
+    return Intl.message(
+      'Username is required',
+      name: 'usernamerequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Must be 11 numbers`
+  String get mustbe11numbers {
+    return Intl.message(
+      'Must be 11 numbers',
+      name: 'mustbe11numbers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid Phone Number`
+  String get invaliphonenumber {
+    return Intl.message(
+      'Invalid Phone Number',
+      name: 'invaliphonenumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Male`
+  String get male {
+    return Intl.message('Male', name: 'male', desc: '', args: []);
+  }
+
+  /// `Female`
+  String get female {
+    return Intl.message('Female', name: 'female', desc: '', args: []);
+  }
+
+  /// `Doctor`
+  String get doctor {
+    return Intl.message('Doctor', name: 'doctor', desc: '', args: []);
+  }
+
+  /// `Patient`
+  String get patient {
+    return Intl.message('Patient', name: 'patient', desc: '', args: []);
+  }
+
+  /// `Email Verification`
+  String get emailvarification {
+    return Intl.message(
+      'Email Verification',
+      name: 'emailvarification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We sent you an email with a verification code.`
+  String get wesentyouanemail {
+    return Intl.message(
+      'We sent you an email with a verification code.',
+      name: 'wesentyouanemail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change`
+  String get change {
+    return Intl.message('Change', name: 'change', desc: '', args: []);
+  }
+
+  /// `Didn't receive the email?`
+  String get didnotreceiveemail {
+    return Intl.message(
+      'Didn\'t receive the email?',
+      name: 'didnotreceiveemail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resend`
+  String get resend {
+    return Intl.message('Resend', name: 'resend', desc: '', args: []);
+  }
+
+  /// `Code is required`
+  String get coderequired {
+    return Intl.message(
+      'Code is required',
+      name: 'coderequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email to receive reset code`
+  String get enteremailtoreceivecode {
+    return Intl.message(
+      'Enter your email to receive reset code',
+      name: 'enteremailtoreceivecode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get continuee {
+    return Intl.message('Continue', name: 'continuee', desc: '', args: []);
+  }
+
+  /// `Verify Your Identity`
+  String get verifiyyouridentity {
+    return Intl.message(
+      'Verify Your Identity',
+      name: 'verifiyyouridentity',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

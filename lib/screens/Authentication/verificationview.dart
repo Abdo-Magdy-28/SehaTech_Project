@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Authentication/forgetpassword.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
@@ -63,14 +64,14 @@ class _VerificationviewState extends State<Verificationview> {
               children: [
                 SizedBox(height: devHeight * 0.2),
                 Text(
-                  "Email Verification",
+                  S.of(context).emailvarification,
                   style: TextStyle(
                     fontSize: devWidth * 0.06,
                     fontWeight: FontWeight.w800,
                     fontFamily: 'Cairo',
                   ),
                 ),
-                Text("We sent a code to your Email "),
+                Text(S.of(context).wesentyouanemail),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,7 +88,7 @@ class _VerificationviewState extends State<Verificationview> {
                         Navigator.of(context).pop();
                       },
                       child: Text(
-                        "change",
+                        S.of(context).change,
                         style: TextStyle(
                           color: Colors.black,
                           decoration: TextDecoration.underline,
@@ -119,7 +120,7 @@ class _VerificationviewState extends State<Verificationview> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text("Don't receive your code? "),
+                    Text(S.of(context).didnotreceiveemail),
                     TextButton(
                       onPressed: () async {
                         await BlocProvider.of<Authcubit>(
@@ -127,7 +128,7 @@ class _VerificationviewState extends State<Verificationview> {
                         ).forgotpassword(email: widget.email);
                       },
                       child: Text(
-                        "Resend",
+                        S.of(context).resend,
                         style: TextStyle(
                           color: Color(0xff2260FF),
                           decoration: TextDecoration.underline,
@@ -169,7 +170,7 @@ class _VerificationviewState extends State<Verificationview> {
                       elevation: 0,
                     ),
                     child: Text(
-                      'Continue',
+                      S.of(context).continuee,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: devWidth * 0.045,

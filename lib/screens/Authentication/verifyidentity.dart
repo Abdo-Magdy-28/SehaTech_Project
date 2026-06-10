@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Authentication/verificationview.dart';
 import 'package:grad_project/widgets/textformfield.dart';
 
@@ -52,7 +53,7 @@ class _VerifyidentityState extends State<Verifyidentity> {
                 children: [
                   SizedBox(height: devHeight * 0.04),
                   Text(
-                    "Verify Your Identity",
+                    S.of(context).verifiyyouridentity,
                     style: TextStyle(
                       fontSize: devWidth * 0.06,
                       fontWeight: FontWeight.w800,
@@ -61,7 +62,7 @@ class _VerifyidentityState extends State<Verifyidentity> {
                   ),
                   SizedBox(height: devHeight * 0.01),
                   Text(
-                    "Enter your email to receive reset Code",
+                    S.of(context).enteremailtoreceivecode,
                     style: TextStyle(
                       fontSize: devWidth * 0.036,
                       fontFamily: 'Cairo',
@@ -74,10 +75,10 @@ class _VerifyidentityState extends State<Verifyidentity> {
                   Textformfield(
                     controller: _emailController,
                     focusNode: _emailFocus,
-                    hinttext: 'Email Address',
+                    hinttext: S.of(context).email,
                     validator: MultiValidator([
-                      EmailValidator(errorText: "invaild email"),
-                      RequiredValidator(errorText: "Enter email"),
+                      EmailValidator(errorText: S.of(context).emailisnotvalid),
+                      RequiredValidator(errorText: S.of(context).emailrequired),
                     ]),
                     bordercolor: const Color(0xFFF3F1F7),
                     prefixicon: "assets/images/carbon_email.svg",
@@ -101,7 +102,7 @@ class _VerifyidentityState extends State<Verifyidentity> {
                         elevation: 0,
                       ),
                       child: Text(
-                        'Continue',
+                        S.of(context).continuee,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: devWidth * 0.045,
@@ -138,7 +139,7 @@ class _VerifyidentityState extends State<Verifyidentity> {
     } else {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Please fix errors.')));
+      ).showSnackBar(SnackBar(content: Text(S.of(context).plsfixformerrors)));
     }
   }
 }

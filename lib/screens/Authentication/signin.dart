@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
 import 'package:grad_project/cubit/Authentication/Authstates.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Authentication/signupform.dart';
 import 'package:grad_project/screens/Authentication/signupscreen2.dart';
 import 'package:grad_project/screens/Authentication/verifyidentity.dart';
@@ -81,7 +82,7 @@ class _SigninState extends State<Signin> {
                     children: [
                       SizedBox(height: devHeight * 0.02),
                       Text(
-                        'SIGN IN',
+                        S.of(context).signin,
                         style: TextStyle(
                           fontSize: devWidth * 0.08,
                           fontWeight: FontWeight.w700,
@@ -94,13 +95,17 @@ class _SigninState extends State<Signin> {
                       Textformfield(
                         controller: _emailController,
                         focusNode: _emailFocus,
-                        hinttext: 'Email',
+                        hinttext: S.of(context).email,
                         onchange: (value) {
                           Email = value;
                         },
                         validator: MultiValidator([
-                          RequiredValidator(errorText: "Email required "),
-                          EmailValidator(errorText: "Email Is Invalid"),
+                          RequiredValidator(
+                            errorText: S.of(context).emailrequired,
+                          ),
+                          EmailValidator(
+                            errorText: S.of(context).emailisnotvalid,
+                          ),
                         ]),
                         bordercolor: const Color(0xFFF3F1F7),
                         prefixicon: "assets/images/carbon_email.svg",
@@ -113,16 +118,18 @@ class _SigninState extends State<Signin> {
                       Textformfield(
                         controller: _passwordController,
                         focusNode: _passwordFocus,
-                        hinttext: 'Password',
+                        hinttext: S.of(context).password,
                         ispassword: true,
                         onchange: (value) {
                           Password = value;
                         },
                         validator: MultiValidator([
-                          RequiredValidator(errorText: "Password required"),
+                          RequiredValidator(
+                            errorText: S.of(context).passwordrequired,
+                          ),
                           MinLengthValidator(
                             6,
-                            errorText: 'Password must be at least 6 characters',
+                            errorText: S.of(context).passwordmustbeatleast,
                           ),
                         ]),
                         obsecure: true,
@@ -154,7 +161,7 @@ class _SigninState extends State<Signin> {
                                 minimumSize: Size.zero,
                               ),
                               child: Text(
-                                "Forgot Password ?",
+                                S.of(context).forgotpassword,
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize:
@@ -167,7 +174,7 @@ class _SigninState extends State<Signin> {
                         ),
                       ),
                       Hero(
-                        tag: 'first',
+                        tag: S.of(context).first,
                         child: SizedBox(
                           width: double.infinity,
                           height: devHeight * 0.07,
@@ -221,7 +228,7 @@ class _SigninState extends State<Signin> {
                                       ).showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                            'An error occurred: $e',
+                                            '${S.of(context).erroroccured}: $e',
                                           ),
                                           backgroundColor: Colors.red,
                                         ),
@@ -245,7 +252,7 @@ class _SigninState extends State<Signin> {
                                     ),
                                   )
                                 : Text(
-                                    'Sign In',
+                                    S.of(context).signin,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: devWidth * 0.045,
@@ -257,7 +264,7 @@ class _SigninState extends State<Signin> {
                         ),
                       ),
                       SizedBox(height: devHeight * 0.04),
-                      Center(child: Text("OR")),
+                      Center(child: Text(S.of(context).or)),
                       SizedBox(height: devHeight * 0.04),
                       SizedBox(
                         width: devWidth * 0.9,
@@ -279,7 +286,7 @@ class _SigninState extends State<Signin> {
                               SvgPicture.asset("assets/images/Icons2.svg"),
                               SizedBox(width: devWidth * 0.01),
                               Text(
-                                "Sign Up With Google",
+                                S.of(context).signupwithgoogle,
                                 style: TextStyle(
                                   color: Color(0xFF676767),
                                   fontSize:
@@ -293,47 +300,14 @@ class _SigninState extends State<Signin> {
                         ),
                       ),
                       SizedBox(height: devHeight * 0.02),
-                      SizedBox(
-                        width: devWidth * 0.9,
-                        height: devHeight * 0.075,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            backgroundColor: Color(0xff0d61ec),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                          ),
 
-                          onPressed: () {},
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset("assets/images/Icons.svg"),
-                              SizedBox(width: devWidth * 0.01),
-                              Text(
-                                "Sign Up With Facebook",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize:
-                                      devWidth * 0.045, // ✅ Changed from 18
-                                  fontFamily: 'Cairo',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text("Dont Have Account?"),
+                            Text(S.of(context).donothaveanaccount),
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pushReplacement(
@@ -370,7 +344,7 @@ class _SigninState extends State<Signin> {
                                 minimumSize: Size.zero,
                               ),
                               child: Text(
-                                "Sign Up",
+                                S.of(context).signup,
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
