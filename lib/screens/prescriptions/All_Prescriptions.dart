@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/Reminder/ReminderCubit.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/prescription_model.dart';
 import 'package:grad_project/screens/prescriptions/reminder_screen.dart';
@@ -245,8 +247,13 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          ReminderScreen(medicineName: '', medicineSize: ''),
+                      builder: (context) => BlocProvider(
+                        create: (context) => ReminderCubit(),
+                        child: ReminderScreen(
+                          medicineName: '',
+                          medicineSize: '',
+                        ),
+                      ),
                     ),
                   );
                 },
