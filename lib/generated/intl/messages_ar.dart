@@ -20,13 +20,19 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ar';
 
-  static String m0(name) => "د : ${name}";
+  static String m0(count) => "منذ ${count} أيام";
 
-  static String m1(count) => "فاتك ${count} هذا الأسبوع";
+  static String m1(name) => "د : ${name}";
 
-  static String m2(count) => "يمكنك اختيار ${count} وقت فقط";
+  static String m2(count) => "منذ ${count} ساعة";
 
-  static String m3(percent) => "${percent}%";
+  static String m3(count) => "منذ ${count} دقيقة";
+
+  static String m4(count) => "فاتك ${count} هذا الأسبوع";
+
+  static String m5(count) => "يمكنك اختيار ${count} وقت فقط";
+
+  static String m6(percent) => "${percent}%";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -49,10 +55,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "address": MessageLookupByLibrary.simpleMessage("العنوان"),
     "addressrequired": MessageLookupByLibrary.simpleMessage("العنوان مطلوب"),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("مساعد ذكي"),
+    "allchats": MessageLookupByLibrary.simpleMessage("كل المحادثات"),
     "allergies": MessageLookupByLibrary.simpleMessage("الحساسية"),
     "allperscriptions": MessageLookupByLibrary.simpleMessage("كل الوصفات"),
     "alphabetfromatoz": MessageLookupByLibrary.simpleMessage(
-      "الحرف: من A إلى Z",
+      "الحرف: من A إلى Z",
     ),
     "alreadyhaveanaccount": MessageLookupByLibrary.simpleMessage(
       "هل لديك حساب؟",
@@ -71,8 +78,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "askaiassistant": MessageLookupByLibrary.simpleMessage(
       "اسال مساعد AI كل شيء تحتاجه",
     ),
-    "askanything": MessageLookupByLibrary.simpleMessage("سؤالك"),
-    "attachimage": MessageLookupByLibrary.simpleMessage("إرفاق صورة"),
+    "askanything": MessageLookupByLibrary.simpleMessage("سؤالك"),
+    "attachimage": MessageLookupByLibrary.simpleMessage("إرفاق صورة"),
     "availabletime": MessageLookupByLibrary.simpleMessage("الوقت المتاح"),
     "banha": MessageLookupByLibrary.simpleMessage("بنها"),
     "belladonna30": MessageLookupByLibrary.simpleMessage("بيلادونا 30"),
@@ -86,6 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "byname": MessageLookupByLibrary.simpleMessage("بالاسم"),
     "byprice": MessageLookupByLibrary.simpleMessage("بالسعر"),
     "byrating": MessageLookupByLibrary.simpleMessage("بالتقييم"),
+    "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "capsule": MessageLookupByLibrary.simpleMessage("كابسول"),
     "cardiologist": MessageLookupByLibrary.simpleMessage("طبيب القلوية"),
     "carousel1": MessageLookupByLibrary.simpleMessage(
@@ -113,6 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "changepassword": MessageLookupByLibrary.simpleMessage("تغيير كلمة المرور"),
     "chatbot": MessageLookupByLibrary.simpleMessage("بوت الطبي"),
+    "chatdeleted": MessageLookupByLibrary.simpleMessage("تم حذف المحادثة"),
     "chooseimage": MessageLookupByLibrary.simpleMessage("اختر صورة من المعرض"),
     "chronicdiseases": MessageLookupByLibrary.simpleMessage("الامراض المزمنة"),
     "closed": MessageLookupByLibrary.simpleMessage("مغلقة"),
@@ -124,12 +133,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "تاكيد كلمة المرور مطلوب",
     ),
     "confirmpasswordrequired": MessageLookupByLibrary.simpleMessage(
-      "تأكيد كلمة المرور مطلوب",
+      "تأكيد كلمة المرور مطلوب",
     ),
     "contactus": MessageLookupByLibrary.simpleMessage("تواصل معنا"),
     "continuee": MessageLookupByLibrary.simpleMessage("متابعة"),
     "copiedtoclipboard": MessageLookupByLibrary.simpleMessage(
-      "تم نسخه إلى الحافظة",
+      "تم نسخه إلى الحافظة",
+    ),
+    "couldnotloadchat": MessageLookupByLibrary.simpleMessage(
+      "تعذر تحميل المحادثة",
     ),
     "currentpassword": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور الحالية",
@@ -141,6 +153,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "dateofbirthrequired": MessageLookupByLibrary.simpleMessage(
       "تاريخ الميلاد مطلوب",
     ),
+    "daysago": m0,
+    "delete": MessageLookupByLibrary.simpleMessage("حذف"),
+    "deletechat": MessageLookupByLibrary.simpleMessage("حذف المحادثة"),
+    "deletechatconfirm": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد من حذف هذه المحادثة؟ لا يمكن التراجع عن هذا.",
+    ),
     "deletephoto": MessageLookupByLibrary.simpleMessage("حذف الصورة"),
     "deliviringtime": MessageLookupByLibrary.simpleMessage("وقت التوصيل"),
     "dentist": MessageLookupByLibrary.simpleMessage("طبيب الاسنان"),
@@ -148,7 +166,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "diabetes": MessageLookupByLibrary.simpleMessage("السكري"),
     "diagnoses": MessageLookupByLibrary.simpleMessage("التشخيصات"),
     "didnotreceiveemail": MessageLookupByLibrary.simpleMessage(
-      "لم تستلم رسالة على البريد الإلكتروني؟",
+      "لم تستلم رسالة على البريد الإلكتروني؟",
     ),
     "directions": MessageLookupByLibrary.simpleMessage("الاتجاهات"),
     "discardchanges": MessageLookupByLibrary.simpleMessage("تجاهل التغييرات ؟"),
@@ -158,7 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "diseasessymptoms": MessageLookupByLibrary.simpleMessage("اعراض الامراض"),
     "distance": MessageLookupByLibrary.simpleMessage("المسافة"),
     "doctor": MessageLookupByLibrary.simpleMessage("طبيب"),
-    "doctorTitle": m0,
+    "doctorTitle": m1,
     "doctordetails": MessageLookupByLibrary.simpleMessage("تفاصيل الطبيب"),
     "doctors": MessageLookupByLibrary.simpleMessage("الأطباء"),
     "doctorsInJustFewTaps": MessageLookupByLibrary.simpleMessage(
@@ -185,22 +203,28 @@ class MessageLookup extends MessageLookupByLibrary {
       "البريد الالكتروني مطلوب",
     ),
     "emailvarification": MessageLookupByLibrary.simpleMessage(
-      "تأكيد البريد الالكتروني",
+      "تأكيد البريد الالكتروني",
     ),
     "endTime": MessageLookupByLibrary.simpleMessage("5:30 مساءً"),
     "english": MessageLookupByLibrary.simpleMessage("الانجليزية"),
     "enteremailtoreceivecode": MessageLookupByLibrary.simpleMessage(
-      "أدخل البريد الإلكتروني للحصول على الرمز",
+      "أدخل البريد الإلكتروني للحصول على الرمز",
     ),
     "enternewpassword": MessageLookupByLibrary.simpleMessage(
       "ادخل كلمة المرور الجديدة",
     ),
     "erroroccured": MessageLookupByLibrary.simpleMessage(
-      "حدث خطأ، يرجى المحاولة في وقت لاحق",
+      "حدث خطأ، يرجى المحاولة في وقت لاحق",
     ),
     "everyTwoHours": MessageLookupByLibrary.simpleMessage("كل ساعتين"),
     "experience": MessageLookupByLibrary.simpleMessage("الخبرة"),
     "explorenearby": MessageLookupByLibrary.simpleMessage("استكشف حولك"),
+    "failedtodeletechat": MessageLookupByLibrary.simpleMessage(
+      "فشل حذف المحادثة",
+    ),
+    "failedtoloadchats": MessageLookupByLibrary.simpleMessage(
+      "فشل تحميل المحادثات.",
+    ),
     "failedtoselectimage": MessageLookupByLibrary.simpleMessage(
       "فشل اختيار الصورة",
     ),
@@ -237,12 +261,14 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "hello": MessageLookupByLibrary.simpleMessage("مرحبا"),
     "history": MessageLookupByLibrary.simpleMessage("السجل"),
-    "home": MessageLookupByLibrary.simpleMessage("الصفحة الرئيسية"),
+    "historyremoved": MessageLookupByLibrary.simpleMessage("تم حذف السجل"),
+    "home": MessageLookupByLibrary.simpleMessage("الصفحة الرئيسية"),
     "hospital": MessageLookupByLibrary.simpleMessage("مستشفى"),
     "hospitalinfo": MessageLookupByLibrary.simpleMessage("تفاصيل المستشفى"),
     "hospitals": MessageLookupByLibrary.simpleMessage("المستشفيات"),
     "hourlyrate": MessageLookupByLibrary.simpleMessage("سعر الكشف"),
     "hours24": MessageLookupByLibrary.simpleMessage("24 ساعة"),
+    "hoursago": m2,
     "hypertension": MessageLookupByLibrary.simpleMessage("ضغط الدم"),
     "importantTopics": MessageLookupByLibrary.simpleMessage("المواضيع المهمة"),
     "infection": MessageLookupByLibrary.simpleMessage("عدوى"),
@@ -255,7 +281,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "keepTrackMedicine": MessageLookupByLibrary.simpleMessage(
       "تتبع ما\nتتناوله.",
     ),
-    "keybenefits": MessageLookupByLibrary.simpleMessage("الفوائد الاساسية"),
+    "keybenefits": MessageLookupByLibrary.simpleMessage("الفوائد الاساسية"),
     "languagesettings": MessageLookupByLibrary.simpleMessage("اعدادات اللغة"),
     "lastname": MessageLookupByLibrary.simpleMessage("الاسم الاخير"),
     "lastnamerequired": MessageLookupByLibrary.simpleMessage(
@@ -286,8 +312,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "medicineinfo": MessageLookupByLibrary.simpleMessage("تفاصيل الدواء"),
     "medicines": MessageLookupByLibrary.simpleMessage("الأدوية"),
     "mild": MessageLookupByLibrary.simpleMessage("خفيف"),
+    "minutesago": m3,
     "missed": MessageLookupByLibrary.simpleMessage("فاتت"),
-    "missedThisWeek": m1,
+    "missedThisWeek": m4,
     "moderate": MessageLookupByLibrary.simpleMessage("متوسط"),
     "moreexperinencefirst": MessageLookupByLibrary.simpleMessage(
       "الخبرة: الاكثر",
@@ -296,13 +323,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "الأدوية المشهورة",
     ),
     "mustbe11numbers": MessageLookupByLibrary.simpleMessage(
-      "يجب أن يكون 11 رقمًا",
+      "يجب أن يكون 11 رقمًا",
     ),
     "name": MessageLookupByLibrary.simpleMessage("الاسم"),
     "nasal": MessageLookupByLibrary.simpleMessage("انف"),
     "nearest": MessageLookupByLibrary.simpleMessage("اقرب"),
     "nearestfirst": MessageLookupByLibrary.simpleMessage("الاقرب اولا"),
     "neurologist": MessageLookupByLibrary.simpleMessage("طبيب أعصاب"),
+    "newchat": MessageLookupByLibrary.simpleMessage("محادثة جديدة"),
     "newpassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
     "newpasswordrequiered": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور الجديدة مطلوبة",
@@ -310,6 +338,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "nokeepchanges": MessageLookupByLibrary.simpleMessage("لا، حفظ التغييرات"),
     "noperscriptionsfound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على وصفات",
+    ),
+    "nopreviouschats": MessageLookupByLibrary.simpleMessage(
+      "لا توجد محادثات سابقة",
     ),
     "notifications": MessageLookupByLibrary.simpleMessage("الاشعارات"),
     "notificationssettings": MessageLookupByLibrary.simpleMessage(
@@ -340,7 +371,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "رقم الهاتف مطلوب",
     ),
     "plsfixformerrors": MessageLookupByLibrary.simpleMessage(
-      "يرجى تصحيح الأخطاء",
+      "يرجى تصحيح الأخطاء",
     ),
     "pollen": MessageLookupByLibrary.simpleMessage("حبوب اللقاح"),
     "populardoctors": MessageLookupByLibrary.simpleMessage("الاطباء المشهورين"),
@@ -397,7 +428,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reminderMaxTimes": MessageLookupByLibrary.simpleMessage(
       "الحد الأقصى 3 مرات",
     ),
-    "reminderMaxTimesError": m2,
+    "reminderMaxTimesError": m5,
     "reminderPeriodEveryDay": MessageLookupByLibrary.simpleMessage("كل يوم"),
     "reminderPeriodEveryMonth": MessageLookupByLibrary.simpleMessage("كل شهر"),
     "reminderPeriodEveryWeek": MessageLookupByLibrary.simpleMessage("كل أسبوع"),
@@ -409,7 +440,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "reminderTo": MessageLookupByLibrary.simpleMessage("إلى:"),
     "reminderTypeCapsule": MessageLookupByLibrary.simpleMessage("كبسولة"),
     "reminderTypeSyrup": MessageLookupByLibrary.simpleMessage("شراب"),
-    "resend": MessageLookupByLibrary.simpleMessage("إعادة إرسال"),
+    "removehistory": MessageLookupByLibrary.simpleMessage("حذف السجل"),
+    "removehistoryconfirm": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد من حذف كل المحادثات؟ لا يمكن التراجع عن هذا.",
+    ),
+    "resend": MessageLookupByLibrary.simpleMessage("إعادة إرسال"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "savechanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
     "scan": MessageLookupByLibrary.simpleMessage("مسح"),
@@ -417,7 +452,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "مسح وصفاتك وادويةك \nبسرعة لحصول على تفاصيل\nمقبولة، وتعليمات الادوية، ومعلومات\nالاستخدام",
     ),
     "scanarticle2": MessageLookupByLibrary.simpleMessage(
-      "”يمكنك بسهولة مسح أي وصفة طبية أو رمز QR خاص بدواء ما\n لعرض المعلومات الكاملة، بما في ذلك إرشادات الاستخدام\n والتحذيرات والتفاعلات والملاحظات المهمة\n — كل ذلك في مكان واحد، وفي غضون ثوانٍ.“",
+      "يمكنك بسهولة مسح أي وصفة طبية أو رمز QR خاص بدواء ما\n لعرض المعلومات الكاملة، بما في ذلك إرشادات الاستخدام\n والتحذيرات والتفاعلات والملاحظات المهمة\n — كل ذلك في مكان واحد، وفي غضون ثوانٍ.",
     ),
     "scanarticle3": MessageLookupByLibrary.simpleMessage(
       "وجّه كاميرا هاتفك نحو رمز الاستجابة السريعة (QR code)\n واحصل على الملف الدوائي الكامل في ثوانٍ.",
@@ -455,24 +490,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "severe": MessageLookupByLibrary.simpleMessage("شديد"),
     "severity": MessageLookupByLibrary.simpleMessage("درجة الحساسية"),
     "shellfish": MessageLookupByLibrary.simpleMessage("المحار"),
-    "sideeffects": MessageLookupByLibrary.simpleMessage("الأثار الجانبية"),
+    "sideeffects": MessageLookupByLibrary.simpleMessage("الأثار الجانبية"),
     "signin": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "signup": MessageLookupByLibrary.simpleMessage("تسجيل حساب جديد"),
     "signupwithgoogle": MessageLookupByLibrary.simpleMessage("تسجيل حساب جوجل"),
     "slots6": MessageLookupByLibrary.simpleMessage("6 مواعيد"),
     "smsnotification": MessageLookupByLibrary.simpleMessage(
-      "اشعارات الرسائل النصية",
+      "اشعارات الرسائل النصية",
     ),
     "sorrynoresultfound": MessageLookupByLibrary.simpleMessage(
-      "عذرا، لا يوجد نتائج",
+      "عذرا، لا يوجد نتائج",
     ),
     "spasm": MessageLookupByLibrary.simpleMessage("تشنج"),
     "startTime": MessageLookupByLibrary.simpleMessage("10:30 صباحاً"),
+    "startnewconversation": MessageLookupByLibrary.simpleMessage(
+      "ابدأ محادثة جديدة لتظهر هنا.",
+    ),
     "swiptocreateaccount": MessageLookupByLibrary.simpleMessage(
-      "اسحب لإنشاء حساب جديد",
+      "اسحب لإنشاء حساب جديد",
     ),
     "taken": MessageLookupByLibrary.simpleMessage("تم تناولها"),
-    "takephoto": MessageLookupByLibrary.simpleMessage("أخذ صورة"),
+    "takephoto": MessageLookupByLibrary.simpleMessage("أخذ صورة"),
     "treated": MessageLookupByLibrary.simpleMessage("عالج"),
     "tryagain": MessageLookupByLibrary.simpleMessage("حاول مرة اخرى"),
     "trydifferentsearchterm": MessageLookupByLibrary.simpleMessage(
@@ -494,11 +532,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "عرض التقرير الأسبوعي",
     ),
     "viewyourhistory": MessageLookupByLibrary.simpleMessage("عرض سجلك"),
-    "weeklyPercentage": m3,
+    "weeklyPercentage": m6,
     "weeklyStreak": MessageLookupByLibrary.simpleMessage("السلسلة الأسبوعية"),
     "welcome": MessageLookupByLibrary.simpleMessage("أهلا وسهلا"),
     "wesentyouanemail": MessageLookupByLibrary.simpleMessage(
-      "لقد ارسلنا لك بريدًا إلكترونيًا مع رمز التحقق.",
+      "لقد ارسلنا لك بريدًا إلكترونيًا مع رمز التحقق.",
     ),
     "whaticanhelp": MessageLookupByLibrary.simpleMessage("ازاي اقدر اساعدك؟"),
     "withYourPreferred": MessageLookupByLibrary.simpleMessage(
@@ -506,6 +544,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "worktime": MessageLookupByLibrary.simpleMessage("ساعات العمل"),
     "yesdiscard": MessageLookupByLibrary.simpleMessage("نعم، تجاهل"),
+    "yesterday": MessageLookupByLibrary.simpleMessage("أمس"),
     "youssefAli": MessageLookupByLibrary.simpleMessage("يوسف علي"),
   };
 }

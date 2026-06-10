@@ -20,13 +20,19 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(name) => "Dr : ${name}";
+  static String m0(count) => "${count}d ago";
 
-  static String m1(count) => "${count} Missed This Week";
+  static String m1(name) => "Dr : ${name}";
 
-  static String m2(count) => "You can only select ${count} time(s)";
+  static String m2(count) => "${count}h ago";
 
-  static String m3(percent) => "${percent}%";
+  static String m3(count) => "${count}m ago";
+
+  static String m4(count) => "${count} Missed This Week";
+
+  static String m5(count) => "You can only select ${count} time(s)";
+
+  static String m6(percent) => "${percent}%";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -53,6 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Address is required",
     ),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("AI Assistant"),
+    "allchats": MessageLookupByLibrary.simpleMessage("All Chats"),
     "allergies": MessageLookupByLibrary.simpleMessage("Allergies"),
     "allperscriptions": MessageLookupByLibrary.simpleMessage(
       "All Perscriptions",
@@ -93,6 +100,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "byname": MessageLookupByLibrary.simpleMessage("By Name"),
     "byprice": MessageLookupByLibrary.simpleMessage("By Price"),
     "byrating": MessageLookupByLibrary.simpleMessage("By Rating"),
+    "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "capsule": MessageLookupByLibrary.simpleMessage("Capsule"),
     "cardiologist": MessageLookupByLibrary.simpleMessage("Cardiologist"),
     "carousel1": MessageLookupByLibrary.simpleMessage(
@@ -120,6 +128,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "changepassword": MessageLookupByLibrary.simpleMessage("Change Password"),
     "chatbot": MessageLookupByLibrary.simpleMessage("Chatbot"),
+    "chatdeleted": MessageLookupByLibrary.simpleMessage("Chat deleted"),
     "chooseimage": MessageLookupByLibrary.simpleMessage(
       "Choose Image from gallery",
     ),
@@ -138,6 +147,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "copiedtoclipboard": MessageLookupByLibrary.simpleMessage(
       "Copied to clipboard",
     ),
+    "couldnotloadchat": MessageLookupByLibrary.simpleMessage(
+      "Could not load chat",
+    ),
     "currentpassword": MessageLookupByLibrary.simpleMessage("Current Password"),
     "currentpasswordrequiered": MessageLookupByLibrary.simpleMessage(
       "Current Password is required",
@@ -145,6 +157,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "dateofbirth": MessageLookupByLibrary.simpleMessage("Date of Birth"),
     "dateofbirthrequired": MessageLookupByLibrary.simpleMessage(
       "Date of Birth is required",
+    ),
+    "daysago": m0,
+    "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deletechat": MessageLookupByLibrary.simpleMessage("Delete Chat"),
+    "deletechatconfirm": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this chat? This action cannot be undone.",
     ),
     "deletephoto": MessageLookupByLibrary.simpleMessage("Delete Photo"),
     "deliviringtime": MessageLookupByLibrary.simpleMessage("Delivering"),
@@ -165,7 +183,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "distance": MessageLookupByLibrary.simpleMessage("Distance"),
     "doctor": MessageLookupByLibrary.simpleMessage("Doctor"),
-    "doctorTitle": m0,
+    "doctorTitle": m1,
     "doctordetails": MessageLookupByLibrary.simpleMessage("Doctor Details"),
     "doctors": MessageLookupByLibrary.simpleMessage("Doctors"),
     "doctorsInJustFewTaps": MessageLookupByLibrary.simpleMessage(
@@ -204,6 +222,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "everyTwoHours": MessageLookupByLibrary.simpleMessage("Every 2 Hour"),
     "experience": MessageLookupByLibrary.simpleMessage("Experience"),
     "explorenearby": MessageLookupByLibrary.simpleMessage("Explore Nearby"),
+    "failedtodeletechat": MessageLookupByLibrary.simpleMessage(
+      "Failed to delete chat",
+    ),
+    "failedtoloadchats": MessageLookupByLibrary.simpleMessage(
+      "Failed to load chats.",
+    ),
     "failedtoselectimage": MessageLookupByLibrary.simpleMessage(
       "Failed to select image",
     ),
@@ -240,6 +264,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "hello": MessageLookupByLibrary.simpleMessage("Hello"),
     "history": MessageLookupByLibrary.simpleMessage("History"),
+    "historyremoved": MessageLookupByLibrary.simpleMessage("History removed"),
     "home": MessageLookupByLibrary.simpleMessage("Home"),
     "hospital": MessageLookupByLibrary.simpleMessage("Hospital"),
     "hospitalinfo": MessageLookupByLibrary.simpleMessage(
@@ -248,6 +273,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hospitals": MessageLookupByLibrary.simpleMessage("Hospitals"),
     "hourlyrate": MessageLookupByLibrary.simpleMessage("Hourly Rate"),
     "hours24": MessageLookupByLibrary.simpleMessage("24 hours"),
+    "hoursago": m2,
     "hypertension": MessageLookupByLibrary.simpleMessage("Hypertension"),
     "importantTopics": MessageLookupByLibrary.simpleMessage("Important Topics"),
     "infection": MessageLookupByLibrary.simpleMessage("Infection"),
@@ -297,8 +323,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "medicines": MessageLookupByLibrary.simpleMessage("Medicines"),
     "mild": MessageLookupByLibrary.simpleMessage("Mild"),
+    "minutesago": m3,
     "missed": MessageLookupByLibrary.simpleMessage("missed"),
-    "missedThisWeek": m1,
+    "missedThisWeek": m4,
     "moderate": MessageLookupByLibrary.simpleMessage("Moderate"),
     "moreexperinencefirst": MessageLookupByLibrary.simpleMessage(
       "Experience: More experience first",
@@ -314,6 +341,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nearest": MessageLookupByLibrary.simpleMessage("Nearest"),
     "nearestfirst": MessageLookupByLibrary.simpleMessage("Nearest first"),
     "neurologist": MessageLookupByLibrary.simpleMessage("Neurologist"),
+    "newchat": MessageLookupByLibrary.simpleMessage("New Chat"),
     "newpassword": MessageLookupByLibrary.simpleMessage("New Password"),
     "newpasswordrequiered": MessageLookupByLibrary.simpleMessage(
       "New Password Required",
@@ -321,6 +349,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "nokeepchanges": MessageLookupByLibrary.simpleMessage("No, Keep Changes"),
     "noperscriptionsfound": MessageLookupByLibrary.simpleMessage(
       "No perscriptions found",
+    ),
+    "nopreviouschats": MessageLookupByLibrary.simpleMessage(
+      "No previous chats",
     ),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "notificationssettings": MessageLookupByLibrary.simpleMessage(
@@ -410,7 +441,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reminderLabelName": MessageLookupByLibrary.simpleMessage("Name:"),
     "reminderLabelType": MessageLookupByLibrary.simpleMessage("Type :"),
     "reminderMaxTimes": MessageLookupByLibrary.simpleMessage("Maximum 3 times"),
-    "reminderMaxTimesError": m2,
+    "reminderMaxTimesError": m5,
     "reminderPeriodEveryDay": MessageLookupByLibrary.simpleMessage("Every Day"),
     "reminderPeriodEveryMonth": MessageLookupByLibrary.simpleMessage(
       "Every Month",
@@ -426,6 +457,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "reminderTo": MessageLookupByLibrary.simpleMessage("To:"),
     "reminderTypeCapsule": MessageLookupByLibrary.simpleMessage("Capsule"),
     "reminderTypeSyrup": MessageLookupByLibrary.simpleMessage("Syrup"),
+    "removehistory": MessageLookupByLibrary.simpleMessage("Remove History"),
+    "removehistoryconfirm": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete all chats? This cannot be undone.",
+    ),
     "resend": MessageLookupByLibrary.simpleMessage("Resend"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "savechanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
@@ -489,6 +524,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "spasm": MessageLookupByLibrary.simpleMessage("Spasm"),
     "startTime": MessageLookupByLibrary.simpleMessage("10:30am"),
+    "startnewconversation": MessageLookupByLibrary.simpleMessage(
+      "Start a new conversation to see it here.",
+    ),
     "swiptocreateaccount": MessageLookupByLibrary.simpleMessage(
       "Swipe to create an account",
     ),
@@ -517,7 +555,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "viewyourhistory": MessageLookupByLibrary.simpleMessage(
       "View Your History",
     ),
-    "weeklyPercentage": m3,
+    "weeklyPercentage": m6,
     "weeklyStreak": MessageLookupByLibrary.simpleMessage("Weekly Streak"),
     "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
     "wesentyouanemail": MessageLookupByLibrary.simpleMessage(
@@ -529,6 +567,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "worktime": MessageLookupByLibrary.simpleMessage("Work time"),
     "yesdiscard": MessageLookupByLibrary.simpleMessage("Yes, Discard"),
+    "yesterday": MessageLookupByLibrary.simpleMessage("Yesterday"),
     "youssefAli": MessageLookupByLibrary.simpleMessage("Youssef Ali"),
   };
 }

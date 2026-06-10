@@ -280,7 +280,8 @@
    "coderequired": "Code is required",
    "enteremailtoreceivecode": "Enter your email to receive reset code",
    "continuee": "Continue",
-   "verifiyyouridentity": "Verify Your Identity","reminderInfoTitle": "Reminder Info",
+   "verifiyyouridentity": "Verify Your Identity",
+   "reminderInfoTitle": "Reminder Info",
   "reminderProvideInfo": "Provide Information",
   "reminderLabelName": "Name:",
   "reminderLabelDosage": "Dosage :",
@@ -308,6 +309,40 @@
   "reminderPeriodEveryWeek": "Every Week",
   "reminderPeriodEveryMonth": "Every Month",
   "reminderTypeCapsule": "Capsule",
-  "reminderTypeSyrup": "Syrup"
-}   
-  
+  "reminderTypeSyrup": "Syrup",
+
+  "allchats": "All Chats",
+  "newchat": "New Chat",
+  "removehistory": "Remove History",
+  "removehistoryconfirm": "Are you sure you want to delete all chats? This cannot be undone.",
+  "historyremoved": "History removed",
+  "deletechat": "Delete Chat",
+  "deletechatconfirm": "Are you sure you want to delete this chat? This action cannot be undone.",
+  "chatdeleted": "Chat deleted",
+  "failedtodeletechat": "Failed to delete chat",
+  "failedtoloadchats": "Failed to load chats.",
+  "couldnotloadchat": "Could not load chat",
+  "nopreviouschats": "No previous chats",
+  "startnewconversation": "Start a new conversation to see it here.",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "yesterday": "Yesterday",
+  "minutesago": "{count}m ago",
+  "@minutesago": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "hoursago": "{count}h ago",
+  "@hoursago": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "daysago": "{count}d ago",
+  "@daysago": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  }
+}

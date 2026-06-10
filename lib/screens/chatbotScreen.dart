@@ -4,16 +4,24 @@ import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/cubit/Chat%20bot/ChatCubit.dart';
 import 'package:grad_project/cubit/Chat%20bot/ChatStates.dart';
 import 'package:grad_project/generated/l10n.dart';
+import 'package:grad_project/models/Chatbot%20Models/chatmodel.dart';
 import 'package:grad_project/services/Chatbot%20Services/Apiservice.dart';
 import 'package:grad_project/widgets/chatbot%20page/BubbleWidget.dart';
 import 'package:grad_project/widgets/chatbot%20page/chatinputwidget.dart';
 import 'package:grad_project/widgets/chatbot%20page/chatsuggestedbuttons.dart';
 import 'package:grad_project/widgets/chatbot%20page/customchatbotappbar.dart';
+import 'package:grad_project/widgets/chatbot%20page/historyscreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class ChatBotScreen extends StatefulWidget {
-  const ChatBotScreen({super.key});
+  /// If provided, the chat will resume this existing session.
+  final String? initialChatId;
+
+  /// Pre-loaded messages to display (from history).
+  final List<ChatMessage>? initialMessages;
+
+  const ChatBotScreen({super.key, this.initialChatId, this.initialMessages});
 
   @override
   State<ChatBotScreen> createState() => _ChatbotwidgetState();
@@ -36,20 +44,15 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
   void dispose() {
     _controller.dispose();
     _scrollController.dispose();
-
     if (_chatCubit != null) {
       final service = _chatCubit!.chatService;
-      if (service is ChatApiService) {
-        service.cancelAllRequests();
-      }
+      if (service is ChatApiService) service.cancelAllRequests();
       _chatCubit!.dispose();
     }
-
     super.dispose();
   }
 
   void _handleSuggestedButton(ChatCubit cubit, String buttonText) {
-    // فقط إرسال الرسالة للـ API بدون رسائل ثابتة
     cubit.addUserMessage(buttonText);
   }
 
@@ -61,11 +64,8 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
         maxHeight: 1080,
         imageQuality: 85,
       );
-
       if (pickedFile != null) {
-        setState(() {
-          _selectedImage = File(pickedFile.path);
-        });
+        setState(() => _selectedImage = File(pickedFile.path));
       }
     } catch (e) {
       if (mounted) {
@@ -85,7 +85,7 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
@@ -103,28 +103,31 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     S.of(context).attachimage,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Cairo',
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ListTile(
                     leading: Container(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Color(0xFF0066FF).withOpacity(0.1),
+                        color: const Color(0xFF0066FF).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Icon(Icons.camera_alt, color: Color(0xFF0066FF)),
+                      child: const Icon(
+                        Icons.camera_alt,
+                        color: Color(0xFF0066FF),
+                      ),
                     ),
                     title: Text(
                       S.of(context).takephoto,
-                      style: TextStyle(fontFamily: 'Cairo'),
+                      style: const TextStyle(fontFamily: 'Cairo'),
                     ),
                     onTap: () {
                       Navigator.pop(context);
@@ -133,26 +136,26 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
                   ),
                   ListTile(
                     leading: Container(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Color(0xFF0066FF).withOpacity(0.1),
+                        color: const Color(0xFF0066FF).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.photo_library,
                         color: Color(0xFF0066FF),
                       ),
                     ),
                     title: Text(
                       S.of(context).chooseimage,
-                      style: TextStyle(fontFamily: 'Cairo'),
+                      style: const TextStyle(fontFamily: 'Cairo'),
                     ),
                     onTap: () {
                       Navigator.pop(context);
                       _pickImage(ImageSource.gallery);
                     },
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -162,15 +165,11 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
     );
   }
 
-  void _removeSelectedImage() {
-    setState(() {
-      _selectedImage = null;
-    });
-  }
+  void _removeSelectedImage() => setState(() => _selectedImage = null);
 
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         if (_scrollController.hasClients) {
           _scrollController.animateTo(
             _scrollController.position.maxScrollExtent,
@@ -189,7 +188,24 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
 
     return BlocProvider(
       create: (_) {
-        _chatCubit = ChatCubit(ChatApiService());
+        final apiService = ChatApiService();
+        _chatCubit = ChatCubit(apiService);
+
+        // If resuming an existing chat, pre-load its messages & chatId
+        if (widget.initialMessages != null && widget.initialChatId != null) {
+          _chatCubit!.loadHistoryMessages(
+            widget.initialMessages!,
+            widget.initialChatId!,
+          );
+          // Also sync the thread state so new messages continue this session
+          _chatCubit!.currentChatId = widget.initialChatId;
+          final service = apiService;
+          final history = widget.initialMessages!
+              .map((m) => '${m.isUser ? "Patient" : "Doctor"}: ${m.text}')
+              .join('\n');
+          service.seedSummary('Previous conversation:\n$history');
+        }
+
         return _chatCubit!;
       },
       child: Scaffold(
@@ -201,9 +217,9 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
             final hasMessages = state.messages.isNotEmpty;
 
             if (hasMessages) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                _scrollToBottom();
-              });
+              WidgetsBinding.instance.addPostFrameCallback(
+                (_) => _scrollToBottom(),
+              );
             }
 
             return Column(
@@ -230,7 +246,7 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
                     ),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Color(0xFFF8F9FA),
+                      color: const Color(0xFFF8F9FA),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
                         color: Colors.blue.shade200,
@@ -253,7 +269,7 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 'Image Selected',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -261,7 +277,7 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
                                   fontFamily: 'Cairo',
                                 ),
                               ),
-                              SizedBox(height: 4),
+                              const SizedBox(height: 4),
                               Text(
                                 _selectedImage!.path.split('/').last,
                                 style: TextStyle(
@@ -276,9 +292,11 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.close_rounded, color: Colors.red),
+                          icon: const Icon(
+                            Icons.close_rounded,
+                            color: Colors.red,
+                          ),
                           onPressed: _removeSelectedImage,
-                          tooltip: 'Remove image',
                         ),
                       ],
                     ),
@@ -292,7 +310,6 @@ class _ChatbotwidgetState extends State<ChatBotScreen> {
                       final message = _controller.text.trim().isEmpty
                           ? "📷 Analyze this image"
                           : _controller.text;
-
                       cubit.addUserMessage(message, image: _selectedImage);
                       _controller.clear();
                       _removeSelectedImage();

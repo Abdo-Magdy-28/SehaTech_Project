@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:grad_project/cubit/Chat%20bot/ChatCubit.dart';
 import 'package:grad_project/services/Chatbot%20Services/ChatService.dart';
+import 'package:grad_project/services/Chatbot%20Services/ChatHistoryService.dart';
 import 'dart:io';
 import 'package:grad_project/services/Authservice.dart';
 
@@ -15,6 +15,7 @@ class ChatApiService implements ChatService {
   static const String apiKey = 'd1414a76-13c4-4267-9b96-12b0b62425f5';
 
   final Set<http.Client> _activeClients = {};
+  final ChatHistoryService _historyService = ChatHistoryService();
 
   ChatApiService();
 
@@ -25,7 +26,6 @@ class ChatApiService implements ChatService {
     File? image,
   }) async {
     AuthService authService = AuthService();
-    const storage = FlutterSecureStorage();
     String userid = await authService.getUserId() ?? 'unknown_user';
     _threadId ??= _generateThreadId();
 
@@ -39,7 +39,8 @@ class ChatApiService implements ChatService {
       request.fields['query'] = message;
       request.fields['thread_id'] = _threadId!;
       request.fields['summary'] = _summary;
-      request.fields['user_id'] = userid;
+      request.fields['user_id'] = '${userid}_${_threadId!}';
+
       if (image != null) {
         final imageStream = http.ByteStream(image.openRead());
         final imageLength = await image.length();
@@ -56,17 +57,14 @@ class ChatApiService implements ChatService {
 
       if (streamedResponse.statusCode == 200) {
         String fullResponse = '';
+        bool finalized = false; // ← guard to call finalize only once
 
         await for (var value in streamedResponse.stream.transform(
           utf8.decoder,
         )) {
-          if (cubit.isClosed) {
-            print('Cubit is closed, stopping stream processing');
-            break;
-          }
+          if (cubit.isClosed) break;
 
           final lines = value.split('\n');
-
           for (var line in lines) {
             if (line.trim().isEmpty) continue;
 
@@ -77,22 +75,20 @@ class ChatApiService implements ChatService {
               switch (msgType) {
                 case 'status':
                   final statusMsg = jsonData['content'] ?? '';
-                  if (!cubit.isClosed) {
-                    cubit.updateBotMessageStatus(statusMsg);
-                  }
+                  if (!cubit.isClosed) cubit.updateBotMessageStatus(statusMsg);
                   break;
 
                 case 'token':
                   final content = jsonData['content'] ?? '';
                   fullResponse += content;
-                  if (!cubit.isClosed) {
+                  if (!cubit.isClosed)
                     cubit.updateBotMessageContent(fullResponse);
-                  }
                   break;
 
                 case 'final':
                   _summary = jsonData['summary'] ?? _summary;
-                  if (!cubit.isClosed) {
+                  if (!cubit.isClosed && !finalized) {
+                    finalized = true;
                     cubit.finalizeBotMessage(fullResponse);
                   }
                   break;
@@ -104,9 +100,34 @@ class ChatApiService implements ChatService {
           }
         }
 
-        if (fullResponse.isNotEmpty && !cubit.isClosed) {
+        print(
+          'DEBUG stream ended. fullResponse length: ${fullResponse.length}',
+        );
+        print('DEBUG finalized: $finalized');
+
+        // ── Finalize if the 'final' event never arrived ──────────────────
+        if (!finalized && fullResponse.isNotEmpty && !cubit.isClosed) {
           cubit.finalizeBotMessage(fullResponse);
         }
+
+        // ── Persist to backend history ────────────────────────────────────
+        if (fullResponse.isNotEmpty && !cubit.isClosed) {
+          print('DEBUG: saving message, length=${fullResponse.length}');
+          try {
+            final savedChatId = await _historyService.saveMessage(
+              prompt: message,
+              aiReply: fullResponse,
+              chatId: cubit.currentChatId, // null = create new chat
+            );
+            print('DEBUG: savedChatId=$savedChatId');
+            if (savedChatId != null && !cubit.isClosed) {
+              cubit.currentChatId = savedChatId;
+            }
+          } catch (e) {
+            print('History save error (non-fatal): $e');
+          }
+        }
+        // ──────────────────────────────────────────────────────────────────
       } else {
         final errorBody = await streamedResponse.stream.bytesToString();
         if (!cubit.isClosed) {
@@ -134,6 +155,10 @@ class ChatApiService implements ChatService {
   void resetConversation() {
     _threadId = null;
     _summary = "No medical history.";
+  }
+
+  void seedSummary(String summary) {
+    _summary = summary;
   }
 
   void cancelAllRequests() {

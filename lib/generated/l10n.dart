@@ -2398,6 +2398,166 @@ class S {
   String get reminderTypeSyrup {
     return Intl.message('Syrup', name: 'reminderTypeSyrup', desc: '', args: []);
   }
+
+  /// `All Chats`
+  String get allchats {
+    return Intl.message('All Chats', name: 'allchats', desc: '', args: []);
+  }
+
+  /// `New Chat`
+  String get newchat {
+    return Intl.message('New Chat', name: 'newchat', desc: '', args: []);
+  }
+
+  /// `Remove History`
+  String get removehistory {
+    return Intl.message(
+      'Remove History',
+      name: 'removehistory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete all chats? This cannot be undone.`
+  String get removehistoryconfirm {
+    return Intl.message(
+      'Are you sure you want to delete all chats? This cannot be undone.',
+      name: 'removehistoryconfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `History removed`
+  String get historyremoved {
+    return Intl.message(
+      'History removed',
+      name: 'historyremoved',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Chat`
+  String get deletechat {
+    return Intl.message('Delete Chat', name: 'deletechat', desc: '', args: []);
+  }
+
+  /// `Are you sure you want to delete this chat? This action cannot be undone.`
+  String get deletechatconfirm {
+    return Intl.message(
+      'Are you sure you want to delete this chat? This action cannot be undone.',
+      name: 'deletechatconfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat deleted`
+  String get chatdeleted {
+    return Intl.message(
+      'Chat deleted',
+      name: 'chatdeleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to delete chat`
+  String get failedtodeletechat {
+    return Intl.message(
+      'Failed to delete chat',
+      name: 'failedtodeletechat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to load chats.`
+  String get failedtoloadchats {
+    return Intl.message(
+      'Failed to load chats.',
+      name: 'failedtoloadchats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not load chat`
+  String get couldnotloadchat {
+    return Intl.message(
+      'Could not load chat',
+      name: 'couldnotloadchat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No previous chats`
+  String get nopreviouschats {
+    return Intl.message(
+      'No previous chats',
+      name: 'nopreviouschats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start a new conversation to see it here.`
+  String get startnewconversation {
+    return Intl.message(
+      'Start a new conversation to see it here.',
+      name: 'startnewconversation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message('Delete', name: 'delete', desc: '', args: []);
+  }
+
+  /// `Yesterday`
+  String get yesterday {
+    return Intl.message('Yesterday', name: 'yesterday', desc: '', args: []);
+  }
+
+  /// `{count}m ago`
+  String minutesago(int count) {
+    return Intl.message(
+      '${count}m ago',
+      name: 'minutesago',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count}h ago`
+  String hoursago(int count) {
+    return Intl.message(
+      '${count}h ago',
+      name: 'hoursago',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count}d ago`
+  String daysago(int count) {
+    return Intl.message(
+      '${count}d ago',
+      name: 'daysago',
+      desc: '',
+      args: [count],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -8,9 +8,11 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatService chatService;
   bool _isDisposed = false;
 
+  // Tracks the backend chatId for history persistence
+  String? currentChatId;
+
   ChatCubit(this.chatService) : super(const ChatState(messages: []));
 
-  // Safe emit - يتحقق إن الـ Cubit لسه مش متقفل
   void _safeEmit(ChatState newState) {
     if (!_isDisposed && !isClosed) {
       emit(newState);
@@ -28,11 +30,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     _safeEmit(state.copyWith(messages: [...state.messages, userMessage]));
-
-    // Add loading placeholder for bot response
     addLoadingMessage();
-
-    // Send message to API
     chatService.sendMessage(text, this, image: image);
   }
 
@@ -65,8 +63,6 @@ class ChatCubit extends Cubit<ChatState> {
     if (_isDisposed) return;
 
     final messages = List<ChatMessage>.from(state.messages);
-
-    // Find the last loading message and update it
     for (int i = messages.length - 1; i >= 0; i--) {
       if (messages[i].isLoading) {
         messages[i] = ChatMessage(
@@ -85,14 +81,12 @@ class ChatCubit extends Cubit<ChatState> {
     if (_isDisposed) return;
 
     final messages = List<ChatMessage>.from(state.messages);
-
-    // Find the last loading message and update with content
     for (int i = messages.length - 1; i >= 0; i--) {
       if (messages[i].isLoading) {
         messages[i] = ChatMessage(
           text: content,
           isUser: false,
-          isLoading: true, // Still loading until final
+          isLoading: true,
           timestamp: messages[i].timestamp,
         );
         _safeEmit(state.copyWith(messages: messages));
@@ -105,8 +99,6 @@ class ChatCubit extends Cubit<ChatState> {
     if (_isDisposed) return;
 
     final messages = List<ChatMessage>.from(state.messages);
-
-    // Find the last loading message and finalize it
     for (int i = messages.length - 1; i >= 0; i--) {
       if (messages[i].isLoading) {
         messages[i] = ChatMessage(
@@ -121,8 +113,16 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  /// Load an existing chat's messages into state (from history)
+  void loadHistoryMessages(List<ChatMessage> messages, String chatId) {
+    if (_isDisposed) return;
+    currentChatId = chatId;
+    _safeEmit(state.copyWith(messages: messages));
+  }
+
   void clearMessages() {
     if (_isDisposed) return;
+    currentChatId = null;
     _safeEmit(const ChatState(messages: []));
   }
 

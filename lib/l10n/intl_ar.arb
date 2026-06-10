@@ -52,15 +52,20 @@
   "RemindLater": "ذكرني لاحقاً",
   "weeklyStreak": "السلسلة الأسبوعية",
   "missedThisWeek": "فاتك {count} هذا الأسبوع",
+  "@missedThisWeek": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
   "quickscan":"مسح سريع",
-  "home": "الصفحة الرئيسية",
+  "home": "الصفحة الرئيسية",
   "scan": "مسح",
   "chatbot": "بوت الطبي",
   "search":"البحث",
   "perscriptions":"الوصفات",
   "scanning":"مسح",
   "scanarticle1":"مسح وصفاتك وادويةك \nبسرعة لحصول على تفاصيل\nمقبولة، وتعليمات الادوية، ومعلومات\nالاستخدام",
-  "scanarticle2":"”يمكنك بسهولة مسح أي وصفة طبية أو رمز QR خاص بدواء ما\n لعرض المعلومات الكاملة، بما في ذلك إرشادات الاستخدام\n والتحذيرات والتفاعلات والملاحظات المهمة\n — كل ذلك في مكان واحد، وفي غضون ثوانٍ.“",
+  "scanarticle2":"يمكنك بسهولة مسح أي وصفة طبية أو رمز QR خاص بدواء ما\n لعرض المعلومات الكاملة، بما في ذلك إرشادات الاستخدام\n والتحذيرات والتفاعلات والملاحظات المهمة\n — كل ذلك في مكان واحد، وفي غضون ثوانٍ.",
   "scanarticle3":"وجّه كاميرا هاتفك نحو رمز الاستجابة السريعة (QR code)\n واحصل على الملف الدوائي الكامل في ثوانٍ.",
   "scanmedicines":"مسح الدواء",
   "scanperscriptions":"مسح الوصفة",
@@ -95,7 +100,7 @@
   "bloodtype":"نوع الدم",
   "profileupdatedsuccessfully":"تم تحديث الملف الشخصي بنجاح",
   "failedtoupdateprofilepleasetryagain":"فشل تحديث الملف الشخصي، يرجى المحاولة مرة اخرى",
-  "erroroccured":"حدث خطأ، يرجى المحاولة في وقت لاحق",
+  "erroroccured":"حدث خطأ، يرجى المحاولة في وقت لاحق",
   "savechanges":"حفظ التغييرات",
   "discardchanges":"تجاهل التغييرات ؟",
   "unsavedchangeswillbelost":"سيتم فقد التغييرات الغير المحفوظة",
@@ -106,7 +111,7 @@
   "emailnotification":"اشعار البريد الالكتروني",
   "pushnotification":"اشعارات خارجية ",
   "securitynotification":"اشعارات الامان",
-  "smsnotification":"اشعارات الرسائل النصية",
+  "smsnotification":"اشعارات الرسائل النصية",
   "whaticanhelp": "ازاي اقدر اساعدك؟",
   "diagnoses":"التشخيصات",
   "activeingredients":"المكونات النشطة",
@@ -115,17 +120,17 @@
   "diseasessymptoms":"اعراض الامراض",
   "viewyourhistory":"عرض سجلك",
   "askaiassistant":"اسال مساعد AI كل شيء تحتاجه",
-  "askanything":"سؤالك",
-  "copiedtoclipboard":"تم نسخه إلى الحافظة",
+  "askanything":"سؤالك",
+  "copiedtoclipboard":"تم نسخه إلى الحافظة",
   "typing":"يكتب ...",
   "searching":"ابحث ...",
   "findwhatyouneed":"ابحث عن ما تحتاجه",
   "failedtoselectimage":"فشل اختيار الصورة",
-  "attachimage":"إرفاق صورة",
-  "takephoto":"أخذ صورة",
+  "attachimage":"إرفاق صورة",
+  "takephoto":"أخذ صورة",
   "chooseimage":"اختر صورة من المعرض",
   "trydifferentsearchterm":"حاول بحث اخر",
-  "sorrynoresultfound":"عذرا، لا يوجد نتائج",
+  "sorrynoresultfound":"عذرا، لا يوجد نتائج",
   "view":"عرض",
   "pharmacy":"صيدلية",
   "hospital":"مستشفى",
@@ -135,8 +140,8 @@
   "medicineinfo":"تفاصيل الدواء",
   "addreminder":"اضافة تذكير",
   "productoverview":"نظرة عامة عن المنتج",
-  "keybenefits":"الفوائد الاساسية",
-  "sideeffects":"الأثار الجانبية",
+  "keybenefits":"الفوائد الاساسية",
+  "sideeffects":"الأثار الجانبية",
   "bookappointment":"حجز موعد",
   "availabletime":"الوقت المتاح",
   "doctordetails":"تفاصيل الطبيب",
@@ -160,11 +165,6 @@
   "allperscriptions":"كل الوصفات",
   "noperscriptionsfound":"لم يتم العثور على وصفات",
   "healthmatrix":"الملف الصحي",
-  "@missedThisWeek": {
-    "placeholders": {
-      "count": { "type": "int" }
-    }
-  },
   "weeklyPercentage": "{percent}%",
   "@weeklyPercentage": {
     "placeholders": {
@@ -178,7 +178,6 @@
   "taken": "تم تناولها",
   "heartTopicTitle": "كيف تتعامل مع \nالأمراض المزمنة ؟",
   "preventDiseasesTitle": "نصائح للوقاية من \nالأمراض المعدية",
-
   "allergies": "الحساسية",
   "addAllergies": "+ إضافة حساسية",
   "addCondition": "+ إضافة مرض",
@@ -219,7 +218,7 @@
   "nearestfirst":"الاقرب اولا",
   "farthestfirst":"الاقرب اولا",
   "name":"الاسم",
-  "alphabetfromatoz":"الحرف: من A إلى Z",
+  "alphabetfromatoz":"الحرف: من A إلى Z",
   "moreexperinencefirst":"الخبرة: الاكثر",
   "lessexperinencefirst":"الخبرة: الاقل",
   "save":"حفظ",
@@ -250,11 +249,11 @@
   "alreadyhaveanaccount": "هل لديك حساب؟",
   "signin": "تسجيل الدخول",
   "signup": "تسجيل حساب جديد",
-  "swiptocreateaccount": "اسحب لإنشاء حساب جديد",
+  "swiptocreateaccount": "اسحب لإنشاء حساب جديد",
   "forgotpassword": "نسيت كلمة المرور؟",
   "emailrequired": "البريد الالكتروني مطلوب",
   "passwordrequired": "كلمة المرور مطلوبة",
-  "confirmpasswordrequired": "تأكيد كلمة المرور مطلوب",
+  "confirmpasswordrequired": "تأكيد كلمة المرور مطلوب",
   "emailisnotvalid": "البريد الالكتروني غير صالح",
   "donothaveanaccount": "ليس لديك حساب؟",
   "first": "اول"  ,
@@ -265,24 +264,25 @@
   "addressrequired": "العنوان مطلوب",
   "dateofbirthrequired": "تاريخ الميلاد مطلوب",
   "formisvalid": "النموذج صالح! تسجيل الدخول...",
-  "plsfixformerrors": "يرجى تصحيح الأخطاء",
+  "plsfixformerrors": "يرجى تصحيح الأخطاء",
   "username": "اسم المستخدم",
   "usernamerequired": "اسم المستخدم مطلوب",
-  "mustbe11numbers": "يجب أن يكون 11 رقمًا",
+  "mustbe11numbers": "يجب أن يكون 11 رقمًا",
   "invaliphonenumber": "رقم الهاتف غير صالح",
   "male": "ذكر",
   "female": "انثى",
   "doctor": "طبيب",
   "patient": "مريض",
-  "emailvarification": "تأكيد البريد الالكتروني",
-  "wesentyouanemail": "لقد ارسلنا لك بريدًا إلكترونيًا مع رمز التحقق.",
+  "emailvarification": "تأكيد البريد الالكتروني",
+  "wesentyouanemail": "لقد ارسلنا لك بريدًا إلكترونيًا مع رمز التحقق.",
   "change": "تغيير",
-  "didnotreceiveemail": "لم تستلم رسالة على البريد الإلكتروني؟",
-  "resend": "إعادة إرسال",
+  "didnotreceiveemail": "لم تستلم رسالة على البريد الإلكتروني؟",
+  "resend": "إعادة إرسال",
   "coderequired": "الرمز مطلوب",
-  "enteremailtoreceivecode": "أدخل البريد الإلكتروني للحصول على الرمز",
+  "enteremailtoreceivecode": "أدخل البريد الإلكتروني للحصول على الرمز",
   "continuee": "متابعة", 
-  "verifiyyouridentity": "التحقق من هويتك","reminderInfoTitle": "معلومات التذكير",
+  "verifiyyouridentity": "التحقق من هويتك",
+  "reminderInfoTitle": "معلومات التذكير",
   "reminderProvideInfo": "أدخل المعلومات",
   "reminderLabelName": "الاسم:",
   "reminderLabelDosage": "الجرعة:",
@@ -310,7 +310,40 @@
   "reminderPeriodEveryWeek": "كل أسبوع",
   "reminderPeriodEveryMonth": "كل شهر",
   "reminderTypeCapsule": "كبسولة",
-  "reminderTypeSyrup": "شراب"
+  "reminderTypeSyrup": "شراب",
 
-
+  "allchats": "كل المحادثات",
+  "newchat": "محادثة جديدة",
+  "removehistory": "حذف السجل",
+  "removehistoryconfirm": "هل أنت متأكد من حذف كل المحادثات؟ لا يمكن التراجع عن هذا.",
+  "historyremoved": "تم حذف السجل",
+  "deletechat": "حذف المحادثة",
+  "deletechatconfirm": "هل أنت متأكد من حذف هذه المحادثة؟ لا يمكن التراجع عن هذا.",
+  "chatdeleted": "تم حذف المحادثة",
+  "failedtodeletechat": "فشل حذف المحادثة",
+  "failedtoloadchats": "فشل تحميل المحادثات.",
+  "couldnotloadchat": "تعذر تحميل المحادثة",
+  "nopreviouschats": "لا توجد محادثات سابقة",
+  "startnewconversation": "ابدأ محادثة جديدة لتظهر هنا.",
+  "cancel": "إلغاء",
+  "delete": "حذف",
+  "yesterday": "أمس",
+  "minutesago": "منذ {count} دقيقة",
+  "@minutesago": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "hoursago": "منذ {count} ساعة",
+  "@hoursago": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "daysago": "منذ {count} أيام",
+  "@daysago": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  }
 }

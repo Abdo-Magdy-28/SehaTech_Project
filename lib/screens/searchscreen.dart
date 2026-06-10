@@ -389,25 +389,22 @@ class _SearchscreenState extends State<Searchscreen> {
       {
         'label': S.of(context).doctors,
         'image': 'assets/images/search/Maskgroup.png',
-        'dest': () => MainScaffold(currentIndex: 3, child: const Alldoctors()),
+        'dest': () => const Alldoctors(),
       },
       {
         'label': S.of(context).pharmacies,
         'image': 'assets/images/search/Maskgroup2.png',
-        'dest': () =>
-            MainScaffold(currentIndex: 3, child: const Allpahramcies()),
+        'dest': () => const Allpahramcies(),
       },
       {
         'label': S.of(context).hospitals,
         'image': 'assets/images/search/Maskgroup4.png',
-        'dest': () =>
-            MainScaffold(currentIndex: 3, child: const Allhospitals()),
+        'dest': () => const Allhospitals(),
       },
       {
         'label': S.of(context).medicines,
         'image': 'assets/images/search/Maskgroup3.png',
-        'dest': () =>
-            MainScaffold(currentIndex: 3, child: const Allmedicines()),
+        'dest': () => const Allmedicines(),
       },
     ];
     return Padding(
