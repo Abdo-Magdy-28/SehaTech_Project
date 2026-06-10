@@ -1,9 +1,11 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
 import 'package:grad_project/cubit/doctors/popular/popular_states.dart';
 import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
+import 'package:grad_project/models/Reminders/DailyReminder.dart';
 import 'package:grad_project/models/medicineremindercardmodel.dart';
 import 'package:grad_project/screens/alldoctors.dart';
 import 'package:grad_project/screens/chatbotScreen.dart';
@@ -31,6 +33,16 @@ class Homepagewidget extends StatefulWidget {
 }
 
 class _HomepagewidgetState extends State<Homepagewidget> {
+  @override
+  void initState() {
+    super.initState();
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final devheight = MediaQuery.of(context).size.height;
@@ -214,14 +226,50 @@ class _HomepagewidgetState extends State<Homepagewidget> {
               ),
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
               SliverToBoxAdapter(
-                child: UpcomingReminder(
-                  medicine: MedicineReminderCardModel(
-                    medicineName: S.of(context).belladonna30,
-                    dosage: S.of(context).dosage,
-                    reminderTime: S.of(context).reminderTime,
-                  ),
+                child: BlocBuilder<DailyScheduleCubit, DailyScheduleState>(
+                  builder: (context, state) {
+                    if (state is DailyScheduleLoading) {
+                      return Skeletonizer(
+                        child: UpcomingReminder(
+                          medicine: DailyMedications(
+                            reminderId: "",
+                            medicationName: "Loading...",
+                            genericName: "",
+                            form: "",
+                            strength: "",
+                            instructions: "",
+                            color: "",
+                            status: "",
+                            dosage: "-",
+                            time: "--:--",
+                          ),
+                        ),
+                      );
+                    } else if (state is DailyScheduleLoaded) {
+                      final pending = context
+                          .read<DailyScheduleCubit>()
+                          .getUpcomingForToday();
+                      if (pending.isNotEmpty) {
+                        return UpcomingReminder(medicine: pending.first);
+                      } else {
+                        return Center(
+                          child: Text("No upcoming pending medications today"),
+                        );
+                      }
+                    } else if (state is DailyScheduleError) {
+                      return Center(
+                        child: Text(
+                          "Error: ${state.message}",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      );
+                    } else {
+                      return SizedBox.shrink();
+                    }
+                  },
                 ),
               ),
+
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
               SliverToBoxAdapter(child: Weaklystreak()),
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),

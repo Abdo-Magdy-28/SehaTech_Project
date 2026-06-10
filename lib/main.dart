@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,22 @@ late List<CameraDescription> cameras;
 Future<void> main() async {
   debugPaintSizeEnabled = false;
   WidgetsFlutterBinding.ensureInitialized();
+  AwesomeNotifications().initialize(
+    null, // use default icon
+    [
+      NotificationChannel(
+        channelKey: 'medication_channel',
+        channelName: 'Medication Reminders',
+        channelDescription: 'Reminder notifications for medications',
+        defaultColor: Colors.teal,
+        importance: NotificationImportance.High,
+        channelShowBadge: true,
+      ),
+    ],
+  );
+  AwesomeNotifications().isNotificationAllowed().then((allowed) {
+    print("Notifications allowed: $allowed");
+  });
   cameras = await availableCameras();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // await dotenv.load();

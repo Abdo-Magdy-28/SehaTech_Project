@@ -43,4 +43,29 @@ class DailyMedications {
       logId: json['logId'], // nullable
     );
   }
+  DailyMedications copyWith({
+    String? reminderId,
+    String? medicationName,
+    String? genericName,
+    String? form,
+    String? strength,
+    String? instructions,
+    String? color,
+    String? status,
+    String? dosage,
+    String? time,
+  }) {
+    return DailyMedications(
+      reminderId: reminderId ?? this.reminderId,
+      medicationName: medicationName ?? this.medicationName,
+      genericName: genericName ?? this.genericName,
+      form: form ?? this.form,
+      strength: strength ?? this.strength,
+      instructions: instructions ?? this.instructions,
+      color: color ?? this.color,
+      status: status ?? this.status,
+      dosage: dosage ?? this.dosage,
+      time: time ?? this.time,
+    );
+  }
 }

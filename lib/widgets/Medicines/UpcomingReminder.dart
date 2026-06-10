@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
 import 'package:grad_project/generated/l10n.dart';
+import 'package:grad_project/models/Reminders/DailyReminder.dart';
 import 'package:grad_project/models/medicineremindercardmodel.dart';
 
 class UpcomingReminder extends StatefulWidget {
   const UpcomingReminder({super.key, required this.medicine});
-  final MedicineReminderCardModel medicine;
+  final DailyMedications medicine;
 
   @override
   State<UpcomingReminder> createState() => _UpcomingReminderState();
@@ -64,7 +67,7 @@ class _UpcomingReminderState extends State<UpcomingReminder> {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
-                        widget.medicine.reminderTime,
+                        widget.medicine.time,
                         style: TextStyle(
                           color: Color(0xffda3e3e),
                           fontSize: 12,
@@ -76,7 +79,7 @@ class _UpcomingReminderState extends State<UpcomingReminder> {
                 ),
 
                 Text(
-                  widget.medicine.medicineName,
+                  widget.medicine.medicationName,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -119,26 +122,66 @@ class _UpcomingReminderState extends State<UpcomingReminder> {
               ),
               SizedBox(width: devwidth * 0.04),
               Container(height: 40, width: 1, color: Color(0xffe2e2e2)),
-              TextButton(
-                onPressed: () {},
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: devwidth * 0.02),
-                    Icon(Icons.check, color: Color(0xff2260ff), size: 25),
-                    SizedBox(width: devwidth * 0.008),
-                    Text(
-                      S.of(context).MarkasTaken,
-                      style: TextStyle(
-                        color: Color(0xff2260ff),
-                        fontFamily: 'cairo',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                      ),
+              BlocBuilder<DailyScheduleCubit, DailyScheduleState>(
+                builder: (context, state) {
+                  return TextButton(
+                    onPressed: state is MarkingTaken
+                        ? null
+                        : () {
+                            final cubit = context.read<DailyScheduleCubit>();
+                            cubit.markTaken(widget.medicine, DateTime.now());
+                          },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(width: devwidth * 0.02),
+                        if (state is MarkingTaken) ...[
+                          SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: const Color(0xff2260ff),
+                            ),
+                          ),
+                        ] else if (state is MarkedTaken) ...[
+                          Icon(
+                            Icons.check,
+                            color: const Color(0xff2260ff),
+                            size: 25,
+                          ),
+                          SizedBox(width: devwidth * 0.008),
+                          Text(
+                            S.of(context).MarkasTaken, // ✅ show "Done"
+                            style: const TextStyle(
+                              color: Color(0xff2260ff),
+                              fontFamily: 'cairo',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ] else ...[
+                          Icon(
+                            Icons.check,
+                            color: const Color(0xff2260ff),
+                            size: 25,
+                          ),
+                          SizedBox(width: devwidth * 0.008),
+                          Text(
+                            S.of(context).MarkasTaken, // default label
+                            style: const TextStyle(
+                              color: Color(0xff2260ff),
+                              fontFamily: 'cairo',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               ),
               SizedBox(width: devwidth * 0.02),
             ],

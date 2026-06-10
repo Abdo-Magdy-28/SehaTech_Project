@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:grad_project/constants.dart';
@@ -30,15 +31,12 @@ class DailyScheduleService {
   }
 
   Future<List<DailyMedications>> fetchDailySchedule(String date) async {
-    print("🔵 [API CALL] GET /schedule/daily");
-    print("🔵 Query date sent: $date");
     try {
       final response = await _dio.get(
         "/schedule/daily",
         queryParameters: {"date": date},
       );
-      print("🟢 [API RESPONSE] Status: ${response.statusCode}");
-      print("🟢 Response body: ${response.data}");
+
       if (response.statusCode != 200) {
         throw Exception("Server returned ${response.statusCode}");
       }
@@ -53,6 +51,26 @@ class DailyScheduleService {
       );
     } catch (e) {
       throw Exception("Unexpected error: $e");
+    }
+  }
+
+  Future<void> markMedicationTaken(
+    String reminderId,
+    String scheduledTime,
+    String scheduledDate,
+  ) async {
+    final response = await _dio.post(
+      '/logs',
+      data: {
+        "reminderId": reminderId,
+        "scheduledTime": scheduledTime,
+        "scheduledDate": scheduledDate,
+        "status": "taken",
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to mark medication as taken");
     }
   }
 }

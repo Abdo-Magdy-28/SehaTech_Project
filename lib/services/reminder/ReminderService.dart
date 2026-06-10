@@ -30,8 +30,6 @@ class ReminderService {
   }
   Future<bool> createReminder(MedicationReminder reminder) async {
     try {
-      print("📤 SENDING REMINDER JSON:");
-      print(reminder.toJson());
       final response = await _dio.post("/reminders", data: reminder.toJson());
 
       return response.statusCode == 200 || response.statusCode == 201;
