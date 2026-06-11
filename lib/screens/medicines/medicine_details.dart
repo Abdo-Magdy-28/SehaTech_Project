@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/generated/l10n.dart';
-import 'package:grad_project/models/medicine.dart';
+import 'package:grad_project/models/medicine/medicinemodel.dart';
 import 'package:grad_project/screens/prescriptions/reminder_screen.dart';
 import 'package:grad_project/widgets/mainscaffold.dart';
 
 class MedicineDetails extends StatefulWidget {
-  final Medicine medicine;
+  final MedicineModel medicine;
   const MedicineDetails({super.key, required this.medicine});
 
   @override
@@ -18,14 +18,15 @@ class _MedicineDetailsState extends State<MedicineDetails> {
   @override
   void initState() {
     super.initState();
-    // ✅ guard: never crash when sizes is empty
-    selectedSize = widget.medicine.sizes.isNotEmpty
-        ? widget.medicine.sizes.first
-        : null;
   }
 
   @override
   Widget build(BuildContext context) {
+    String localized(BuildContext context, String en, String ar) {
+      final lang = Localizations.localeOf(context).languageCode;
+      return lang == 'ar' ? ar : en;
+    }
+
     final medicine = widget.medicine;
     final devheight = MediaQuery.of(context).size.height;
     final devwidth = MediaQuery.of(context).size.width;
@@ -81,7 +82,11 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                     child: Column(
                       children: [
                         Text(
-                          medicine.name,
+                          localized(
+                            context,
+                            medicine.activeIngredientsEn,
+                            medicine.activeIngredientsAr,
+                          ),
                           style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
@@ -90,7 +95,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                           ),
                         ),
                         Text(
-                          medicine.description,
+                          localized(context, medicine.usesEn, medicine.usesAr),
                           style: const TextStyle(
                             fontSize: 14,
                             color: Colors.white70,
@@ -98,7 +103,11 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                           ),
                         ),
                         Text(
-                          medicine.component,
+                          localized(
+                            context,
+                            medicine.activeIngredientsEn,
+                            medicine.activeIngredientsAr,
+                          ),
                           style: const TextStyle(
                             fontSize: 14,
                             color: Colors.white70,
@@ -111,50 +120,13 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             // ✅ Only show sizes if list is not empty
-                            if (medicine.sizes.isNotEmpty)
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: medicine.sizes.map((size) {
-                                  final isSel = selectedSize == size;
-                                  return GestureDetector(
-                                    onTap: () =>
-                                        setState(() => selectedSize = size),
-                                    child: Container(
-                                      margin: const EdgeInsets.only(bottom: 6),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 4,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: isSel
-                                            ? Colors.white
-                                            : Colors.white.withOpacity(0.2),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Text(
-                                        size,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontFamily: 'Cairo',
-                                          color: isSel
-                                              ? const Color(0xff2260FF)
-                                              : Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-
-                            const Spacer(),
 
                             // Medicine image
                             SizedBox(
                               height: devheight * 0.15,
                               width: devwidth * 0.3,
                               child: Image.asset(
-                                medicine.image,
+                                medicine.imageUrl,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -165,23 +137,11 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                             Column(
                               children: [
                                 Text(
-                                  '${medicine.rate}',
+                                  '4.5',
                                   style: const TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
-                                  ),
-                                ),
-                                Row(
-                                  children: List.generate(
-                                    5,
-                                    (i) => Icon(
-                                      i < medicine.rate.floor()
-                                          ? Icons.star
-                                          : Icons.star_half,
-                                      color: Colors.amber,
-                                      size: 16,
-                                    ),
                                   ),
                                 ),
                               ],
@@ -206,12 +166,12 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                               builder: (_) => MainScaffold(
                                 currentIndex: 4,
                                 child: ReminderScreen(
-                                  medicineName: medicine.name,
-                                  medicineSize:
-                                      selectedSize ??
-                                      (medicine.sizes.isNotEmpty
-                                          ? medicine.sizes.first
-                                          : ''),
+                                  medicineName: localized(
+                                    context,
+                                    medicine.brandNameEn,
+                                    medicine.brandNameAr,
+                                  ),
+                                  medicineSize: '',
                                 ),
                               ),
                             ),
@@ -240,7 +200,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
             ),
 
             // ── Product Overview ─────────────────────────────
-            if (medicine.overview.isNotEmpty)
+            if (localized(context, medicine.usesEn, medicine.usesAr).isNotEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
@@ -256,7 +216,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      medicine.overview,
+                      localized(context, medicine.usesEn, medicine.usesAr),
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.black87,
@@ -268,61 +228,19 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                 ),
               ),
 
-            if (medicine.overview.isNotEmpty)
-              const Divider(height: 32, indent: 16, endIndent: 16),
-
-            // ── Key Benefits ─────────────────────────────────
-            if (medicine.keyBenefits.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      S.of(context).keybenefits,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Cairo',
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    ...medicine.keyBenefits.map(
-                      (b) => Padding(
-                        padding: const EdgeInsets.only(bottom: 6),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              '• ',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                b,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black87,
-                                  fontFamily: 'Cairo',
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-            if (medicine.keyBenefits.isNotEmpty)
+            if (localized(
+              context,
+              medicine.sideEffectsEn,
+              medicine.sideEffectsAr,
+            ).isNotEmpty)
               const Divider(height: 32, indent: 16, endIndent: 16),
 
             // ── Side Effects ─────────────────────────────────
-            if (medicine.sideEffects.isNotEmpty)
+            if (localized(
+              context,
+              medicine.sideEffectsEn,
+              medicine.sideEffectsAr,
+            ).isNotEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
@@ -337,31 +255,33 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    ...medicine.sideEffects.map(
-                      (e) => Padding(
-                        padding: const EdgeInsets.only(bottom: 6),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              '• ',
-                              style: TextStyle(
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 6),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            '• ',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              localized(
+                                context,
+                                medicine.sideEffectsEn,
+                                medicine.sideEffectsAr,
+                              ),
+                              style: const TextStyle(
                                 fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                                fontFamily: 'Cairo',
                               ),
                             ),
-                            Expanded(
-                              child: Text(
-                                e,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black87,
-                                  fontFamily: 'Cairo',
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

@@ -99,84 +99,6 @@ class _SearchscreenState extends State<Searchscreen> {
     _filteredDoctors = _allDoctors;
     _filteredHospitals = _hospitals;
     _filteredPharmacies = _pharmacies;
-    _medicines = [
-      Medicine(
-        name: 'Liveasy Wellness',
-        image:
-            'assets/images/search/liveasy-wellness-calcium-magnesium-vitamin-d3-zinc-bones-dental-health-bottle-60-tabs-6.1-1733485732.png',
-        description: 'Calcium Magnesium Vitamin',
-        component: 'D3 & Zinc',
-        rate: 4.8,
-        sizes: ['50gm', '100gm', 'Capsul', 'Syrup'],
-        category: 'Eczema',
-        overview:
-            'Liveasy Wellness Calcium Magnesium Vitamin D3 & Zinc is a daily dietary supplement designed to support strong bones, healthy teeth, muscle function, and immunity.',
-        keyBenefits: [
-          'Supports bone strength and density',
-          'Helps maintain healthy teeth',
-          'Supports muscle function and reduces cramps',
-          'Boosts immunity with Vitamin D3 and Zinc',
-        ],
-        sideEffects: [
-          'Mild stomach upset',
-          'Nausea',
-          'Constipation or diarrhea',
-          'Bloating',
-        ],
-      ),
-      Medicine(
-        name: 'Dr.Morepen',
-        image:
-            'assets/images/search/liveasy-wellness-calcium-magnesium-vitamin-d3-zinc-bones-dental-health-bottle-60-tabs-6.1-1733485732q3.png',
-        description: 'Calcium Magnesium Vitamin',
-        component: 'D3 & Zinc',
-        rate: 4.8,
-        sizes: ['50gm', '100gm', 'Capsul'],
-        category: 'Fever',
-        overview:
-            'Dr.Morepen is a trusted health supplement supporting overall wellness with essential vitamins and minerals.',
-        keyBenefits: [
-          'Supports immune system',
-          'Improves energy levels',
-          'Maintains healthy metabolism',
-        ],
-        sideEffects: ['Mild nausea', 'Headache'],
-      ),
-      Medicine(
-        name: 'Pharmeasy Optima',
-        image: 'assets/images/search/lol.png',
-        description: 'Calcium Magnesium Vitamin',
-        component: 'D3 & Zinc',
-        rate: 3.8,
-        sizes: ['100gm', 'Syrup'],
-        category: 'Nasal',
-        overview:
-            'Pharmeasy Optima is a nasal health supplement that helps relieve nasal congestion and supports respiratory health.',
-        keyBenefits: [
-          'Relieves nasal congestion',
-          'Supports respiratory health',
-          'Reduces inflammation',
-        ],
-        sideEffects: ['Dry mouth', 'Drowsiness'],
-      ),
-      Medicine(
-        name: 'Juman Juice',
-        image: 'assets/images/search/21.png',
-        description: 'Calcium Magnesium Vitamin',
-        component: 'D3 & Zinc',
-        rate: 4.8,
-        sizes: ['50gm', 'Syrup'],
-        category: 'Pain',
-        overview:
-            'Juman Juice is a natural pain relief supplement made from organic ingredients to support pain management.',
-        keyBenefits: [
-          'Natural pain relief',
-          'Reduces inflammation',
-          'Supports joint health',
-        ],
-        sideEffects: ['Mild allergic reactions', 'Stomach discomfort'],
-      ),
-    ];
   }
 
   @override
@@ -263,26 +185,6 @@ class _SearchscreenState extends State<Searchscreen> {
 
           // ── Empty state ──────────────────────────────────────────
           if (noResults) SliverToBoxAdapter(child: _buildEmptyState(sw, sh)),
-
-          // ── Section: Medicines (always shown) ───────────────────
-          SliverToBoxAdapter(
-            child: _sectionTitle(S.of(context).mostsearchedmedicines, sw, sh),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: sw * 0.045),
-            sliver: SliverGrid(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: sw * 0.025,
-                mainAxisSpacing: sw * 0.025,
-                childAspectRatio: _medicineCardRatio(sw),
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (_, i) => MedicineCard(medicine: _medicines[i]),
-                childCount: _medicines.length,
-              ),
-            ),
-          ),
 
           SliverToBoxAdapter(child: SizedBox(height: sh * 0.04)),
         ],

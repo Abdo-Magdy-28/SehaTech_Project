@@ -1,27 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/medicine.dart';
+import 'package:grad_project/models/medicine/medicinemodel.dart';
 import 'package:grad_project/screens/medicines/medicine_details.dart';
 import 'package:grad_project/widgets/mainscaffold.dart';
 
 class MedicineCard extends StatelessWidget {
   const MedicineCard({super.key, required this.medicine});
 
-  final Medicine medicine;
+  final MedicineModel medicine;
 
   // safe: never called with an empty-sizes Medicine again,
   // but guard here as last resort
-  Medicine _safe(BuildContext context, Medicine m) => Medicine(
-    name: m.name,
-    image: m.image,
-    description: m.description,
-    component: m.component,
-    rate: m.rate,
-    category: m.category,
-    overview: m.overview,
-    keyBenefits: m.keyBenefits,
-    sideEffects: m.sideEffects,
-    sizes: m.sizes.isNotEmpty ? m.sizes : [(S.of(context).capsule)],
+  MedicineModel _safe(BuildContext context, MedicineModel m) => MedicineModel(
+    brandNameEn: m.brandNameEn,
+    brandNameAr: m.brandNameAr,
+    categoryEn: m.categoryEn,
+    categoryAr: m.categoryAr,
+    activeIngredientsEn: m.activeIngredientsEn,
+    activeIngredientsAr: m.activeIngredientsAr,
+    dosageEn: m.dosageEn,
+    dosageAr: m.dosageAr,
+    id: m.id,
+
+    sideEffectsAr: m.sideEffectsAr,
+    sideEffectsEn: m.sideEffectsEn,
+    usesAr: m.usesAr,
+    usesEn: m.usesEn,
   );
 
   void _navigate(BuildContext context) {
@@ -38,6 +43,11 @@ class MedicineCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String localized(BuildContext context, String en, String ar) {
+      final lang = Localizations.localeOf(context).languageCode;
+      return lang == 'ar' ? ar : en;
+    }
+
     final sw = MediaQuery.of(context).size.width;
     final cardW = (sw - sw * 0.06 - sw * 0.025) / 2;
 
@@ -57,7 +67,7 @@ class MedicineCard extends StatelessWidget {
               child: Center(
                 child: Padding(
                   padding: EdgeInsets.all(cardW * 0.06),
-                  child: Image.asset(medicine.image, fit: BoxFit.contain),
+                  child: Image.asset(medicine.imageUrl, fit: BoxFit.contain),
                 ),
               ),
             ),
@@ -70,7 +80,11 @@ class MedicineCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      medicine.name,
+                      localized(
+                        context,
+                        medicine.brandNameEn,
+                        medicine.brandNameAr,
+                      ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(
@@ -82,10 +96,7 @@ class MedicineCard extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        '${medicine.rate}',
-                        style: TextStyle(fontSize: sw * 0.028),
-                      ),
+                      Text('4.5', style: TextStyle(fontSize: sw * 0.028)),
                       SizedBox(width: sw * 0.004),
                       Image.asset(
                         'assets/images/Star.png',
@@ -104,7 +115,7 @@ class MedicineCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: cardW * 0.1),
               child: Text(
-                medicine.description,
+                localized(context, medicine.usesEn, medicine.usesAr),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 style: TextStyle(
@@ -120,7 +131,11 @@ class MedicineCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: cardW * 0.1),
               child: Text(
-                medicine.component,
+                localized(
+                  context,
+                  medicine.activeIngredientsEn,
+                  medicine.activeIngredientsAr,
+                ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 style: TextStyle(

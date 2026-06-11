@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grad_project/cubit/Medicine%20Scan/medicinescan_cubit.dart';
+import 'package:grad_project/cubit/search/medicine/medicine_search.dart';
 import 'package:grad_project/screens/Hospitals/allhospitals.dart';
 import 'package:grad_project/screens/alldoctors.dart';
 import 'package:grad_project/generated/l10n.dart';
@@ -94,8 +97,13 @@ class categorysrow extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      MainScaffold(currentIndex: 3, child: Allmedicines()),
+                  builder: (context) => MainScaffold(
+                    currentIndex: 3,
+                    child: BlocProvider(
+                      create: (context) => MedicineCubit(),
+                      child: Allmedicines(),
+                    ),
+                  ),
                 ),
               );
             },
