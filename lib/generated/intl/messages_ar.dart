@@ -329,11 +329,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "nasal": MessageLookupByLibrary.simpleMessage("انف"),
     "nearest": MessageLookupByLibrary.simpleMessage("اقرب"),
     "nearestfirst": MessageLookupByLibrary.simpleMessage("الاقرب اولا"),
+    "networkError": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ في الشبكة، يرجى المحاولة مرة أخرى",
+    ),
     "neurologist": MessageLookupByLibrary.simpleMessage("طبيب أعصاب"),
     "newchat": MessageLookupByLibrary.simpleMessage("محادثة جديدة"),
     "newpassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
     "newpasswordrequiered": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور الجديدة مطلوبة",
+    ),
+    "noInternet": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد اتصال بالإنترنت",
     ),
     "nokeepchanges": MessageLookupByLibrary.simpleMessage("لا، حفظ التغييرات"),
     "noperscriptionsfound": MessageLookupByLibrary.simpleMessage(
@@ -342,6 +348,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nopreviouschats": MessageLookupByLibrary.simpleMessage(
       "لا توجد محادثات سابقة",
     ),
+    "notLoggedIn": MessageLookupByLibrary.simpleMessage("أنت غير مسجل الدخول"),
     "notifications": MessageLookupByLibrary.simpleMessage("الاشعارات"),
     "notificationssettings": MessageLookupByLibrary.simpleMessage(
       "اعدادات الاشعارات",
@@ -350,6 +357,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "ourservices": MessageLookupByLibrary.simpleMessage("خدماتنا"),
     "pain": MessageLookupByLibrary.simpleMessage("مسكن الالام"),
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
+    "passwordchangedsuccess": MessageLookupByLibrary.simpleMessage(
+      "تم تغيير كلمة المرور بنجاح",
+    ),
     "passwordmustbeatleast": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور يجب الا تقل عن 6 حروف",
     ),
@@ -517,6 +527,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "حاول بحث اخر",
     ),
     "typing": MessageLookupByLibrary.simpleMessage("يكتب ..."),
+    "unexpectedError": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ غير متوقع",
+    ),
     "unsavedchangeswillbelost": MessageLookupByLibrary.simpleMessage(
       "سيتم فقد التغييرات الغير المحفوظة",
     ),
@@ -543,6 +556,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "مع طبيبك المفضل",
     ),
     "worktime": MessageLookupByLibrary.simpleMessage("ساعات العمل"),
+    "wrongCurrentPassword": MessageLookupByLibrary.simpleMessage(
+      "كلمة المرور الحالية غير صحيحة",
+    ),
     "yesdiscard": MessageLookupByLibrary.simpleMessage("نعم، تجاهل"),
     "yesterday": MessageLookupByLibrary.simpleMessage("أمس"),
     "youssefAli": MessageLookupByLibrary.simpleMessage("يوسف علي"),

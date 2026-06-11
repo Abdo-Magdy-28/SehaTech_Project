@@ -311,6 +311,12 @@
   "reminderPeriodEveryMonth": "كل شهر",
   "reminderTypeCapsule": "كبسولة",
   "reminderTypeSyrup": "شراب",
+   "passwordchangedsuccess": "تم تغيير كلمة المرور بنجاح",
+  "wrongCurrentPassword": "كلمة المرور الحالية غير صحيحة",
+  "notLoggedIn": "أنت غير مسجل الدخول",
+  "noInternet": "لا يوجد اتصال بالإنترنت",
+  "networkError": "حدث خطأ في الشبكة، يرجى المحاولة مرة أخرى",
+  "unexpectedError": "حدث خطأ غير متوقع",
 
   "allchats": "كل المحادثات",
   "newchat": "محادثة جديدة",

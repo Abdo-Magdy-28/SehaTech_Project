@@ -86,7 +86,6 @@ class AuthService {
         String? token = data['token'];
         if (token != null) {
           await storage.write(key: 'auth_token', value: token);
-          print('✅ Token saved');
         }
 
         // ✅ Check if user data is returned on signup

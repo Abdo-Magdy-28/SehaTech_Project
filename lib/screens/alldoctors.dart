@@ -370,32 +370,15 @@ class _AlldoctorsState extends State<Alldoctors> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DoctorDetails(
-                name: doctor.name,
-                begindate: doctor.beginDate,
-                enddate: doctor.endDate,
-                hospital: doctor.hospital,
-                job: doctor.job,
-                rate: doctor.rate,
-              ),
-            ),
-          );
-        },
-        child: Doctorcard(
-          devheight: devheight,
-          doctorimage: doctorImage,
-          job: doctor.job,
-          hospital: doctor.hospital,
-          name: doctor.name,
-          rate: doctor.rate,
-          begindate: doctor.beginDate,
-          enddate: doctor.endDate,
-        ),
+      child: Doctorcard(
+        devheight: devheight,
+        doctorimage: doctorImage,
+        job: doctor.job,
+        hospital: doctor.hospital,
+        name: doctor.name,
+        rate: doctor.rate,
+        begindate: doctor.beginDate,
+        enddate: doctor.endDate,
       ),
     );
   }

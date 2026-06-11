@@ -2399,6 +2399,66 @@ class S {
     return Intl.message('Syrup', name: 'reminderTypeSyrup', desc: '', args: []);
   }
 
+  /// `Password changed successfully`
+  String get passwordchangedsuccess {
+    return Intl.message(
+      'Password changed successfully',
+      name: 'passwordchangedsuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your current password is incorrect`
+  String get wrongCurrentPassword {
+    return Intl.message(
+      'Your current password is incorrect',
+      name: 'wrongCurrentPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are not logged in`
+  String get notLoggedIn {
+    return Intl.message(
+      'You are not logged in',
+      name: 'notLoggedIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No internet connection`
+  String get noInternet {
+    return Intl.message(
+      'No internet connection',
+      name: 'noInternet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Network error occurred, please try again`
+  String get networkError {
+    return Intl.message(
+      'Network error occurred, please try again',
+      name: 'networkError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An unexpected error occurred`
+  String get unexpectedError {
+    return Intl.message(
+      'An unexpected error occurred',
+      name: 'unexpectedError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `All Chats`
   String get allchats {
     return Intl.message('All Chats', name: 'allchats', desc: '', args: []);

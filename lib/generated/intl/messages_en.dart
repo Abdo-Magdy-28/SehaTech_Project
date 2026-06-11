@@ -340,11 +340,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "nasal": MessageLookupByLibrary.simpleMessage("Nasal"),
     "nearest": MessageLookupByLibrary.simpleMessage("Nearest"),
     "nearestfirst": MessageLookupByLibrary.simpleMessage("Nearest first"),
+    "networkError": MessageLookupByLibrary.simpleMessage(
+      "Network error occurred, please try again",
+    ),
     "neurologist": MessageLookupByLibrary.simpleMessage("Neurologist"),
     "newchat": MessageLookupByLibrary.simpleMessage("New Chat"),
     "newpassword": MessageLookupByLibrary.simpleMessage("New Password"),
     "newpasswordrequiered": MessageLookupByLibrary.simpleMessage(
       "New Password Required",
+    ),
+    "noInternet": MessageLookupByLibrary.simpleMessage(
+      "No internet connection",
     ),
     "nokeepchanges": MessageLookupByLibrary.simpleMessage("No, Keep Changes"),
     "noperscriptionsfound": MessageLookupByLibrary.simpleMessage(
@@ -352,6 +358,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "nopreviouschats": MessageLookupByLibrary.simpleMessage(
       "No previous chats",
+    ),
+    "notLoggedIn": MessageLookupByLibrary.simpleMessage(
+      "You are not logged in",
     ),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "notificationssettings": MessageLookupByLibrary.simpleMessage(
@@ -361,6 +370,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "ourservices": MessageLookupByLibrary.simpleMessage("Our Services"),
     "pain": MessageLookupByLibrary.simpleMessage("Pain"),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
+    "passwordchangedsuccess": MessageLookupByLibrary.simpleMessage(
+      "Password changed successfully",
+    ),
     "passwordmustbeatleast": MessageLookupByLibrary.simpleMessage(
       "Password Must be atleast 6 Characters",
     ),
@@ -538,6 +550,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Try different search term",
     ),
     "typing": MessageLookupByLibrary.simpleMessage("Typing..."),
+    "unexpectedError": MessageLookupByLibrary.simpleMessage(
+      "An unexpected error occurred",
+    ),
     "unsavedchangeswillbelost": MessageLookupByLibrary.simpleMessage(
       "Unsaved changes will be lost",
     ),
@@ -566,6 +581,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "with your preferred",
     ),
     "worktime": MessageLookupByLibrary.simpleMessage("Work time"),
+    "wrongCurrentPassword": MessageLookupByLibrary.simpleMessage(
+      "Your current password is incorrect",
+    ),
     "yesdiscard": MessageLookupByLibrary.simpleMessage("Yes, Discard"),
     "yesterday": MessageLookupByLibrary.simpleMessage("Yesterday"),
     "youssefAli": MessageLookupByLibrary.simpleMessage("Youssef Ali"),

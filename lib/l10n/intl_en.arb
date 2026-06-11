@@ -310,7 +310,12 @@
   "reminderPeriodEveryMonth": "Every Month",
   "reminderTypeCapsule": "Capsule",
   "reminderTypeSyrup": "Syrup",
-
+  "passwordchangedsuccess": "Password changed successfully",
+  "wrongCurrentPassword": "Your current password is incorrect",
+  "notLoggedIn": "You are not logged in",
+  "noInternet": "No internet connection",
+  "networkError": "Network error occurred, please try again",
+  "unexpectedError": "An unexpected error occurred",
   "allchats": "All Chats",
   "newchat": "New Chat",
   "removehistory": "Remove History",

@@ -341,30 +341,16 @@ class _SearchscreenState extends State<Searchscreen> {
   // ── Doctor tile ──────────────────────────────────────────────────
   Widget _buildDoctorTile(Doctor d, double sw, double sh) => Padding(
     padding: EdgeInsets.symmetric(horizontal: sw * 0.03),
-    child: GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => DoctorDetails(
-            name: d.name,
-            begindate: d.beginDate,
-            enddate: d.endDate,
-            hospital: d.hospital,
-            job: d.job,
-            rate: d.rate,
-          ),
-        ),
-      ),
-      child: Doctorcard(
-        devheight: sh,
-        doctorimage: Image.asset('assets/images/Pic.png'),
-        job: d.job,
-        hospital: d.hospital,
-        name: d.name,
-        rate: d.rate,
-        begindate: d.beginDate,
-        enddate: d.endDate,
-      ),
+
+    child: Doctorcard(
+      devheight: sh,
+      doctorimage: Image.asset('assets/images/Pic.png'),
+      job: d.job,
+      hospital: d.hospital,
+      name: d.name,
+      rate: d.rate,
+      begindate: d.beginDate,
+      enddate: d.endDate,
     ),
   );
 

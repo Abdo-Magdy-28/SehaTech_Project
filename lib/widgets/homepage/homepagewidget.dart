@@ -164,32 +164,15 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                     return SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
                         final doctor = state.doctors[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DoctorDetails(
-                                  name: doctor.name,
-                                  begindate: doctor.beginDate,
-                                  enddate: doctor.endDate,
-                                  hospital: doctor.hospital,
-                                  job: doctor.job,
-                                  rate: doctor.rate,
-                                ),
-                              ),
-                            );
-                          },
-                          child: Doctorcard(
-                            devheight: devheight,
-                            doctorimage: Image.network(doctor.image),
-                            job: doctor.job,
-                            hospital: doctor.hospital,
-                            name: doctor.name,
-                            rate: doctor.rate,
-                            begindate: doctor.beginDate,
-                            enddate: doctor.endDate,
-                          ),
+                        return Doctorcard(
+                          devheight: devheight,
+                          doctorimage: Image.network(doctor.image),
+                          job: doctor.job,
+                          hospital: doctor.hospital,
+                          name: doctor.name,
+                          rate: doctor.rate,
+                          begindate: doctor.beginDate,
+                          enddate: doctor.endDate,
                         );
                       }, childCount: state.doctors.length),
                     );
