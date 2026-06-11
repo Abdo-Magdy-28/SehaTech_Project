@@ -9,12 +9,14 @@ import 'package:grad_project/models/Reminders/DailyReminder.dart';
 import 'package:grad_project/models/medicineremindercardmodel.dart';
 import 'package:grad_project/screens/alldoctors.dart';
 import 'package:grad_project/screens/chatbotScreen.dart';
+import 'package:grad_project/widgets/Medicines/EmptyUpcoming.dart';
 import 'package:grad_project/widgets/categorysrow.dart';
 import 'package:grad_project/widgets/chatbotslider.dart';
 import 'package:grad_project/widgets/customappbar.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
 import 'package:grad_project/widgets/doctors/doctor_details.dart';
 import 'package:grad_project/widgets/hearttopic.dart';
+
 import 'package:grad_project/widgets/homepage/home_carouselcard.dart';
 import 'package:grad_project/widgets/homepage/medication_management_grid.dart';
 import 'package:grad_project/widgets/Medicines/MedicineReminderCard.dart';
@@ -235,8 +237,21 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                       if (pending.isNotEmpty) {
                         return UpcomingReminder(medicine: pending.first);
                       } else {
-                        return Center(
-                          child: Text("No upcoming pending medications today"),
+                        return EmptyUpcoming(
+                          medicine: DailyMedications(
+                            reminderId: "",
+                            medicationName: S
+                                .of(context)
+                                .Nowupcomingreminderstoday,
+                            genericName: "",
+                            form: "",
+                            strength: "",
+                            instructions: "",
+                            color: "",
+                            status: "",
+                            dosage: "-",
+                            time: "--:--",
+                          ),
                         );
                       }
                     } else if (state is DailyScheduleError) {

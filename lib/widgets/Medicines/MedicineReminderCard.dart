@@ -48,7 +48,7 @@ class Medicineremindercard extends StatelessWidget {
               left: 80,
               top: 35,
               child: Text(
-                "$quatity | $scheduletime",
+                quatity,
                 style: TextStyle(
                   fontFamily: 'Cairo',
                   fontWeight: FontWeight.w500,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/Medicine%20Scan/CreateOcr.dart';
 import 'package:grad_project/cubit/Medicine%20Scan/medicinescan_cubit.dart';
 import 'package:grad_project/cubit/Medicine%20Scan/medicinescan_states.dart';
+import 'package:grad_project/models/medicine/OcrModel.dart';
 import 'package:grad_project/models/medicine_preview_model.dart';
 
 class MedicineResultScreen extends StatelessWidget {
@@ -9,21 +11,51 @@ class MedicineResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF0F4FF),
-      body: BlocBuilder<MedicineBoxCubit, MedicineBoxState>(
-        builder: (context, state) {
-          if (state is MedicineBoxLoading) {
-            return const _LoadingView();
-          }
-          if (state is MedicineBoxFailure) {
-            return _ErrorView(message: state.errorMessage);
-          }
-          if (state is MedicineBoxSuccess) {
-            return _SuccessView(medicine: state.medicine);
-          }
-          return const Center(child: Text("No data yet"));
-        },
+    return BlocProvider(
+      create: (context) => OcrCubit(),
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF0F4FF),
+        body: BlocBuilder<MedicineBoxCubit, MedicineBoxState>(
+          builder: (context, state) {
+            if (state is MedicineBoxLoading) {
+              return const _LoadingView();
+            }
+            if (state is MedicineBoxFailure) {
+              return _ErrorView(message: state.errorMessage);
+            }
+            if (state is MedicineBoxSuccess) {
+              final scan = OcrModel(
+                tradeName: state.medicine.tradeName,
+                genericName: state.medicine.genericName,
+                activeIngredients: state.medicine.activeIngredients,
+                concentration: state.medicine.concentration,
+                dosageForm: state.medicine.dosageForm,
+                indications: state.medicine.indications,
+                contraindications: state.medicine.contraindications,
+                manufacturer: state.medicine.manufacturer ?? "",
+                storageConditions: state.medicine.storageConditions ?? "",
+                expiryDate: state.medicine.expiryDate ?? "",
+              );
+              context.read<OcrCubit>().postScan(scan);
+              return BlocBuilder<OcrCubit, OcrStates>(
+                builder: (context, postState) {
+                  if (postState is OcrLoading) {
+                    return const _LoadingView(); // show loading shimmer
+                  }
+                  if (postState is MedicationScanError) {
+                    return _ErrorView(message: postState.message);
+                  }
+                  if (postState is OcrLoaded) {
+                    // ✅ If POST succeeds, just show success view (no extra UI)
+                    return _SuccessView(medicine: state.medicine);
+                  }
+                  return const _LoadingView();
+                },
+              );
+            }
+            return const Center(child: Text("No data yet"));
+          },
+        ),
       ),
     );
   }
@@ -171,7 +203,10 @@ class _SuccessView extends StatelessWidget {
                     ),
                     onPressed: () =>
                         Navigator.popUntil(context, (route) => route.isFirst),
-                    child: const Text("Back To Scanning"),
+                    child: const Text(
+                      "Back To Scanning",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               ),

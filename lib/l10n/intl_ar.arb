@@ -165,6 +165,7 @@
   "allperscriptions":"كل الوصفات",
   "noperscriptionsfound":"لم يتم العثور على وصفات",
   "healthmatrix":"الملف الصحي",
+  "Nowupcomingreminderstoday": "لا يوجد تذكيرات قادمة اليوم",
   "weeklyPercentage": "{percent}%",
   "@weeklyPercentage": {
     "placeholders": {

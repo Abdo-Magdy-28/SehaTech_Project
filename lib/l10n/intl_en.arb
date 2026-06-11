@@ -332,6 +332,7 @@
   "cancel": "Cancel",
   "delete": "Delete",
   "yesterday": "Yesterday",
+  "Nowupcomingreminderstoday": "Now, upcoming reminders today",
   "minutesago": "{count}m ago",
   "@minutesago": {
     "placeholders": {
