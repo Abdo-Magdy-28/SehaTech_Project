@@ -97,10 +97,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                   left: 0,
                   right: 0,
                   child: Center(
-                    child: Transform.scale(
-                      scale: 2, // 👈 كبّر أو صغّر الرقم ده
-                      child: widget.doctorimage,
-                    ),
+                    child: Transform.scale(scale: 2, child: widget.doctorimage),
                   ),
                 ),
               ],
