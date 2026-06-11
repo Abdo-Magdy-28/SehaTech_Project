@@ -132,6 +132,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "changepassword": MessageLookupByLibrary.simpleMessage("Change Password"),
     "chatbot": MessageLookupByLibrary.simpleMessage("Chatbot"),
     "chatdeleted": MessageLookupByLibrary.simpleMessage("Chat deleted"),
+    "cheakInteractions": MessageLookupByLibrary.simpleMessage(
+      "Cheak Interactions",
+    ),
     "chooseimage": MessageLookupByLibrary.simpleMessage(
       "Choose Image from gallery",
     ),
@@ -197,6 +200,24 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "dosage": MessageLookupByLibrary.simpleMessage("2 Drops | Every 2 Hour"),
     "drops": MessageLookupByLibrary.simpleMessage("2 Drops"),
+    "drugInfoUnavailable": MessageLookupByLibrary.simpleMessage(
+      "Drug Information Unavailable",
+    ),
+    "drugInfoUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
+      "No interaction data was found for this medication. The drug may be unavailable in our current database or entered incorrectly.",
+    ),
+    "drugInteractionChecker": MessageLookupByLibrary.simpleMessage(
+      "Drug Interaction Checker",
+    ),
+    "drugInteractionDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "This Tool Does Not Replace Professional Medical Advice. Always Consult Doctor.",
+    ),
+    "drugInteractionSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Check Interactions Between Medicines Accurately",
+    ),
+    "druginteractioncheaker": MessageLookupByLibrary.simpleMessage(
+      "Drug Interactions Checker",
+    ),
     "drugprice": MessageLookupByLibrary.simpleMessage("Drug Price"),
     "eczema": MessageLookupByLibrary.simpleMessage("Eczema"),
     "elDemerdashHospital": MessageLookupByLibrary.simpleMessage(
@@ -244,6 +265,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Find out about your\nmedicine.",
     ),
     "findDoctors": MessageLookupByLibrary.simpleMessage("Find Doctors"),
+    "findYourDrugsInteractions": MessageLookupByLibrary.simpleMessage(
+      "Find Your Drugs Interactions",
+    ),
     "findwhatyouneed": MessageLookupByLibrary.simpleMessage(
       "Find what you need",
     ),
@@ -280,6 +304,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "hypertension": MessageLookupByLibrary.simpleMessage("Hypertension"),
     "importantTopics": MessageLookupByLibrary.simpleMessage("Important Topics"),
     "infection": MessageLookupByLibrary.simpleMessage("Infection"),
+    "interactionFound": MessageLookupByLibrary.simpleMessage(
+      "1 Potential Drug Interaction Found",
+    ),
+    "interactionFoundSubtitle": MessageLookupByLibrary.simpleMessage(
+      "This combination may affect treatment safety or increase the risk of side effects. Please review the interaction details and consult your healthcare provider if necessary.",
+    ),
     "invaliphonenumber": MessageLookupByLibrary.simpleMessage(
       "Invalid Phone Number",
     ),
@@ -321,6 +351,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "medicationreminder": MessageLookupByLibrary.simpleMessage(
       "Medication Reminder",
     ),
+    "medicine1": MessageLookupByLibrary.simpleMessage("Medicines 1"),
+    "medicine2": MessageLookupByLibrary.simpleMessage("Medicines 2"),
     "medicineinfo": MessageLookupByLibrary.simpleMessage(
       "Medicine Information",
     ),
@@ -347,10 +379,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Network error occurred, please try again",
     ),
     "neurologist": MessageLookupByLibrary.simpleMessage("Neurologist"),
+    "newLabel": MessageLookupByLibrary.simpleMessage("New"),
     "newchat": MessageLookupByLibrary.simpleMessage("New Chat"),
     "newpassword": MessageLookupByLibrary.simpleMessage("New Password"),
     "newpasswordrequiered": MessageLookupByLibrary.simpleMessage(
       "New Password Required",
+    ),
+    "noInteractionsFound": MessageLookupByLibrary.simpleMessage(
+      "No Interactions Found",
+    ),
+    "noInteractionsSubtitle": MessageLookupByLibrary.simpleMessage(
+      "No known clinically significant interactions were detected between these two medications.",
     ),
     "noInternet": MessageLookupByLibrary.simpleMessage(
       "No internet connection",
@@ -526,6 +565,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "severe": MessageLookupByLibrary.simpleMessage("Severe"),
     "severity": MessageLookupByLibrary.simpleMessage("Severity"),
     "shellfish": MessageLookupByLibrary.simpleMessage("Shellfish"),
+    "showAllDetails": MessageLookupByLibrary.simpleMessage("Show All Details"),
     "sideeffects": MessageLookupByLibrary.simpleMessage("Side Effects"),
     "signin": MessageLookupByLibrary.simpleMessage("Sign in"),
     "signup": MessageLookupByLibrary.simpleMessage("Sign up"),
@@ -534,6 +574,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "slots6": MessageLookupByLibrary.simpleMessage("6 Slots"),
     "smsnotification": MessageLookupByLibrary.simpleMessage("SMS Notification"),
+    "somethingWentWrong": MessageLookupByLibrary.simpleMessage(
+      "Something Went Wrong",
+    ),
     "sorrynoresultfound": MessageLookupByLibrary.simpleMessage(
       "Sorry, no result found",
     ),

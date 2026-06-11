@@ -10,9 +10,7 @@ import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
 import 'package:grad_project/firebase_options.dart';
 import 'package:grad_project/generated/l10n.dart';
-import 'package:grad_project/screens/Homepage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'package:grad_project/screens/splashscreen.dart';
 
 late List<CameraDescription> cameras;

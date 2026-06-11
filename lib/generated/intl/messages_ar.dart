@@ -125,6 +125,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "changepassword": MessageLookupByLibrary.simpleMessage("تغيير كلمة المرور"),
     "chatbot": MessageLookupByLibrary.simpleMessage("بوت الطبي"),
     "chatdeleted": MessageLookupByLibrary.simpleMessage("تم حذف المحادثة"),
+    "cheakInteractions": MessageLookupByLibrary.simpleMessage(
+      "تحقق من التفاعلات",
+    ),
     "chooseimage": MessageLookupByLibrary.simpleMessage("اختر صورة من المعرض"),
     "chronicdiseases": MessageLookupByLibrary.simpleMessage("الامراض المزمنة"),
     "closed": MessageLookupByLibrary.simpleMessage("مغلقة"),
@@ -190,6 +193,24 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "dosage": MessageLookupByLibrary.simpleMessage("نقطتان | كل ساعتين"),
     "drops": MessageLookupByLibrary.simpleMessage("نقطتان"),
+    "drugInfoUnavailable": MessageLookupByLibrary.simpleMessage(
+      "معلومات الدواء غير متاحة",
+    ),
+    "drugInfoUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
+      "لم يتم العثور على بيانات تفاعل لهذا الدواء. قد يكون الدواء غير متوفر في قاعدة بياناتنا أو تم إدخاله بشكل خاطئ.",
+    ),
+    "drugInteractionChecker": MessageLookupByLibrary.simpleMessage(
+      "افحص تفاعلات الأدوية",
+    ),
+    "drugInteractionDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "هذه الأداة لا تُغني عن الاستشارة الطبية المتخصصة. استشر طبيبك دائماً.",
+    ),
+    "drugInteractionSubtitle": MessageLookupByLibrary.simpleMessage(
+      "تحقق من التفاعلات بين الأدوية بدقة",
+    ),
+    "druginteractioncheaker": MessageLookupByLibrary.simpleMessage(
+      "فحص تفاعلات الدواء",
+    ),
     "drugprice": MessageLookupByLibrary.simpleMessage("سعر الدواء"),
     "eczema": MessageLookupByLibrary.simpleMessage("مرض جلدي"),
     "elDemerdashHospital": MessageLookupByLibrary.simpleMessage(
@@ -241,6 +262,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "تعرف على\nأدويتك.",
     ),
     "findDoctors": MessageLookupByLibrary.simpleMessage("ابحث عن أطباء"),
+    "findYourDrugsInteractions": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن تفاعلات أدويتك",
+    ),
     "findwhatyouneed": MessageLookupByLibrary.simpleMessage(
       "ابحث عن ما تحتاجه",
     ),
@@ -275,6 +299,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "hypertension": MessageLookupByLibrary.simpleMessage("ضغط الدم"),
     "importantTopics": MessageLookupByLibrary.simpleMessage("المواضيع المهمة"),
     "infection": MessageLookupByLibrary.simpleMessage("عدوى"),
+    "interactionFound": MessageLookupByLibrary.simpleMessage(
+      "تم اكتشاف تفاعل دوائي محتمل",
+    ),
+    "interactionFoundSubtitle": MessageLookupByLibrary.simpleMessage(
+      "قد يؤثر هذا التركيب على سلامة العلاج أو يزيد من خطر الآثار الجانبية. يرجى مراجعة تفاصيل التفاعل واستشارة مقدم الرعاية الصحية إذا لزم الأمر.",
+    ),
     "invaliphonenumber": MessageLookupByLibrary.simpleMessage(
       "رقم الهاتف غير صالح",
     ),
@@ -312,6 +342,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "إدارة الأدوية",
     ),
     "medicationreminder": MessageLookupByLibrary.simpleMessage("تذكير الادوية"),
+    "medicine1": MessageLookupByLibrary.simpleMessage("دواء 1"),
+    "medicine2": MessageLookupByLibrary.simpleMessage("دواء 2"),
     "medicineinfo": MessageLookupByLibrary.simpleMessage("تفاصيل الدواء"),
     "medicines": MessageLookupByLibrary.simpleMessage("الأدوية"),
     "mild": MessageLookupByLibrary.simpleMessage("خفيف"),
@@ -336,10 +368,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "حدث خطأ في الشبكة، يرجى المحاولة مرة أخرى",
     ),
     "neurologist": MessageLookupByLibrary.simpleMessage("طبيب أعصاب"),
+    "newLabel": MessageLookupByLibrary.simpleMessage("جديد"),
     "newchat": MessageLookupByLibrary.simpleMessage("محادثة جديدة"),
     "newpassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
     "newpasswordrequiered": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور الجديدة مطلوبة",
+    ),
+    "noInteractionsFound": MessageLookupByLibrary.simpleMessage(
+      "لا توجد تفاعلات",
+    ),
+    "noInteractionsSubtitle": MessageLookupByLibrary.simpleMessage(
+      "لم يتم اكتشاف أي تفاعلات سريرية معروفة بين هذين الدواءين.",
     ),
     "noInternet": MessageLookupByLibrary.simpleMessage(
       "لا يوجد اتصال بالإنترنت",
@@ -503,6 +542,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "severe": MessageLookupByLibrary.simpleMessage("شديد"),
     "severity": MessageLookupByLibrary.simpleMessage("درجة الحساسية"),
     "shellfish": MessageLookupByLibrary.simpleMessage("المحار"),
+    "showAllDetails": MessageLookupByLibrary.simpleMessage("عرض كل التفاصيل"),
     "sideeffects": MessageLookupByLibrary.simpleMessage("الأثار الجانبية"),
     "signin": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "signup": MessageLookupByLibrary.simpleMessage("تسجيل حساب جديد"),
@@ -511,6 +551,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "smsnotification": MessageLookupByLibrary.simpleMessage(
       "اشعارات الرسائل النصية",
     ),
+    "somethingWentWrong": MessageLookupByLibrary.simpleMessage("حدث خطأ ما"),
     "sorrynoresultfound": MessageLookupByLibrary.simpleMessage(
       "عذرا، لا يوجد نتائج",
     ),

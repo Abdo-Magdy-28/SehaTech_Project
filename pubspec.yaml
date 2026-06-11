@@ -109,6 +109,8 @@ flutter:
     - assets/images/pharmacies/
     - assets/images/hospitals/
     - assets/images/prescribtions/
+    - assets/images/Drugtodrug/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

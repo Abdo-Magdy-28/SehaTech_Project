@@ -5,26 +5,26 @@ import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
 import 'package:grad_project/cubit/doctors/popular/popular_states.dart';
 import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
+import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/Reminders/DailyReminder.dart';
 import 'package:grad_project/models/medicineremindercardmodel.dart';
 import 'package:grad_project/screens/alldoctors.dart';
 import 'package:grad_project/screens/chatbotScreen.dart';
 import 'package:grad_project/widgets/Medicines/EmptyUpcoming.dart';
+import 'package:grad_project/widgets/Medicines/MedicineReminderCard.dart';
+import 'package:grad_project/widgets/Medicines/UpcomingReminder.dart';
 import 'package:grad_project/widgets/categorysrow.dart';
 import 'package:grad_project/widgets/chatbotslider.dart';
 import 'package:grad_project/widgets/customappbar.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
 import 'package:grad_project/widgets/doctors/doctor_details.dart';
 import 'package:grad_project/widgets/hearttopic.dart';
-
+import 'package:grad_project/widgets/homepage/DrugtoDrugwidget.dart';
 import 'package:grad_project/widgets/homepage/home_carouselcard.dart';
 import 'package:grad_project/widgets/homepage/medication_management_grid.dart';
-import 'package:grad_project/widgets/Medicines/MedicineReminderCard.dart';
-import 'package:grad_project/widgets/Medicines/UpcomingReminder.dart';
 import 'package:grad_project/widgets/prevent_diseases.dart';
 import 'package:grad_project/widgets/weakcalender.dart';
 import 'package:grad_project/widgets/weaklystreak.dart';
-import 'package:grad_project/generated/l10n.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class Homepagewidget extends StatefulWidget {
@@ -267,7 +267,8 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                   },
                 ),
               ),
-
+              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
+              SliverToBoxAdapter(child: DrugInteractionCheckerCard()),
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
               SliverToBoxAdapter(child: Weaklystreak()),
               SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),

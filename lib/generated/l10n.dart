@@ -2314,6 +2314,36 @@ class S {
     );
   }
 
+  /// `Drug Interactions Checker`
+  String get druginteractioncheaker {
+    return Intl.message(
+      'Drug Interactions Checker',
+      name: 'druginteractioncheaker',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cheak Interactions`
+  String get cheakInteractions {
+    return Intl.message(
+      'Cheak Interactions',
+      name: 'cheakInteractions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Medicines 1`
+  String get medicine1 {
+    return Intl.message('Medicines 1', name: 'medicine1', desc: '', args: []);
+  }
+
+  /// `Medicines 2`
+  String get medicine2 {
+    return Intl.message('Medicines 2', name: 'medicine2', desc: '', args: []);
+  }
+
   /// `Refill`
   String get reminderButtonRefill {
     return Intl.message(
@@ -2369,6 +2399,41 @@ class S {
     return Intl.message(
       'Every Week',
       name: 'reminderPeriodEveryWeek',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New`
+  String get newLabel {
+    return Intl.message('New', name: 'newLabel', desc: '', args: []);
+  }
+
+  /// `Drug Interaction Checker`
+  String get drugInteractionChecker {
+    return Intl.message(
+      'Drug Interaction Checker',
+      name: 'drugInteractionChecker',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check Interactions Between Medicines Accurately`
+  String get drugInteractionSubtitle {
+    return Intl.message(
+      'Check Interactions Between Medicines Accurately',
+      name: 'drugInteractionSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find Your Drugs Interactions`
+  String get findYourDrugsInteractions {
+    return Intl.message(
+      'Find Your Drugs Interactions',
+      name: 'findYourDrugsInteractions',
       desc: '',
       args: [],
     );
@@ -2626,6 +2691,96 @@ class S {
       name: 'daysago',
       desc: '',
       args: [count],
+    );
+  }
+
+  /// `This Tool Does Not Replace Professional Medical Advice. Always Consult Doctor.`
+  String get drugInteractionDisclaimer {
+    return Intl.message(
+      'This Tool Does Not Replace Professional Medical Advice. Always Consult Doctor.',
+      name: 'drugInteractionDisclaimer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show All Details`
+  String get showAllDetails {
+    return Intl.message(
+      'Show All Details',
+      name: 'showAllDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Drug Information Unavailable`
+  String get drugInfoUnavailable {
+    return Intl.message(
+      'Drug Information Unavailable',
+      name: 'drugInfoUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No interaction data was found for this medication. The drug may be unavailable in our current database or entered incorrectly.`
+  String get drugInfoUnavailableSubtitle {
+    return Intl.message(
+      'No interaction data was found for this medication. The drug may be unavailable in our current database or entered incorrectly.',
+      name: 'drugInfoUnavailableSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Interactions Found`
+  String get noInteractionsFound {
+    return Intl.message(
+      'No Interactions Found',
+      name: 'noInteractionsFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No known clinically significant interactions were detected between these two medications.`
+  String get noInteractionsSubtitle {
+    return Intl.message(
+      'No known clinically significant interactions were detected between these two medications.',
+      name: 'noInteractionsSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `1 Potential Drug Interaction Found`
+  String get interactionFound {
+    return Intl.message(
+      '1 Potential Drug Interaction Found',
+      name: 'interactionFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This combination may affect treatment safety or increase the risk of side effects. Please review the interaction details and consult your healthcare provider if necessary.`
+  String get interactionFoundSubtitle {
+    return Intl.message(
+      'This combination may affect treatment safety or increase the risk of side effects. Please review the interaction details and consult your healthcare provider if necessary.',
+      name: 'interactionFoundSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Something Went Wrong`
+  String get somethingWentWrong {
+    return Intl.message(
+      'Something Went Wrong',
+      name: 'somethingWentWrong',
+      desc: '',
+      args: [],
     );
   }
 }
