@@ -174,10 +174,7 @@ class DrugInteractionCheckerCard extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => BlocProvider(
-                    create: (_) => DrugInteractionCubit(),
-                    child: const DrugInteractionScreen(),
-                  ),
+                  builder: (_) => const DrugInteractionScreen(),
                 ),
               ),
               child: Row(

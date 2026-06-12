@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
+import 'package:grad_project/cubit/Drug%20To%20Drug%20Interaction/drugToDrugCubit.dart';
 import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
 import 'package:grad_project/cubit/Reminder/StreakReminder.dart';
 import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => Authcubit()),
         BlocProvider(create: (_) => DailyScheduleCubit()),
         BlocProvider(create: (_) => StreakCubit()),
+        BlocProvider(create: (_) => DrugInteractionCubit()),
       ],
 
       child: BlocBuilder<LocaleCubit, Locale>(
