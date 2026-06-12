@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
 import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
+import 'package:grad_project/cubit/Reminder/StreakReminder.dart';
 import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
 import 'package:grad_project/firebase_options.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => DoctorCubit()),
         BlocProvider(create: (_) => Authcubit()),
         BlocProvider(create: (_) => DailyScheduleCubit()),
+        BlocProvider(create: (_) => StreakCubit()),
       ],
 
       child: BlocBuilder<LocaleCubit, Locale>(
