@@ -25,8 +25,6 @@ class DailyScheduleError extends DailyScheduleState {
 
 class DailyScheduleCubit extends Cubit<DailyScheduleState> {
   final DailyScheduleService _service = DailyScheduleService();
-  final Set<int> _scheduledIds = {};
-
   DailyScheduleCubit() : super(DailyScheduleInitial());
 
   Future<void> loadSchedule(DateTime date) async {
@@ -37,43 +35,6 @@ class DailyScheduleCubit extends Cubit<DailyScheduleState> {
 
     try {
       final meds = await _service.fetchDailySchedule(formatted);
-
-      // Get already scheduled notification IDs from the OS directly
-      final scheduled = await AwesomeNotifications()
-          .listScheduledNotifications();
-      final scheduledIds = scheduled.map((n) => n.content!.id!).toSet();
-
-      for (final med in meds) {
-        final uniqueId = int.parse(med.reminderId.substring(0, 6), radix: 16);
-
-        // Skip if OS already has this one scheduled
-        if (scheduledIds.contains(uniqueId)) continue;
-
-        final parts = med.time.split(':');
-        final now = DateTime.now();
-        final reminderTime = DateTime(
-          now.year,
-          now.month,
-          now.day,
-          int.parse(parts[0]),
-          int.parse(parts[1]),
-        );
-
-        await AwesomeNotifications().createNotification(
-          content: NotificationContent(
-            id: uniqueId,
-            channelKey: 'medication_channel',
-            title: 'Time to take ${med.medicationName}',
-            body: 'Dosage: ${med.dosage} at ${med.time}',
-          ),
-          schedule: NotificationCalendar(
-            hour: reminderTime.hour,
-            minute: reminderTime.minute,
-            second: 0,
-            repeats: true,
-          ),
-        );
-      }
 
       emit(DailyScheduleLoaded(meds));
     } catch (e) {

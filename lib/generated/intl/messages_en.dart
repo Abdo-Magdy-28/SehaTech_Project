@@ -42,6 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Now, upcoming reminders today",
     ),
     "RemindLater": MessageLookupByLibrary.simpleMessage("Remind Later"),
+    "Scanned": MessageLookupByLibrary.simpleMessage("Scanned"),
     "TodaysSchedule": MessageLookupByLibrary.simpleMessage("Today\'s Schedule"),
     "Upcoming": MessageLookupByLibrary.simpleMessage("Upcoming"),
     "UpcomingReminder": MessageLookupByLibrary.simpleMessage(

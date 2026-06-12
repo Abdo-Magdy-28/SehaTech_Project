@@ -344,6 +344,7 @@
   "delete": "Delete",
   "yesterday": "Yesterday",
   "Addreminder":"Add reminder",
+  "Scanned":"Scanned",
   "Nowupcomingreminderstoday": "Now, upcoming reminders today",
   "minutesago": "{count}m ago",
   "@minutesago": {

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/generated/l10n.dart';
+import 'package:grad_project/models/Reminders/AllReminder.dart';
 import 'package:grad_project/models/Reminders/OcrHistory.dart';
 import 'package:grad_project/models/prescription_model.dart';
 
-class OcrHistoryCard extends StatelessWidget {
-  final OcrHistoryModel ocr;
+class ActualCard extends StatelessWidget {
+  final AllReminderModel reminder;
   final VoidCallback? onMorePressed;
 
-  const OcrHistoryCard({super.key, required this.ocr, this.onMorePressed});
+  const ActualCard({super.key, required this.reminder, this.onMorePressed});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +66,7 @@ class OcrHistoryCard extends StatelessWidget {
                     //  Medicine Name
                     Expanded(
                       child: Text(
-                        ocr.tradeName,
+                        reminder.genericName,
                         style: TextStyle(
                           fontSize: titleSize,
                           fontWeight: FontWeight.w700,
@@ -87,7 +88,7 @@ class OcrHistoryCard extends StatelessWidget {
                     SizedBox(width: sw * 0.02),
                     Expanded(
                       child: Text(
-                        ocr.manufacturer,
+                        reminder.strength,
                         style: TextStyle(
                           fontSize: subtitleSize,
                           color: const Color(0xFF686868),
@@ -120,7 +121,7 @@ class OcrHistoryCard extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            ocr.dosageForm,
+                            reminder.form,
                             style: TextStyle(
                               fontSize: badgeFontSize,
                               fontFamily: 'Cairo',

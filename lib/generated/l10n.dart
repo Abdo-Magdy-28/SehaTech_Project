@@ -2664,6 +2664,11 @@ class S {
     );
   }
 
+  /// `Scanned`
+  String get Scanned {
+    return Intl.message('Scanned', name: 'Scanned', desc: '', args: []);
+  }
+
   /// `Now, upcoming reminders today`
   String get Nowupcomingreminderstoday {
     return Intl.message(

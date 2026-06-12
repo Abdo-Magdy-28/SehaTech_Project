@@ -42,6 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "لا يوجد تذكيرات قادمة اليوم",
     ),
     "RemindLater": MessageLookupByLibrary.simpleMessage("ذكرني لاحقاً"),
+    "Scanned": MessageLookupByLibrary.simpleMessage("تم المسح"),
     "TodaysSchedule": MessageLookupByLibrary.simpleMessage("جدول اليوم"),
     "Upcoming": MessageLookupByLibrary.simpleMessage("قريبا"),
     "UpcomingReminder": MessageLookupByLibrary.simpleMessage("تذكير قادم"),

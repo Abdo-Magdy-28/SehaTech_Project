@@ -10,6 +10,8 @@ class AllReminderModel {
   final String endDate;
   final bool active;
   final String color;
+  final List<int> daysOfWeek;
+  final List<ReminderDoseTime> doseTimes;
 
   AllReminderModel({
     required this.id,
@@ -23,6 +25,8 @@ class AllReminderModel {
     required this.endDate,
     required this.active,
     required this.color,
+    required this.daysOfWeek,
+    required this.doseTimes,
   });
 
   factory AllReminderModel.fromJson(Map<String, dynamic> json) {
@@ -38,6 +42,33 @@ class AllReminderModel {
       endDate: json['endDate'] ?? '',
       active: json['active'] ?? false,
       color: json['color'] ?? '',
+      daysOfWeek: List<int>.from(json['daysOfWeek'] ?? []),
+      doseTimes: (json['doseTimes'] as List<dynamic>? ?? [])
+          .map((e) => ReminderDoseTime.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+class ReminderDoseTime {
+  final String time;
+  final String dosage;
+  final bool taken;
+  final String? takenAt;
+
+  ReminderDoseTime({
+    required this.time,
+    required this.dosage,
+    required this.taken,
+    this.takenAt,
+  });
+
+  factory ReminderDoseTime.fromJson(Map<String, dynamic> json) {
+    return ReminderDoseTime(
+      time: json['time'] ?? '',
+      dosage: json['dosage'] ?? '',
+      taken: json['taken'] ?? false,
+      takenAt: json['takenAt'],
     );
   }
 }

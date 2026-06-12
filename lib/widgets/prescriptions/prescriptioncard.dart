@@ -118,17 +118,17 @@ class OcrHistoryCard extends StatelessWidget {
                           vertical: sh * 0.004,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: const Color.fromARGB(255, 103, 202, 106),
                           borderRadius: BorderRadius.circular(sw * 0.05),
                         ),
                         child: Center(
                           child: Text(
-                            ocr.dosageForm,
+                            S.of(context).Scanned,
                             style: TextStyle(
                               fontSize: badgeFontSize,
                               fontFamily: 'Cairo',
                               fontWeight: FontWeight.w500,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                         ),

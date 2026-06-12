@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/Reminder/AllReminders.dart';
 import 'package:grad_project/cubit/Reminder/ReminderCubit.dart';
 import 'package:grad_project/cubit/prescription%20history/OcrHistoryCubit.dart';
 import 'package:grad_project/generated/l10n.dart';
+import 'package:grad_project/models/Reminders/AllReminder.dart';
 import 'package:grad_project/models/Reminders/OcrHistory.dart';
+import 'package:grad_project/screens/prescriptions/UpdateRemiderScreen.dart';
 import 'package:grad_project/screens/prescriptions/reminder_screen.dart';
 import 'package:grad_project/services/prescription%20History/OcrHistoryService.dart';
+import 'package:grad_project/widgets/prescriptions/ActualCards.dart';
 import 'package:grad_project/widgets/prescriptions/prescriptioncard.dart';
 import 'package:grad_project/widgets/prescriptions/prescriptionsearchbar.dart';
 
@@ -89,57 +93,107 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
     );
   }
 
-  // ── Static actual prescriptions as OcrHistoryModel ───────
-  final List<OcrHistoryModel> _actualPrescriptions = [
-    OcrHistoryModel(
-      id: '1',
-      userId: '',
-      tradeName: 'Amoxiciling 250gm',
-      genericName: '',
-      activeIngredients: [],
-      concentration: '',
-      dosageForm: '12 Capsules',
-      indications: [],
-      contraindications: [],
-      manufacturer: 'Antibiotic For Bacterial Infections',
-      storageConditions: '',
-      expiryDate: '',
-      createdAt: '',
-      updatedAt: '',
-    ),
-    OcrHistoryModel(
-      id: '2',
-      userId: '',
-      tradeName: 'Lisonopril 100gm',
-      genericName: '',
-      activeIngredients: [],
-      concentration: '',
-      dosageForm: '12 Capsules',
-      indications: [],
-      contraindications: [],
-      manufacturer: 'Antibiotic For Bacterial Infections',
-      storageConditions: '',
-      expiryDate: '',
-      createdAt: '',
-      updatedAt: '',
-    ),
-    OcrHistoryModel(
-      id: '3',
-      userId: '',
-      tradeName: 'Metformin 500gm',
-      genericName: '',
-      activeIngredients: [],
-      concentration: '',
-      dosageForm: '24 Capsules',
-      indications: [],
-      contraindications: [],
-      manufacturer: 'Antibiotic For Bacterial Infections',
-      storageConditions: '',
-      expiryDate: '',
-      createdAt: '',
-      updatedAt: '',
-    ),
-  ];
+  void _showActualOptions(
+    BuildContext context,
+    AllReminderModel reminder,
+    AllRemindersCubit cubit,
+  ) {
+    final devwidth = MediaQuery.of(context).size.width;
+    final devheight = MediaQuery.of(context).size.height;
+
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(devwidth * 0.06),
+        ),
+      ),
+      builder: (_) => Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: devwidth * 0.05,
+          vertical: devheight * 0.025,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Handle
+            Container(
+              width: devwidth * 0.1,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            SizedBox(height: devheight * 0.02),
+            Text(
+              reminder.medicationName,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: devwidth * 0.045,
+                fontFamily: 'Cairo',
+              ),
+            ),
+            SizedBox(height: devheight * 0.02),
+
+            // Edit
+            ListTile(
+              leading: Icon(
+                Icons.edit_outlined,
+                color: const Color(0xFF2260FF),
+                size: devwidth * 0.06,
+              ),
+              title: Text(
+                'Edit',
+                style: TextStyle(
+                  fontSize: devwidth * 0.04,
+                  fontFamily: 'Cairo',
+                  color: const Color(0xFF2260FF),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) => ReminderCubit(),
+                      child: UpdateReminderScreen(reminder: reminder),
+                    ),
+                  ),
+                ).then((_) => cubit.loadReminders()); // refresh after edit
+              },
+            ),
+
+            // Delete
+            ListTile(
+              leading: Icon(
+                Icons.delete_outline,
+                color: Colors.red,
+                size: devwidth * 0.06,
+              ),
+              title: Text(
+                'Delete',
+                style: TextStyle(
+                  fontSize: devwidth * 0.04,
+                  fontFamily: 'Cairo',
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onTap: () {
+                cubit.deleteReminder(reminder.id, reminder);
+                Navigator.pop(context);
+              },
+            ),
+
+            SizedBox(height: devheight * 0.01),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -167,8 +221,6 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
   Widget build(BuildContext context) {
     final devwidth = MediaQuery.of(context).size.width;
     final devheight = MediaQuery.of(context).size.height;
-
-    final filteredActual = _filtered(_actualPrescriptions);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -221,7 +273,7 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
             child: TabBarView(
               controller: _tabController,
               children: [
-                _buildActualTab(filteredActual, devwidth, devheight),
+                _buildActualTab(devwidth, devheight),
                 _buildHistoryTab(devwidth),
               ],
             ),
@@ -232,69 +284,103 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
   }
 
   // ── Actual Tab ───────────────────────────────────────────
-  Widget _buildActualTab(
-    List<OcrHistoryModel> list,
-    double devwidth,
-    double devheight,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: devwidth * 0.04,
-            vertical: devheight * 0.012,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                S.of(context).allperscriptions,
-                style: TextStyle(
-                  fontFamily: 'Cairo',
-                  fontWeight: FontWeight.w700,
-                  fontSize: devwidth * 0.045,
-                  color: const Color(0xFF111111),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BlocProvider(
-                        create: (context) => ReminderCubit(),
-                        child: ReminderScreen(
-                          medicineName: '',
-                          medicineSize: '',
+  Widget _buildActualTab(double devwidth, double devheight) {
+    return BlocProvider(
+      create: (context) => AllRemindersCubit()..loadReminders(),
+      child: BlocBuilder<AllRemindersCubit, AllRemindersState>(
+        builder: (context, state) {
+          if (state is AllRemindersLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is AllRemindersLoaded) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: devwidth * 0.04,
+                    vertical: devheight * 0.012,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        S.of(context).allperscriptions,
+                        style: TextStyle(
+                          fontFamily: 'Cairo',
+                          fontWeight: FontWeight.w700,
+                          fontSize: devwidth * 0.045,
+                          color: const Color(0xFF111111),
                         ),
                       ),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: devwidth * 0.08,
-                  height: devwidth * 0.08,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(width: 1.5),
-                  ),
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.black,
-                    size: devwidth * 0.05,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BlocProvider(
+                                create: (context) => ReminderCubit(),
+                                child: ReminderScreen(
+                                  medicineName: '',
+                                  medicineSize: '',
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: devwidth * 0.08,
+                          height: devwidth * 0.08,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(width: 1.5),
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            color: Colors.black,
+                            size: devwidth * 0.05,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        Expanded(child: _buildList(list, devwidth)),
-      ],
+                Expanded(
+                  child: _buildReminderList(
+                    state.reminders,
+                    devwidth,
+                    context.read<AllRemindersCubit>(),
+                  ),
+                ),
+              ],
+            );
+          } else if (state is AllRemindersError) {
+            return Center(child: Text('Error: ${state.message}'));
+          }
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 
-  // ── History Tab ──────────────────────────────────────────
+  Widget _buildReminderList(
+    List<AllReminderModel> list,
+    double devwidth,
+    AllRemindersCubit cubit,
+  ) {
+    if (list.isEmpty) return _emptyState(devwidth);
+    return ListView.builder(
+      padding: EdgeInsets.only(bottom: devwidth * 0.04),
+      itemCount: list.length,
+      itemBuilder: (ctx, i) => ActualCard(
+        reminder: list[i],
+        onMorePressed: () => _showActualOptions(ctx, list[i], cubit),
+      ),
+    );
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ── History Tab ──────────────────────────────────────────-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Widget _buildHistoryTab(double devwidth) {
     return BlocProvider(
       create: (context) => OcrHistoryCubit(OcrHistoryService())..loadHistory(),
