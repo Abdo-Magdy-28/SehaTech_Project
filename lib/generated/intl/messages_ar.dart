@@ -36,6 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "Addreminder": MessageLookupByLibrary.simpleMessage("اضف تذكير"),
     "MarkasTaken": MessageLookupByLibrary.simpleMessage("تم التناول"),
     "Nowupcomingreminderstoday": MessageLookupByLibrary.simpleMessage(
       "لا يوجد تذكيرات قادمة اليوم",

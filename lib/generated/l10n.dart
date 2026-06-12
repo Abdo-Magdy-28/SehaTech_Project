@@ -2654,6 +2654,16 @@ class S {
     return Intl.message('Yesterday', name: 'yesterday', desc: '', args: []);
   }
 
+  /// `Add reminder`
+  String get Addreminder {
+    return Intl.message(
+      'Add reminder',
+      name: 'Addreminder',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Now, upcoming reminders today`
   String get Nowupcomingreminderstoday {
     return Intl.message(

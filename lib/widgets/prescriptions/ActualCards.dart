@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:grad_project/cubit/Reminder/ReminderCubit.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/Reminders/OcrHistory.dart';
 import 'package:grad_project/models/prescription_model.dart';
-import 'package:grad_project/screens/prescriptions/reminder_screen.dart';
 
 class OcrHistoryCard extends StatelessWidget {
   final OcrHistoryModel ocr;
@@ -140,22 +137,7 @@ class OcrHistoryCard extends StatelessWidget {
                     // Button badge
                     Expanded(
                       child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return BlocProvider(
-                                  create: (context) => ReminderCubit(),
-                                  child: ReminderScreen(
-                                    medicineName: ocr.tradeName,
-                                    medicineSize: "",
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        },
+                        onTap: () {},
                         child: Container(
                           height: sh * 0.04,
                           padding: EdgeInsets.symmetric(vertical: sh * 0.004),
