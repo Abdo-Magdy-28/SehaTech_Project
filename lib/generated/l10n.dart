@@ -2704,6 +2704,46 @@ class S {
     );
   }
 
+  /// `No doctors found in this category`
+  String get nodoctorsincategory {
+    return Intl.message(
+      'No doctors found in this category',
+      name: 'nodoctorsincategory',
+      desc: 'Empty state for category screen',
+      args: [],
+    );
+  }
+
+  /// `Loading categories...`
+  String get loadingcategories {
+    return Intl.message(
+      'Loading categories...',
+      name: 'loadingcategories',
+      desc: 'Loading indicator for category bar',
+      args: [],
+    );
+  }
+
+  /// `Loading doctors…`
+  String get loadingdoctors {
+    return Intl.message(
+      'Loading doctors…',
+      name: 'loadingdoctors',
+      desc: 'Progress label while fetching all doctors',
+      args: [],
+    );
+  }
+
+  /// `All Doctors`
+  String get alldoctors {
+    return Intl.message(
+      'All Doctors',
+      name: 'alldoctors',
+      desc: 'Section header above full doctors list',
+      args: [],
+    );
+  }
+
   /// `This Tool Does Not Replace Professional Medical Advice. Always Consult Doctor.`
   String get drugInteractionDisclaimer {
     return Intl.message(
@@ -2789,6 +2829,106 @@ class S {
     return Intl.message(
       'Something Went Wrong',
       name: 'somethingWentWrong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allergy`
+  String get specialityAllergyImmunology {
+    return Intl.message(
+      'Allergy',
+      name: 'specialityAllergyImmunology',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Andrology`
+  String get specialityAndrology {
+    return Intl.message(
+      'Andrology',
+      name: 'specialityAndrology',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Audiology`
+  String get specialityAudiology {
+    return Intl.message(
+      'Audiology',
+      name: 'specialityAudiology',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cardio & Surgery`
+  String get specialityCardiologyThoracic {
+    return Intl.message(
+      'Cardio & Surgery',
+      name: 'specialityCardiologyThoracic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cardio & Vascular`
+  String get specialityCardiologyVascular {
+    return Intl.message(
+      'Cardio & Vascular',
+      name: 'specialityCardiologyVascular',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chest`
+  String get specialityChestRespiratory {
+    return Intl.message(
+      'Chest',
+      name: 'specialityChestRespiratory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dentistry`
+  String get specialityDentistry {
+    return Intl.message(
+      'Dentistry',
+      name: 'specialityDentistry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dermatology`
+  String get specialityDermatology {
+    return Intl.message(
+      'Dermatology',
+      name: 'specialityDermatology',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Diabetes`
+  String get specialityDiabetesEndocrinology {
+    return Intl.message(
+      'Diabetes',
+      name: 'specialityDiabetesEndocrinology',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Radiology`
+  String get specialityDiagnosticRadiology {
+    return Intl.message(
+      'Radiology',
+      name: 'specialityDiagnosticRadiology',
       desc: '',
       args: [],
     );

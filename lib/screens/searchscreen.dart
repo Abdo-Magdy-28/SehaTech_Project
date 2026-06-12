@@ -6,7 +6,7 @@ import 'package:grad_project/models/medicine.dart';
 import 'package:grad_project/models/pharmacies.dart';
 import 'package:grad_project/screens/Hospitals/allhospitals.dart';
 import 'package:grad_project/screens/Hospitals/hospitaldetails.dart';
-import 'package:grad_project/screens/alldoctors.dart';
+import 'package:grad_project/screens/Doctors/alldoctors.dart';
 import 'package:grad_project/screens/medicines/allmedicines.dart';
 import 'package:grad_project/screens/pharmacies/allpahramcies.dart';
 import 'package:grad_project/screens/pharmacies/pharmacydetails.dart';

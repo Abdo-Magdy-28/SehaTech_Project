@@ -93,11 +93,16 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 
                 // Doctor image — centered, tall
                 Positioned(
-                  top: devheight * 0.252,
+                  top: devheight * 0.01,
                   left: 0,
                   right: 0,
                   child: Center(
-                    child: Transform.scale(scale: 2, child: widget.doctorimage),
+                    child: Transform.scale(
+                      scale: 0.5,
+                      child: Image.asset(
+                        "assets/images/alldoctors/4c97a3a7-35a4-4cb5-91ae-47322cfa9eb4 1.png",
+                      ),
+                    ),
                   ),
                 ),
               ],

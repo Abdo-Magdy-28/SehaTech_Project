@@ -8,7 +8,7 @@ import 'package:grad_project/cubit/language/locale_cubit.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/Reminders/DailyReminder.dart';
 import 'package:grad_project/models/medicineremindercardmodel.dart';
-import 'package:grad_project/screens/alldoctors.dart';
+import 'package:grad_project/screens/Doctors/alldoctors.dart';
 import 'package:grad_project/screens/chatbotScreen.dart';
 import 'package:grad_project/widgets/Medicines/EmptyUpcoming.dart';
 import 'package:grad_project/widgets/Medicines/MedicineReminderCard.dart';

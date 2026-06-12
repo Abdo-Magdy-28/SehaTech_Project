@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grad_project/cubit/Medicine%20Scan/medicinescan_cubit.dart';
 import 'package:grad_project/cubit/search/medicine/medicine_search.dart';
 import 'package:grad_project/screens/Hospitals/allhospitals.dart';
-import 'package:grad_project/screens/alldoctors.dart';
+import 'package:grad_project/screens/Doctors/alldoctors.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/medicines/allmedicines.dart';
 import 'package:grad_project/screens/pharmacies/allpahramcies.dart';

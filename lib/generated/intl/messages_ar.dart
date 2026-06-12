@@ -60,6 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "addressrequired": MessageLookupByLibrary.simpleMessage("العنوان مطلوب"),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("مساعد ذكي"),
     "allchats": MessageLookupByLibrary.simpleMessage("كل المحادثات"),
+    "alldoctors": MessageLookupByLibrary.simpleMessage("جميع الأطباء"),
     "allergies": MessageLookupByLibrary.simpleMessage("الحساسية"),
     "allperscriptions": MessageLookupByLibrary.simpleMessage("كل الوصفات"),
     "alphabetfromatoz": MessageLookupByLibrary.simpleMessage(
@@ -325,6 +326,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "lessexperinencefirst": MessageLookupByLibrary.simpleMessage(
       "الخبرة: الاقل",
     ),
+    "loadingcategories": MessageLookupByLibrary.simpleMessage(
+      "جاري تحميل التخصصات...",
+    ),
+    "loadingdoctors": MessageLookupByLibrary.simpleMessage(
+      "جارٍ تحميل الأطباء…",
+    ),
     "location": MessageLookupByLibrary.simpleMessage("الموقع"),
     "locationnearestfirst": MessageLookupByLibrary.simpleMessage(
       "الموقع: الاقرب اولا",
@@ -383,6 +390,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "noInternet": MessageLookupByLibrary.simpleMessage(
       "لا يوجد اتصال بالإنترنت",
+    ),
+    "nodoctorsincategory": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد أطباء في هذا التخصص",
     ),
     "nokeepchanges": MessageLookupByLibrary.simpleMessage("لا، حفظ التغييرات"),
     "noperscriptionsfound": MessageLookupByLibrary.simpleMessage(
@@ -557,6 +567,26 @@ class MessageLookup extends MessageLookupByLibrary {
       "عذرا، لا يوجد نتائج",
     ),
     "spasm": MessageLookupByLibrary.simpleMessage("تشنج"),
+    "specialityAllergyImmunology": MessageLookupByLibrary.simpleMessage(
+      "حساسية",
+    ),
+    "specialityAndrology": MessageLookupByLibrary.simpleMessage("أمراض ذكورة"),
+    "specialityAudiology": MessageLookupByLibrary.simpleMessage("سمعيات"),
+    "specialityCardiologyThoracic": MessageLookupByLibrary.simpleMessage(
+      "قلب وجراحة",
+    ),
+    "specialityCardiologyVascular": MessageLookupByLibrary.simpleMessage(
+      "قلب وأوعية",
+    ),
+    "specialityChestRespiratory": MessageLookupByLibrary.simpleMessage("صدر"),
+    "specialityDentistry": MessageLookupByLibrary.simpleMessage("أسنان"),
+    "specialityDermatology": MessageLookupByLibrary.simpleMessage("جلدية"),
+    "specialityDiabetesEndocrinology": MessageLookupByLibrary.simpleMessage(
+      "سكر وغدد",
+    ),
+    "specialityDiagnosticRadiology": MessageLookupByLibrary.simpleMessage(
+      "أشعة",
+    ),
     "startTime": MessageLookupByLibrary.simpleMessage("10:30 صباحاً"),
     "startnewconversation": MessageLookupByLibrary.simpleMessage(
       "ابدأ محادثة جديدة لتظهر هنا.",

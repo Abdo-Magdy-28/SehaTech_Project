@@ -371,6 +371,22 @@
       }
     }
   },
+  "nodoctorsincategory": "لا يوجد أطباء في هذا التخصص",
+"@nodoctorsincategory": {
+  "description": "Message shown when a category has no doctors"
+},
+"loadingcategories": "جاري تحميل التخصصات...",
+"@loadingcategories": {
+  "description": "Loading indicator for category bar"
+}
+,"nodoctorsincategory": "لا يوجد أطباء في هذا التخصص",
+"@nodoctorsincategory": { "description": "Empty state for category screen" },
+
+"loadingdoctors": "جارٍ تحميل الأطباء…",
+"@loadingdoctors": { "description": "Progress label while fetching all doctors" },
+
+"alldoctors": "جميع الأطباء",
+"@alldoctors": { "description": "Section header above full doctors list" },
   "drugInteractionDisclaimer": "هذه الأداة لا تُغني عن الاستشارة الطبية المتخصصة. استشر طبيبك دائماً.",
   "showAllDetails": "عرض كل التفاصيل",
   "drugInfoUnavailable": "معلومات الدواء غير متاحة",
@@ -379,5 +395,33 @@
   "noInteractionsSubtitle": "لم يتم اكتشاف أي تفاعلات سريرية معروفة بين هذين الدواءين.",
   "interactionFound": "تم اكتشاف تفاعل دوائي محتمل",
   "interactionFoundSubtitle": "قد يؤثر هذا التركيب على سلامة العلاج أو يزيد من خطر الآثار الجانبية. يرجى مراجعة تفاصيل التفاعل واستشارة مقدم الرعاية الصحية إذا لزم الأمر.",
-  "somethingWentWrong": "حدث خطأ ما"
+  "somethingWentWrong": "حدث خطأ ما","specialityAllergyImmunology": "حساسية",
+  "@specialityAllergyImmunology": {},
+
+  "specialityAndrology": "أمراض ذكورة",
+  "@specialityAndrology": {},
+
+  "specialityAudiology": "سمعيات",
+  "@specialityAudiology": {},
+
+  "specialityCardiologyThoracic": "قلب وجراحة",
+  "@specialityCardiologyThoracic": {},
+
+  "specialityCardiologyVascular": "قلب وأوعية",
+  "@specialityCardiologyVascular": {},
+
+  "specialityChestRespiratory": "صدر",
+  "@specialityChestRespiratory": {},
+
+  "specialityDentistry": "أسنان",
+  "@specialityDentistry": {},
+
+  "specialityDermatology": "جلدية",
+  "@specialityDermatology": {},
+
+  "specialityDiabetesEndocrinology": "سكر وغدد",
+  "@specialityDiabetesEndocrinology": {},
+
+  "specialityDiagnosticRadiology": "أشعة",
+  "@specialityDiagnosticRadiology": {}
 }

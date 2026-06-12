@@ -14,6 +14,7 @@ class Doctorcard extends StatelessWidget {
     required this.enddate,
     required this.name,
     required this.doctorimage,
+    String? profile,
   });
   final Image doctorimage;
   final double devheight, rate;

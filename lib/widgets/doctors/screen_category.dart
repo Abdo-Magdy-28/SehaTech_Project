@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/models/doctor.dart';
-import 'package:grad_project/screens/alldoctors.dart';
+import 'package:grad_project/screens/Doctors/alldoctors.dart';
 import 'package:grad_project/widgets/doctors/doctor_details.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
 

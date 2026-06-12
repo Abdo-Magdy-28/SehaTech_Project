@@ -64,6 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("AI Assistant"),
     "allchats": MessageLookupByLibrary.simpleMessage("All Chats"),
+    "alldoctors": MessageLookupByLibrary.simpleMessage("All Doctors"),
     "allergies": MessageLookupByLibrary.simpleMessage("Allergies"),
     "allperscriptions": MessageLookupByLibrary.simpleMessage(
       "All Perscriptions",
@@ -332,6 +333,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "lessexperinencefirst": MessageLookupByLibrary.simpleMessage(
       "Experience: Less experience first",
     ),
+    "loadingcategories": MessageLookupByLibrary.simpleMessage(
+      "Loading categories...",
+    ),
+    "loadingdoctors": MessageLookupByLibrary.simpleMessage("Loading doctors…"),
     "location": MessageLookupByLibrary.simpleMessage("Location"),
     "locationnearestfirst": MessageLookupByLibrary.simpleMessage(
       "Location :nearest first",
@@ -394,6 +399,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "noInternet": MessageLookupByLibrary.simpleMessage(
       "No internet connection",
+    ),
+    "nodoctorsincategory": MessageLookupByLibrary.simpleMessage(
+      "No doctors found in this category",
     ),
     "nokeepchanges": MessageLookupByLibrary.simpleMessage("No, Keep Changes"),
     "noperscriptionsfound": MessageLookupByLibrary.simpleMessage(
@@ -582,6 +590,28 @@ class MessageLookup extends MessageLookupByLibrary {
       "Sorry, no result found",
     ),
     "spasm": MessageLookupByLibrary.simpleMessage("Spasm"),
+    "specialityAllergyImmunology": MessageLookupByLibrary.simpleMessage(
+      "Allergy",
+    ),
+    "specialityAndrology": MessageLookupByLibrary.simpleMessage("Andrology"),
+    "specialityAudiology": MessageLookupByLibrary.simpleMessage("Audiology"),
+    "specialityCardiologyThoracic": MessageLookupByLibrary.simpleMessage(
+      "Cardio & Surgery",
+    ),
+    "specialityCardiologyVascular": MessageLookupByLibrary.simpleMessage(
+      "Cardio & Vascular",
+    ),
+    "specialityChestRespiratory": MessageLookupByLibrary.simpleMessage("Chest"),
+    "specialityDentistry": MessageLookupByLibrary.simpleMessage("Dentistry"),
+    "specialityDermatology": MessageLookupByLibrary.simpleMessage(
+      "Dermatology",
+    ),
+    "specialityDiabetesEndocrinology": MessageLookupByLibrary.simpleMessage(
+      "Diabetes",
+    ),
+    "specialityDiagnosticRadiology": MessageLookupByLibrary.simpleMessage(
+      "Radiology",
+    ),
     "startTime": MessageLookupByLibrary.simpleMessage("10:30am"),
     "startnewconversation": MessageLookupByLibrary.simpleMessage(
       "Start a new conversation to see it here.",

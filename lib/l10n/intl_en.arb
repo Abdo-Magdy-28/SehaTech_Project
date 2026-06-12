@@ -368,7 +368,23 @@
         "type": "int"
       }
     }
-  },
+  },"nodoctorsincategory": "No doctors found in this category",
+"@nodoctorsincategory": {
+  "description": "Message shown when a category has no doctors"
+},
+"loadingcategories": "Loading categories...",
+"@loadingcategories": {
+  "description": "Loading indicator for category bar"
+}
+,
+"nodoctorsincategory": "No doctors found in this category",
+"@nodoctorsincategory": { "description": "Empty state for category screen" },
+
+"loadingdoctors": "Loading doctors…",
+"@loadingdoctors": { "description": "Progress label while fetching all doctors" },
+
+"alldoctors": "All Doctors",
+"@alldoctors": { "description": "Section header above full doctors list" },
   "drugInteractionDisclaimer": "This Tool Does Not Replace Professional Medical Advice. Always Consult Doctor.",
   "showAllDetails": "Show All Details",
   "drugInfoUnavailable": "Drug Information Unavailable",
@@ -377,5 +393,33 @@
   "noInteractionsSubtitle": "No known clinically significant interactions were detected between these two medications.",
   "interactionFound": "1 Potential Drug Interaction Found",
   "interactionFoundSubtitle": "This combination may affect treatment safety or increase the risk of side effects. Please review the interaction details and consult your healthcare provider if necessary.",
-  "somethingWentWrong": "Something Went Wrong"
+  "somethingWentWrong": "Something Went Wrong","specialityAllergyImmunology": "Allergy",
+  "@specialityAllergyImmunology": {},
+
+  "specialityAndrology": "Andrology",
+  "@specialityAndrology": {},
+
+  "specialityAudiology": "Audiology",
+  "@specialityAudiology": {},
+
+  "specialityCardiologyThoracic": "Cardio & Surgery",
+  "@specialityCardiologyThoracic": {},
+
+  "specialityCardiologyVascular": "Cardio & Vascular",
+  "@specialityCardiologyVascular": {},
+
+  "specialityChestRespiratory": "Chest",
+  "@specialityChestRespiratory": {},
+
+  "specialityDentistry": "Dentistry",
+  "@specialityDentistry": {},
+
+  "specialityDermatology": "Dermatology",
+  "@specialityDermatology": {},
+
+  "specialityDiabetesEndocrinology": "Diabetes",
+  "@specialityDiabetesEndocrinology": {},
+
+  "specialityDiagnosticRadiology": "Radiology",
+  "@specialityDiagnosticRadiology": {}
 }
