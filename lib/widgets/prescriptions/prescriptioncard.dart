@@ -1,38 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/models/Reminders/OcrHistory.dart';
 import 'package:grad_project/models/prescription_model.dart';
 
-class PrescriptionCard extends StatelessWidget {
-  final Prescription prescription;
+class OcrHistoryCard extends StatelessWidget {
+  final OcrHistoryModel ocr;
   final VoidCallback? onMorePressed;
 
-  const PrescriptionCard({
-    super.key,
-    required this.prescription,
-    this.onMorePressed,
-  });
-
-  Color get _dateBackgroundColor {
-    switch (prescription.status) {
-      case PrescriptionStatus.active:
-        return const Color(0xFF53cc79); // green
-      case PrescriptionStatus.upcoming:
-        return const Color(0xFFFEF3C7); // yellow/amber
-      case PrescriptionStatus.expired:
-        return const Color(0xFFFEE2E2); // red/pink
-    }
-  }
-
-  Color get _dateTextColor {
-    switch (prescription.status) {
-      case PrescriptionStatus.active:
-        return Colors.white;
-      case PrescriptionStatus.upcoming:
-        return const Color(0xFFD97706);
-      case PrescriptionStatus.expired:
-        return const Color(0xFFDC2626);
-    }
-  }
+  const OcrHistoryCard({super.key, required this.ocr, this.onMorePressed});
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +64,7 @@ class PrescriptionCard extends StatelessWidget {
                     //  Medicine Name
                     Expanded(
                       child: Text(
-                        prescription.medicineName,
+                        ocr.tradeName,
                         style: TextStyle(
                           fontSize: titleSize,
                           fontWeight: FontWeight.w700,
@@ -111,7 +86,7 @@ class PrescriptionCard extends StatelessWidget {
                     SizedBox(width: sw * 0.02),
                     Expanded(
                       child: Text(
-                        prescription.description,
+                        ocr.manufacturer,
                         style: TextStyle(
                           fontSize: subtitleSize,
                           color: const Color(0xFF686868),
@@ -144,7 +119,7 @@ class PrescriptionCard extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          prescription.capsuleCount,
+                          ocr.dosageForm,
                           style: TextStyle(
                             fontSize: badgeFontSize,
                             fontFamily: 'Cairo',
@@ -158,33 +133,6 @@ class PrescriptionCard extends StatelessWidget {
                     SizedBox(width: sw * 0.05),
 
                     // Date range badge
-                    Flexible(
-                      child: Container(
-                        height: sh * 0.04,
-                        width: sw * 0.35,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: sw * 0.03,
-                          vertical: sh * 0.004,
-                        ),
-                        decoration: BoxDecoration(
-                          color: _dateBackgroundColor,
-                          borderRadius: BorderRadius.circular(sw * 0.05),
-                        ),
-                        child: Center(
-                          child: Text(
-                            prescription.dateRange,
-                            style: TextStyle(
-                              fontSize: badgeFontSize,
-                              fontFamily: 'Cairo',
-                              fontWeight: FontWeight.w600,
-                              color: _dateTextColor,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ],

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/Reminder/ReminderCubit.dart';
+import 'package:grad_project/cubit/prescription%20history/OcrHistoryCubit.dart';
 import 'package:grad_project/generated/l10n.dart';
-import 'package:grad_project/models/prescription_model.dart';
+import 'package:grad_project/models/Reminders/OcrHistory.dart';
 import 'package:grad_project/screens/prescriptions/reminder_screen.dart';
+import 'package:grad_project/services/prescription%20History/OcrHistoryService.dart';
 import 'package:grad_project/widgets/prescriptions/prescriptioncard.dart';
 import 'package:grad_project/widgets/prescriptions/prescriptionsearchbar.dart';
 
@@ -19,85 +21,123 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
   late TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+  void _showDeleteOption(
+    BuildContext context,
+    OcrHistoryModel ocr, [
+    OcrHistoryCubit? cubit,
+  ]) {
+    final devwidth = MediaQuery.of(context).size.width;
+    final devheight = MediaQuery.of(context).size.height;
 
-  final List<Prescription> _actualPrescriptions = const [
-    Prescription(
-      medicineName: 'Amoxiciling 250gm',
-      description: 'Antibiotic For Bacterial Infections',
-      capsuleCount: '12 Capsules',
-      dateRange: '12 - 9 Feb , 2026',
-      status: PrescriptionStatus.active,
-    ),
-    Prescription(
-      medicineName: 'Lisonopril 100gm',
-      description: 'Antibiotic For Bacterial Infections',
-      capsuleCount: '12 Capsules',
-      dateRange: '10 - 1 Mar , 2026',
-      status: PrescriptionStatus.upcoming,
-    ),
-    Prescription(
-      medicineName: 'Metformin 500gm',
-      description: 'Antibiotic For Bacterial Infections',
-      capsuleCount: '24 Capsules',
-      dateRange: '20- 9 Feb , 2026',
-      status: PrescriptionStatus.expired,
-    ),
-    Prescription(
-      medicineName: 'Lisonopril 100gm',
-      description: 'Antibiotic For Bacterial Infections',
-      capsuleCount: '12 Capsules',
-      dateRange: '10 - 1 Mar , 2026',
-      status: PrescriptionStatus.upcoming,
-    ),
-    Prescription(
-      medicineName: 'Metformin 500gm',
-      description: 'Antibiotic For Bacterial Infections',
-      capsuleCount: '24 Capsules',
-      dateRange: '20- 9 Feb , 2026',
-      status: PrescriptionStatus.expired,
-    ),
-  ];
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(devwidth * 0.06),
+        ),
+      ),
+      builder: (_) => Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: devwidth * 0.05,
+          vertical: devheight * 0.025,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: devwidth * 0.1,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            SizedBox(height: devheight * 0.02),
+            Text(
+              ocr.tradeName,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: devwidth * 0.045,
+                fontFamily: 'Cairo',
+              ),
+            ),
+            SizedBox(height: devheight * 0.02),
+            ListTile(
+              leading: Icon(
+                Icons.delete_outline,
+                color: Colors.red,
+                size: devwidth * 0.06,
+              ),
+              title: Text(
+                'Delete',
+                style: TextStyle(
+                  fontSize: devwidth * 0.04,
+                  fontFamily: 'Cairo',
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                cubit?.deleteScan(ocr.id);
+              },
+            ),
+            SizedBox(height: devheight * 0.01),
+          ],
+        ),
+      ),
+    );
+  }
 
-  final List<Prescription> _historyPrescriptions = const [
-    Prescription(
-      medicineName: 'Amoxiciling 250gm',
-      description: 'Antibiotic For Bacterial Infections',
-      capsuleCount: '12 Capsules',
-      dateRange: '12 - 9 Feb , 2026',
-      status: PrescriptionStatus.expired,
-      isHistory: true,
+  // ── Static actual prescriptions as OcrHistoryModel ───────
+  final List<OcrHistoryModel> _actualPrescriptions = [
+    OcrHistoryModel(
+      id: '1',
+      userId: '',
+      tradeName: 'Amoxiciling 250gm',
+      genericName: '',
+      activeIngredients: [],
+      concentration: '',
+      dosageForm: '12 Capsules',
+      indications: [],
+      contraindications: [],
+      manufacturer: 'Antibiotic For Bacterial Infections',
+      storageConditions: '',
+      expiryDate: '',
+      createdAt: '',
+      updatedAt: '',
     ),
-    Prescription(
-      medicineName: 'Lisonopril 100gm',
-      description: 'Antibiotic For Bacterial Infections',
-      capsuleCount: '12 Capsules',
-      dateRange: '10 - 9 Jan , 2026',
-      status: PrescriptionStatus.expired,
-      isHistory: true,
+    OcrHistoryModel(
+      id: '2',
+      userId: '',
+      tradeName: 'Lisonopril 100gm',
+      genericName: '',
+      activeIngredients: [],
+      concentration: '',
+      dosageForm: '12 Capsules',
+      indications: [],
+      contraindications: [],
+      manufacturer: 'Antibiotic For Bacterial Infections',
+      storageConditions: '',
+      expiryDate: '',
+      createdAt: '',
+      updatedAt: '',
     ),
-    Prescription(
-      medicineName: 'Metformin 500gm',
-      description: 'Antibiotic For Bacterial Infections',
-      capsuleCount: '24 Capsules',
-      dateRange: '20- 9 Feb , 2026',
-      status: PrescriptionStatus.expired,
-      isHistory: true,
-    ),
-    Prescription(
-      medicineName: 'Metformin 500gm',
-      description: 'Antibiotic For Bacterial Infections',
-      capsuleCount: '24 Capsules',
-      dateRange: '20- 9 Feb , 2026',
-      status: PrescriptionStatus.expired,
-      isHistory: true,
-    ),
-    Prescription(
-      medicineName: 'Amoxiciling 250gm',
-      description: 'Antibiotic For Bacterial Infections',
-      capsuleCount: '12 Capsules',
-      dateRange: '12 - 9 Feb , 2026',
-      status: PrescriptionStatus.expired,
-      isHistory: true,
+    OcrHistoryModel(
+      id: '3',
+      userId: '',
+      tradeName: 'Metformin 500gm',
+      genericName: '',
+      activeIngredients: [],
+      concentration: '',
+      dosageForm: '24 Capsules',
+      indications: [],
+      contraindications: [],
+      manufacturer: 'Antibiotic For Bacterial Infections',
+      storageConditions: '',
+      expiryDate: '',
+      createdAt: '',
+      updatedAt: '',
     ),
   ];
 
@@ -114,27 +154,13 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
     super.dispose();
   }
 
-  List<Prescription> _filtered(List<Prescription> list) {
+  List<OcrHistoryModel> _filtered(List<OcrHistoryModel> list) {
     if (_searchQuery.isEmpty) return list;
     return list
         .where(
-          (p) =>
-              p.medicineName.toLowerCase().contains(_searchQuery.toLowerCase()),
+          (p) => p.tradeName.toLowerCase().contains(_searchQuery.toLowerCase()),
         )
         .toList();
-  }
-
-  void _showMoreOptions(BuildContext context, Prescription prescription) {
-    final devwidth = MediaQuery.of(context).size.width;
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(devwidth * 0.06),
-        ),
-      ),
-      builder: (_) => _MoreOptionsSheet(prescription: prescription),
-    );
   }
 
   @override
@@ -143,7 +169,6 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
     final devheight = MediaQuery.of(context).size.height;
 
     final filteredActual = _filtered(_actualPrescriptions);
-    final filteredHistory = _filtered(_historyPrescriptions);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -153,24 +178,21 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
         centerTitle: true,
         title: Text(
           S.of(context).perscriptions,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         toolbarHeight: 80,
         backgroundColor: Colors.white,
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1),
+          preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: Colors.grey),
         ),
       ),
       body: Column(
         children: [
-          // Search bar
           PrescriptionsSearchBar(
             controller: _searchController,
             onChanged: (v) => setState(() => _searchQuery = v),
           ),
-
-          // Tab bar
           Container(
             margin: EdgeInsets.symmetric(horizontal: devwidth * 0.04),
             child: TabBar(
@@ -195,17 +217,12 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
               ],
             ),
           ),
-
-          // Tab content
           Expanded(
             child: TabBarView(
               controller: _tabController,
               children: [
-                // ── Actual Tab ──────────────────────────────
                 _buildActualTab(filteredActual, devwidth, devheight),
-
-                // ── History Tab ─────────────────────────────
-                _buildHistoryTab(filteredHistory, devwidth),
+                _buildHistoryTab(devwidth),
               ],
             ),
           ),
@@ -214,16 +231,15 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
     );
   }
 
-  //Actual Tab
+  // ── Actual Tab ───────────────────────────────────────────
   Widget _buildActualTab(
-    List<Prescription> list,
+    List<OcrHistoryModel> list,
     double devwidth,
     double devheight,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Header row
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: devwidth * 0.04,
@@ -241,7 +257,6 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
                   color: const Color(0xFF111111),
                 ),
               ),
-              // Add button
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -274,163 +289,73 @@ class _AllPrescriptionsState extends State<AllPrescriptions>
             ],
           ),
         ),
-        // List
         Expanded(child: _buildList(list, devwidth)),
       ],
     );
   }
 
   // ── History Tab ──────────────────────────────────────────
-  Widget _buildHistoryTab(List<Prescription> list, double devwidth) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: devwidth * 0.04,
-            vertical: devwidth * 0.03,
-          ),
-          child: Text(
-            '${S.of(context).history} ${S.of(context).perscriptions}',
-            style: TextStyle(
-              fontFamily: 'Cairo',
-              fontWeight: FontWeight.w700,
-              fontSize: devwidth * 0.045,
-              color: const Color(0xFF111111),
-            ),
-          ),
-        ),
-        Expanded(child: _buildList(list, devwidth)),
-      ],
+  Widget _buildHistoryTab(double devwidth) {
+    return BlocProvider(
+      create: (context) => OcrHistoryCubit(OcrHistoryService())..loadHistory(),
+      child: BlocBuilder<OcrHistoryCubit, OcrState>(
+        builder: (context, state) {
+          if (state is OcrLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is OcrLoaded) {
+            final filtered = _filtered(state.scans);
+            return _buildList(
+              filtered,
+              devwidth,
+              context.read<OcrHistoryCubit>(),
+            );
+          } else if (state is OcrError) {
+            return Center(child: Text('Error: ${state.message}'));
+          }
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 
-  // ── Shared list builder ──────────────────────────────────
-  Widget _buildList(List<Prescription> list, double devwidth) {
-    if (list.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.medication_outlined,
-              size: devwidth * 0.2,
-              color: Colors.grey.shade300,
-            ),
-            SizedBox(height: devwidth * 0.04),
-            Text(
-              S.of(context).noperscriptionsfound,
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: devwidth * 0.04,
-                fontFamily: 'Cairo',
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+  // ── Shared list builder (both tabs use OcrHistoryCard) ───
+  Widget _buildList(
+    List<OcrHistoryModel> list,
+    double devwidth, [
+    OcrHistoryCubit? cubit,
+  ]) {
+    if (list.isEmpty) return _emptyState(devwidth);
     return ListView.builder(
       padding: EdgeInsets.only(bottom: devwidth * 0.04),
       itemCount: list.length,
-      itemBuilder: (ctx, i) => PrescriptionCard(
-        prescription: list[i],
-        onMorePressed: () => _showMoreOptions(ctx, list[i]),
+      itemBuilder: (ctx, i) => OcrHistoryCard(
+        ocr: list[i],
+        onMorePressed: () => _showDeleteOption(ctx, list[i], cubit),
       ),
     );
   }
-}
 
-// ── More Options Bottom Sheet ────────────────────────────────
-class _MoreOptionsSheet extends StatelessWidget {
-  final Prescription prescription;
-  const _MoreOptionsSheet({required this.prescription});
-
-  @override
-  Widget build(BuildContext context) {
-    final devwidth = MediaQuery.of(context).size.width;
-    final devheight = MediaQuery.of(context).size.height;
-
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: devwidth * 0.05,
-        vertical: devheight * 0.025,
-      ),
+  Widget _emptyState(double devwidth) {
+    return Center(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Handle
-          Container(
-            width: devwidth * 0.1,
-            height: 4,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade300,
-              borderRadius: BorderRadius.circular(2),
-            ),
+          Icon(
+            Icons.medication_outlined,
+            size: devwidth * 0.2,
+            color: Colors.grey.shade300,
           ),
-          SizedBox(height: devheight * 0.02),
+          SizedBox(height: devwidth * 0.04),
           Text(
-            prescription.medicineName,
+            S.of(context).noperscriptionsfound,
             style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: devwidth * 0.045,
+              color: Colors.grey,
+              fontSize: devwidth * 0.04,
               fontFamily: 'Cairo',
             ),
           ),
-          SizedBox(height: devheight * 0.02),
-          _OptionTile(
-            icon: Icons.edit_outlined,
-            label: 'Edit',
-            color: const Color(0xFF2260FF),
-            onTap: () => Navigator.pop(context),
-          ),
-          _OptionTile(
-            icon: Icons.share_outlined,
-            label: 'Share',
-            color: const Color(0xFF059669),
-            onTap: () => Navigator.pop(context),
-          ),
-          _OptionTile(
-            icon: Icons.delete_outline,
-            label: 'Delete',
-            color: Colors.red,
-            onTap: () => Navigator.pop(context),
-          ),
-          SizedBox(height: devheight * 0.01),
         ],
       ),
-    );
-  }
-}
-
-class _OptionTile extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _OptionTile({
-    required this.icon,
-    required this.label,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final devwidth = MediaQuery.of(context).size.width;
-    return ListTile(
-      leading: Icon(icon, color: color, size: devwidth * 0.06),
-      title: Text(
-        label,
-        style: TextStyle(
-          fontSize: devwidth * 0.04,
-          fontFamily: 'Cairo',
-          color: color,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      onTap: onTap,
     );
   }
 }

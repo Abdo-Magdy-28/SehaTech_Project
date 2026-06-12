@@ -40,14 +40,14 @@ class StreakModel {
   factory StreakModel.fromJson(Map<String, dynamic> json) {
     return StreakModel(
       currentStreak: json['currentStreak'],
-      longestStreak: json['longestStreak'],
-      lastCompletedDate: json['lastCompletedDate'],
-      isStreakActiveToday: json['isStreakActiveToday'],
+      longestStreak: json['longestStreak'] ?? "",
+      lastCompletedDate: json['lastCompletedDate'] ?? "",
+      isStreakActiveToday: json['isStreakActiveToday'] ?? "",
       weeklyAdherence: (json['weeklyAdherence'] as List)
           .map((e) => WeeklyAdherence.fromJson(e))
           .toList(),
-      adherenceRate: json['adherenceRate'],
-      nextMilestone: json['nextMilestone'],
+      adherenceRate: json['adherenceRate'] ?? "",
+      nextMilestone: json['nextMilestone'] ?? "",
     );
   }
 
