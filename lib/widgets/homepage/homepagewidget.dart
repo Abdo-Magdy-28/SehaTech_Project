@@ -35,6 +35,7 @@ class Homepagewidget extends StatefulWidget {
 }
 
 class _HomepagewidgetState extends State<Homepagewidget> {
+  int _index = 0;
   @override
   void initState() {
     super.initState();
@@ -213,6 +214,7 @@ class _HomepagewidgetState extends State<Homepagewidget> {
               SliverToBoxAdapter(
                 child: BlocBuilder<DailyScheduleCubit, DailyScheduleState>(
                   builder: (context, state) {
+                    final cubit = context.read<DailyScheduleCubit>();
                     if (state is DailyScheduleLoading) {
                       return Skeletonizer(
                         child: UpcomingReminder(
@@ -231,9 +233,10 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                         ),
                       );
                     } else if (state is DailyScheduleLoaded) {
-                      final pending = context
-                          .read<DailyScheduleCubit>()
-                          .getUpcomingForToday();
+                      final pending = cubit.getUpcomingForToday(
+                        state.medications,
+                      );
+                      if (_index >= pending.length) _index = 0;
                       if (pending.isNotEmpty) {
                         return UpcomingReminder(medicine: pending.first);
                       } else {
@@ -413,6 +416,110 @@ void _showLanguageSheet(BuildContext context) {
       );
     },
   );
+}
+
+class UpcomingSection extends StatefulWidget {
+  const UpcomingSection({super.key});
+
+  @override
+  State<UpcomingSection> createState() => _UpcomingSectionState();
+}
+
+class _UpcomingSectionState extends State<UpcomingSection> {
+  int _index = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final devheight = MediaQuery.of(context).size.height;
+    final devwidth = MediaQuery.of(context).size.width;
+    return BlocBuilder<DailyScheduleCubit, DailyScheduleState>(
+      builder: (context, state) {
+        if (state is DailyScheduleLoading) {
+          return Skeletonizer(
+            child: UpcomingReminder(
+              medicine: DailyMedications(
+                reminderId: "",
+                medicationName: "Loading...",
+                genericName: "",
+                form: "",
+                strength: "",
+                instructions: "",
+                color: "",
+                status: "",
+                dosage: "-",
+                time: "--:--",
+              ),
+            ),
+          );
+        }
+
+        if (state is DailyScheduleLoaded) {
+          final cubit = context.read<DailyScheduleCubit>();
+          final pending = cubit.getUpcomingForToday(state.medications);
+
+          // reset index if it's out of range (e.g. day changed)
+          if (_index >= pending.length) _index = 0;
+
+          if (pending.isNotEmpty) {
+            return Column(
+              children: [
+                UpcomingReminder(medicine: pending[_index]),
+                TextButton(
+                  onPressed: pending.length > _index + 1
+                      ? () => setState(() => _index++)
+                      : null,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(width: devwidth * 0.02),
+                      Icon(Icons.alarm, color: Color(0xfff9783c), size: 25),
+                      SizedBox(width: devwidth * 0.008),
+                      Text(
+                        S.of(context).RemindLater,
+                        style: TextStyle(
+                          color: Color(0xfff9783c),
+                          fontFamily: 'cairo',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }
+
+          return EmptyUpcoming(
+            medicine: DailyMedications(
+              reminderId: "",
+              medicationName: S.of(context).Nowupcomingreminderstoday,
+              genericName: "",
+              form: "",
+              strength: "",
+              instructions: "",
+              color: "",
+              status: "",
+              dosage: "-",
+              time: "--:--",
+            ),
+          );
+        }
+
+        if (state is DailyScheduleError) {
+          return Center(
+            child: Text(
+              "Error: ${state.message}",
+              style: TextStyle(color: Colors.red),
+            ),
+          );
+        }
+
+        return SizedBox.shrink();
+      },
+    );
+  }
 }
 
 class _LangOption extends StatelessWidget {

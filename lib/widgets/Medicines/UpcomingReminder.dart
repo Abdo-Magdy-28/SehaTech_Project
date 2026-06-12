@@ -129,7 +129,10 @@ class _UpcomingReminderState extends State<UpcomingReminder> {
                         ? null
                         : () {
                             final cubit = context.read<DailyScheduleCubit>();
-                            cubit.markTaken(widget.medicine, DateTime.now());
+                            cubit.markTaken(
+                              widget.medicine,
+                              cubit.selectedDate,
+                            );
                           },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,

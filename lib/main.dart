@@ -33,9 +33,7 @@ Future<void> main() async {
       ),
     ],
   );
-  AwesomeNotifications().isNotificationAllowed().then((allowed) {
-    print("Notifications allowed: $allowed");
-  });
+  AwesomeNotifications().isNotificationAllowed().then((allowed) {});
   cameras = await availableCameras();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // await dotenv.load();

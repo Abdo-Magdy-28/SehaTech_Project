@@ -76,15 +76,6 @@ class Medicineremindercard extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
-              right: 10,
-              bottom: 10,
-              child: SizedBox(
-                height: 24,
-                width: 24,
-                child: Image.asset("assets/images/angle-right-small.png"),
-              ),
-            ),
           ],
         ),
       ),

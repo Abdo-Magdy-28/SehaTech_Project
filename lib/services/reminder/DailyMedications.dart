@@ -1,4 +1,3 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:grad_project/constants.dart';
@@ -19,11 +18,9 @@ class DailyScheduleService {
         onRequest: (options, handler) async {
           const storage = FlutterSecureStorage();
           final token = await storage.read(key: 'auth_token');
-
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
           }
-
           return handler.next(options);
         },
       ),
@@ -36,11 +33,9 @@ class DailyScheduleService {
         "/schedule/daily",
         queryParameters: {"date": date},
       );
-
       if (response.statusCode != 200) {
         throw Exception("Server returned ${response.statusCode}");
       }
-
       final List data = response.data['data']['schedule'] ?? [];
       return data.map((e) => DailyMedications.fromJson(e)).toList();
     } on DioException catch (e) {
@@ -68,8 +63,7 @@ class DailyScheduleService {
         "status": "taken",
       },
     );
-
-    if (response.statusCode != 200) {
+    if (response.statusCode != 200 && response.statusCode != 201) {
       throw Exception("Failed to mark medication as taken");
     }
   }

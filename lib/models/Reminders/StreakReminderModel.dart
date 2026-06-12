@@ -51,9 +51,13 @@ class StreakModel {
     );
   }
 
-  /// 🔢 Percentage progress toward 7-day streak
-  int get streakPercentage => ((currentStreak / 7) * 100).round();
+  /// Days with reminders that were fully completed
+  int get completedDays =>
+      weeklyAdherence.where((d) => d.complete == true).length;
 
-  /// 📉 Missed days out of 7
-  int get missedDays => 7 - currentStreak;
+  /// Days with reminders that were NOT completed (has reminders but complete is false or null)
+  int get missedDays => weeklyAdherence.where((d) => d.complete != true).length;
+
+  /// Percentage: completedDays / 7 * 100
+  int get streakPercentage => ((completedDays / 7) * 100).round();
 }
