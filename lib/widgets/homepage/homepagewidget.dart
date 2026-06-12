@@ -148,7 +148,6 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                         (context, index) {
                           return Skeletonizer(
                             child: Doctorcard(
-                              devheight: devheight,
                               doctorimage: Image.asset('assets/images/Pic.png'),
                               job: "Loading...",
                               hospital: "Loading...",
@@ -156,6 +155,7 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                               rate: 0,
                               begindate: "--:--",
                               enddate: "--:--",
+                              profile: "",
                             ),
                           );
                         },
@@ -168,7 +168,6 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                       delegate: SliverChildBuilderDelegate((context, index) {
                         final doctor = state.doctors[index];
                         return Doctorcard(
-                          devheight: devheight,
                           doctorimage: Image.network(doctor.image),
                           job: doctor.job,
                           hospital: doctor.hospital,
@@ -176,6 +175,7 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                           rate: doctor.rate,
                           begindate: doctor.beginDate,
                           enddate: doctor.endDate,
+                          profile: doctor.profile ?? "",
                         );
                       }, childCount: state.doctors.length),
                     );

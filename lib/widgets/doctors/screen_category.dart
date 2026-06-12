@@ -368,7 +368,6 @@ class _ScreenCategoryState extends State<ScreenCategory> {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Doctorcard(
-                  devheight: devheight,
                   doctorimage: Image.asset('assets/images/Pic.png'),
                   job: doctor.job,
                   hospital: doctor.hospital,
@@ -376,6 +375,7 @@ class _ScreenCategoryState extends State<ScreenCategory> {
                   rate: doctor.rate,
                   begindate: doctor.beginDate,
                   enddate: doctor.endDate,
+                  profile: doctor.profile ?? "",
                 ),
               );
             },

@@ -135,6 +135,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "chronicdiseases": MessageLookupByLibrary.simpleMessage("الامراض المزمنة"),
     "closed": MessageLookupByLibrary.simpleMessage("مغلقة"),
     "coderequired": MessageLookupByLibrary.simpleMessage("الرمز مطلوب"),
+    "comingsoon": MessageLookupByLibrary.simpleMessage("قريباً"),
     "confirmpassword": MessageLookupByLibrary.simpleMessage(
       "تاكيد كلمة المرور",
     ),

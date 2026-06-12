@@ -6,7 +6,6 @@ import 'package:grad_project/widgets/doctors/doctor_details.dart';
 class Doctorcard extends StatelessWidget {
   const Doctorcard({
     super.key,
-    required this.devheight,
     required this.job,
     required this.hospital,
     required this.rate,
@@ -14,14 +13,76 @@ class Doctorcard extends StatelessWidget {
     required this.enddate,
     required this.name,
     required this.doctorimage,
-    String? profile,
+    required this.profile,
   });
+
   final Image doctorimage;
-  final double devheight, rate;
-  final String job, hospital, begindate, enddate, name;
+  final double rate;
+  final String job, hospital, begindate, enddate, name, profile;
+
+  void _showImagePopup(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black54,
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.all(16), // ✅ كان 32، كبّرناه
+        child: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: SizedBox(
+                  width: double.infinity, // ✅ بدل الـ fixed width
+                  height: 500, // ✅ ارفع الرقم ده براحتك
+                  child: FittedBox(fit: BoxFit.cover, child: doctorimage),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                S.of(context).doctorTitle(name),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Cairo',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                "$job | $hospital",
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontFamily: 'Cairo',
+                  fontSize: 13,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final scale = (screenWidth / 360).clamp(0.85, 1.3);
+
+    final double imageSize = 40 * scale;
+    final double nameFontSize = 13 * scale;
+    final double subFontSize = 11 * scale;
+    final double rateFontSize = 12 * scale;
+    final double starSize = 15 * scale;
+    final double btnHeight = 26 * scale;
+    final double btnWidth = 68 * scale;
+    final double btnFontSize = 9 * scale;
+    final double dirIconSize = 22 * scale;
+    final double dirFontSize = 9 * scale;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: GestureDetector(
@@ -37,6 +98,7 @@ class Doctorcard extends StatelessWidget {
                 job: job,
                 rate: rate,
                 doctorimage: doctorimage,
+                urlprofile: profile,
               ),
             ),
           );
@@ -44,27 +106,35 @@ class Doctorcard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Color(0xffF0F0F0),
+            color: const Color(0xffF0F0F0),
             border: Border.all(color: const Color.fromARGB(115, 199, 198, 198)),
           ),
           child: IntrinsicHeight(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: Column(
-                      spacing: 0,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
+                            // ── Doctor image with tap ──
+                            GestureDetector(
+                              onTap: () => _showImagePopup(context),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                ),
+                                child: SizedBox(
+                                  width: imageSize,
+                                  height: imageSize,
+                                  child: ClipOval(child: doctorimage),
+                                ),
                               ),
-                              child: SizedBox(width: 37, child: doctorimage),
                             ),
                             Expanded(
                               child: Padding(
@@ -73,26 +143,26 @@ class Doctorcard extends StatelessWidget {
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  spacing: 4,
                                   children: [
                                     Text(
                                       S.of(context).doctorTitle(name),
                                       style: TextStyle(
-                                        fontSize: 13,
-                                        color: Color(0xff33384B),
+                                        fontSize: nameFontSize,
+                                        color: const Color(0xff33384B),
                                         fontFamily: 'Cairo',
                                         fontWeight: FontWeight.w600,
                                       ),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
+                                    const SizedBox(height: 3),
                                     Text(
                                       "$job | $hospital",
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xff6d6d6d),
+                                        fontSize: subFontSize,
+                                        color: const Color(0xff6d6d6d),
                                         fontFamily: 'Cairo',
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -104,58 +174,27 @@ class Doctorcard extends StatelessWidget {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 32.0, top: 4),
+                          padding: EdgeInsetsDirectional.only(
+                            start: imageSize + 16,
+                            top: 4,
+                            bottom: 6,
+                          ),
                           child: Row(
-                            spacing: 15,
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    "$rate",
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Color(0xff33384B),
-                                      fontFamily: 'Cairo',
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 16,
-                                    width: 16,
-                                    child: Image.asset(
-                                      'assets/images/Star.png',
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                "$rate",
+                                style: TextStyle(
+                                  fontSize: rateFontSize,
+                                  color: const Color(0xff33384B),
+                                  fontFamily: 'Cairo',
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    height: 18,
-                                    width: 18,
-                                    child: Image.asset(
-                                      'assets/images/Time.png',
-                                    ),
-                                  ),
-                                  Text(
-                                    "$begindate - ",
-                                    style: TextStyle(
-                                      color: Color(0xff33384B),
-                                      fontFamily: 'Cairo',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                  Text(
-                                    enddate,
-                                    style: TextStyle(
-                                      color: Color(0xff33384B),
-                                      fontFamily: 'Cairo',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ],
+                              const SizedBox(width: 2),
+                              SizedBox(
+                                height: starSize,
+                                width: starSize,
+                                child: Image.asset('assets/images/Star.png'),
                               ),
                             ],
                           ),
@@ -164,63 +203,37 @@ class Doctorcard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Column(
-                  spacing: 10,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10, top: 10),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                          height: 27,
-                          width: 71,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Color(0xff0D61EC),
-                          ),
-                          child: Center(
-                            child: Text(
-                              S.of(context).bookNow,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Cairo',
-                                fontWeight: FontWeight.w400,
-                                fontSize: 9,
-                              ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(
+                    end: 10,
+                    top: 10,
+                    bottom: 10,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        height: btnHeight,
+                        width: btnWidth,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: const Color(0xff0D61EC),
+                        ),
+                        child: Center(
+                          child: Text(
+                            S.of(context).bookNow,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.w400,
+                              fontSize: btnFontSize,
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        right: 9,
-                      ), // ✅ was top: 3
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: SvgPicture.asset(
-                              'assets/images/lets-icons_map-duotone.svg',
-                            ),
-                          ),
-                          Text(
-                            S.of(context).directions,
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontFamily: 'Cairo',
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xffAAB6C3),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),

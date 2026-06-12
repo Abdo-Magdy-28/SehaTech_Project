@@ -605,6 +605,12 @@ class _AllergyTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
+    final severityLabels = {
+      'mild': s.mild,
+      'moderate': s.moderate,
+      'severe': s.severe,
+    };
     final sw = MediaQuery.of(context).size.width;
     final iconColor = HealthMatrixScreen._allergyIconColor(index);
     final iconBg = HealthMatrixScreen._allergyIconBg(index);
@@ -612,6 +618,8 @@ class _AllergyTile extends StatelessWidget {
     final severityKey = allergy.severity?.toLowerCase() ?? '';
     final severityColor =
         _severityColors[severityKey] ?? const Color(0xFF757575);
+    final severityDisplayLabel =
+        severityLabels[severityKey] ?? allergy.severity ?? ''; // ← ADD THIS
     final severityBg = _severityBg[severityKey] ?? Colors.grey.shade100;
 
     return Column(
@@ -665,7 +673,8 @@ class _AllergyTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
-                    allergy.severity!,
+                    severityDisplayLabel, // ← localized label
+
                     style: TextStyle(
                       fontSize: sw * 0.029,
                       fontWeight: FontWeight.w600,

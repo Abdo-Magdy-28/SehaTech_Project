@@ -338,7 +338,6 @@ class _CategoryDoctorsViewState extends State<_CategoryDoctorsView> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Doctorcard(
-        devheight: devheight,
         doctorimage: doctorImage,
         job: doctor.job,
         hospital: doctor.hospital,
@@ -346,7 +345,7 @@ class _CategoryDoctorsViewState extends State<_CategoryDoctorsView> {
         rate: doctor.rate,
         begindate: doctor.beginDate,
         enddate: doctor.endDate,
-        profile: doctor.profile,
+        profile: doctor.profile ?? "",
       ),
     );
   }

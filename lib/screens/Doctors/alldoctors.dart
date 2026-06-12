@@ -320,7 +320,6 @@ class _AlldoctorsState extends State<Alldoctors> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Doctorcard(
-        devheight: devheight,
         doctorimage: doctorImage,
         job: doctor.job,
         hospital: doctor.hospital,
@@ -328,7 +327,7 @@ class _AlldoctorsState extends State<Alldoctors> {
         rate: doctor.rate,
         begindate: doctor.beginDate,
         enddate: doctor.endDate,
-        profile: doctor.profile,
+        profile: doctor.profile ?? "",
       ),
     );
   }

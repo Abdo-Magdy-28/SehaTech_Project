@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/doctors/popular/popular_states.dart';
+import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/doctor.dart';
 import 'package:grad_project/models/hospitals.dart';
@@ -17,6 +20,7 @@ import 'package:grad_project/widgets/hosptials/hospital_card.dart';
 import 'package:grad_project/widgets/mainscaffold.dart';
 import 'package:grad_project/widgets/Medicines/medicinecard.dart';
 import 'package:grad_project/widgets/pharmacies/pharmacy_card.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Searchscreen extends StatefulWidget {
   const Searchscreen({super.key});
@@ -152,11 +156,56 @@ class _SearchscreenState extends State<Searchscreen> {
             SliverToBoxAdapter(
               child: _sectionTitle(S.of(context).populardoctors, sw, sh),
             ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (_, i) => _buildDoctorTile(_filteredDoctors[i], sw, sh),
-              childCount: _filteredDoctors.length,
-            ),
+          BlocBuilder<DoctorCubit, DoctorState>(
+            builder: (context, state) {
+              if (state is DoctorLoading) {
+                // Skeleton shimmer while loading
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return Skeletonizer(
+                        child: Doctorcard(
+                          doctorimage: Image.asset('assets/images/Pic.png'),
+                          job: "Loading...",
+                          hospital: "Loading...",
+                          name: "Loading...",
+                          rate: 0,
+                          begindate: "--:--",
+                          enddate: "--:--",
+                          profile: '',
+                        ),
+                      );
+                    },
+                    childCount: 5, // show 5 skeletons
+                  ),
+                );
+              } else if (state is DoctorLoaded) {
+                // Real doctors list
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final doctor = state.doctors[index];
+                    return Doctorcard(
+                      doctorimage: Image.network(doctor.image),
+                      job: doctor.job,
+                      hospital: doctor.hospital,
+                      name: doctor.name,
+                      rate: doctor.rate,
+                      begindate: doctor.beginDate,
+                      enddate: doctor.endDate,
+                      profile: doctor.profile ?? '',
+                    );
+                  }, childCount: state.doctors.length),
+                );
+              } else if (state is DoctorError) {
+                return SliverToBoxAdapter(
+                  child: Center(child: Text("Error: ${state.message}")),
+                );
+              } else {
+                return SliverToBoxAdapter(
+                  child: Center(child: Text("No data")),
+                );
+              }
+            },
           ),
 
           // ── Section: Hospitals ───────────────────────────────────
@@ -343,7 +392,6 @@ class _SearchscreenState extends State<Searchscreen> {
     padding: EdgeInsets.symmetric(horizontal: sw * 0.03),
 
     child: Doctorcard(
-      devheight: sh,
       doctorimage: Image.asset('assets/images/Pic.png'),
       job: d.job,
       hospital: d.hospital,
@@ -351,6 +399,7 @@ class _SearchscreenState extends State<Searchscreen> {
       rate: d.rate,
       begindate: d.beginDate,
       enddate: d.endDate,
+      profile: d.profile ?? "",
     ),
   );
 

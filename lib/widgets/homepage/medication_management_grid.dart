@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grad_project/cubit/Reminder/ReminderCubit.dart';
+import 'package:grad_project/cubit/profile/Health%20Matrix/HealthmatrixCubit.dart';
 import 'package:grad_project/generated/l10n.dart';
+import 'package:grad_project/screens/Profile/healthmatrix.dart';
+import 'package:grad_project/screens/medicines/allmedicines.dart';
+import 'package:grad_project/screens/prescriptions/all_prescriptions.dart';
+import 'package:grad_project/screens/prescriptions/reminder_screen.dart';
+import 'package:grad_project/services/Authservice.dart';
 
-class MedicationManagementGrid extends StatelessWidget {
+class MedicationManagementGrid extends StatefulWidget {
   const MedicationManagementGrid({
     super.key,
     required this.devwidth,
@@ -10,6 +18,48 @@ class MedicationManagementGrid extends StatelessWidget {
   });
   final double devwidth;
   final double devheight;
+
+  @override
+  State<MedicationManagementGrid> createState() =>
+      _MedicationManagementGridState();
+}
+
+class _MedicationManagementGridState extends State<MedicationManagementGrid> {
+  String userName = '';
+  String subtitle = '';
+  String id = '';
+  String token = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final user = await AuthService().getUserData();
+      if (mounted) {
+        setState(() {
+          if (user != null) {
+            userName = user.fullName;
+            subtitle = user.email;
+            id = user.id;
+            token = user.token;
+          }
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to load profile. Please restart the app.'),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -22,21 +72,21 @@ class MedicationManagementGrid extends StatelessWidget {
             Stack(
               children: [
                 SizedBox(
-                  height: devheight * 0.18,
-                  width: devwidth * 0.44,
+                  height: widget.devheight * 0.18,
+                  width: widget.devwidth * 0.44,
                   child: Image.asset(
                     'assets/images/Sign-up-cards-BG.png',
                     fit: BoxFit.fill,
                   ),
                 ),
                 Positioned(
-                  left: devwidth * 0.03,
-                  top: devwidth * 0.04,
+                  left: widget.devwidth * 0.03,
+                  top: widget.devwidth * 0.04,
                   child: SvgPicture.asset('assets/images/timeicon.svg'),
                 ),
                 Positioned(
-                  left: devwidth * 0.03,
-                  top: devwidth * 0.16,
+                  left: widget.devwidth * 0.03,
+                  top: widget.devwidth * 0.16,
                   child: Text(
                     S.of(context).getRemindersPills,
                     style: TextStyle(
@@ -48,10 +98,16 @@ class MedicationManagementGrid extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  left: devwidth * 0.03,
-                  top: devwidth * 0.3,
+                  left: widget.devwidth * 0.03,
+                  top: widget.devwidth * 0.3,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AllPrescriptions(),
+                        ),
+                      );
+                    },
                     child: Row(
                       children: [
                         Text(
@@ -77,21 +133,21 @@ class MedicationManagementGrid extends StatelessWidget {
             Stack(
               children: [
                 SizedBox(
-                  height: devheight * 0.18,
-                  width: devwidth * 0.44,
+                  height: widget.devheight * 0.18,
+                  width: widget.devwidth * 0.44,
                   child: Image.asset(
                     'assets/images/Sign-up-cards-BG.png',
                     fit: BoxFit.fill,
                   ),
                 ),
                 Positioned(
-                  left: devwidth * 0.03,
-                  top: devwidth * 0.04,
+                  left: widget.devwidth * 0.03,
+                  top: widget.devwidth * 0.04,
                   child: SvgPicture.asset('assets/images/searchicon.svg'),
                 ),
                 Positioned(
-                  left: devwidth * 0.03,
-                  top: devwidth * 0.16,
+                  left: widget.devwidth * 0.03,
+                  top: widget.devwidth * 0.16,
                   child: Text(
                     S.of(context).findAboutMedicine,
                     style: TextStyle(
@@ -103,10 +159,14 @@ class MedicationManagementGrid extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  left: devwidth * 0.03,
-                  top: devwidth * 0.3,
+                  left: widget.devwidth * 0.03,
+                  top: widget.devwidth * 0.3,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Allmedicines()),
+                      );
+                    },
                     child: Row(
                       children: [
                         Text(
@@ -131,28 +191,28 @@ class MedicationManagementGrid extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: devheight * 0.018),
+        SizedBox(height: widget.devheight * 0.018),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Stack(
               children: [
                 SizedBox(
-                  height: devheight * 0.18,
-                  width: devwidth * 0.44,
+                  height: widget.devheight * 0.18,
+                  width: widget.devwidth * 0.44,
                   child: Image.asset(
                     'assets/images/Sign-up-cards-BG.png',
                     fit: BoxFit.fill,
                   ),
                 ),
                 Positioned(
-                  left: devwidth * 0.03,
-                  top: devwidth * 0.04,
+                  left: widget.devwidth * 0.03,
+                  top: widget.devwidth * 0.04,
                   child: SvgPicture.asset('assets/images/calendaricon.svg'),
                 ),
                 Positioned(
-                  left: devwidth * 0.03,
-                  top: devwidth * 0.16,
+                  left: widget.devwidth * 0.03,
+                  top: widget.devwidth * 0.16,
                   child: Text(
                     S.of(context).setRemindersTime,
                     style: TextStyle(
@@ -164,10 +224,23 @@ class MedicationManagementGrid extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  left: devwidth * 0.03,
-                  top: devwidth * 0.3,
+                  left: widget.devwidth * 0.03,
+                  top: widget.devwidth * 0.3,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BlocProvider(
+                            create: (context) => ReminderCubit(),
+                            child: ReminderScreen(
+                              medicineName: '',
+                              medicineSize: '',
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                     child: Row(
                       children: [
                         Text(
@@ -193,21 +266,21 @@ class MedicationManagementGrid extends StatelessWidget {
             Stack(
               children: [
                 SizedBox(
-                  height: devheight * 0.18,
-                  width: devwidth * 0.44,
+                  height: widget.devheight * 0.18,
+                  width: widget.devwidth * 0.44,
                   child: Image.asset(
                     'assets/images/Sign-up-cards-BG.png',
                     fit: BoxFit.fill,
                   ),
                 ),
                 Positioned(
-                  left: devwidth * 0.03,
-                  top: devwidth * 0.04,
+                  left: widget.devwidth * 0.03,
+                  top: widget.devwidth * 0.04,
                   child: SvgPicture.asset('assets/images/hearticon.svg'),
                 ),
                 Positioned(
-                  left: devwidth * 0.03,
-                  top: devwidth * 0.16,
+                  left: widget.devwidth * 0.03,
+                  top: widget.devwidth * 0.16,
                   child: Text(
                     S.of(context).keepTrackMedicine,
                     style: TextStyle(
@@ -219,10 +292,28 @@ class MedicationManagementGrid extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  left: devwidth * 0.03,
-                  top: devwidth * 0.3,
+                  left: widget.devwidth * 0.03,
+                  top: widget.devwidth * 0.3,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      if (id.isEmpty || token.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please wait...')),
+                        );
+                        return;
+                      }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BlocProvider(
+                            create: (context) =>
+                                HealthMatrixCubit(userId: id, token: token)
+                                  ..loadHealthMatrix(),
+                            child: HealthMatrixScreen(),
+                          ),
+                        ),
+                      );
+                    },
                     child: Row(
                       children: [
                         Text(

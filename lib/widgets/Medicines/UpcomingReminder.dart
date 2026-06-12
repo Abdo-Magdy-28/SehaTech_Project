@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/Reminders/DailyReminder.dart';
-import 'package:grad_project/models/medicineremindercardmodel.dart';
 
 class UpcomingReminder extends StatefulWidget {
   const UpcomingReminder({super.key, required this.medicine});
@@ -17,180 +16,218 @@ class UpcomingReminder extends StatefulWidget {
 class _UpcomingReminderState extends State<UpcomingReminder> {
   @override
   Widget build(BuildContext context) {
-    final devheight = MediaQuery.of(context).size.height;
-    final devwidth = MediaQuery.of(context).size.width;
-    return Container(
-      width: devwidth * 0.1,
-      height: devheight * 0.22,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Color(0xffefefef), width: 2),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Header section
-          Padding(
-            padding: EdgeInsets.only(
-              top: devwidth * 0.04,
-              right: devwidth * 0.04,
-              left: devwidth * 0.04,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final isNarrow = width < 320;
+        final hPad = (width * 0.04).clamp(12.0, 24.0);
+        final iconGap = (width * 0.02).clamp(6.0, 12.0);
+
+        return Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: const Color(0xffefefef), width: 2),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // ── Header ──────────────────────────────────────────────────
+              Padding(
+                padding: EdgeInsets.fromLTRB(hPad, hPad, hPad, hPad * 0.5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        SvgPicture.asset('assets/images/i.svg'),
-                        SizedBox(width: devwidth * 0.02),
-                        Text(
-                          S.of(context).UpcomingReminder,
-                          style: TextStyle(
-                            color: Color(0xff707070),
-                            fontSize: 14,
+                        SvgPicture.asset(
+                          'assets/images/i.svg',
+                          width: 16,
+                          height: 16,
+                        ),
+                        SizedBox(width: iconGap),
+                        Expanded(
+                          child: Text(
+                            S.of(context).UpcomingReminder,
+                            style: TextStyle(
+                              color: const Color(0xff707070),
+                              fontSize: isNarrow ? 12 : 14,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+
+                        // Time badge
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xfffdecec),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            widget.medicine.time,
+                            style: TextStyle(
+                              color: const Color(0xffda3e3e),
+                              fontSize: isNarrow ? 10 : 12,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(width: devwidth * 0.2),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: devheight * 0.005,
-                        vertical: devwidth * 0.02,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Color(0xfffdecec),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        widget.medicine.time,
-                        style: TextStyle(
-                          color: Color(0xffda3e3e),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
 
-                Text(
-                  widget.medicine.medicationName,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff111111),
-                  ),
-                ),
+                    const SizedBox(height: 6),
 
-                Text(
-                  widget.medicine.dosage,
-                  style: TextStyle(fontSize: 14, color: Color(0xff808080)),
-                ),
-              ],
-            ),
-          ),
-          Divider(color: Color(0xffe2e2e2), thickness: 1),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {},
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: devwidth * 0.02),
-                    Icon(Icons.alarm, color: Color(0xfff9783c), size: 25),
-                    SizedBox(width: devwidth * 0.008),
                     Text(
-                      S.of(context).RemindLater,
+                      widget.medicine.medicationName,
                       style: TextStyle(
-                        color: Color(0xfff9783c),
-                        fontFamily: 'cairo',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
+                        fontSize: (width * 0.045).clamp(14.0, 20.0),
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xff111111),
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+
+                    const SizedBox(height: 2),
+
+                    Text(
+                      widget.medicine.dosage,
+                      style: TextStyle(
+                        fontSize: (width * 0.035).clamp(11.0, 15.0),
+                        color: const Color(0xff808080),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
-              SizedBox(width: devwidth * 0.04),
-              Container(height: 40, width: 1, color: Color(0xffe2e2e2)),
-              BlocBuilder<DailyScheduleCubit, DailyScheduleState>(
-                builder: (context, state) {
-                  return TextButton(
-                    onPressed: state is MarkingTaken
-                        ? null
-                        : () {
-                            final cubit = context.read<DailyScheduleCubit>();
-                            cubit.markTaken(
-                              widget.medicine,
-                              cubit.selectedDate,
-                            );
-                          },
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(width: devwidth * 0.02),
-                        if (state is MarkingTaken) ...[
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: const Color(0xff2260ff),
+
+              const Divider(color: Color(0xffe2e2e2), thickness: 1, height: 1),
+
+              // ── Action buttons ───────────────────────────────────────────
+              IntrinsicHeight(
+                child: Row(
+                  children: [
+                    // Remind Later
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: iconGap,
+                          ),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.alarm,
+                              color: const Color(0xfff9783c),
+                              size: (width * 0.06).clamp(18.0, 26.0),
                             ),
-                          ),
-                        ] else if (state is MarkedTaken) ...[
-                          Icon(
-                            Icons.check,
-                            color: const Color(0xff2260ff),
-                            size: 25,
-                          ),
-                          SizedBox(width: devwidth * 0.008),
-                          Text(
-                            S.of(context).MarkasTaken, // ✅ show "Done"
-                            style: const TextStyle(
-                              color: Color(0xff2260ff),
-                              fontFamily: 'cairo',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                            SizedBox(width: iconGap * 0.5),
+                            Flexible(
+                              child: Text(
+                                S.of(context).RemindLater,
+                                style: TextStyle(
+                                  color: const Color(0xfff9783c),
+                                  fontFamily: 'cairo',
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: isNarrow ? 11 : 13,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                          ),
-                        ] else ...[
-                          Icon(
-                            Icons.check,
-                            color: const Color(0xff2260ff),
-                            size: 25,
-                          ),
-                          SizedBox(width: devwidth * 0.008),
-                          Text(
-                            S.of(context).MarkasTaken, // default label
-                            style: const TextStyle(
-                              color: Color(0xff2260ff),
-                              fontFamily: 'cairo',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ],
+                          ],
+                        ),
+                      ),
                     ),
-                  );
-                },
+
+                    const VerticalDivider(
+                      color: Color(0xffe2e2e2),
+                      thickness: 1,
+                      width: 1,
+                    ),
+
+                    // Mark as Taken
+                    Expanded(
+                      child:
+                          BlocBuilder<DailyScheduleCubit, DailyScheduleState>(
+                            builder: (context, state) {
+                              return TextButton(
+                                onPressed: state is MarkingTaken
+                                    ? null
+                                    : () {
+                                        context
+                                            .read<DailyScheduleCubit>()
+                                            .markTaken(
+                                              widget.medicine,
+                                              context
+                                                  .read<DailyScheduleCubit>()
+                                                  .selectedDate,
+                                            );
+                                      },
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 12,
+                                    horizontal: iconGap,
+                                  ),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (state is MarkingTaken)
+                                      const SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Color(0xff2260ff),
+                                        ),
+                                      )
+                                    else
+                                      Icon(
+                                        Icons.check,
+                                        color: const Color(0xff2260ff),
+                                        size: (width * 0.06).clamp(18.0, 26.0),
+                                      ),
+                                    SizedBox(width: iconGap * 0.5),
+                                    Flexible(
+                                      child: Text(
+                                        S.of(context).MarkasTaken,
+                                        style: TextStyle(
+                                          color: const Color(0xff2260ff),
+                                          fontFamily: 'cairo',
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: isNarrow ? 11 : 13,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(width: devwidth * 0.02),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

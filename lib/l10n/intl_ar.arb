@@ -52,6 +52,7 @@
   "RemindLater": "ذكرني لاحقاً",
   "weeklyStreak": "السلسلة الأسبوعية",
   "missedThisWeek": "فاتك {count} هذا الأسبوع",
+  "comingsoon": "قريباً",
   "@missedThisWeek": {
     "placeholders": {
       "count": {

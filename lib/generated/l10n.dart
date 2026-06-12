@@ -2679,6 +2679,11 @@ class S {
     );
   }
 
+  /// `Coming soon`
+  String get comingsoon {
+    return Intl.message('Coming soon', name: 'comingsoon', desc: '', args: []);
+  }
+
   /// `{count}m ago`
   String minutesago(int count) {
     return Intl.message(

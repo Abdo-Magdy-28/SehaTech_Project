@@ -346,6 +346,7 @@
   "Addreminder":"Add reminder",
   "Scanned":"Scanned",
   "Nowupcomingreminderstoday": "Now, upcoming reminders today",
+  "comingsoon": "Coming soon",
   "minutesago": "{count}m ago",
   "@minutesago": {
     "placeholders": {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/map.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DoctorDetails extends StatefulWidget {
   const DoctorDetails({
@@ -12,9 +13,10 @@ class DoctorDetails extends StatefulWidget {
     required this.job,
     required this.rate,
     required this.doctorimage,
+    required this.urlprofile,
   });
 
-  final String name, job, hospital, begindate, enddate;
+  final String name, job, hospital, begindate, enddate, urlprofile;
   final double rate;
   final Image doctorimage;
 
@@ -23,10 +25,78 @@ class DoctorDetails extends StatefulWidget {
 }
 
 class _DoctorDetailsState extends State<DoctorDetails> {
+  // ── LAUNCH PROFILE ──
+  Future<void> _launchProfile() async {
+    print('URL: ${widget.urlprofile}');
+    final uri = Uri.parse(widget.urlprofile);
+    try {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } catch (e) {
+      print('Error: $e');
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+    }
+  }
+
+  // ── IMAGE POPUP ──
+  void _showImagePopup(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black54,
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.all(16),
+        child: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 500,
+                  child: FittedBox(
+                    fit: BoxFit.cover,
+                    child: widget.doctorimage, // ✅ Fixed: widget.doctorimage
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                S.of(context).doctorTitle(widget.name), // ✅ Fixed: widget.name
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Cairo',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                "${widget.job} | ${widget.hospital}", // ✅ Fixed: widget.job, widget.hospital
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontFamily: 'Cairo',
+                  fontSize: 13,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final devheight = MediaQuery.of(context).size.height;
     final devwidth = MediaQuery.of(context).size.width;
+    final scale = (devwidth / 360).clamp(0.85, 1.3);
+
+    final double imageSize = 40 * scale;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -34,78 +104,86 @@ class _DoctorDetailsState extends State<DoctorDetails> {
         child: Column(
           children: [
             // ── HERO SECTION ──
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                // Blue background with curve
-                ClipPath(
-                  clipper: BottomCurveClipper(),
-                  child: Container(
-                    height: devheight * 0.50,
-                    width: double.infinity,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Image.asset(
-                          "assets/images/pharmacies/bg.png",
-                          fit: BoxFit.cover,
+            SizedBox(
+              height: devheight * 0.38,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  // Blue background
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: ClipPath(
+                      clipper: BottomCurveClipper(),
+                      child: Container(
+                        height: devheight * 0.55,
+                        width: double.infinity,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Image.asset(
+                              "assets/images/pharmacies/bg.png",
+                              fit: BoxFit.cover,
+                            ),
+                            Image.asset(
+                              "assets/images/pharmacies/Mask group.png",
+                              fit: BoxFit.cover,
+                            ),
+                          ],
                         ),
-                        Image.asset(
-                          "assets/images/pharmacies/Mask group.png",
-                          fit: BoxFit.cover,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // AppBar row
-                SafeArea(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: devwidth * 0.04,
-                      vertical: 8,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () => Navigator.of(context).pop(),
-                          child: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.black,
-                            size: 24,
-                          ),
-                        ),
-                        Text(
-                          S.of(context).doctordetails,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(width: 24),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // Doctor image — centered, tall
-                Positioned(
-                  top: devheight * 0.01,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: Transform.scale(
-                      scale: 0.5,
-                      child: Image.asset(
-                        "assets/images/alldoctors/4c97a3a7-35a4-4cb5-91ae-47322cfa9eb4 1.png",
                       ),
                     ),
                   ),
-                ),
-              ],
+
+                  // AppBar row
+                  SafeArea(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: devwidth * 0.04,
+                        vertical: 8,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.black,
+                              size: 24,
+                            ),
+                          ),
+                          Text(
+                            S.of(context).doctordetails,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(width: 24),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // Doctor image — centered
+                  Positioned(
+                    top: -devheight * 0.09,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: Transform.scale(
+                        scale: 0.5,
+                        child: Image.asset(
+                          "assets/images/alldoctors/4c97a3a7-35a4-4cb5-91ae-47322cfa9eb4 1.png",
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
 
             // ── INFO CARD ──
@@ -121,7 +199,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Name + map icon
+                    // Name + doctor image icon
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -137,16 +215,18 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {
-                            Navigator.of(context, rootNavigator: true).push(
-                              MaterialPageRoute(builder: (_) => Mapscreen()),
-                            );
-                          },
-                          child: SizedBox(
-                            height: 35,
-                            width: 35,
-                            child: Image.asset(
-                              "assets/images/alldoctors/Frame2147226191.png",
+                          onTap: () => _showImagePopup(context),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                            ),
+                            child: SizedBox(
+                              width: imageSize,
+                              height: imageSize,
+                              child: ClipOval(
+                                child: widget
+                                    .doctorimage, // ✅ Fixed: widget.doctorimage
+                              ),
                             ),
                           ),
                         ),
@@ -169,7 +249,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 
                     const SizedBox(height: 8),
 
-                    // Rating + timing
+                    // Rating
                     Row(
                       children: [
                         Text(
@@ -186,19 +266,6 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           child: Image.asset("assets/images/Star.png"),
                         ),
                         const SizedBox(width: 12),
-                        SizedBox(
-                          height: 18,
-                          width: 18,
-                          child: Image.asset("assets/images/Time.png"),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          "${widget.begindate} - ${widget.enddate}",
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: Color(0xff33384B),
-                          ),
-                        ),
                       ],
                     ),
 
@@ -239,7 +306,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           ],
                         ),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: _launchProfile,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,
                             shadowColor: Colors.transparent,
@@ -268,7 +335,29 @@ class _DoctorDetailsState extends State<DoctorDetails> {
             // ── APPOINTMENT PICKER ──
             Padding(
               padding: EdgeInsets.symmetric(horizontal: devwidth * 0.04),
-              child: const AppointmentPicker(),
+              child: Stack(
+                children: [
+                  const AppointmentPicker(),
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Center(
+                        child: Text(
+                          S.of(context).comingsoon,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
 
             const SizedBox(height: 30),
@@ -278,6 +367,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     );
   }
 
+  // ── HELPERS (inside the State class) ──
   Widget _statItem(String value, String label) {
     return Expanded(
       child: Column(
@@ -307,12 +397,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 
 // ── BOTTOM CURVE CLIPPER ──
 class BottomCurveClipper extends CustomClipper<Path> {
+  @override // ✅ Fixed: added missing @override
   Path getClip(Size size) {
     final path = Path();
     path.lineTo(0, size.height);
     path.quadraticBezierTo(
       size.width * 0.5,
-      size.height - 60,
+      size.height - 80,
       size.width,
       size.height,
     );
@@ -421,80 +512,85 @@ class _AppointmentPickerState extends State<AppointmentPicker> {
       ],
     );
   }
-}
 
-Widget _dateItem(String day, String date, bool isSelected) {
-  return Container(
-    width: 58,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(14),
-      color: isSelected ? const Color(0xFFEEF3FF) : Colors.white,
-      border: Border.all(
-        color: isSelected ? Colors.blue : Colors.grey.shade300,
-        width: 1.5,
-      ),
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          day,
-          style: TextStyle(
-            fontSize: 12,
-            color: isSelected ? Colors.blue : Colors.grey,
-          ),
+  // ── APPOINTMENT PICKER HELPERS (inside _AppointmentPickerState) ──
+
+  Widget _dateItem(String day, String date, bool isSelected) {
+    return Container(
+      width: 58,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        color: isSelected ? const Color(0xFFEEF3FF) : Colors.white,
+        border: Border.all(
+          color: isSelected ? Colors.blue : Colors.grey.shade300,
+          width: 1.5,
         ),
-        const SizedBox(height: 4),
-        Text(
-          date,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: isSelected ? Colors.blue : Colors.black,
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _timeItem(String time, bool isSelected) {
-  return Container(
-    alignment: Alignment.center,
-    decoration: BoxDecoration(
-      color: isSelected ? Colors.blue : Colors.white,
-      borderRadius: BorderRadius.circular(24),
-      border: Border.all(
-        color: isSelected ? Colors.blue : Colors.grey.shade300,
       ),
-    ),
-    child: Text(
-      time,
-      style: TextStyle(
-        fontSize: 13,
-        color: isSelected ? Colors.white : Colors.black,
-        fontWeight: FontWeight.w500,
-      ),
-    ),
-  );
-}
-
-Widget _headerRow(String title, String slots) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Text(
-        title,
-        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-      ),
-      Row(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(slots, style: const TextStyle(color: Colors.grey, fontSize: 13)),
-          const SizedBox(width: 6),
-          const Icon(Icons.chevron_left, size: 20),
-          const Icon(Icons.chevron_right, size: 20),
+          Text(
+            day,
+            style: TextStyle(
+              fontSize: 12,
+              color: isSelected ? Colors.blue : Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            date,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: isSelected ? Colors.blue : Colors.black,
+            ),
+          ),
         ],
       ),
-    ],
-  );
+    );
+  }
+
+  Widget _timeItem(String time, bool isSelected) {
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: isSelected ? Colors.blue : Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: isSelected ? Colors.blue : Colors.grey.shade300,
+        ),
+      ),
+      child: Text(
+        time,
+        style: TextStyle(
+          fontSize: 13,
+          color: isSelected ? Colors.white : Colors.black,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  Widget _headerRow(String title, String slots) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+        ),
+        Row(
+          children: [
+            Text(
+              slots,
+              style: const TextStyle(color: Colors.grey, fontSize: 13),
+            ),
+            const SizedBox(width: 6),
+            const Icon(Icons.chevron_left, size: 20),
+            const Icon(Icons.chevron_right, size: 20),
+          ],
+        ),
+      ],
+    );
+  }
 }
