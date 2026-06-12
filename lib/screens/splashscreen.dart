@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
+import 'package:grad_project/cubit/Reminder/StreakReminder.dart';
 import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Authentication/loginpage.dart';
@@ -46,6 +47,7 @@ class _SplashscreenState extends State<Splashscreen>
         final today = DateTime.now();
         context.read<DoctorCubit>().loadDoctors();
         context.read<DailyScheduleCubit>().loadSchedule(today);
+        context.read<StreakCubit>().loadStreak();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => Homepage()),
