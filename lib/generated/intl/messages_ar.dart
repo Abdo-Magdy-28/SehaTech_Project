@@ -38,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "Addreminder": MessageLookupByLibrary.simpleMessage("اضف تذكير"),
     "MarkasTaken": MessageLookupByLibrary.simpleMessage("تم التناول"),
+    "Medication": MessageLookupByLibrary.simpleMessage("الدواء"),
     "Nowupcomingreminderstoday": MessageLookupByLibrary.simpleMessage(
       "لا يوجد تذكيرات قادمة اليوم",
     ),
@@ -397,6 +398,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "لا يوجد أطباء في هذا التخصص",
     ),
     "nokeepchanges": MessageLookupByLibrary.simpleMessage("لا، حفظ التغييرات"),
+    "nonoti": MessageLookupByLibrary.simpleMessage("لا يوجد اشعارات"),
     "noperscriptionsfound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على وصفات",
     ),

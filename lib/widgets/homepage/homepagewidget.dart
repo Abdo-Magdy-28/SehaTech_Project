@@ -258,9 +258,13 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                         final pending = cubit.getUpcomingForToday(
                           state.medications,
                         );
-                        if (_index >= pending.length) _index = 0;
+                        if (cubit.upcomingIndex >= pending.length)
+                          cubit.upcomingIndex = 0;
+
                         if (pending.isNotEmpty) {
-                          return UpcomingReminder(medicine: pending.first);
+                          return UpcomingReminder(
+                            medicine: pending[cubit.upcomingIndex],
+                          );
                         } else {
                           return EmptyUpcoming(
                             medicine: DailyMedications(

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grad_project/cubit/notification/notificationcubit.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Profile/profile.dart';
 import 'package:grad_project/screens/notifications/notification_screen.dart';
+import 'package:grad_project/services/Notification/notificationservice.dart';
 
 class Customappbar extends StatelessWidget {
   const Customappbar({super.key});
@@ -63,7 +66,13 @@ class Customappbar extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => NotificationScreen()),
+                MaterialPageRoute(
+                  builder: (context) => BlocProvider(
+                    create: (context) =>
+                        NotificationCubit(NotificationService()),
+                    child: NotificationScreen(),
+                  ),
+                ),
               );
             },
             child: Badge(

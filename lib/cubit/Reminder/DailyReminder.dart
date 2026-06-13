@@ -26,6 +26,7 @@ class DailyScheduleCubit extends Cubit<DailyScheduleState> {
   final DailyScheduleService _service = DailyScheduleService();
 
   DateTime selectedDate = DateTime.now();
+  int upcomingIndex = 0;
 
   DailyScheduleCubit() : super(DailyScheduleInitial());
 
@@ -98,6 +99,19 @@ class DailyScheduleCubit extends Cubit<DailyScheduleState> {
     });
 
     return pending;
+  }
+
+  void remindLater() {
+    final state = this.state;
+    if (state is DailyScheduleLoaded) {
+      final pending = getUpcomingForToday(state.medications);
+      if (upcomingIndex < pending.length - 1) {
+        upcomingIndex++;
+      } else {
+        upcomingIndex = 0; // wrap around
+      }
+      emit(DailyScheduleLoaded(state.medications)); // re-emit to rebuild UI
+    }
   }
 
   Future<void> markTaken(DailyMedications med, DateTime date) async {

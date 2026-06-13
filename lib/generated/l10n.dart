@@ -2669,6 +2669,16 @@ class S {
     return Intl.message('Scanned', name: 'Scanned', desc: '', args: []);
   }
 
+  /// `No notifications`
+  String get nonoti {
+    return Intl.message('No notifications', name: 'nonoti', desc: '', args: []);
+  }
+
+  /// `Medication`
+  String get Medication {
+    return Intl.message('Medication', name: 'Medication', desc: '', args: []);
+  }
+
   /// `Now, upcoming reminders today`
   String get Nowupcomingreminderstoday {
     return Intl.message(

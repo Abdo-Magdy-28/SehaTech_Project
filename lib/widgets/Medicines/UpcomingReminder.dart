@@ -118,7 +118,9 @@ class _UpcomingReminderState extends State<UpcomingReminder> {
                     // Remind Later
                     Expanded(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.read<DailyScheduleCubit>().remindLater();
+                        },
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.symmetric(
                             vertical: 12,

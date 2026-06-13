@@ -178,8 +178,10 @@
       }
     }
   },
+  "Medication":"الدواء",
   "viewWeeklyReport": "عرض التقرير الأسبوعي",
   "TodaysSchedule": "جدول اليوم",
+  "nonoti":"لا يوجد اشعارات",
   "Scanned":"تم المسح",
   "Upcoming": "قريبا",
   "missed": "فاتت",
