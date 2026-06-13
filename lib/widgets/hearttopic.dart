@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grad_project/generated/l10n.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class hearttopic extends StatelessWidget {
   const hearttopic({super.key});
+
+  Future<void> _launchUrl() async {
+    final Uri url = Uri.parse(
+      'https://www.aljazeeramubasher.net/news/health/2025/1/15/%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D8%A7%D9%84%D8%AA%D8%B9%D8%A7%D9%85%D9%84-%D9%85%D8%B9-%D8%A7%D9%84%D8%A3%D9%85%D8%B1%D8%A7%D8%B6-%D8%A7%D9%84%D9%85%D8%B2%D9%85%D9%86%D8%A9',
+    );
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +54,7 @@ class hearttopic extends StatelessWidget {
               left: 10,
               top: 100,
               child: GestureDetector(
-                onTap: () {},
+                onTap: _launchUrl, // 👈 updated
                 child: Row(
                   children: [
                     Text(

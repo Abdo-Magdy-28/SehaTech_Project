@@ -343,6 +343,27 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "loadingdoctors": MessageLookupByLibrary.simpleMessage("Loading doctors…"),
     "location": MessageLookupByLibrary.simpleMessage("Location"),
+    "locationPermissionDenied": MessageLookupByLibrary.simpleMessage(
+      "Location permission denied",
+    ),
+    "locationPermissionPermanentlyDenied": MessageLookupByLibrary.simpleMessage(
+      "Location permission is permanently denied. Open settings and enable it manually.",
+    ),
+    "locationRequired": MessageLookupByLibrary.simpleMessage(
+      "Location Required",
+    ),
+    "locationRequiredMessage": MessageLookupByLibrary.simpleMessage(
+      "The app needs location permission to show nearby hospitals and pharmacies.",
+    ),
+    "locationServiceDisabled": MessageLookupByLibrary.simpleMessage(
+      "Please enable location services on your device to continue.",
+    ),
+    "locationUnavailable": MessageLookupByLibrary.simpleMessage(
+      "Location Unavailable",
+    ),
+    "locationUnavailableMessage": MessageLookupByLibrary.simpleMessage(
+      "Location must be enabled to show nearby hospitals and pharmacies.",
+    ),
     "locationnearestfirst": MessageLookupByLibrary.simpleMessage(
       "Location :nearest first",
     ),
@@ -423,6 +444,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "notificationssettings": MessageLookupByLibrary.simpleMessage(
       "Notification settings",
     ),
+    "openSettings": MessageLookupByLibrary.simpleMessage("Open Settings"),
     "or": MessageLookupByLibrary.simpleMessage("Or"),
     "ourservices": MessageLookupByLibrary.simpleMessage("Our Services"),
     "pain": MessageLookupByLibrary.simpleMessage("Pain"),

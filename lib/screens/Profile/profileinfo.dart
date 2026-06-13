@@ -6,9 +6,6 @@ import 'package:grad_project/widgets/profile/PopUpDialog.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:grad_project/services/Authservice.dart';
-import 'package:grad_project/models/user.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
 class Profileinfo extends StatefulWidget {
   const Profileinfo({super.key});
@@ -18,7 +15,6 @@ class Profileinfo extends StatefulWidget {
 }
 
 class _ProfileinfoState extends State<Profileinfo> {
-  File? _profileImage;
   bool isSaving = false;
   // Phone number variables
   final TextEditingController phoneController = TextEditingController();
@@ -31,6 +27,29 @@ class _ProfileinfoState extends State<Profileinfo> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   bool isLoading = true;
+
+  // ✅ snapshot of saved values, used to detect unsaved changes
+  String _initialFirstName = '';
+  String _initialLastName = '';
+  String _initialAddress = '';
+  String _initialPhone = '';
+  DateTime? _initialDate;
+
+  bool get _hasUnsavedChanges {
+    return firstNameController.text.trim() != _initialFirstName ||
+        lastNameController.text.trim() != _initialLastName ||
+        addressController.text.trim() != _initialAddress ||
+        phoneNumber != _initialPhone ||
+        selectedDate != _initialDate;
+  }
+
+  void _syncInitialValues() {
+    _initialFirstName = firstNameController.text.trim();
+    _initialLastName = lastNameController.text.trim();
+    _initialAddress = addressController.text.trim();
+    _initialPhone = phoneNumber;
+    _initialDate = selectedDate;
+  }
 
   @override
   void initState() {
@@ -70,6 +89,7 @@ class _ProfileinfoState extends State<Profileinfo> {
       setState(() {
         isLoading = false;
       });
+      _syncInitialValues();
     }
   }
 
@@ -84,17 +104,12 @@ class _ProfileinfoState extends State<Profileinfo> {
 
   @override
   Widget build(BuildContext context) {
-    // Get screen dimensions
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final isSmallScreen = screenWidth < 360;
     final isTablet = screenWidth > 600;
 
-    // Responsive values
     final horizontalPadding = screenWidth * 0.05;
-    final profileSize = isTablet ? 140.0 : (isSmallScreen ? 80.0 : 100.0);
-    final iconSize = isTablet ? 80.0 : (isSmallScreen ? 48.0 : 60.0);
-    final editIconSize = isTablet ? 24.0 : (isSmallScreen ? 14.0 : 18.0);
     final titleFontSize = isTablet ? 22.0 : (isSmallScreen ? 16.0 : 18.0);
     final labelFontSize = isTablet ? 16.0 : (isSmallScreen ? 12.0 : 14.0);
     final fieldFontSize = isTablet ? 16.0 : (isSmallScreen ? 12.0 : 14.0);
@@ -102,241 +117,124 @@ class _ProfileinfoState extends State<Profileinfo> {
     final fieldPadding = isTablet ? 20.0 : (isSmallScreen ? 12.0 : 16.0);
     final borderRadius = isTablet ? 16.0 : 12.0;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
-        scrolledUnderElevation: 0,
+    return PopScope(
+      canPop: !_hasUnsavedChanges,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          showCustomDialog(context);
+        }
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-            size: isTablet ? 28 : 24,
+        appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
+          scrolledUnderElevation: 0,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+              size: isTablet ? 28 : 24,
+            ),
+            onPressed: () {
+              if (_hasUnsavedChanges) {
+                showCustomDialog(context);
+              } else {
+                Navigator.pop(context);
+              }
+            },
           ),
-          onPressed: () => showCustomDialog(context),
-        ),
-        title: Text(
-          S.of(context).personalinfo,
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: titleFontSize,
+          title: Text(
+            S.of(context).personalinfo,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: titleFontSize,
+            ),
+          ),
+          centerTitle: true,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1.0),
+            child: Container(color: const Color(0xff111111), height: 1.0),
           ),
         ),
-        centerTitle: true,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(color: const Color(0xff111111), height: 1.0),
-        ),
-      ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator(color: Colors.blue))
-          : LayoutBuilder(
-              builder: (context, constraints) {
-                return SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: horizontalPadding,
-                    vertical: verticalSpacing,
-                  ),
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: isTablet ? 500 : double.infinity,
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(height: verticalSpacing),
-                          // Profile Picture
-                          _buildProfilePicture(
-                            profileSize: profileSize,
-                            iconSize: iconSize,
-                            editIconSize: editIconSize,
-                          ),
-                          SizedBox(height: verticalSpacing * 0.8),
-                          // Delete Photo Button
-                          TextButton.icon(
-                            onPressed: () {
-                              setState(() {
-                                _profileImage = null;
-                              });
-                            },
-                            icon: Icon(Icons.delete_outline, color: Colors.red),
-                            label: Text(
-                              S.of(context).deletephoto,
-                              style: TextStyle(color: Colors.red),
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator(color: Colors.blue))
+            : LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
+                      vertical: verticalSpacing,
+                    ),
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: isTablet ? 500 : double.infinity,
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(height: verticalSpacing * 2.5),
+                            _buildLabeledField(
+                              label: S.of(context).firstname,
+                              hint: 'Youssef',
+                              controller: firstNameController,
+                              labelFontSize: labelFontSize,
+                              fieldFontSize: fieldFontSize,
+                              fieldPadding: fieldPadding,
+                              borderRadius: borderRadius,
+                              verticalSpacing: verticalSpacing,
                             ),
-                          ),
-
-                          SizedBox(height: verticalSpacing * 0.8),
-                          // Form Fields
-                          _buildLabeledField(
-                            label: S.of(context).firstname,
-                            hint: 'Youssef',
-                            controller: firstNameController,
-                            labelFontSize: labelFontSize,
-                            fieldFontSize: fieldFontSize,
-                            fieldPadding: fieldPadding,
-                            borderRadius: borderRadius,
-                            verticalSpacing: verticalSpacing,
-                          ),
-                          _buildLabeledField(
-                            label: S.of(context).lastname,
-                            hint: 'Mostafa',
-                            controller: lastNameController,
-                            labelFontSize: labelFontSize,
-                            fieldFontSize: fieldFontSize,
-                            fieldPadding: fieldPadding,
-                            borderRadius: borderRadius,
-                            verticalSpacing: verticalSpacing,
-                          ),
-                          _buildDateField(
-                            labelFontSize: labelFontSize,
-                            fieldFontSize: fieldFontSize,
-                            fieldPadding: fieldPadding,
-                            borderRadius: borderRadius,
-                            verticalSpacing: verticalSpacing,
-                          ),
-                          _buildLabeledField(
-                            label: S.of(context).address,
-                            hint: 'Atreeb, Abdelhaleem mosque street',
-                            controller: addressController,
-                            labelFontSize: labelFontSize,
-                            fieldFontSize: fieldFontSize,
-                            fieldPadding: fieldPadding,
-                            borderRadius: borderRadius,
-                            verticalSpacing: verticalSpacing,
-                          ),
-
-                          _buildPhoneField(
-                            labelFontSize: labelFontSize,
-                            fieldFontSize: fieldFontSize,
-                            fieldPadding: fieldPadding,
-                            borderRadius: borderRadius,
-                            verticalSpacing: verticalSpacing,
-                            isTablet: isTablet,
-                          ),
-                          SizedBox(height: verticalSpacing * 2),
-                          // Save Button
-                          _buildSaveButton(
-                            borderRadius: borderRadius,
-                            fieldPadding: fieldPadding,
-                            fontSize: labelFontSize + 2,
-                          ),
-                          SizedBox(height: verticalSpacing),
-                        ],
+                            _buildLabeledField(
+                              label: S.of(context).lastname,
+                              hint: 'Mostafa',
+                              controller: lastNameController,
+                              labelFontSize: labelFontSize,
+                              fieldFontSize: fieldFontSize,
+                              fieldPadding: fieldPadding,
+                              borderRadius: borderRadius,
+                              verticalSpacing: verticalSpacing,
+                            ),
+                            _buildDateField(
+                              labelFontSize: labelFontSize,
+                              fieldFontSize: fieldFontSize,
+                              fieldPadding: fieldPadding,
+                              borderRadius: borderRadius,
+                              verticalSpacing: verticalSpacing,
+                            ),
+                            _buildLabeledField(
+                              label: S.of(context).address,
+                              hint: 'Atreeb, Abdelhaleem mosque street',
+                              controller: addressController,
+                              labelFontSize: labelFontSize,
+                              fieldFontSize: fieldFontSize,
+                              fieldPadding: fieldPadding,
+                              borderRadius: borderRadius,
+                              verticalSpacing: verticalSpacing,
+                            ),
+                            _buildPhoneField(
+                              labelFontSize: labelFontSize,
+                              fieldFontSize: fieldFontSize,
+                              fieldPadding: fieldPadding,
+                              borderRadius: borderRadius,
+                              verticalSpacing: verticalSpacing,
+                              isTablet: isTablet,
+                            ),
+                            SizedBox(height: verticalSpacing * 2),
+                            _buildSaveButton(
+                              borderRadius: borderRadius,
+                              fieldPadding: fieldPadding,
+                              fontSize: labelFontSize + 2,
+                            ),
+                            SizedBox(height: verticalSpacing),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-    );
-  }
-
-  Widget _buildProfilePicture({
-    required double profileSize,
-    required double iconSize,
-    required double editIconSize,
-  }) {
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment.bottomCenter,
-      children: [
-        CircleAvatar(
-          radius: profileSize / 2,
-          backgroundColor: Colors.grey[200],
-          backgroundImage: _profileImage != null
-              ? FileImage(_profileImage!)
-              : null,
-          child: _profileImage == null
-              ? Icon(Icons.person, size: iconSize, color: Colors.white)
-              : null,
-        ),
-        Positioned(
-          bottom: -editIconSize / 2,
-          child: GestureDetector(
-            onTap: _pickImageFromGallery,
-            child: Container(
-              padding: EdgeInsets.all(editIconSize * 0.35),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 4,
-                    spreadRadius: 1,
-                  ),
-                ],
+                  );
+                },
               ),
-              child: Icon(Icons.edit, size: editIconSize, color: Colors.blue),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Future<void> _pickImageFromGallery() async {
-    final pickedFile = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-    );
-    if (pickedFile != null) {
-      setState(() {
-        _profileImage = File(pickedFile.path);
-      });
-    }
-  }
-
-  Widget _buildLabeledDate({
-    required String label,
-    required String hint,
-    required TextEditingController controller, // add this
-    required double labelFontSize,
-    required double fieldFontSize,
-    required double fieldPadding,
-    required double borderRadius,
-    required double verticalSpacing,
-    VoidCallback? onTap, // add this
-  }) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: verticalSpacing),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: labelFontSize,
-              color: const Color(0xFF4B4B4B),
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          SizedBox(height: verticalSpacing * 0.4),
-          GestureDetector(
-            onTap: onTap,
-            child: TextField(
-              controller: controller,
-              readOnly: true, // prevents manual typing but keeps normal look
-              style: TextStyle(fontSize: fieldFontSize),
-              decoration: InputDecoration(
-                hintText: hint,
-                hintStyle: TextStyle(
-                  color: Colors.grey,
-                  fontSize: fieldFontSize,
-                ),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: fieldPadding,
-                  vertical: fieldPadding,
-                ),
-                suffixIcon: const Icon(Icons.calendar_today_outlined),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -410,9 +308,7 @@ class _ProfileinfoState extends State<Profileinfo> {
     if (results != null && results.isNotEmpty) {
       setState(() {
         selectedDate = results.first;
-        dateController.text = DateFormat(
-          'dd/MM/yyyy',
-        ).format(selectedDate!); // sync controller
+        dateController.text = DateFormat('dd/MM/yyyy').format(selectedDate!);
       });
     }
   }
@@ -512,13 +408,11 @@ class _ProfileinfoState extends State<Profileinfo> {
                 setState(() {
                   phoneNumber = number.phoneNumber ?? '';
                 });
-                print('Phone Number: ${number.phoneNumber}');
               },
               onInputValidated: (bool isValid) {
                 setState(() {
                   isPhoneValid = isValid;
                 });
-                print('Is Valid: $isValid');
               },
               selectorConfig: const SelectorConfig(
                 setSelectorButtonAsPrefixIcon: true,
@@ -581,12 +475,12 @@ class _ProfileinfoState extends State<Profileinfo> {
         dateOfBirth: selectedDate != null
             ? DateFormat('yyyy-MM-dd').format(selectedDate!)
             : null,
-        imageFile: _profileImage,
       );
 
       if (!mounted) return;
 
       if (success) {
+        _syncInitialValues();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(S.of(context).profileupdatedsuccessfully),

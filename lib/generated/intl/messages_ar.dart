@@ -338,6 +338,25 @@ class MessageLookup extends MessageLookupByLibrary {
       "جارٍ تحميل الأطباء…",
     ),
     "location": MessageLookupByLibrary.simpleMessage("الموقع"),
+    "locationPermissionDenied": MessageLookupByLibrary.simpleMessage(
+      "تم رفض إذن الموقع",
+    ),
+    "locationPermissionPermanentlyDenied": MessageLookupByLibrary.simpleMessage(
+      "إذن الموقع محظور بشكل دائم. افتح الإعدادات وفعّله يدوياً.",
+    ),
+    "locationRequired": MessageLookupByLibrary.simpleMessage("الموقع مطلوب"),
+    "locationRequiredMessage": MessageLookupByLibrary.simpleMessage(
+      "التطبيق محتاج إذن الموقع عشان يعرض أقرب المستشفيات والصيدليات.",
+    ),
+    "locationServiceDisabled": MessageLookupByLibrary.simpleMessage(
+      "من فضلك فعّل خدمة الموقع على جهازك للمتابعة.",
+    ),
+    "locationUnavailable": MessageLookupByLibrary.simpleMessage(
+      "الموقع غير متاح",
+    ),
+    "locationUnavailableMessage": MessageLookupByLibrary.simpleMessage(
+      "يجب تفعيل الموقع لعرض أقرب المستشفيات والصيدليات.",
+    ),
     "locationnearestfirst": MessageLookupByLibrary.simpleMessage(
       "الموقع: الاقرب اولا",
     ),
@@ -412,6 +431,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "notificationssettings": MessageLookupByLibrary.simpleMessage(
       "اعدادات الاشعارات",
     ),
+    "openSettings": MessageLookupByLibrary.simpleMessage("افتح الإعدادات"),
     "or": MessageLookupByLibrary.simpleMessage("او"),
     "ourservices": MessageLookupByLibrary.simpleMessage("خدماتنا"),
     "pain": MessageLookupByLibrary.simpleMessage("مسكن الالام"),

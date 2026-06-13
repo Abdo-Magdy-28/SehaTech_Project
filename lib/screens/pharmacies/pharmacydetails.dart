@@ -102,7 +102,7 @@ class _PharmacydetailsState extends State<PharmacyDetails> {
 
                   // Pharmacy SVG icon — centered (بدل صورة الدكتور)
                   Positioned(
-                    top: dh * 0.08,
+                    top: dh * 0.15,
                     left: 0,
                     right: 0,
                     child: Center(
@@ -187,7 +187,7 @@ class _PharmacydetailsState extends State<PharmacyDetails> {
                     Row(
                       children: [
                         Text(
-                          widget.rate.toStringAsFixed(1),
+                          "4.5",
                           style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,

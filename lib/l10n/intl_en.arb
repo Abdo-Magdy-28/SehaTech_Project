@@ -351,6 +351,15 @@
   "Nowupcomingreminderstoday": "Now, upcoming reminders today",
   "comingsoon": "Coming soon",
   "Startdate":"ٍStart:",
+  "locationPermissionDenied": "Location permission denied",
+"locationServiceDisabled": "Please enable location services on your device to continue.",
+"locationPermissionPermanentlyDenied": "Location permission is permanently denied. Open settings and enable it manually.",
+"locationRequired": "Location Required",
+"locationRequiredMessage": "The app needs location permission to show nearby hospitals and pharmacies.",
+"locationUnavailable": "Location Unavailable",
+"locationUnavailableMessage": "Location must be enabled to show nearby hospitals and pharmacies.",
+"openSettings": "Open Settings",
+
   "minutesago": "{count}m ago",
   "@minutesago": {
     "placeholders": {

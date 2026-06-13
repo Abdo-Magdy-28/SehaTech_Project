@@ -7,7 +7,6 @@ import 'package:grad_project/cubit/map/map_cubit.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/pharmacies.dart';
 import 'package:grad_project/services/Map/MapService.dart';
-
 import 'package:grad_project/widgets/hosptials/hospital_card.dart';
 import 'package:grad_project/widgets/maphospitalcard.dart';
 import 'package:grad_project/widgets/mappharmacycard.dart';
@@ -16,6 +15,7 @@ import 'package:grad_project/widgets/mapscreen/circlemap.dart';
 import 'package:grad_project/widgets/mapscreen/searchbar.dart';
 import 'package:grad_project/screens/Hospitals/hospitaldetails.dart';
 import 'package:grad_project/screens/pharmacies/pharmacydetails.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Mapscreen extends StatelessWidget {
   final double? targetLat;
@@ -24,9 +24,111 @@ class Mapscreen extends StatelessWidget {
 
   const Mapscreen({super.key, this.targetLat, this.targetLng, this.targetName});
 
+  Future<bool> _checkAndRequestLocation(BuildContext context) async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      if (context.mounted) {
+        await _showLocationDialog(
+          context,
+          title: S.of(context).locationRequired,
+          message: S.of(context).locationServiceDisabled,
+          onConfirm: () async => await Geolocator.openLocationSettings(),
+        );
+      }
+      return false;
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        if (context.mounted) {
+          await _showLocationDialog(
+            context,
+            title: S.of(context).locationRequired,
+            message: S.of(context).locationRequiredMessage,
+            onConfirm: null,
+          );
+        }
+        return false;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      if (context.mounted) {
+        await _showLocationDialog(
+          context,
+          title: S.of(context).locationRequired,
+          message: S.of(context).locationPermissionPermanentlyDenied,
+          onConfirm: () async => await Geolocator.openAppSettings(),
+        );
+      }
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<void> _showLocationDialog(
+    BuildContext context, {
+    required String title,
+    required String message,
+    required Future<void> Function()? onConfirm,
+  }) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Row(
+          children: [
+            const Icon(Icons.location_off, color: Color(0xff2260FF)),
+            const SizedBox(width: 8),
+            Text(
+              title,
+              style: const TextStyle(fontFamily: 'Cairo', fontSize: 16),
+            ),
+          ],
+        ),
+        content: Text(
+          message,
+          style: const TextStyle(fontFamily: 'Cairo', fontSize: 14),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              S.of(context).cancel,
+              style: const TextStyle(color: Colors.grey),
+            ),
+          ),
+          if (onConfirm != null)
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xff2260FF),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await onConfirm();
+              },
+              child: Text(
+                S.of(context).openSettings,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Cairo',
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final devheight = MediaQuery.of(context).size.height;
     return BlocProvider(
       create: (_) {
         final cubit = MapCubit(MapService());
@@ -36,12 +138,119 @@ class Mapscreen extends StatelessWidget {
         cubit.initLocation();
         return cubit;
       },
-      child: _MapView(
-        targetLat: targetLat,
-        targetLng: targetLng,
-        targetName: targetName,
+      child: _LocationGate(
+        checkLocation: _checkAndRequestLocation,
+        child: _MapView(
+          targetLat: targetLat,
+          targetLng: targetLng,
+          targetName: targetName,
+        ),
       ),
     );
+  }
+}
+
+class _LocationGate extends StatefulWidget {
+  final Future<bool> Function(BuildContext) checkLocation;
+  final Widget child;
+
+  const _LocationGate({required this.checkLocation, required this.child});
+
+  @override
+  State<_LocationGate> createState() => _LocationGateState();
+}
+
+class _LocationGateState extends State<_LocationGate> {
+  bool _isChecking = true;
+  bool _locationGranted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _check());
+  }
+
+  Future<void> _check() async {
+    final granted = await widget.checkLocation(context);
+    if (mounted) {
+      setState(() {
+        _locationGranted = granted;
+        _isChecking = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isChecking) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    if (!_locationGranted) {
+      return Scaffold(
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.location_disabled,
+                  size: 80,
+                  color: Color(0xff2260FF),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  S.of(context).locationUnavailable,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Cairo',
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  S.of(context).locationUnavailableMessage,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Cairo',
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 32),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff2260FF),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  icon: const Icon(Icons.refresh, color: Colors.white),
+                  label: Text(
+                    S.of(context).tryagain,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Cairo',
+                    ),
+                  ),
+                  onPressed: () => setState(() {
+                    _isChecking = true;
+                    _check();
+                  }),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return widget.child;
   }
 }
 
@@ -59,11 +268,12 @@ class _MapView extends StatefulWidget {
 class _MapViewState extends State<_MapView> {
   bool modalshowed = false;
   GoogleMapController? _mapController;
+
   @override
   void initState() {
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
+      const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
       ),
@@ -73,7 +283,7 @@ class _MapViewState extends State<_MapView> {
   @override
   void dispose() {
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
+      const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
       ),
@@ -86,7 +296,7 @@ class _MapViewState extends State<_MapView> {
     final devheight = MediaQuery.of(context).size.height;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
+      value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
       ),
@@ -172,8 +382,6 @@ class _MapViewState extends State<_MapView> {
                     ),
                   ),
                 ),
-
-                // Optional: show error / permission-denied banner
                 if (state.locationStatus == LocationStatus.denied ||
                     state.locationStatus == LocationStatus.error)
                   Positioned(
@@ -191,8 +399,8 @@ class _MapViewState extends State<_MapView> {
                       ),
                       child: Text(
                         state.locationStatus == LocationStatus.denied
-                            ? "locationPermissionDenied"
-                            : "somethingwentwrong",
+                            ? S.of(context).locationPermissionDenied
+                            : S.of(context).somethingWentWrong,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -364,7 +572,7 @@ class _NearbySheet extends StatelessWidget {
                         : state.nearbyStatus == NearbyStatus.error
                         ? Center(
                             child: Text(
-                              "Something wrong",
+                              S.of(context).somethingWentWrong,
                               textAlign: TextAlign.center,
                             ),
                           )

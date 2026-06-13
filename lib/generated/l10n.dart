@@ -2704,6 +2704,86 @@ class S {
     return Intl.message('ٍStart:', name: 'Startdate', desc: '', args: []);
   }
 
+  /// `Location permission denied`
+  String get locationPermissionDenied {
+    return Intl.message(
+      'Location permission denied',
+      name: 'locationPermissionDenied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enable location services on your device to continue.`
+  String get locationServiceDisabled {
+    return Intl.message(
+      'Please enable location services on your device to continue.',
+      name: 'locationServiceDisabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location permission is permanently denied. Open settings and enable it manually.`
+  String get locationPermissionPermanentlyDenied {
+    return Intl.message(
+      'Location permission is permanently denied. Open settings and enable it manually.',
+      name: 'locationPermissionPermanentlyDenied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location Required`
+  String get locationRequired {
+    return Intl.message(
+      'Location Required',
+      name: 'locationRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The app needs location permission to show nearby hospitals and pharmacies.`
+  String get locationRequiredMessage {
+    return Intl.message(
+      'The app needs location permission to show nearby hospitals and pharmacies.',
+      name: 'locationRequiredMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location Unavailable`
+  String get locationUnavailable {
+    return Intl.message(
+      'Location Unavailable',
+      name: 'locationUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location must be enabled to show nearby hospitals and pharmacies.`
+  String get locationUnavailableMessage {
+    return Intl.message(
+      'Location must be enabled to show nearby hospitals and pharmacies.',
+      name: 'locationUnavailableMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open Settings`
+  String get openSettings {
+    return Intl.message(
+      'Open Settings',
+      name: 'openSettings',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `{count}m ago`
   String minutesago(int count) {
     return Intl.message(

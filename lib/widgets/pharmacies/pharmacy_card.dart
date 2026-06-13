@@ -121,7 +121,7 @@ class PharmacyCard extends StatelessWidget {
                           children: [
                             // Rating
                             Text(
-                              "$rate",
+                              "4.5",
                               style: TextStyle(
                                 fontSize: rateFontSize,
                                 color: const Color(0xff33384B),

@@ -102,7 +102,7 @@ class _HospitaldetailsState extends State<Hospitaldetails> {
 
                   // Hospital SVG icon — centered
                   Positioned(
-                    top: dh * 0.08,
+                    top: dh * 0.15,
                     left: 0,
                     right: 0,
                     child: Center(

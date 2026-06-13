@@ -3,7 +3,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grad_project/models/hospitals.dart';
 import 'package:grad_project/models/pharmacies.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grad_project/services/Map/MapService.dart';
 
 enum NearbyCategory { hospitals, pharmacies }
@@ -16,7 +15,6 @@ class MapState extends Equatable {
   final LocationStatus locationStatus;
   final LatLng? userLocation;
   final LatLng? currentLocation;
-
   final NearbyCategory selectedCategory;
   final NearbyStatus nearbyStatus;
   final List<Hospital> hospitals;
@@ -75,9 +73,11 @@ class MapCubit extends Cubit<MapState> {
   MapCubit(this._service) : super(const MapState());
 
   Future<void> initLocation() async {
+    if (isClosed) return;
     emit(state.copyWith(locationStatus: LocationStatus.loading));
     try {
       final pos = await _service.getCurrentPosition();
+      if (isClosed) return;
       final loc = LatLng(pos.latitude, pos.longitude);
       emit(
         state.copyWith(
@@ -88,6 +88,7 @@ class MapCubit extends Cubit<MapState> {
       );
       fetchNearby(state.selectedCategory);
     } on LocationPermissionDeniedException {
+      if (isClosed) return;
       emit(
         state.copyWith(
           locationStatus: LocationStatus.denied,
@@ -96,6 +97,7 @@ class MapCubit extends Cubit<MapState> {
         ),
       );
     } catch (e) {
+      if (isClosed) return;
       emit(
         state.copyWith(
           locationStatus: LocationStatus.error,
@@ -108,10 +110,12 @@ class MapCubit extends Cubit<MapState> {
   }
 
   void setExternalTarget(LatLng location) {
+    if (isClosed) return;
     emit(state.copyWith(currentLocation: location));
   }
 
   Future<void> recenterToUser() async {
+    if (isClosed) return;
     if (state.userLocation != null) {
       emit(state.copyWith(currentLocation: state.userLocation));
     } else {
@@ -120,6 +124,7 @@ class MapCubit extends Cubit<MapState> {
   }
 
   void selectCategory(NearbyCategory category) {
+    if (isClosed) return;
     emit(state.copyWith(selectedCategory: category));
     fetchNearby(category);
   }
@@ -128,6 +133,7 @@ class MapCubit extends Cubit<MapState> {
     final loc = state.userLocation;
     if (loc == null) return;
 
+    if (isClosed) return;
     emit(state.copyWith(nearbyStatus: NearbyStatus.loading));
     try {
       if (category == NearbyCategory.hospitals) {
@@ -135,6 +141,7 @@ class MapCubit extends Cubit<MapState> {
           lat: loc.latitude,
           lng: loc.longitude,
         );
+        if (isClosed) return;
         emit(
           state.copyWith(
             nearbyStatus: NearbyStatus.success,
@@ -146,6 +153,7 @@ class MapCubit extends Cubit<MapState> {
           lat: loc.latitude,
           lng: loc.longitude,
         );
+        if (isClosed) return;
         emit(
           state.copyWith(
             nearbyStatus: NearbyStatus.success,
@@ -154,6 +162,7 @@ class MapCubit extends Cubit<MapState> {
         );
       }
     } catch (e) {
+      if (isClosed) return;
       emit(
         state.copyWith(
           nearbyStatus: NearbyStatus.error,

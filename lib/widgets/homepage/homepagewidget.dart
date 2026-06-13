@@ -361,15 +361,6 @@ class _HomepagewidgetState extends State<Homepagewidget> {
                           color: Color(0xff33384B),
                         ),
                       ),
-                      Text(
-                        S.of(context).seeAll,
-                        style: TextStyle(
-                          fontFamily: 'Cairo',
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: Color(0xff2E6FF3),
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -426,18 +417,18 @@ void _showLanguageSheet(BuildContext context) {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Select language',
+                  S.of(context).selectlanguage,
                   style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
                 ),
                 const SizedBox(height: 14),
                 _LangOption(
                   code: 'en',
-                  name: 'English',
+                  name: S.of(context).english,
                   selected: locale.languageCode == 'en',
                 ),
                 _LangOption(
                   code: 'ar',
-                  name: 'العربية',
+                  name: S.of(context).arabic,
                   selected: locale.languageCode == 'ar',
                 ),
               ],

@@ -285,6 +285,81 @@ class _SearchscreenState extends State<Searchscreen> {
                 ),
               ),
 
+              // ── Pharmacies ────────────────────────────────────────------------------------------------------------------
+              SliverToBoxAdapter(
+                child: BlocBuilder<PharmacyCubit, PharmacyState>(
+                  builder: (context, state) {
+                    if (state is PharmacyLoading) {
+                      return const Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                    if (state is PharmacyError) {
+                      return Center(child: Text(state.message));
+                    }
+                    if (state is PharmacySearchEmpty) {
+                      return const SizedBox.shrink();
+                    }
+                    if (state is PharmacyLoaded &&
+                        state.pharmacies.isNotEmpty) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (!state.isSearching)
+                            _sectionTitle(
+                              S.of(context).popularpharmacies,
+                              sw,
+                              sh,
+                            ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: state.pharmacies.length,
+                            itemBuilder: (context, index) {
+                              final pharmacy = state.pharmacies[index];
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: sw * 0.03,
+                                ),
+                                child: GestureDetector(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PharmacyDetails(
+                                        name: pharmacy.name,
+                                        rate: pharmacy.rating,
+                                        isopen24: pharmacy.is24Hours,
+                                        devheight: sh,
+                                        latitude: pharmacy.latitude ?? 0.0,
+                                        longitude: pharmacy.longitude ?? 0.0,
+                                      ),
+                                    ),
+                                  ),
+                                  child: PharmacyCard(
+                                    name: pharmacy.name,
+                                    rate: pharmacy.rating,
+                                    isopen24: pharmacy.is24Hours,
+                                    latitude: pharmacy.latitude ?? 0.0,
+                                    longitude: pharmacy.longitude ?? 0.0,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ),
+
+              if (noResults)
+                SliverToBoxAdapter(child: _buildEmptyState(sw, sh)),
+
+              SliverToBoxAdapter(child: SizedBox(height: sh * 0.04)),
               // ── Medicines ─────────────────────────────────────────-----------------------------------------
               SliverToBoxAdapter(
                 child: BlocBuilder<MedicineCubit, MedicineState>(
@@ -372,80 +447,6 @@ class _SearchscreenState extends State<Searchscreen> {
                   },
                 ),
               ),
-              // ── Pharmacies ────────────────────────────────────────------------------------------------------------------
-              SliverToBoxAdapter(
-                child: BlocBuilder<PharmacyCubit, PharmacyState>(
-                  builder: (context, state) {
-                    if (state is PharmacyLoading) {
-                      return const Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Center(child: CircularProgressIndicator()),
-                      );
-                    }
-                    if (state is PharmacyError) {
-                      return Center(child: Text(state.message));
-                    }
-                    if (state is PharmacySearchEmpty) {
-                      return const SizedBox.shrink();
-                    }
-                    if (state is PharmacyLoaded &&
-                        state.pharmacies.isNotEmpty) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (!state.isSearching)
-                            _sectionTitle(
-                              S.of(context).popularpharmacies,
-                              sw,
-                              sh,
-                            ),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: state.pharmacies.length,
-                            itemBuilder: (context, index) {
-                              final pharmacy = state.pharmacies[index];
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: sw * 0.03,
-                                ),
-                                child: GestureDetector(
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => PharmacyDetails(
-                                        name: pharmacy.name,
-                                        rate: pharmacy.rating,
-                                        isopen24: pharmacy.is24Hours,
-                                        devheight: sh,
-                                        latitude: pharmacy.latitude ?? 0.0,
-                                        longitude: pharmacy.longitude ?? 0.0,
-                                      ),
-                                    ),
-                                  ),
-                                  child: PharmacyCard(
-                                    name: pharmacy.name,
-                                    rate: pharmacy.rating,
-                                    isopen24: pharmacy.is24Hours,
-                                    latitude: pharmacy.latitude ?? 0.0,
-                                    longitude: pharmacy.longitude ?? 0.0,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
-              ),
-
-              if (noResults)
-                SliverToBoxAdapter(child: _buildEmptyState(sw, sh)),
-
               SliverToBoxAdapter(child: SizedBox(height: sh * 0.04)),
             ],
           );
