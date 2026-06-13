@@ -10,33 +10,31 @@ import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
 import 'package:grad_project/cubit/Reminder/StreakReminder.dart';
 import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
+import 'package:grad_project/cubit/pharmacies/pharmaciesCubit.dart';
 import 'package:grad_project/firebase_options.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:grad_project/screens/splashscreen.dart';
+import 'package:grad_project/services/pharmacies/pharmaciesService.dart';
 
 late List<CameraDescription> cameras;
 
 Future<void> main() async {
   debugPaintSizeEnabled = false;
   WidgetsFlutterBinding.ensureInitialized();
-  AwesomeNotifications().initialize(
-    null, // use default icon
-    [
-      NotificationChannel(
-        channelKey: 'medication_channel',
-        channelName: 'Medication Reminders',
-        channelDescription: 'Reminder notifications for medications',
-        defaultColor: Colors.teal,
-        importance: NotificationImportance.High,
-        channelShowBadge: true,
-      ),
-    ],
-  );
+  AwesomeNotifications().initialize(null, [
+    NotificationChannel(
+      channelKey: 'medication_channel',
+      channelName: 'Medication Reminders',
+      channelDescription: 'Reminder notifications for medications',
+      defaultColor: Colors.teal,
+      importance: NotificationImportance.High,
+      channelShowBadge: true,
+    ),
+  ]);
   AwesomeNotifications().isNotificationAllowed().then((allowed) {});
   cameras = await availableCameras();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // await dotenv.load();
 
   runApp(BlocProvider(create: (_) => LocaleCubit(), child: const MyApp()));
 }
@@ -48,13 +46,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => DoctorCubit()),
+        BlocProvider<DoctorCubit>(create: (_) => DoctorCubit()),
         BlocProvider(create: (_) => Authcubit()),
         BlocProvider(create: (_) => DailyScheduleCubit()),
         BlocProvider(create: (_) => StreakCubit()),
         BlocProvider(create: (_) => DrugInteractionCubit()),
+        BlocProvider<PharmacyCubit>(
+          create: (_) => PharmacyCubit(PharmacyService()),
+        ),
       ],
-
       child: BlocBuilder<LocaleCubit, Locale>(
         builder: (context, locale) {
           return MaterialApp(

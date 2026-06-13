@@ -1,4 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:grad_project/cubit/pharmacies/pharmaciesCubit.dart';
+import 'package:grad_project/cubit/pharmacies/pharmaciesStates.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/pharmacies.dart';
 import 'package:grad_project/widgets/pharmacies/pharmacy_card.dart';
@@ -13,31 +18,65 @@ class Allpahramcies extends StatefulWidget {
 
 class _AllpahramciesState extends State<Allpahramcies> {
   TextEditingController searchController = TextEditingController();
-  bool isSearching = false;
-  String? selectedCategory;
-  List<Pharmacy> categoryPharmacies = [];
-  List<Pharmacy> filteredPharmacies = [];
-  List<Pharmacy> allPharmacies = [
-    Pharmacy(name: "Elazaby", rating: 4.5, is24Hours: true),
-    Pharmacy(name: "Al_amwy", rating: 4.5, is24Hours: true),
-    Pharmacy(name: "Al_amwy", rating: 4.5, is24Hours: true),
-    Pharmacy(name: "Al_amwy", rating: 4.5, is24Hours: true),
-    Pharmacy(name: "Al_amwy", rating: 4.5, is24Hours: true),
-    Pharmacy(name: "Al_amwy", rating: 4.5, is24Hours: true),
-    Pharmacy(name: "Al_amwy", rating: 4.5, is24Hours: true),
-  ];
   String currentoption = '';
+  Timer? _debounce;
 
-  void sortname() {
-    setState(() {
-      filteredPharmacies.sort((a, b) => a.name.compareTo(b.name));
+  @override
+  void initState() {
+    super.initState();
+    context.read<PharmacyCubit>().fetchPharmacies();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    _debounce?.cancel();
+    super.dispose();
+  }
+
+  void onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 400), () {
+      context.read<PharmacyCubit>().searchPharmacies(query);
     });
   }
 
-  void sortrate() {
-    setState(() {
-      filteredPharmacies.sort((a, b) => b.rating.compareTo(a.rating));
-    });
+  void sortByName(List<Pharmacy> pharmacies) {
+    pharmacies.sort((a, b) => a.name.compareTo(b.name));
+  }
+
+  void sortByRating(List<Pharmacy> pharmacies) {
+    pharmacies.sort((a, b) => b.rating.compareTo(a.rating));
+  }
+
+  Future<void> sortByNearest() async {
+    Navigator.pop(context);
+
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) return;
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      if (permission == LocationPermission.deniedForever ||
+          permission == LocationPermission.denied) {
+        return;
+      }
+
+      Position pos = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      if (!mounted) return;
+      context.read<PharmacyCubit>().fetchNearbyPharmacies(
+        lat: pos.latitude,
+        lng: pos.longitude,
+      );
+    } catch (e) {
+      // optionally show a snackbar
+    }
   }
 
   Widget buildsheet(BuildContext context, StateSetter setModalState) {
@@ -63,6 +102,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
               setModalState(() {
                 currentoption = S.of(context).location;
               });
+              sortByNearest();
             },
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 15),
@@ -82,116 +122,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
             ),
           ),
           Divider(color: Colors.grey, height: 1),
-          InkWell(
-            onTap: () {
-              setModalState(() {
-                currentoption = S.of(context).rating;
-              });
-              sortrate();
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    S.of(context).ratingthebestfirst,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  if (currentoption == S.of(context).rating)
-                    SizedBox(
-                      height: 16,
-                      child: Image.asset(
-                        'assets/images/alldoctors/elements.png',
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          Divider(color: Colors.grey, height: 1),
-          InkWell(
-            onTap: () {
-              setModalState(() {
-                currentoption = S.of(context).price;
-              });
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    S.of(context).pricelowtohigh,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  if (currentoption == S.of(context).price)
-                    SizedBox(
-                      height: 16,
-                      child: Image.asset(
-                        'assets/images/alldoctors/elements.png',
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          Divider(color: Colors.grey, height: 1),
-          InkWell(
-            onTap: () {
-              setModalState(() {
-                currentoption = S.of(context).name;
-              });
-              sortname();
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    S.of(context).alphabetfromatoz,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  if (currentoption == S.of(context).name)
-                    SizedBox(
-                      height: 16,
-                      child: Image.asset(
-                        'assets/images/alldoctors/elements.png',
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          Divider(color: Colors.grey, height: 1),
-          InkWell(
-            onTap: () {
-              setModalState(() {
-                currentoption = S.of(context).experience;
-              });
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    S.of(context).moreexperinencefirst,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  if (currentoption == S.of(context).experience)
-                    SizedBox(
-                      height: 16,
-                      child: Image.asset(
-                        'assets/images/alldoctors/elements.png',
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          Divider(color: Colors.grey, height: 1),
+
           SizedBox(height: 15),
           SizedBox(
             width: double.infinity,
@@ -222,21 +153,6 @@ class _AllpahramciesState extends State<Allpahramcies> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    filteredPharmacies = allPharmacies;
-  }
-
-  void search(String query) {
-    setState(() {
-      isSearching = query.isNotEmpty;
-      filteredPharmacies = allPharmacies.where((Pharmacy) {
-        return Pharmacy.name.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final devheight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -256,7 +172,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
           child: Container(height: 1, color: Colors.grey),
         ),
       ),
-      body: ListView(
+      body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -273,7 +189,7 @@ class _AllpahramciesState extends State<Allpahramcies> {
                 ],
               ),
               child: TextField(
-                onChanged: search,
+                onChanged: onSearchChanged,
                 controller: searchController,
                 decoration: InputDecoration(
                   focusColor: Color(0xff0D5FA7),
@@ -291,7 +207,6 @@ class _AllpahramciesState extends State<Allpahramcies> {
               ),
             ),
           ),
-          // After the search bar padding, before the "Popular Pharmacies" text
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
@@ -319,16 +234,8 @@ class _AllpahramciesState extends State<Allpahramcies> {
                   child: Text(
                     currentoption == '' ||
                             currentoption == S.of(context).location
-                        ? S.of(context).bylocation
-                        : currentoption == S.of(context).rating
-                        ? S.of(context).byrating
-                        : currentoption == S.of(context).price
-                        ? S.of(context).byprice
-                        : currentoption == S.of(context).name
-                        ? S.of(context).byname
-                        : currentoption == S.of(context).experience
-                        ? S.of(context).byexperience
-                        : S.of(context).bylocation,
+                        ? S.of(context).nearestfirst
+                        : S.of(context).location,
                     style: TextStyle(
                       color: Color(0xff111111).withValues(alpha: 0.6),
                       fontSize: 16,
@@ -369,79 +276,110 @@ class _AllpahramciesState extends State<Allpahramcies> {
               ],
             ),
           ),
-          if (!isSearching)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                S.of(context).popularpharmacies,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
+          Expanded(
+            child: BlocBuilder<PharmacyCubit, PharmacyState>(
+              builder: (context, state) {
+                if (state is PharmacyLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: filteredPharmacies.length,
-            itemBuilder: (context, index) {
-              final pharmacy = filteredPharmacies[index];
+                if (state is PharmacyError) {
+                  return Center(child: Text(state.message));
+                }
 
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PharmacyDetails(
-                          name: pharmacy.name,
-                          rate: pharmacy.rating,
-                          isopen24: pharmacy.is24Hours,
-                          devheight: devheight,
+                if (state is PharmacySearchEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 100),
+                        SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: Image.asset(
+                            'assets/images/alldoctors/search.png',
+                          ),
                         ),
+                        SizedBox(height: 12),
+                        Text(
+                          S.of(context).sorrynoresultfound,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                        Text(
+                          S.of(context).trydifferentsearchterm,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                if (state is PharmacyLoaded) {
+                  return ListView(
+                    children: [
+                      if (!state.isSearching)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            S.of(context).popularpharmacies,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: state.pharmacies.length,
+                        itemBuilder: (context, index) {
+                          final pharmacy = state.pharmacies[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PharmacyDetails(
+                                      name: pharmacy.name,
+                                      rate: pharmacy.rating,
+                                      isopen24: pharmacy.is24Hours,
+                                      devheight: devheight,
+                                      latitude: pharmacy.latitude,
+                                      longitude: pharmacy.longitude,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: PharmacyCard(
+                                name: pharmacy.name,
+                                rate: pharmacy.rating,
+                                isopen24: pharmacy.is24Hours,
+                                longitude: pharmacy.longitude ?? 0,
+                                latitude: pharmacy.latitude ?? 0,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                  child: PharmacyCard(
-                    name: pharmacy.name,
-                    rate: pharmacy.rating,
-                    isopen24: pharmacy.is24Hours,
-                  ),
-                ),
-              );
-            },
-          ),
-          if (isSearching && filteredPharmacies.isEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Column(
-                children: [
-                  SizedBox(height: 100),
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: Image.asset('assets/images/alldoctors/search.png'),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    S.of(context).sorrynoresultfound,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    S.of(context).trydifferentsearchterm,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
+                    ],
+                  );
+                }
+
+                return const SizedBox.shrink();
+              },
             ),
+          ),
         ],
       ),
     );
