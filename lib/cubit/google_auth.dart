@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../services/google_auth_service.dart';
+import '../services/Authservice.dart';
 
 abstract class GoogleAuthState {}
 
@@ -28,17 +29,21 @@ class GoogleAuthCubit extends Cubit<GoogleAuthState> {
     emit(GoogleAuthLoading());
     try {
       final data = await _service.signInWithGoogle();
+      final idToken = data['idToken'] as String;
 
-      // ✅ Save idToken as auth_token
-      await _storage.write(key: 'auth_token', value: data['idToken']);
+      if (idToken.isEmpty) {
+        emit(GoogleAuthFailure('Failed to get Google ID token'));
+        return;
+      }
 
-      // ✅ Save user data as JSON string
-      await _storage.write(
-        key: 'Google_user_data',
-        value: data['user'].toString(), // or jsonEncode(data['user'])
-      );
-      print(data['idToken']);
-      emit(GoogleAuthSuccess(data['user']));
+      // ✅ Send idToken to backend for verification
+      final response = await AuthService().googleLogin(idToken: idToken);
+
+      if (response.success) {
+        emit(GoogleAuthSuccess(data['user']));
+      } else {
+        emit(GoogleAuthFailure(response.message));
+      }
     } catch (e) {
       emit(GoogleAuthFailure(e.toString()));
     }

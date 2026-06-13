@@ -296,7 +296,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hello": MessageLookupByLibrary.simpleMessage("مرحبا"),
     "history": MessageLookupByLibrary.simpleMessage("السجل"),
     "historyremoved": MessageLookupByLibrary.simpleMessage("تم حذف السجل"),
-    "home": MessageLookupByLibrary.simpleMessage("الصفحة الرئيسية"),
+    "home": MessageLookupByLibrary.simpleMessage(" الرئيسية"),
     "hospital": MessageLookupByLibrary.simpleMessage("مستشفى"),
     "hospitalinfo": MessageLookupByLibrary.simpleMessage("تفاصيل المستشفى"),
     "hospitals": MessageLookupByLibrary.simpleMessage("المستشفيات"),

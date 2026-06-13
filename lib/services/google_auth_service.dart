@@ -1,7 +1,11 @@
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleAuthService {
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'profile']);
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: ['email', 'profile'],
+    serverClientId:
+        '205883409914-q862nta6uo1ntav2m0s9d8e95823d103.apps.googleusercontent.com',
+  );
 
   Future<Map<String, dynamic>> signInWithGoogle() async {
     final googleUser = await _googleSignIn.signIn();

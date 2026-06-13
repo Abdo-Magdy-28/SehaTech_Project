@@ -11,6 +11,7 @@ import 'package:grad_project/cubit/Reminder/ReminderCubit.dart';
 import 'package:grad_project/cubit/Reminder/StreakReminder.dart';
 import 'package:grad_project/cubit/doctors/cubit/doctors_cubit.dart';
 import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
+import 'package:grad_project/cubit/google_auth.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
 import 'package:grad_project/cubit/pharmacies/pharmaciesCubit.dart';
 import 'package:grad_project/cubit/search/Hospitals/Hospitalcubit.dart';
@@ -19,6 +20,7 @@ import 'package:grad_project/firebase_options.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:grad_project/screens/splashscreen.dart';
+import 'package:grad_project/services/google_auth_service.dart';
 import 'package:grad_project/services/pharmacies/pharmaciesService.dart';
 import 'package:grad_project/services/search%20services/doctors/search_service.dart';
 
@@ -56,6 +58,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => DailyScheduleCubit()),
         BlocProvider(create: (_) => StreakCubit()),
         BlocProvider(create: (_) => DrugInteractionCubit()),
+        BlocProvider<GoogleAuthCubit>(
+          create: (_) => GoogleAuthCubit(GoogleAuthService()),
+        ),
         BlocProvider<PharmacyCubit>(
           create: (_) => PharmacyCubit(PharmacyService()),
         ),

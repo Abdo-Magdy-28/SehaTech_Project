@@ -202,6 +202,61 @@ class AuthService {
     }
   }
 
+  Future<LoginResponse> googleLogin({required String idToken}) async {
+    const String url = "$apiurl/api/v2/auth/google/verify-token";
+    try {
+      final response = await dio.post(
+        url,
+        data: {"idToken": idToken},
+        options: Options(
+          validateStatus: (status) => status != null && status < 500,
+        ),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = response.data;
+
+        String? token = data['token'];
+        if (token != null) {
+          await storage.write(key: 'auth_token', value: token);
+        }
+
+        final userData = data['data']?['user'] ?? data['user'];
+        User? userObj;
+        if (userData != null) {
+          userData['token'] = token;
+          userObj = User.fromJson(userData);
+          await saveUserData(userObj);
+        }
+
+        await storage.write(key: 'login_method', value: 'google');
+
+        return LoginResponse(
+          success: true,
+          message: 'Login successful',
+          token: token,
+          user: userObj,
+        );
+      }
+
+      return LoginResponse(
+        success: false,
+        message: response.data['message'] ?? 'Google sign-in failed',
+      );
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionError ||
+          e.error is SocketException) {
+        return LoginResponse(success: false, message: 'No internet connection');
+      }
+      return LoginResponse(success: false, message: 'Network error occurred');
+    } catch (e) {
+      return LoginResponse(
+        success: false,
+        message: 'Unexpected error occurred',
+      );
+    }
+  }
+
   Future<void> logout() async {
     await storage.delete(key: 'auth_token');
     // await storage.delete(key: 'user_data');

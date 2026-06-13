@@ -7,6 +7,7 @@ import 'package:grad_project/cubit/Authentication/Authcubit.dart';
 import 'package:grad_project/cubit/Authentication/Authstates.dart';
 import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
 import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
+import 'package:grad_project/cubit/google_auth.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/screens/Authentication/signupform.dart';
 import 'package:grad_project/screens/Authentication/signupscreen2.dart';
@@ -265,35 +266,80 @@ class _SigninState extends State<Signin> {
                     SizedBox(height: devHeight * 0.04),
                     Center(child: Text(S.of(context).or)),
                     SizedBox(height: devHeight * 0.04),
-                    SizedBox(
-                      width: devWidth * 0.9,
-                      height: devHeight * 0.075,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: Color(0xfff3f1f8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset("assets/images/Icons2.svg"),
-                            SizedBox(width: devWidth * 0.01),
-                            Text(
-                              S.of(context).signupwithgoogle,
-                              style: TextStyle(
-                                color: Color(0xFF676767),
-                                fontSize: devWidth * 0.045, // ✅ Changed from 18
-                                fontFamily: 'Cairo',
-                                fontWeight: FontWeight.w400,
+
+                    // Sign in with Google
+                    BlocConsumer<GoogleAuthCubit, GoogleAuthState>(
+                      listener: (context, googleState) {
+                        if (googleState is GoogleAuthSuccess) {
+                          final today = DateTime.now();
+                          context.read<DoctorCubit>().loadDoctors();
+                          context.read<DailyScheduleCubit>().loadSchedule(
+                            today,
+                          );
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Homepage(),
+                            ),
+                            (route) => false,
+                          );
+                        } else if (googleState is GoogleAuthFailure) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(googleState.message),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      },
+                      builder: (context, googleState) {
+                        return SizedBox(
+                          width: devWidth * 0.9,
+                          height: devHeight * 0.075,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              backgroundColor: const Color(0xfff3f1f8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
+                            onPressed: googleState is GoogleAuthLoading
+                                ? null
+                                : () => context
+                                      .read<GoogleAuthCubit>()
+                                      .signInWithGoogle(),
+                            child: googleState is GoogleAuthLoading
+                                ? const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/images/Icons2.svg",
+                                      ),
+                                      SizedBox(width: devWidth * 0.01),
+                                      Text(
+                                        S.of(context).signupwithgoogle,
+                                        style: TextStyle(
+                                          color: const Color(0xFF676767),
+                                          fontSize: devWidth * 0.045,
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                          ),
+                        );
+                      },
                     ),
                     SizedBox(height: devHeight * 0.02),
 
