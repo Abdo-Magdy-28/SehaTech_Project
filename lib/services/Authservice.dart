@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:grad_project/constants.dart';
 import 'package:grad_project/models/user.dart';
 
@@ -203,7 +204,11 @@ class AuthService {
 
   Future<void> logout() async {
     await storage.delete(key: 'auth_token');
-    await storage.delete(key: 'user_data');
+    // await storage.delete(key: 'user_data');
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    if (await googleSignIn.isSignedIn()) {
+      await googleSignIn.signOut();
+    }
   }
 
   Future<LoginResponse> forgotPassword({required String email}) async {

@@ -1,12 +1,16 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
+import 'package:grad_project/cubit/google_auth.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
 import 'package:grad_project/screens/Authentication/signin.dart';
 import 'package:grad_project/screens/Authentication/signupform.dart';
+import 'package:grad_project/screens/homepage.dart';
+import 'package:grad_project/services/google_auth_service.dart';
 import 'package:grad_project/widgets/carousel_card.dart';
 import 'package:grad_project/widgets/carouselcard2.dart';
 import 'package:grad_project/widgets/carouselcard3.dart';
@@ -167,36 +171,76 @@ class _LoginpageState extends State<Loginpage> {
                   SizedBox(height: devheight * 0.04),
 
                   // GOOGLE BUTTON
-                  SizedBox(
-                    width: devwidth * 0.9,
-                    height: devheight * 0.075,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xfff3f1f8),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset("assets/images/Icons2.svg"),
-                          SizedBox(width: devwidth * 0.01),
-                          Text(
-                            S.of(context).signupwithgoogle,
-                            style: TextStyle(
-                              color: Color(0xFF676767),
-                              fontSize: devwidth * 0.045,
-                              fontFamily: 'Cairo',
-                              fontWeight: FontWeight.w400,
+                  BlocProvider(
+                    create: (_) => GoogleAuthCubit(
+                      GoogleAuthService(),
+                    ), // your existing Dio instance
+                    child: BlocConsumer<GoogleAuthCubit, GoogleAuthState>(
+                      listener: (context, state) {
+                        if (state is GoogleAuthSuccess) {
+                          final user = state.user;
+                          print("User Name: ${user['name']}");
+                          print("User Email: ${user['email']}");
+                          print("User Photo: ${user['photo']}");
+
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return Homepage();
+                              },
                             ),
+                          );
+                        } else if (state is GoogleAuthFailure) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(state.message)),
+                          );
+                        }
+                      },
+
+                      builder: (context, state) {
+                        return SizedBox(
+                          width: devwidth * 0.9,
+                          height: devheight * 0.075,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xfff3f1f8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                            ),
+                            onPressed: state is GoogleAuthLoading
+                                ? null
+                                : () => context
+                                      .read<GoogleAuthCubit>()
+                                      .signInWithGoogle(),
+                            child: state is GoogleAuthLoading
+                                ? CircularProgressIndicator()
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/images/Icons2.svg",
+                                      ),
+                                      SizedBox(width: devwidth * 0.01),
+                                      Text(
+                                        S.of(context).signupwithgoogle,
+                                        style: TextStyle(
+                                          color: Color(0xFF676767),
+                                          fontSize: devwidth * 0.045,
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ),
-
                   SizedBox(height: devheight * 0.02),
 
                   // FACEBOOK BUTTON
