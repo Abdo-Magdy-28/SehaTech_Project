@@ -5,38 +5,47 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grad_project/generated/l10n.dart';
-import 'package:grad_project/widgets/doctors/doctor_card.dart';
 import 'package:grad_project/widgets/mapdoctorcard.dart';
-import 'package:grad_project/widgets/mapdoctorcarddetail.dart';
 import 'package:grad_project/widgets/maphospitalcard.dart';
 import 'package:grad_project/widgets/mappharmacycard.dart';
 import 'package:grad_project/widgets/mapscreen/blurred_appbar.dart';
 import 'package:grad_project/widgets/mapscreen/circlemap.dart';
 import 'package:grad_project/widgets/mapscreen/searchbar.dart';
 
-import 'package:grad_project/widgets/buildcard.dart';
-
 class Mapscreen extends StatefulWidget {
+  final double? targetLat;
+  final double? targetLng;
+  final String? targetName;
+
+  const Mapscreen({super.key, this.targetLat, this.targetLng, this.targetName});
+
   @override
   MapState createState() => MapState();
 }
 
 class MapState extends State<Mapscreen> {
   LatLng? currentLocation;
+  LatLng? userLocation;
+  LatLng? pharmacyLocation;
   late String selectedCategory = S.of(context).pharmacies;
   Map<String, dynamic>? selectedDoctor;
   bool modalshowed = false;
+
   @override
   void initState() {
     super.initState();
-    // Make status bar transparent
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness:
-            Brightness.dark, // Dark icons for light background
+        statusBarIconBrightness: Brightness.dark,
       ),
     );
+
+    if (widget.targetLat != null && widget.targetLng != null) {
+      pharmacyLocation = LatLng(widget.targetLat!, widget.targetLng!);
+      currentLocation = pharmacyLocation;
+    }
+
     requestPermission();
   }
 
@@ -65,14 +74,16 @@ class MapState extends State<Mapscreen> {
       desiredAccuracy: LocationAccuracy.high,
     );
 
+    if (!mounted) return;
+
     setState(() {
-      currentLocation = LatLng(pos.latitude, pos.longitude);
+      userLocation = LatLng(pos.latitude, pos.longitude);
+      currentLocation ??= userLocation;
     });
   }
 
   @override
   void dispose() {
-    // Reset system UI when leaving the screen
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -96,7 +107,11 @@ class MapState extends State<Mapscreen> {
             : Stack(
                 children: [
                   // Mapscreen - Full Screen
-                  CircleMap(currentLocation: currentLocation!),
+                  CircleMap(
+                    currentLocation: currentLocation!,
+                    extraMarker: pharmacyLocation,
+                    extraMarkerLabel: widget.targetName,
+                  ),
 
                   // Blurred Header with SafeArea
                   Positioned(
@@ -159,12 +174,18 @@ class MapState extends State<Mapscreen> {
                       ),
                       child: IconButton(
                         icon: Icon(Icons.my_location, color: Colors.white),
-                        onPressed: getUserLocation,
+                        onPressed: () {
+                          if (userLocation != null) {
+                            setState(() {
+                              currentLocation = userLocation;
+                            });
+                          } else {
+                            getUserLocation();
+                          }
+                        },
                       ),
                     ),
                   ),
-
-                  // ====== END OF BLURRED BOTTOM SHEET ====== //
                 ],
               ),
       ),
@@ -199,7 +220,6 @@ class MapState extends State<Mapscreen> {
             children: [
               SizedBox(height: 20),
 
-              // TabBar as separate OutlinedButtons
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Container(
@@ -236,7 +256,6 @@ class MapState extends State<Mapscreen> {
 
               SizedBox(height: 10),
 
-              // List Header
               Container(
                 width: 340,
                 height: 272,
@@ -402,7 +421,9 @@ class MapState extends State<Mapscreen> {
                                     ]
                                   : [
                                       Mappharmacycard(
-                                        name: 'El-Amiry Hospital',
+                                        name:
+                                            widget.targetName ??
+                                            'El-Amiry Hospital',
                                         devheight: devheight,
                                         rate: 4.8,
                                       ),
@@ -422,8 +443,6 @@ class MapState extends State<Mapscreen> {
                         ],
                       ),
               ),
-
-              // Dynamic List based on selected category
             ],
           ),
         ),
@@ -446,25 +465,21 @@ class MapState extends State<Mapscreen> {
       icon: Icon(
         icon,
         color: isSelected ? Colors.white : Color(0xff2260FF),
-        size: 16, // Smaller icon
+        size: 16,
       ),
       label: Text(
         label,
         style: TextStyle(
           color: isSelected ? Colors.white : Color(0xff2260FF),
           fontFamily: 'Cairo',
-          fontSize: 11, // Smaller text
+          fontSize: 11,
           fontWeight: FontWeight.w500,
         ),
       ),
-
       style: ElevatedButton.styleFrom(
         minimumSize: Size(0, 29),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        padding: EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 6,
-        ), // Compact padding
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         backgroundColor: isSelected ? Color(0xff2260FF) : Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         elevation: isSelected ? 4 : 0,
@@ -505,7 +520,6 @@ class MapState extends State<Mapscreen> {
               ),
             ],
           ),
-
           Row(
             children: [
               CircleAvatar(
@@ -538,7 +552,6 @@ class MapState extends State<Mapscreen> {
               ),
             ],
           ),
-
           Row(
             children: [
               Text(
@@ -546,7 +559,6 @@ class MapState extends State<Mapscreen> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Icon(Icons.star, color: Colors.amber, size: 18),
-
               Icon(Icons.access_time, size: 16, color: Colors.grey),
               SizedBox(width: 4),
               Text(
@@ -555,10 +567,7 @@ class MapState extends State<Mapscreen> {
               ),
             ],
           ),
-
           SizedBox(height: 16),
-
-          // Statistics
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -567,12 +576,8 @@ class MapState extends State<Mapscreen> {
               _buildStatColumn('Hourly Rate', selectedDoctor!['hourlyRate']),
             ],
           ),
-
-          // Book Button
           ElevatedButton(
-            onPressed: () {
-              // Book appointment logic
-            },
+            onPressed: () {},
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xff2260FF),
               minimumSize: Size(double.infinity, 50),
