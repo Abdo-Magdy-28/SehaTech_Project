@@ -347,8 +347,10 @@
   "Scanned":"Scanned",
   "nonoti":"No notifications",
   "Medication":"Medication",
+  "Enddate":"End:",
   "Nowupcomingreminderstoday": "Now, upcoming reminders today",
   "comingsoon": "Coming soon",
+  "Startdate":"ٍStart:",
   "minutesago": "{count}m ago",
   "@minutesago": {
     "placeholders": {

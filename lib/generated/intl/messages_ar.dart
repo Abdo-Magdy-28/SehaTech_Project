@@ -37,6 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "Addreminder": MessageLookupByLibrary.simpleMessage("اضف تذكير"),
+    "Enddate": MessageLookupByLibrary.simpleMessage("تاريخ-انتهاء"),
     "MarkasTaken": MessageLookupByLibrary.simpleMessage("تم التناول"),
     "Medication": MessageLookupByLibrary.simpleMessage("الدواء"),
     "Nowupcomingreminderstoday": MessageLookupByLibrary.simpleMessage(
@@ -44,6 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "RemindLater": MessageLookupByLibrary.simpleMessage("ذكرني لاحقاً"),
     "Scanned": MessageLookupByLibrary.simpleMessage("تم المسح"),
+    "Startdate": MessageLookupByLibrary.simpleMessage("بداية:"),
     "TodaysSchedule": MessageLookupByLibrary.simpleMessage("جدول اليوم"),
     "Upcoming": MessageLookupByLibrary.simpleMessage("قريبا"),
     "UpcomingReminder": MessageLookupByLibrary.simpleMessage("تذكير قادم"),

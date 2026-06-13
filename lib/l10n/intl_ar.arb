@@ -170,6 +170,7 @@
   "healthmatrix": "الملف الصحي",
   "Nowupcomingreminderstoday": "لا يوجد تذكيرات قادمة اليوم",
   "Addreminder":"اضف تذكير",
+  "Startdate":"بداية:",
   "weeklyPercentage": "{percent}%",
   "@weeklyPercentage": {
     "placeholders": {
@@ -179,6 +180,7 @@
     }
   },
   "Medication":"الدواء",
+  "Enddate":"تاريخ-انتهاء",
   "viewWeeklyReport": "عرض التقرير الأسبوعي",
   "TodaysSchedule": "جدول اليوم",
   "nonoti":"لا يوجد اشعارات",

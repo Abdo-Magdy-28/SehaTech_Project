@@ -22,6 +22,10 @@ class ActualCard extends StatelessWidget {
     final double subtitleSize = sw * 0.0384;
     final double badgeFontSize = sw * 0.035;
     final double verticalGap = sh * 0.008;
+    String _formatDate(String isoDate) {
+      final date = DateTime.parse(isoDate);
+      return '${date.day}/${date.month}/${date.year}';
+    }
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: sw * 0.04, vertical: sh * 0.006),
@@ -66,7 +70,7 @@ class ActualCard extends StatelessWidget {
                     //  Medicine Name
                     Expanded(
                       child: Text(
-                        reminder.genericName,
+                        reminder.medicationName,
                         style: TextStyle(
                           fontSize: titleSize,
                           fontWeight: FontWeight.w700,
@@ -88,7 +92,7 @@ class ActualCard extends StatelessWidget {
                     SizedBox(width: sw * 0.02),
                     Expanded(
                       child: Text(
-                        reminder.strength,
+                        reminder.form,
                         style: TextStyle(
                           fontSize: subtitleSize,
                           color: const Color(0xFF686868),
@@ -121,7 +125,7 @@ class ActualCard extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            reminder.form,
+                            '${S().Startdate} ${_formatDate(reminder.startDate)}',
                             style: TextStyle(
                               fontSize: badgeFontSize,
                               fontFamily: 'Cairo',
@@ -148,7 +152,7 @@ class ActualCard extends StatelessWidget {
                           ),
                           child: Center(
                             child: Text(
-                              S.of(context).Addreminder,
+                              '${S().Enddate} ${_formatDate(reminder.endDate)}',
                               style: TextStyle(
                                 fontSize: badgeFontSize,
                                 fontFamily: 'Cairo',

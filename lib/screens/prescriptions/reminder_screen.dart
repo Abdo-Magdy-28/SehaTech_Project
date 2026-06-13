@@ -146,7 +146,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
           '$_fromYear-${monthToNumber(_fromMonth)}-${_fromDay.toString().padLeft(2, '0')}',
       endDate:
           '$_toYear-${monthToNumber(_toMonth)}-${_toDay.toString().padLeft(2, '0')}',
-      daysOfWeek: [1, 2, 3, 4, 5],
+      daysOfWeek: [1, 2, 3, 4, 5, 6, 7],
       doseTimes: _selectedTimes
           .map(
             (t) => DoseTime(

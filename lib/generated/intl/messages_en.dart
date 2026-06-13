@@ -37,6 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "Addreminder": MessageLookupByLibrary.simpleMessage("Add reminder"),
+    "Enddate": MessageLookupByLibrary.simpleMessage("End:"),
     "MarkasTaken": MessageLookupByLibrary.simpleMessage("Mark as Taken"),
     "Medication": MessageLookupByLibrary.simpleMessage("Medication"),
     "Nowupcomingreminderstoday": MessageLookupByLibrary.simpleMessage(
@@ -44,6 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "RemindLater": MessageLookupByLibrary.simpleMessage("Remind Later"),
     "Scanned": MessageLookupByLibrary.simpleMessage("Scanned"),
+    "Startdate": MessageLookupByLibrary.simpleMessage("ٍStart:"),
     "TodaysSchedule": MessageLookupByLibrary.simpleMessage("Today\'s Schedule"),
     "Upcoming": MessageLookupByLibrary.simpleMessage("Upcoming"),
     "UpcomingReminder": MessageLookupByLibrary.simpleMessage(

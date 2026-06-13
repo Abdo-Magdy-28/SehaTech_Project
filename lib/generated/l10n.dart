@@ -2679,6 +2679,11 @@ class S {
     return Intl.message('Medication', name: 'Medication', desc: '', args: []);
   }
 
+  /// `End:`
+  String get Enddate {
+    return Intl.message('End:', name: 'Enddate', desc: '', args: []);
+  }
+
   /// `Now, upcoming reminders today`
   String get Nowupcomingreminderstoday {
     return Intl.message(
@@ -2692,6 +2697,11 @@ class S {
   /// `Coming soon`
   String get comingsoon {
     return Intl.message('Coming soon', name: 'comingsoon', desc: '', args: []);
+  }
+
+  /// `ٍStart:`
+  String get Startdate {
+    return Intl.message('ٍStart:', name: 'Startdate', desc: '', args: []);
   }
 
   /// `{count}m ago`
