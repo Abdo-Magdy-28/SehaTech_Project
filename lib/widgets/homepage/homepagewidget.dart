@@ -2,6 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
+import 'package:grad_project/cubit/Reminder/StreakReminder.dart';
 import 'package:grad_project/cubit/doctors/popular/popular_states.dart';
 import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
@@ -46,6 +47,16 @@ class _HomepagewidgetState extends State<Homepagewidget> {
     });
   }
 
+  Future<void> refreshHome() async {
+    final today = DateTime.now();
+
+    await Future.wait([
+      context.read<DoctorCubit>().loadDoctors(),
+      context.read<DailyScheduleCubit>().loadSchedule(today),
+      context.read<StreakCubit>().loadStreak(),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final devheight = MediaQuery.of(context).size.height;
@@ -54,315 +65,331 @@ class _HomepagewidgetState extends State<Homepagewidget> {
       child: Center(
         child: SizedBox(
           width: devwidth * 0.9,
-          child: CustomScrollView(
-            physics: BouncingScrollPhysics(),
-            slivers: [
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.02)),
-              SliverToBoxAdapter(child: Customappbar()),
+          child: RefreshIndicator(
+            backgroundColor: Color(0xff1555d8),
+            color: Colors.white,
+            onRefresh: refreshHome,
+            child: CustomScrollView(
+              physics: BouncingScrollPhysics(),
+              slivers: [
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.02)),
+                SliverToBoxAdapter(child: Customappbar()),
 
-              SliverToBoxAdapter(
-                child: SizedBox(width: devwidth, child: Divider(thickness: 1)),
-              ),
-              SliverToBoxAdapter(
-                child: GestureDetector(
-                  onTap: () => _showLanguageSheet(context),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.language, size: 20),
-                      const SizedBox(width: 6),
-                      BlocBuilder<LocaleCubit, Locale>(
-                        builder: (context, locale) => Text(
-                          locale.languageCode == 'en' ? 'English' : 'عربية',
-                          style: const TextStyle(fontSize: 15),
-                        ),
-                      ),
-                      const Icon(Icons.keyboard_arrow_down, size: 18),
-                    ],
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    width: devwidth,
+                    child: Divider(thickness: 1),
                   ),
                 ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.01)),
-
-              SliverToBoxAdapter(
-                child: GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChatBotScreen()),
-                  ),
-                  child: chatbotslider(devheight: devheight),
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
-              SliverToBoxAdapter(child: categorysrow()),
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.030)),
-              SliverToBoxAdapter(
-                child: home_crouselcard(
-                  devwidth: devwidth,
-                  devheight: devheight,
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
-              SliverToBoxAdapter(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      S.of(context).findDoctors,
-                      style: TextStyle(
-                        color: Color(0xff33384B),
-                        fontFamily: 'Cairo',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Alldoctors()),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          S.of(context).seeAll,
-                          style: TextStyle(
-                            color: Color(0xff2E6FF3),
-                            fontFamily: 'Cairo',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
+                SliverToBoxAdapter(
+                  child: GestureDetector(
+                    onTap: () => _showLanguageSheet(context),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.language, size: 20),
+                        const SizedBox(width: 6),
+                        BlocBuilder<LocaleCubit, Locale>(
+                          builder: (context, locale) => Text(
+                            locale.languageCode == 'en' ? 'English' : 'عربية',
+                            style: const TextStyle(fontSize: 15),
                           ),
                         ),
-                      ),
+                        const Icon(Icons.keyboard_arrow_down, size: 18),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-              BlocBuilder<DoctorCubit, DoctorState>(
-                builder: (context, state) {
-                  if (state is DoctorLoading) {
-                    // Skeleton shimmer while loading
-                    return SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          return Skeletonizer(
-                            child: Doctorcard(
-                              doctorimage: Image.asset('assets/images/Pic.png'),
-                              job: "Loading...",
-                              hospital: "Loading...",
-                              name: "Loading...",
-                              rate: 0,
-                              begindate: "--:--",
-                              enddate: "--:--",
-                              profile: "",
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.01)),
+
+                SliverToBoxAdapter(
+                  child: GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChatBotScreen()),
+                    ),
+                    child: chatbotslider(devheight: devheight),
+                  ),
+                ),
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
+                SliverToBoxAdapter(child: categorysrow()),
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.030)),
+                SliverToBoxAdapter(
+                  child: home_crouselcard(
+                    devwidth: devwidth,
+                    devheight: devheight,
+                  ),
+                ),
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
+                SliverToBoxAdapter(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        S.of(context).findDoctors,
+                        style: TextStyle(
+                          color: Color(0xff33384B),
+                          fontFamily: 'Cairo',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Alldoctors(),
                             ),
                           );
                         },
-                        childCount: 5, // show 5 skeletons
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            S.of(context).seeAll,
+                            style: TextStyle(
+                              color: Color(0xff2E6FF3),
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
                       ),
-                    );
-                  } else if (state is DoctorLoaded) {
-                    // Real doctors list
-                    return SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        final doctor = state.doctors[index];
-                        return Doctorcard(
-                          doctorimage: Image.network(doctor.image),
-                          job: doctor.job,
-                          hospital: doctor.hospital,
-                          name: doctor.name,
-                          rate: doctor.rate,
-                          begindate: doctor.beginDate,
-                          enddate: doctor.endDate,
-                          profile: doctor.profile ?? "",
-                        );
-                      }, childCount: state.doctors.length),
-                    );
-                  } else if (state is DoctorError) {
-                    return SliverToBoxAdapter(
-                      child: Center(child: Text("Error: ${state.message}")),
-                    );
-                  } else {
-                    return SliverToBoxAdapter(
-                      child: Center(child: Text("No data")),
-                    );
-                  }
-                },
-              ),
-
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
-              SliverToBoxAdapter(
-                child: Text(
-                  S.of(context).medicationManagement,
-                  style: TextStyle(
-                    color: Color(0xff33384B),
-                    fontFamily: 'Cairo',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
+                    ],
                   ),
                 ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.02)),
-              SliverToBoxAdapter(
-                child: MedicationManagementGrid(
-                  devheight: devheight,
-                  devwidth: devwidth,
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
-              SliverToBoxAdapter(
-                child: BlocBuilder<DailyScheduleCubit, DailyScheduleState>(
+                BlocBuilder<DoctorCubit, DoctorState>(
                   builder: (context, state) {
-                    final cubit = context.read<DailyScheduleCubit>();
-                    if (state is DailyScheduleLoading) {
-                      return Skeletonizer(
-                        child: UpcomingReminder(
-                          medicine: DailyMedications(
-                            reminderId: "",
-                            medicationName: "Loading...",
-                            genericName: "",
-                            form: "",
-                            strength: "",
-                            instructions: "",
-                            color: "",
-                            status: "",
-                            dosage: "-",
-                            time: "--:--",
-                          ),
+                    if (state is DoctorLoading) {
+                      // Skeleton shimmer while loading
+                      return SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            return Skeletonizer(
+                              child: Doctorcard(
+                                doctorimage: Image.asset(
+                                  'assets/images/Pic.png',
+                                ),
+                                job: "Loading...",
+                                hospital: "Loading...",
+                                name: "Loading...",
+                                rate: 0,
+                                begindate: "--:--",
+                                enddate: "--:--",
+                                profile: "",
+                              ),
+                            );
+                          },
+                          childCount: 5, // show 5 skeletons
                         ),
                       );
-                    } else if (state is DailyScheduleLoaded) {
-                      final pending = cubit.getUpcomingForToday(
-                        state.medications,
+                    } else if (state is DoctorLoaded) {
+                      // Real doctors list
+                      return SliverList(
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          final doctor = state.doctors[index];
+                          return Doctorcard(
+                            doctorimage: Image.network(doctor.image),
+                            job: doctor.job,
+                            hospital: doctor.hospital,
+                            name: doctor.name,
+                            rate: doctor.rate,
+                            begindate: doctor.beginDate,
+                            enddate: doctor.endDate,
+                            profile: doctor.profile ?? "",
+                          );
+                        }, childCount: state.doctors.length),
                       );
-                      if (_index >= pending.length) _index = 0;
-                      if (pending.isNotEmpty) {
-                        return UpcomingReminder(medicine: pending.first);
-                      } else {
-                        return EmptyUpcoming(
-                          medicine: DailyMedications(
-                            reminderId: "",
-                            medicationName: S
-                                .of(context)
-                                .Nowupcomingreminderstoday,
-                            genericName: "",
-                            form: "",
-                            strength: "",
-                            instructions: "",
-                            color: "",
-                            status: "",
-                            dosage: "-",
-                            time: "--:--",
-                          ),
-                        );
-                      }
-                    } else if (state is DailyScheduleError) {
-                      return Center(
-                        child: Text(
-                          "Error: ${state.message}",
-                          style: TextStyle(color: Colors.red),
-                        ),
+                    } else if (state is DoctorError) {
+                      return SliverToBoxAdapter(
+                        child: Center(child: Text("Error: ${state.message}")),
                       );
                     } else {
-                      return SizedBox.shrink();
+                      return SliverToBoxAdapter(
+                        child: Center(child: Text("No data")),
+                      );
                     }
                   },
                 ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
-              SliverToBoxAdapter(child: DrugInteractionCheckerCard()),
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
-              SliverToBoxAdapter(child: Weaklystreak()),
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
-              SliverToBoxAdapter(
-                child: WeekScheduleWidget(
-                  onDateSelected: (selectedDate) {
-                    context.read<DailyScheduleCubit>().loadSchedule(
-                      selectedDate,
-                    );
-                  },
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
-              BlocBuilder<DailyScheduleCubit, DailyScheduleState>(
-                builder: (context, state) {
-                  if (state is DailyScheduleLoading) {
-                    return SliverToBoxAdapter(
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
 
-                  if (state is DailyScheduleError) {
-                    return SliverToBoxAdapter(
-                      child: Center(child: Text("Error loading medications")),
-                    );
-                  }
-
-                  if (state is DailyScheduleLoaded) {
-                    final meds = state.medications;
-
-                    return SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        final med = meds[index];
-                        return Medicineremindercard(
-                          image: Image.asset("assets/images/Shape10.png"),
-                          condition: med.status,
-                          name: med.medicationName,
-                          quatity: med.dosage,
-                          scheduletime: "",
-                          time: med.time,
-                        );
-                      }, childCount: meds.length),
-                    );
-                  }
-
-                  return SliverToBoxAdapter(child: SizedBox());
-                },
-              ),
-
-              SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
-              SliverToBoxAdapter(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      S.of(context).importantTopics,
-                      style: TextStyle(
-                        fontFamily: 'Cairo',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                        color: Color(0xff33384B),
-                      ),
-                    ),
-                    Text(
-                      S.of(context).seeAll,
-                      style: TextStyle(
-                        fontFamily: 'Cairo',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: Color(0xff2E6FF3),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              SliverToBoxAdapter(
-                child: Directionality(
-                  textDirection: TextDirection.ltr,
-                  child: SizedBox(
-                    height: 170,
-                    child: ListView(
-                      clipBehavior: Clip.none,
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.only(right: 20, bottom: 15, top: 15),
-                      children: [hearttopic(), prevent_diseases()],
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
+                SliverToBoxAdapter(
+                  child: Text(
+                    S.of(context).medicationManagement,
+                    style: TextStyle(
+                      color: Color(0xff33384B),
+                      fontFamily: 'Cairo',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
                     ),
                   ),
                 ),
-              ),
-            ],
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.02)),
+                SliverToBoxAdapter(
+                  child: MedicationManagementGrid(
+                    devheight: devheight,
+                    devwidth: devwidth,
+                  ),
+                ),
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
+                SliverToBoxAdapter(
+                  child: BlocBuilder<DailyScheduleCubit, DailyScheduleState>(
+                    builder: (context, state) {
+                      final cubit = context.read<DailyScheduleCubit>();
+                      if (state is DailyScheduleLoading) {
+                        return Skeletonizer(
+                          child: UpcomingReminder(
+                            medicine: DailyMedications(
+                              reminderId: "",
+                              medicationName: "Loading...",
+                              genericName: "",
+                              form: "",
+                              strength: "",
+                              instructions: "",
+                              color: "",
+                              status: "",
+                              dosage: "-",
+                              time: "--:--",
+                            ),
+                          ),
+                        );
+                      } else if (state is DailyScheduleLoaded) {
+                        final pending = cubit.getUpcomingForToday(
+                          state.medications,
+                        );
+                        if (_index >= pending.length) _index = 0;
+                        if (pending.isNotEmpty) {
+                          return UpcomingReminder(medicine: pending.first);
+                        } else {
+                          return EmptyUpcoming(
+                            medicine: DailyMedications(
+                              reminderId: "",
+                              medicationName: S
+                                  .of(context)
+                                  .Nowupcomingreminderstoday,
+                              genericName: "",
+                              form: "",
+                              strength: "",
+                              instructions: "",
+                              color: "",
+                              status: "",
+                              dosage: "-",
+                              time: "--:--",
+                            ),
+                          );
+                        }
+                      } else if (state is DailyScheduleError) {
+                        return Center(
+                          child: Text(
+                            "Error: ${state.message}",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        );
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
+                  ),
+                ),
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
+                SliverToBoxAdapter(child: DrugInteractionCheckerCard()),
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
+                SliverToBoxAdapter(child: Weaklystreak()),
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
+                SliverToBoxAdapter(
+                  child: WeekScheduleWidget(
+                    onDateSelected: (selectedDate) {
+                      context.read<DailyScheduleCubit>().loadSchedule(
+                        selectedDate,
+                      );
+                    },
+                  ),
+                ),
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
+                BlocBuilder<DailyScheduleCubit, DailyScheduleState>(
+                  builder: (context, state) {
+                    if (state is DailyScheduleLoading) {
+                      return SliverToBoxAdapter(
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+
+                    if (state is DailyScheduleError) {
+                      return SliverToBoxAdapter(
+                        child: Center(child: Text("Error loading medications")),
+                      );
+                    }
+
+                    if (state is DailyScheduleLoaded) {
+                      final meds = state.medications;
+
+                      return SliverList(
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          final med = meds[index];
+                          return Medicineremindercard(
+                            image: Image.asset("assets/images/Shape10.png"),
+                            condition: med.status,
+                            name: med.medicationName,
+                            quatity: med.dosage,
+                            scheduletime: "",
+                            time: med.time,
+                          );
+                        }, childCount: meds.length),
+                      );
+                    }
+
+                    return SliverToBoxAdapter(child: SizedBox());
+                  },
+                ),
+
+                SliverToBoxAdapter(child: SizedBox(height: devheight * 0.025)),
+                SliverToBoxAdapter(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        S.of(context).importantTopics,
+                        style: TextStyle(
+                          fontFamily: 'Cairo',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Color(0xff33384B),
+                        ),
+                      ),
+                      Text(
+                        S.of(context).seeAll,
+                        style: TextStyle(
+                          fontFamily: 'Cairo',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          color: Color(0xff2E6FF3),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SliverToBoxAdapter(
+                  child: Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: SizedBox(
+                      height: 170,
+                      child: ListView(
+                        clipBehavior: Clip.none,
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.only(
+                          right: 20,
+                          bottom: 15,
+                          top: 15,
+                        ),
+                        children: [hearttopic(), prevent_diseases()],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

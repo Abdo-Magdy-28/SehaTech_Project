@@ -17,23 +17,28 @@ class Mappharmacycard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
-        height: 75,
+        constraints: const BoxConstraints(minHeight: 75),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: Colors.white,
           border: Border.all(color: const Color(0xff111111), width: 1),
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: Column(
-                spacing: 0,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                          vertical: 8,
+                        ),
                         child: SizedBox(
                           width: 37,
                           child: SvgPicture.asset(
@@ -43,29 +48,32 @@ class Mappharmacycard extends StatelessWidget {
                       ),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 3),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: 4,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
                                 name,
-                                style: TextStyle(
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
                                   fontSize: 14,
                                   color: Color(0xff33384B),
                                   fontFamily: 'Cairo',
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
+                              const SizedBox(height: 4),
                               Row(
                                 mainAxisSize: MainAxisSize.min,
-
                                 children: [
                                   Text(
                                     "Pharmacy ",
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 11,
                                       color: Color(0xffAAB6C3),
                                       fontFamily: 'Cairo',
@@ -81,16 +89,20 @@ class Mappharmacycard extends StatelessWidget {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 32.0, top: 4),
+                    padding: const EdgeInsetsDirectional.only(
+                      start: 32.0,
+                      top: 4,
+                      bottom: 8,
+                    ),
                     child: Row(
-                      spacing: 15,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
                               "$rate",
-
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 13,
                                 color: Color(0xff33384B),
                                 fontFamily: 'Cairo',
@@ -104,15 +116,16 @@ class Mappharmacycard extends StatelessWidget {
                             ),
                           ],
                         ),
-
+                        const SizedBox(width: 15),
                         Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             SizedBox(
                               height: 18,
                               width: 18,
                               child: Image.asset('assets/images/Time.png'),
                             ),
-                            Text(
+                            const Text(
                               "24-Hours ",
                               style: TextStyle(
                                 color: Color(0xff33384B),
@@ -128,40 +141,6 @@ class Mappharmacycard extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-            Column(
-              spacing: 10,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10, top: 10),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Container(
-                        height: 25,
-                        width: 60,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Color(0xff0D61EC),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "View",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Cairo',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 9,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
           ],
         ),

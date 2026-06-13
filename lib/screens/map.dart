@@ -1,18 +1,23 @@
 import 'dart:ui';
-import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:grad_project/cubit/map/map_cubit.dart';
 import 'package:grad_project/generated/l10n.dart';
-import 'package:grad_project/widgets/mapdoctorcard.dart';
+import 'package:grad_project/models/pharmacies.dart';
+import 'package:grad_project/services/Map/MapService.dart';
+
+import 'package:grad_project/widgets/hosptials/hospital_card.dart';
 import 'package:grad_project/widgets/maphospitalcard.dart';
 import 'package:grad_project/widgets/mappharmacycard.dart';
 import 'package:grad_project/widgets/mapscreen/blurred_appbar.dart';
 import 'package:grad_project/widgets/mapscreen/circlemap.dart';
 import 'package:grad_project/widgets/mapscreen/searchbar.dart';
+import 'package:grad_project/screens/Hospitals/hospitaldetails.dart';
+import 'package:grad_project/screens/pharmacies/pharmacydetails.dart';
 
-class Mapscreen extends StatefulWidget {
+class Mapscreen extends StatelessWidget {
   final double? targetLat;
   final double? targetLng;
   final String? targetName;
@@ -20,17 +25,40 @@ class Mapscreen extends StatefulWidget {
   const Mapscreen({super.key, this.targetLat, this.targetLng, this.targetName});
 
   @override
-  MapState createState() => MapState();
+  Widget build(BuildContext context) {
+    final devheight = MediaQuery.of(context).size.height;
+    return BlocProvider(
+      create: (_) {
+        final cubit = MapCubit(MapService());
+        if (targetLat != null && targetLng != null) {
+          cubit.setExternalTarget(LatLng(targetLat!, targetLng!));
+        }
+        cubit.initLocation();
+        return cubit;
+      },
+      child: _MapView(
+        targetLat: targetLat,
+        targetLng: targetLng,
+        targetName: targetName,
+      ),
+    );
+  }
 }
 
-class MapState extends State<Mapscreen> {
-  LatLng? currentLocation;
-  LatLng? userLocation;
-  LatLng? pharmacyLocation;
-  late String selectedCategory = S.of(context).pharmacies;
-  Map<String, dynamic>? selectedDoctor;
-  bool modalshowed = false;
+class _MapView extends StatefulWidget {
+  final double? targetLat;
+  final double? targetLng;
+  final String? targetName;
 
+  const _MapView({this.targetLat, this.targetLng, this.targetName});
+
+  @override
+  State<_MapView> createState() => _MapViewState();
+}
+
+class _MapViewState extends State<_MapView> {
+  bool modalshowed = false;
+  GoogleMapController? _mapController;
   @override
   void initState() {
     super.initState();
@@ -40,46 +68,6 @@ class MapState extends State<Mapscreen> {
         statusBarIconBrightness: Brightness.dark,
       ),
     );
-
-    if (widget.targetLat != null && widget.targetLng != null) {
-      pharmacyLocation = LatLng(widget.targetLat!, widget.targetLng!);
-      currentLocation = pharmacyLocation;
-    }
-
-    requestPermission();
-  }
-
-  Future<void> requestPermission() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-    }
-
-    if (permission == LocationPermission.deniedForever ||
-        permission == LocationPermission.denied) {
-      return;
-    }
-
-    getUserLocation();
-  }
-
-  Future<void> getUserLocation() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return;
-    }
-
-    Position pos = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-
-    if (!mounted) return;
-
-    setState(() {
-      userLocation = LatLng(pos.latitude, pos.longitude);
-      currentLocation ??= userLocation;
-    });
   }
 
   @override
@@ -96,530 +84,418 @@ class MapState extends State<Mapscreen> {
   @override
   Widget build(BuildContext context) {
     final devheight = MediaQuery.of(context).size.height;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        body: currentLocation == null
-            ? Center(child: CircularProgressIndicator())
-            : Stack(
-                children: [
-                  // Mapscreen - Full Screen
-                  CircleMap(
-                    currentLocation: currentLocation!,
-                    extraMarker: pharmacyLocation,
-                    extraMarkerLabel: widget.targetName,
-                  ),
+        body: BlocBuilder<MapCubit, MapState>(
+          builder: (context, state) {
+            if (state.currentLocation == null) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-                  // Blurred Header with SafeArea
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: blurred_appbar(),
-                  ),
+            LatLng? extraMarker;
+            if (widget.targetLat != null && widget.targetLng != null) {
+              extraMarker = LatLng(widget.targetLat!, widget.targetLng!);
+            }
 
-                  // Search Bar
+            return Stack(
+              children: [
+                CircleMap(
+                  currentLocation: state.currentLocation!,
+                  extraMarker: extraMarker,
+                  extraMarkerLabel: widget.targetName,
+                  markers: _buildMarkers(context, state),
+                  onMapCreated: (controller) => _mapController = controller,
+                  radius: state.searchRadiusMeters,
+                ),
+                Positioned(top: 0, left: 0, right: 0, child: blurred_appbar()),
+                Positioned(
+                  top: MediaQuery.of(context).padding.top + 90,
+                  left: 16,
+                  right: 16,
+                  child: searchbar(context),
+                ),
+                Positioned(
+                  right: 16,
+                  top: MediaQuery.of(context).padding.top + 170,
+                  child: Container(
+                    height: 40,
+                    decoration: const BoxDecoration(
+                      color: Color(0xff2260FF),
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.layers, color: Colors.white),
+                      onPressed: () {
+                        setState(() => modalshowed = true);
+                        showModalBottomSheet(
+                          context: context,
+                          barrierColor: Colors.transparent,
+                          builder: (sheetContext) => BlocProvider.value(
+                            value: context.read<MapCubit>(),
+                            child: _NearbySheet(devheight: devheight),
+                          ),
+                        ).then((_) => setState(() => modalshowed = false));
+                      },
+                    ),
+                  ),
+                ),
+                Positioned(
+                  right: 16,
+                  bottom: modalshowed
+                      ? MediaQuery.of(context).padding.bottom + 360
+                      : 110,
+                  child: Container(
+                    height: 40,
+                    decoration: const BoxDecoration(
+                      color: Color(0xff2260FF),
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.my_location, color: Colors.white),
+                      onPressed: () async {
+                        await context.read<MapCubit>().recenterToUser();
+                        final userLoc = context
+                            .read<MapCubit>()
+                            .state
+                            .userLocation;
+                        if (userLoc != null && _mapController != null) {
+                          _mapController!.animateCamera(
+                            CameraUpdate.newLatLngZoom(userLoc, 15),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ),
+
+                // Optional: show error / permission-denied banner
+                if (state.locationStatus == LocationStatus.denied ||
+                    state.locationStatus == LocationStatus.error)
                   Positioned(
-                    top: MediaQuery.of(context).padding.top + 90,
+                    top: MediaQuery.of(context).padding.top + 140,
                     left: 16,
                     right: 16,
-                    child: searchbar(context),
-                  ),
-
-                  // Floating Buttons
-                  Positioned(
-                    right: 16,
-                    top: MediaQuery.of(context).padding.top + 170,
                     child: Container(
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Color(0xff2260FF),
-                        shape: BoxShape.circle,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
                       ),
-                      child: IconButton(
-                        icon: Icon(Icons.layers, color: Colors.white),
-                        onPressed: () {
-                          setState(() {
-                            modalshowed = true;
-                          });
-                          showModalBottomSheet(
-                            context: context,
-                            barrierColor: Colors.transparent,
-                            builder: (context) => StatefulBuilder(
-                              builder: (context, StateSetter setModalState) =>
-                                  buildsheet(devheight, setModalState),
-                            ),
-                          ).then((value) {
-                            setState(() {
-                              modalshowed = false;
-                            });
-                          });
-                        },
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        state.locationStatus == LocationStatus.denied
+                            ? "locationPermissionDenied"
+                            : "somethingwentwrong",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
-                  Positioned(
-                    right: 16,
-                    bottom: modalshowed
-                        ? MediaQuery.of(context).padding.bottom + 360
-                        : 110,
-                    child: Container(
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Color(0xff2260FF),
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        icon: Icon(Icons.my_location, color: Colors.white),
-                        onPressed: () {
-                          if (userLocation != null) {
-                            setState(() {
-                              currentLocation = userLocation;
-                            });
-                          } else {
-                            getUserLocation();
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-      ),
-    );
-  }
-
-  Widget buildsheet(double devheight, StateSetter setModalState) {
-    return ClipRRect(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(30),
-        topRight: Radius.circular(30),
-      ),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-        child: Container(
-          height: 350,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.5),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                offset: Offset(0, -5),
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: _buildTabButton(
-                          S.of(context).doctors,
-                          Icons.person,
-                          setModalState,
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: _buildTabButton(
-                          S.of(context).hospitals,
-                          Icons.local_hospital,
-                          setModalState,
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: _buildTabButton(
-                          S.of(context).pharmacies,
-                          Icons.medical_services,
-                          setModalState,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 10),
-
-              Container(
-                width: 340,
-                height: 272,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Color(0xffDADADA)),
-                  color: Colors.white,
-                ),
-                child: selectedDoctor != null
-                    ? _buildDoctorDetailCard(setModalState)
-                    : Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '${S.of(context).nearest} $selectedCategory',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontFamily: 'Cairo',
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    S.of(context).seeall,
-                                    style: TextStyle(
-                                      color: Color(0xff2260FF),
-                                      fontFamily: 'Cairo',
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 210,
-                            width: 350,
-                            child: ListView(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              children:
-                                  selectedCategory == S.of(context).doctors
-                                  ? [
-                                      Mapdoctorcard(
-                                        devheight: devheight,
-                                        doctorimage: Image.asset(
-                                          'assets/images/Pic.png',
-                                        ),
-                                        job: "Neurologist",
-                                        hospital: "El-Demerdash Hospital",
-                                        name: "Youssef Ali",
-                                        rate: 4.5,
-                                        begindate: "10:30am",
-                                        enddate: "5:30pm",
-                                        onviewpressed: () {
-                                          setModalState(() {
-                                            selectedDoctor = {
-                                              'name': 'Youssef Ali',
-                                              'job': 'Neurologist',
-                                              'hospital':
-                                                  'El-Demerdash Hospital',
-                                              'rate': 4.8,
-                                              'experience': '3yr',
-                                              'treated': '50+',
-                                              'hourlyRate': '350 L.E',
-                                              'begindate': '10:30am',
-                                              'enddate': '5:30pm',
-                                            };
-                                          });
-                                        },
-                                      ),
-                                      Mapdoctorcard(
-                                        devheight: devheight,
-                                        doctorimage: Image.asset(
-                                          'assets/images/Pic.png',
-                                        ),
-                                        job: "Neurologist",
-                                        hospital: "El-Demerdash Hospital",
-                                        name: "Youssef Ali",
-                                        rate: 4.5,
-                                        begindate: "10:30am",
-                                        enddate: "5:30pm",
-                                        onviewpressed: () {
-                                          setModalState(() {
-                                            selectedDoctor = {
-                                              'name': 'Youssef Ali',
-                                              'job': 'Neurologist',
-                                              'hospital':
-                                                  'El-Demerdash Hospital',
-                                              'rate': 4.8,
-                                              'experience': '3yr',
-                                              'treated': '50+',
-                                              'hourlyRate': '350 L.E',
-                                              'begindate': '10:30am',
-                                              'enddate': '5:30pm',
-                                            };
-                                          });
-                                        },
-                                      ),
-                                      Mapdoctorcard(
-                                        devheight: devheight,
-                                        doctorimage: Image.asset(
-                                          'assets/images/Pic.png',
-                                        ),
-                                        job: "Neurologist",
-                                        hospital: "El-Demerdash Hospital",
-                                        name: "Youssef Ali",
-                                        rate: 4.5,
-                                        begindate: "10:30am",
-                                        enddate: "5:30pm",
-                                      ),
-                                      Mapdoctorcard(
-                                        devheight: devheight,
-                                        doctorimage: Image.asset(
-                                          'assets/images/Pic.png',
-                                        ),
-                                        job: "Neurologist",
-                                        hospital: "El-Demerdash Hospital",
-                                        name: "Youssef Ali",
-                                        rate: 4.5,
-                                        begindate: "10:30am",
-                                        enddate: "5:30pm",
-                                        onviewpressed: () {
-                                          setModalState(() {
-                                            selectedDoctor = {
-                                              'name': 'Youssef Ali',
-                                              'job': 'Neurologist',
-                                              'hospital':
-                                                  'El-Demerdash Hospital',
-                                              'rate': 4.8,
-                                              'experience': '3yr',
-                                              'treated': '50+',
-                                              'hourlyRate': '350 L.E',
-                                              'begindate': '10:30am',
-                                              'enddate': '5:30pm',
-                                            };
-                                          });
-                                        },
-                                      ),
-                                    ]
-                                  : selectedCategory == S.of(context).hospitals
-                                  ? [
-                                      Maphospitalcard(
-                                        name: 'El-Amawy',
-                                        rate: 4.8,
-                                        devheight: devheight,
-                                      ),
-                                      Maphospitalcard(
-                                        name: 'El-Amawy',
-                                        rate: 4.8,
-                                        devheight: devheight,
-                                      ),
-                                      Maphospitalcard(
-                                        name: 'El-Amawy',
-                                        rate: 4.8,
-                                        devheight: devheight,
-                                      ),
-                                    ]
-                                  : [
-                                      Mappharmacycard(
-                                        name:
-                                            widget.targetName ??
-                                            'El-Amiry Hospital',
-                                        devheight: devheight,
-                                        rate: 4.8,
-                                      ),
-                                      Mappharmacycard(
-                                        name: 'El-Amiry Hospital',
-                                        devheight: devheight,
-                                        rate: 4.8,
-                                      ),
-                                      Mappharmacycard(
-                                        name: 'El-Amiry Hospital',
-                                        devheight: devheight,
-                                        rate: 4.8,
-                                      ),
-                                    ],
-                            ),
-                          ),
-                        ],
-                      ),
-              ),
-            ],
-          ),
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _buildTabButton(
-    String label,
-    IconData icon,
-    StateSetter setModalState,
-  ) {
-    bool isSelected = selectedCategory == label;
-    return ElevatedButton.icon(
-      onPressed: () {
-        setModalState(() {
-          selectedCategory = label;
-        });
+  Set<Marker> _buildMarkers(BuildContext context, MapState state) {
+    final markers = <Marker>{};
+    final locale = Localizations.localeOf(context).languageCode;
+
+    if (state.userLocation != null) {
+      markers.add(
+        Marker(
+          markerId: const MarkerId('user'),
+          position: state.userLocation!,
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          infoWindow: const InfoWindow(title: 'You'),
+        ),
+      );
+    }
+
+    if (state.selectedCategory == NearbyCategory.hospitals) {
+      final devheight = MediaQuery.of(context).size.height;
+      for (final h in state.hospitals) {
+        markers.add(
+          Marker(
+            markerId: MarkerId('hospital_${h.id}'),
+            position: LatLng(h.latitude, h.longitude),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueRed,
+            ),
+            infoWindow: InfoWindow(title: h.name),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      Hospitaldetails(hospital: h, devheight: devheight),
+                ),
+              );
+            },
+          ),
+        );
+      }
+    } else {
+      for (final p in state.pharmacies) {
+        if (p.latitude == null || p.longitude == null) continue;
+        final displayName = locale == 'ar' ? p.nameAr : p.name;
+        markers.add(
+          Marker(
+            markerId: MarkerId('pharmacy_${p.id}'),
+            position: LatLng(p.latitude!, p.longitude!),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueGreen,
+            ),
+            infoWindow: InfoWindow(title: displayName),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => PharmacyDetails(
+                    name: displayName,
+                    rate: p.rating,
+                    isopen24: p.is24Hours,
+                    devheight: MediaQuery.of(context).size.height,
+                    latitude: p.latitude!,
+                    longitude: p.longitude!,
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      }
+    }
+
+    return markers;
+  }
+}
+
+class _NearbySheet extends StatelessWidget {
+  final double devheight;
+
+  const _NearbySheet({required this.devheight});
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context).languageCode;
+
+    return BlocBuilder<MapCubit, MapState>(
+      builder: (context, state) {
+        return ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              height: 350,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.5),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, -5),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: _buildTabButton(
+                            context,
+                            label: S.of(context).hospitals,
+                            icon: Icons.local_hospital,
+                            category: NearbyCategory.hospitals,
+                            isSelected:
+                                state.selectedCategory ==
+                                NearbyCategory.hospitals,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: _buildTabButton(
+                            context,
+                            label: S.of(context).pharmacies,
+                            icon: Icons.medical_services,
+                            category: NearbyCategory.pharmacies,
+                            isSelected:
+                                state.selectedCategory ==
+                                NearbyCategory.pharmacies,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    width: 340,
+                    height: 272,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: const Color(0xffDADADA)),
+                      color: Colors.white,
+                    ),
+                    child: state.nearbyStatus == NearbyStatus.loading
+                        ? const Center(child: CircularProgressIndicator())
+                        : state.nearbyStatus == NearbyStatus.error
+                        ? Center(
+                            child: Text(
+                              "Something wrong",
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '${S.of(context).nearest} '
+                                      '${state.selectedCategory == NearbyCategory.hospitals ? S.of(context).hospitals : S.of(context).pharmacies}',
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        fontFamily: 'Cairo',
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child:
+                                    state.selectedCategory ==
+                                        NearbyCategory.hospitals
+                                    ? _buildHospitalList(context, state)
+                                    : _buildPharmacyList(
+                                        context,
+                                        state,
+                                        locale,
+                                      ),
+                              ),
+                            ],
+                          ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
       },
+    );
+  }
+
+  Widget _buildHospitalList(BuildContext context, MapState state) {
+    if (state.hospitals.isEmpty) {
+      return Center(child: Text(S.of(context).sorrynoresultfound));
+    }
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      itemCount: state.hospitals.length,
+      itemBuilder: (context, index) {
+        final h = state.hospitals[index];
+        return Maphospitalcard(devheight: devheight, rate: 4.5, name: h.name);
+      },
+    );
+  }
+
+  Widget _buildPharmacyList(
+    BuildContext context,
+    MapState state,
+    String locale,
+  ) {
+    if (state.pharmacies.isEmpty) {
+      return Center(child: Text(S.of(context).sorrynoresultfound));
+    }
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      itemCount: state.pharmacies.length,
+      itemBuilder: (context, index) {
+        final Pharmacy p = state.pharmacies[index];
+        final displayName = locale == 'ar' ? p.nameAr : p.name;
+        return GestureDetector(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => PharmacyDetails(
+                name: displayName,
+                rate: p.rating,
+                isopen24: p.is24Hours,
+                devheight: devheight,
+                latitude: p.latitude ?? 0,
+                longitude: p.longitude ?? 0,
+              ),
+            ),
+          ),
+          child: Mappharmacycard(
+            name: displayName,
+            devheight: devheight,
+            rate: p.rating,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildTabButton(
+    BuildContext context, {
+    required String label,
+    required IconData icon,
+    required NearbyCategory category,
+    required bool isSelected,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: () => context.read<MapCubit>().selectCategory(category),
       icon: Icon(
         icon,
-        color: isSelected ? Colors.white : Color(0xff2260FF),
+        color: isSelected ? Colors.white : const Color(0xff2260FF),
         size: 16,
       ),
       label: Text(
         label,
         style: TextStyle(
-          color: isSelected ? Colors.white : Color(0xff2260FF),
+          color: isSelected ? Colors.white : const Color(0xff2260FF),
           fontFamily: 'Cairo',
           fontSize: 11,
           fontWeight: FontWeight.w500,
         ),
       ),
       style: ElevatedButton.styleFrom(
-        minimumSize: Size(0, 29),
+        minimumSize: const Size(0, 29),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        backgroundColor: isSelected ? Color(0xff2260FF) : Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        backgroundColor: isSelected ? const Color(0xff2260FF) : Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         elevation: isSelected ? 4 : 0,
       ),
-    );
-  }
-
-  Widget _buildDoctorDetailCard(StateSetter setModalState) {
-    if (selectedDoctor == null) return SizedBox.shrink();
-
-    return Container(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  setModalState(() {
-                    selectedDoctor = null;
-                  });
-                },
-              ),
-              Expanded(
-                child: Text(
-                  'Dr : ${selectedDoctor!['name']}',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Cairo',
-                  ),
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.navigation, color: Color(0xff2260FF)),
-                onPressed: () {},
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage('assets/images/Pic.png'),
-              ),
-              SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Dr : ${selectedDoctor!['name']}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Cairo',
-                      ),
-                    ),
-                    Text(
-                      '${selectedDoctor!['job']} | ${selectedDoctor!['hospital']}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                        fontFamily: 'Cairo',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Text(
-                '${selectedDoctor!['rate']}',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              Icon(Icons.star, color: Colors.amber, size: 18),
-              Icon(Icons.access_time, size: 16, color: Colors.grey),
-              SizedBox(width: 4),
-              Text(
-                '${selectedDoctor!['begindate']} - ${selectedDoctor!['enddate']}',
-                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-              ),
-            ],
-          ),
-          SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildStatColumn('Experience', selectedDoctor!['experience']),
-              _buildStatColumn('Treated', selectedDoctor!['treated']),
-              _buildStatColumn('Hourly Rate', selectedDoctor!['hourlyRate']),
-            ],
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xff2260FF),
-              minimumSize: Size(double.infinity, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: Text(
-              S.of(context).bookappointment,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontFamily: 'Cairo',
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatColumn(String label, String value) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Cairo',
-          ),
-        ),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[600],
-            fontFamily: 'Cairo',
-          ),
-        ),
-      ],
     );
   }
 }

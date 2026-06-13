@@ -1,49 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/generated/l10n.dart';
+import 'package:grad_project/models/hospitals.dart';
+import 'package:grad_project/screens/Hospitals/hospitaldetails.dart';
+import 'package:grad_project/screens/map.dart';
 
 class HospitalCard extends StatelessWidget {
-  const HospitalCard({
-    super.key,
-    required this.category,
-    required this.rate,
-    required this.name,
-    required this.opendate,
-    required this.closedate,
-  });
-  final double rate;
-  final String category, opendate, closedate, name;
+  const HospitalCard({super.key, required this.hospital});
+  final Hospital hospital;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Color(0xffF0F0F0),
-          border: Border.all(color: const Color.fromARGB(115, 199, 198, 198)),
-        ),
-        child: IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+    final devheight = MediaQuery.of(context).size.height;
+    final locale = Localizations.localeOf(context).languageCode;
+    final isAr = locale == 'ar';
+    final displayName = isAr ? hospital.nameAr : hospital.name;
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                Hospitaldetails(hospital: hospital, devheight: devheight),
+          ),
+        );
+      },
+      child: Directionality(
+        textDirection: isAr ? TextDirection.rtl : TextDirection.ltr,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Container(
+            constraints: const BoxConstraints(minHeight: 75),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: const Color(0xffF0F0F0),
+              border: Border.all(
+                color: const Color.fromARGB(115, 199, 198, 198),
+              ),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
                   child: Column(
-                    spacing: 0,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(
+                              vertical: 8.0,
                               horizontal: 8.0,
                             ),
                             child: SizedBox(
                               width: 37,
-
                               child: SvgPicture.asset(
                                 "assets/images/hospitals/Frame2147226186.svg",
                               ),
@@ -53,12 +66,12 @@ class HospitalCard extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: Column(
+                                mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                spacing: 4,
                                 children: [
                                   Text(
-                                    S.of(context).doctorTitle(name),
-                                    style: TextStyle(
+                                    displayName,
+                                    style: const TextStyle(
                                       fontSize: 13,
                                       color: Color(0xff33384B),
                                       fontFamily: 'Cairo',
@@ -67,11 +80,12 @@ class HospitalCard extends StatelessWidget {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
+                                  const SizedBox(height: 4),
                                   Text(
-                                    category,
+                                    hospital.category,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                       color: Color(0xff6d6d6d),
                                       fontFamily: 'Cairo',
@@ -84,15 +98,21 @@ class HospitalCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                      // ── bottom row: rating + time ──────────────
                       Padding(
-                        padding: const EdgeInsets.only(left: 32.0, top: 4),
+                        padding: const EdgeInsetsDirectional.only(
+                          start: 32.0,
+                          top: 4,
+                          bottom: 8,
+                        ),
                         child: Row(
-                          spacing: 15,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text(
-                                  "$rate",
+                                const Text(
+                                  "4.5",
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: Color(0xff33384B),
@@ -107,7 +127,9 @@ class HospitalCard extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            const SizedBox(width: 15),
                             Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
                                   height: 18,
@@ -115,17 +137,10 @@ class HospitalCard extends StatelessWidget {
                                   child: Image.asset('assets/images/Time.png'),
                                 ),
                                 Text(
-                                  "$opendate - ",
-                                  style: TextStyle(
-                                    color: Color(0xff33384B),
-                                    fontFamily: 'Cairo',
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                                Text(
-                                  closedate,
-                                  style: TextStyle(
+                                  hospital.openTime,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: const TextStyle(
                                     color: Color(0xff33384B),
                                     fontFamily: 'Cairo',
                                     fontWeight: FontWeight.w400,
@@ -140,26 +155,28 @@ class HospitalCard extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
-              Column(
-                spacing: 10,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10, top: 10),
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
+                // ── right column: view button + directions ──────────
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(
+                    end: 10,
+                    top: 10,
+                    bottom: 8,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
                         height: 27,
                         width: 71,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: Color(0xff0D61EC),
+                          color: const Color(0xff0D61EC),
                         ),
                         child: Center(
                           child: Text(
                             S.of(context).view,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontFamily: 'Cairo',
                               fontWeight: FontWeight.w400,
@@ -168,38 +185,47 @@ class HospitalCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10,
-                      right: 9,
-                    ), // ✅ was top: 3
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: SvgPicture.asset(
-                            'assets/images/lets-icons_map-duotone.svg',
-                          ),
+                      const SizedBox(height: 10),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Mapscreen(
+                                targetLat: hospital.latitude,
+                                targetLng: hospital.longitude,
+                                targetName: displayName,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: SvgPicture.asset(
+                                'assets/images/lets-icons_map-duotone.svg',
+                              ),
+                            ),
+                            Text(
+                              S.of(context).directions,
+                              style: const TextStyle(
+                                fontSize: 10,
+                                fontFamily: 'Cairo',
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xffAAB6C3),
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          S.of(context).directions,
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontFamily: 'Cairo',
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xffAAB6C3),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

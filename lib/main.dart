@@ -7,15 +7,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad_project/cubit/Authentication/Authcubit.dart';
 import 'package:grad_project/cubit/Drug%20To%20Drug%20Interaction/drugToDrugCubit.dart';
 import 'package:grad_project/cubit/Reminder/DailyReminder.dart';
+import 'package:grad_project/cubit/Reminder/ReminderCubit.dart';
 import 'package:grad_project/cubit/Reminder/StreakReminder.dart';
+import 'package:grad_project/cubit/doctors/cubit/doctors_cubit.dart';
 import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/cubit/language/locale_cubit.dart';
 import 'package:grad_project/cubit/pharmacies/pharmaciesCubit.dart';
+import 'package:grad_project/cubit/search/Hospitals/Hospitalcubit.dart';
+import 'package:grad_project/cubit/search/medicine/medicine_search.dart';
 import 'package:grad_project/firebase_options.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:grad_project/screens/splashscreen.dart';
 import 'package:grad_project/services/pharmacies/pharmaciesService.dart';
+import 'package:grad_project/services/search%20services/doctors/search_service.dart';
 
 late List<CameraDescription> cameras;
 
@@ -53,6 +58,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => DrugInteractionCubit()),
         BlocProvider<PharmacyCubit>(
           create: (_) => PharmacyCubit(PharmacyService()),
+        ),
+        BlocProvider(create: (_) => HospitalCubit()),
+        BlocProvider(create: (_) => MedicineCubit()),
+        BlocProvider(create: (_) => ReminderCubit()),
+        BlocProvider(
+          create: (_) => SearchDoctorCubit(searchService: SearchService()),
         ),
       ],
       child: BlocBuilder<LocaleCubit, Locale>(

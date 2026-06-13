@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:grad_project/generated/l10n.dart';
+import 'package:grad_project/models/hospitals.dart';
 import 'package:grad_project/screens/map.dart';
 import 'package:grad_project/widgets/pharmacies/ourservicescard.dart';
 
 class Hospitaldetails extends StatefulWidget {
   const Hospitaldetails({
     super.key,
+    required this.hospital,
     required this.devheight,
-    required this.rate,
-    required this.name,
-    required this.opentime,
-    required this.closetime,
-    required this.category,
   });
-  final double devheight, rate;
-  final String name;
-  final String opentime;
-  final String closetime, category;
+
+  final Hospital hospital;
+  final double devheight;
 
   @override
   State<Hospitaldetails> createState() => _HospitaldetailsState();
@@ -25,287 +22,94 @@ class Hospitaldetails extends StatefulWidget {
 class _HospitaldetailsState extends State<Hospitaldetails> {
   @override
   Widget build(BuildContext context) {
-    final devheight = MediaQuery.of(context).size.height;
-    final devwidth = MediaQuery.of(context).size.width;
+    final dh = MediaQuery.of(context).size.height;
+    final dw = MediaQuery.of(context).size.width;
+    final scale = (dw / 360).clamp(0.85, 1.3);
+
+    final locale = Localizations.localeOf(context).languageCode;
+    final displayName = locale == 'ar'
+        ? widget.hospital.nameAr
+        : widget.hospital.name;
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          S.of(context).hospitalinfo,
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ─── TOP SECTION: background images + hospital card ───
+            // ── HERO SECTION (same as PharmacyDetails) ─────────────────
             SizedBox(
-              height: devheight * 0.52,
+              height: dh * 0.38,
               child: Stack(
+                clipBehavior: Clip.none,
                 children: [
-                  // Background images
-                  Image.asset(
-                    "assets/images/pharmacies/bg.png",
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                  Image.asset("assets/images/pharmacies/Mask group.png"),
-
-                  // Hospital info card
                   Positioned(
-                    top: devheight * 0.18,
-                    left: devwidth * 0.02,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: devheight * 0.3,
-                        width: devwidth * 0.92,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.25),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                          color: const Color(0xffF6F6F6),
-                        ),
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: ClipPath(
+                      clipper: _BottomCurveClipper(),
+                      child: SizedBox(
+                        height: dh * 0.55,
+                        width: double.infinity,
                         child: Stack(
+                          fit: StackFit.expand,
                           children: [
-                            // Hospital name
-                            Positioned(
-                              top: devheight * 0.02,
-                              left: devwidth * 0.035,
-                              child: SizedBox(
-                                width: 280,
-                                child: Text(
-                                  widget.name,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
+                            Image.asset(
+                              "assets/images/pharmacies/bg.png",
+                              fit: BoxFit.cover,
                             ),
-
-                            // Subtitle: category
-                            Positioned(
-                              top: devheight * 0.065,
-                              left: devwidth * 0.035,
-                              child: SizedBox(
-                                width: 280,
-                                child: Text(
-                                  widget.category,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: Colors.black38,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            // Map icon
-                            Positioned(
-                              top: devheight * 0.02,
-                              right: devwidth * 0.035,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(
-                                    context,
-                                    rootNavigator: true,
-                                  ).push(
-                                    MaterialPageRoute(
-                                      builder: (_) => Mapscreen(),
-                                    ),
-                                  );
-                                },
-                                child: SizedBox(
-                                  height: 35,
-                                  width: 35,
-                                  child: Image.asset(
-                                    "assets/images/alldoctors/Frame2147226191.png",
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            // Rating
-                            Positioned(
-                              top: devheight * 0.10,
-                              left: devwidth * 0.05,
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "${widget.rate}",
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  SizedBox(
-                                    height: devheight * 0.02,
-                                    width: devwidth * 0.05,
-                                    child: Image.asset(
-                                      "assets/images/Star.png",
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            // Experience
-                            Positioned(
-                              top: devheight * 0.15,
-                              left: devwidth * 0.1,
-                              child: Column(
-                                children: [
-                                  const Text(
-                                    "3yr",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    S.of(context).experience,
-                                    style: TextStyle(
-                                      color: Colors.black.withOpacity(0.6),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            // 24/7 Work
-                            Positioned(
-                              top: devheight * 0.15,
-                              left: devwidth * 0.42,
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Image.asset(
-                                        "assets/images/Time.png",
-                                        scale: devwidth * 0.009,
-                                      ),
-                                      const SizedBox(width: 2),
-                                      const Text(
-                                        "24/7",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    S.of(context).worktime,
-                                    style: TextStyle(
-                                      color: Colors.black.withOpacity(0.6),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            // Branches
-                            Positioned(
-                              top: devheight * 0.15,
-                              left: devwidth * 0.65,
-                              child: Column(
-                                children: [
-                                  const Text(
-                                    "10",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    S.of(context).branches,
-                                    style: TextStyle(
-                                      color: Colors.black.withOpacity(0.6),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            // ✅ Contact Us button — properly centered
-                            Positioned(
-                              bottom: 7,
-                              left: 0,
-                              right: 0,
-                              child: Center(
-                                child: SizedBox(
-                                  width: 300,
-                                  height: 56,
-                                  child: DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16),
-                                      gradient: const LinearGradient(
-                                        colors: [
-                                          Color(0xFF1555D8),
-                                          Color(0xFF2260FF),
-                                        ],
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.25),
-                                          blurRadius: 8,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.transparent,
-                                        shadowColor: Colors.transparent,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        S.of(context).contactus,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            Image.asset(
+                              "assets/images/pharmacies/Mask group.png",
+                              fit: BoxFit.cover,
                             ),
                           ],
                         ),
+                      ),
+                    ),
+                  ),
+
+                  // AppBar row
+                  SafeArea(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: dw * 0.04,
+                        vertical: 8,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.black,
+                              size: 24,
+                            ),
+                          ),
+                          Text(
+                            S.of(context).hospitalinfo,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(width: 24),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // Hospital SVG icon — centered
+                  Positioned(
+                    top: dh * 0.08,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        "assets/images/hospitals/Frame2147226186.svg",
+                        height: dh * 0.14,
+                        width: dh * 0.14,
                       ),
                     ),
                   ),
@@ -313,67 +117,287 @@ class _HospitaldetailsState extends State<Hospitaldetails> {
               ),
             ),
 
-            // ─── Our Services ───
+            // ── INFO CARD (same as PharmacyDetails) ────────────────────
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: devwidth * 0.05,
-                vertical: 16,
+              padding: EdgeInsets.symmetric(horizontal: dw * 0.04),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: const Color(0xffF6F6F6),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Name + map icon
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            displayName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () =>
+                              Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(
+                                  builder: (_) => Mapscreen(
+                                    targetLat: widget.hospital.latitude,
+                                    targetLng: widget.hospital.longitude,
+                                    targetName: displayName,
+                                  ),
+                                ),
+                              ),
+                          child: SizedBox(
+                            height: 40 * scale,
+                            width: 40 * scale,
+                            child: Image.asset(
+                              "assets/images/alldoctors/Frame2147226191.png",
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 4),
+
+                    // Subtitle (category)
+                    Text(
+                      widget.hospital.category,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.black38,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    // Rating
+                    Row(
+                      children: [
+                        Text(
+                          "4.5",
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        SizedBox(
+                          height: 18,
+                          width: 18,
+                          child: Image.asset("assets/images/Star.png"),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Stats row: working hours | specialties count
+                    IntrinsicHeight(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _statItem(
+                            widget.hospital.openTime,
+                            S.of(context).worktime,
+                          ),
+                          Container(
+                            width: 1,
+                            color: Colors.black12,
+                            height: 40,
+                          ),
+                          _statItem(
+                            "${widget.hospital.specialties.length}",
+                            S.of(context).ourservices,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Contact Us button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF1555D8), Color(0xFF2260FF)],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: Text(
+                            S.of(context).contactus,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // ── Our Services (specialties) ──────────────────────────
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: dw * 0.04, vertical: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     S.of(context).ourservices,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                  const SizedBox(height: 16),
-                  GridView.count(
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisSpacing: 9,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 1.9,
-                    children: [
-                      Ourservicescard(
-                        image: 'assets/images/pharmacies/Frame 2147226268.png',
-                        title: 'Emergency Care',
-                        subtitle: '24/7 emergency medical assistance.',
-                      ),
-                      Ourservicescard(
-                        image: 'assets/images/pharmacies/Frame 2147226268.png',
-                        title: 'Outpatient',
-                        subtitle: 'Consultations without admission needed.',
-                      ),
-                      Ourservicescard(
-                        image: 'assets/images/pharmacies/Frame 2147226268.png',
-                        title: 'Surgery',
-                        subtitle: 'Advanced surgical procedures available.',
-                      ),
-                      Ourservicescard(
-                        image: 'assets/images/pharmacies/Frame 2147226268.png',
-                        title: 'Laboratory',
-                        subtitle: 'Accurate and fast lab test results.',
-                      ),
-                      Ourservicescard(
-                        image: 'assets/images/pharmacies/Frame 2147226268.png',
-                        title: 'Radiology',
-                        subtitle: 'X-ray, MRI and CT scan services.',
-                      ),
-                      Ourservicescard(
-                        image: 'assets/images/pharmacies/Frame 2147226268.png',
-                        title: 'Physiotherapy',
-                        subtitle: 'Rehabilitation and recovery programs.',
-                      ),
-                    ],
-                  ),
+                  const SizedBox(height: 12),
+                  widget.hospital.specialties.isNotEmpty
+                      ? GridView.count(
+                          crossAxisCount: 2,
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisSpacing: dw * 0.023,
+                          mainAxisSpacing: dh * 0.015,
+                          childAspectRatio: 1.9,
+                          children: widget.hospital.specialties
+                              .map(
+                                (s) => Ourservicescard(
+                                  image:
+                                      'assets/images/pharmacies/Frame 2147226268.png',
+                                  title: s,
+                                  subtitle: '',
+                                ),
+                              )
+                              .toList(),
+                        )
+                      : GridView.count(
+                          crossAxisCount: 2,
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisSpacing: dw * 0.023,
+                          mainAxisSpacing: dh * 0.015,
+                          childAspectRatio: 1.9,
+                          children: [
+                            Ourservicescard(
+                              image:
+                                  'assets/images/pharmacies/Frame 2147226268.png',
+                              title: 'Emergency Care',
+                              subtitle: '24/7 emergency medical assistance.',
+                            ),
+                            Ourservicescard(
+                              image:
+                                  'assets/images/pharmacies/Frame 2147226268.png',
+                              title: 'Outpatient',
+                              subtitle:
+                                  'Consultations without admission needed.',
+                            ),
+                            Ourservicescard(
+                              image:
+                                  'assets/images/pharmacies/Frame 2147226268.png',
+                              title: 'Surgery',
+                              subtitle:
+                                  'Advanced surgical procedures available.',
+                            ),
+                            Ourservicescard(
+                              image:
+                                  'assets/images/pharmacies/Frame 2147226268.png',
+                              title: 'Laboratory',
+                              subtitle: 'Accurate and fast lab test results.',
+                            ),
+                          ],
+                        ),
                 ],
               ),
             ),
+
+            const SizedBox(height: 30),
           ],
         ),
       ),
     );
   }
+
+  Widget _statItem(String value, String label) {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.black.withOpacity(0.5),
+              fontSize: 13,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Bottom Curve Clipper ──────────────────────────────────────────────
+class _BottomCurveClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.lineTo(0, size.height);
+    path.quadraticBezierTo(
+      size.width * 0.5,
+      size.height - 80,
+      size.width,
+      size.height,
+    );
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

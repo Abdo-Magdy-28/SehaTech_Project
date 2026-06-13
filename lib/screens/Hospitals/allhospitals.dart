@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:grad_project/cubit/search/Hospitals/Hospitalcubit.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/hospitals.dart';
 import 'package:grad_project/screens/Hospitals/hospitaldetails.dart';
 import 'package:grad_project/widgets/hosptials/hospital_card.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Allhospitals extends StatefulWidget {
   const Allhospitals({super.key});
@@ -12,49 +16,81 @@ class Allhospitals extends StatefulWidget {
 }
 
 class _AllhospitalsState extends State<Allhospitals> {
-  TextEditingController searchController = TextEditingController();
-  bool isSearching = false;
-  String? selectedCategory;
-  List<Hospital> categoryHospitals = [];
-  List<Hospital> filteredHospitals = [];
-  List<Hospital> allHospitals = [
-    Hospital(
-      name: 'El-Amiry Hospital',
-      category: 'Government Hospital',
-      rating: 4.8,
-      openTime: '10:30am',
-      closeTime: '5:30pm',
-    ),
-    Hospital(
-      name: 'Cairo Medical Center',
-      category: 'Private Hospital',
-      rating: 4.5,
-      openTime: '8:00am',
-      closeTime: '10:00pm',
-    ),
-    Hospital(
-      name: 'Al-Salam Hospital',
-      category: 'Government Hospital',
-      rating: 4.2,
-      openTime: '9:00am',
-      closeTime: '6:00pm',
-    ),
-  ];
+  final TextEditingController searchController = TextEditingController();
   String currentoption = '';
+  Position? _userPosition;
+  List<Hospital> _sortedHospitals = [];
 
-  void sortname() {
-    setState(() {
-      filteredHospitals.sort((a, b) => a.name.compareTo(b.name));
-    });
+  @override
+  void initState() {
+    super.initState();
+    context.read<HospitalCubit>().searchHospitals(query: 'hospital');
   }
 
-  void sortrate() {
-    setState(() {
-      filteredHospitals.sort((a, b) => b.rating.compareTo(a.rating));
-    });
+  void _onSearch(String query) {
+    setState(() => _sortedHospitals = []);
+    if (query.isEmpty) {
+      context.read<HospitalCubit>().searchHospitals(query: 'hospital');
+    } else {
+      context.read<HospitalCubit>().searchHospitals(query: query);
+    }
   }
 
-  Widget buildsheet(BuildContext context, StateSetter setModalState) {
+  void _showSortSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setModalState) =>
+            _buildSheet(context, setModalState),
+      ),
+    );
+  }
+
+  Future<void> _sortByLocation() async {
+    final permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      await Geolocator.requestPermission();
+    }
+
+    try {
+      final position = await Geolocator.getCurrentPosition();
+      setState(() => _userPosition = position);
+
+      final state = context.read<HospitalCubit>().state;
+      if (state is HospitalLoaded) {
+        final sorted = List<Hospital>.from(state.hospitals);
+        sorted.sort((a, b) {
+          final distA = Geolocator.distanceBetween(
+            position.latitude,
+            position.longitude,
+            a.latitude,
+            a.longitude,
+          );
+          final distB = Geolocator.distanceBetween(
+            position.latitude,
+            position.longitude,
+            b.latitude,
+            b.longitude,
+          );
+          return distA.compareTo(distB);
+        });
+        setState(() => _sortedHospitals = sorted);
+      }
+    } catch (e) {
+      debugPrint('Location error: $e');
+    }
+  }
+
+  void _sortByName() {
+    final state = context.read<HospitalCubit>().state;
+    if (state is HospitalLoaded) {
+      final sorted = List<Hospital>.from(state.hospitals);
+      sorted.sort((a, b) => a.name.compareTo(b.name));
+      setState(() => _sortedHospitals = sorted);
+    }
+  }
+
+  Widget _buildSheet(BuildContext context, StateSetter setModalState) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -67,17 +103,14 @@ class _AllhospitalsState extends State<Allhospitals> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
+          Text(
             'Sort by',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
           InkWell(
-            onTap: () {
-              setModalState(() {
-                currentoption = S.of(context).location;
-              });
-            },
+            onTap: () =>
+                setModalState(() => currentoption = S.of(context).location),
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 15),
               child: Row(
@@ -98,69 +131,11 @@ class _AllhospitalsState extends State<Allhospitals> {
               ),
             ),
           ),
+
           Divider(color: Colors.grey, height: 1),
           InkWell(
-            onTap: () {
-              setModalState(() {
-                currentoption = S.of(context).rating;
-              });
-              sortrate();
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    S.of(context).ratingthebestfirst,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  if (currentoption == S.of(context).rating)
-                    SizedBox(
-                      height: 16,
-                      child: Image.asset(
-                        'assets/images/alldoctors/elements.png',
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          Divider(color: Colors.grey, height: 1),
-          InkWell(
-            onTap: () {
-              setModalState(() {
-                currentoption = S.of(context).price;
-              });
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    S.of(context).pricelowtohigh,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  if (currentoption == S.of(context).price)
-                    SizedBox(
-                      height: 16,
-                      child: Image.asset(
-                        'assets/images/alldoctors/elements.png',
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          Divider(color: Colors.grey, height: 1),
-          InkWell(
-            onTap: () {
-              setModalState(() {
-                currentoption = S.of(context).name;
-              });
-              sortname();
-            },
+            onTap: () =>
+                setModalState(() => currentoption = S.of(context).name),
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 15),
               child: Row(
@@ -181,33 +156,7 @@ class _AllhospitalsState extends State<Allhospitals> {
               ),
             ),
           ),
-          Divider(color: Colors.grey, height: 1),
-          InkWell(
-            onTap: () {
-              setModalState(() {
-                currentoption = S.of(context).experience;
-              });
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    S.of(context).moreexperinencefirst,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  if (currentoption == S.of(context).experience)
-                    SizedBox(
-                      height: 16,
-                      child: Image.asset(
-                        'assets/images/alldoctors/elements.png',
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
+
           Divider(color: Colors.grey, height: 1),
           SizedBox(height: 15),
           SizedBox(
@@ -216,6 +165,11 @@ class _AllhospitalsState extends State<Allhospitals> {
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
+                if (currentoption == S.of(context).name) {
+                  _sortByName();
+                } else if (currentoption == S.of(context).location) {
+                  _sortByLocation();
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xff2260FF),
@@ -239,23 +193,9 @@ class _AllhospitalsState extends State<Allhospitals> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    filteredHospitals = allHospitals;
-  }
-
-  void search(String query) {
-    setState(() {
-      isSearching = query.isNotEmpty;
-      filteredHospitals = allHospitals.where((hospital) {
-        return hospital.name.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final devheight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -290,16 +230,16 @@ class _AllhospitalsState extends State<Allhospitals> {
                 ],
               ),
               child: TextField(
-                onChanged: search,
+                onChanged: _onSearch,
                 controller: searchController,
                 decoration: InputDecoration(
+                  hintText: S.of(context).searching,
+                  prefixIcon: Icon(Icons.search),
                   focusColor: Color(0xff0D5FA7),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide(color: Color(0xff0D5FA7)),
                   ),
-                  hintText: S.of(context).searching,
-                  prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide(color: Colors.black87),
@@ -308,7 +248,6 @@ class _AllhospitalsState extends State<Allhospitals> {
               ),
             ),
           ),
-          // After the search bar padding, before the "Popular Pharmacies" text
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
@@ -334,20 +273,15 @@ class _AllhospitalsState extends State<Allhospitals> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    currentoption == '' ||
-                            currentoption == S.of(context).location
+                    currentoption == ''
+                        ? S.of(context).popularhospitals
+                        : currentoption == S.of(context).location
                         ? S.of(context).bylocation
-                        : currentoption == S.of(context).rating
-                        ? S.of(context).byrating
-                        : currentoption == S.of(context).price
-                        ? S.of(context).byprice
                         : currentoption == S.of(context).name
                         ? S.of(context).byname
-                        : currentoption == S.of(context).experience
-                        ? S.of(context).byexperience
-                        : S.of(context).bylocation,
+                        : S.of(context).popularhospitals,
                     style: TextStyle(
-                      color: Color(0xff111111).withValues(alpha: 0.6),
+                      color: Color(0xff111111).withOpacity(0.6),
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -355,15 +289,7 @@ class _AllhospitalsState extends State<Allhospitals> {
                 ),
                 Spacer(),
                 GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) => StatefulBuilder(
-                        builder: (context, StateSetter setModalState) =>
-                            buildsheet(context, setModalState),
-                      ),
-                    );
-                  },
+                  onTap: _showSortSheet,
                   child: Container(
                     height: 45,
                     width: 45,
@@ -386,83 +312,97 @@ class _AllhospitalsState extends State<Allhospitals> {
               ],
             ),
           ),
-          if (!isSearching)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                S.of(context).popularhospitals,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: filteredHospitals.length,
-            itemBuilder: (context, index) {
-              final hospital = filteredHospitals[index];
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Hospitaldetails(
-                          name: hospital.name,
-                          rate: hospital.rating,
-                          opentime: hospital.openTime,
-                          closetime: hospital.closeTime,
-                          devheight: devheight,
-                          category: hospital.category,
-                        ),
+          SizedBox(height: 8),
+          BlocBuilder<HospitalCubit, HospitalState>(
+            builder: (context, state) {
+              if (state is HospitalLoading) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 5,
+                  itemBuilder: (context, index) => Skeletonizer(
+                    child: HospitalCard(
+                      hospital: Hospital(
+                        latitude: 0.0,
+                        longitude: 0.0,
+                        id: '',
+                        name: 'Loading...',
+                        nameAr: 'جاري التحميل',
+                        category: 'Loading...',
+                        rating: 0,
+                        openTime: '--',
+                        phone: '--',
+                        hasEmergency: false,
+                        specialties: [],
                       ),
+                    ),
+                  ),
+                );
+              }
+
+              if (state is HospitalError) {
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 40),
+                    child: Text(
+                      state.message,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                );
+              }
+
+              if (state is HospitalLoaded) {
+                final hospitals = _sortedHospitals.isNotEmpty
+                    ? _sortedHospitals
+                    : state.hospitals;
+                if (hospitals.isEmpty) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 40),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 100),
+                        SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: Image.asset(
+                            'assets/images/alldoctors/search.png',
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                        Text(
+                          S.of(context).sorrynoresultfound,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                        Text(
+                          S.of(context).trydifferentsearchterm,
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: hospitals.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: HospitalCard(hospital: hospitals[index]),
                     );
                   },
-                  child: HospitalCard(
-                    name: hospital.name,
-                    rate: hospital.rating,
-                    category: hospital.category,
-                    opendate: hospital.openTime,
-                    closedate: hospital.closeTime,
-                  ),
-                ),
-              );
+                );
+              }
+
+              return SizedBox.shrink();
             },
           ),
-          if (isSearching && filteredHospitals.isEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Column(
-                children: [
-                  SizedBox(height: 100),
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: Image.asset('assets/images/alldoctors/search.png'),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    S.of(context).sorrynoresultfound,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    S.of(context).trydifferentsearchterm,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
         ],
       ),
     );

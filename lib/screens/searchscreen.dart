@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad_project/cubit/doctors/cubit/doctors_cubit.dart';
+import 'package:grad_project/cubit/doctors/cubit/doctors_state.dart';
 import 'package:grad_project/cubit/doctors/popular/popular_states.dart';
 import 'package:grad_project/cubit/doctors/popular/popularcubit.dart';
 import 'package:grad_project/cubit/pharmacies/pharmaciesCubit.dart';
 import 'package:grad_project/cubit/pharmacies/pharmaciesStates.dart';
+import 'package:grad_project/cubit/search/Hospitals/Hospitalcubit.dart';
+import 'package:grad_project/cubit/search/medicine/medicine_search.dart';
 import 'package:grad_project/generated/l10n.dart';
 import 'package:grad_project/models/doctor.dart';
 import 'package:grad_project/models/hospitals.dart';
@@ -11,11 +15,14 @@ import 'package:grad_project/screens/Hospitals/allhospitals.dart';
 import 'package:grad_project/screens/Hospitals/hospitaldetails.dart';
 import 'package:grad_project/screens/Doctors/alldoctors.dart';
 import 'package:grad_project/screens/medicines/allmedicines.dart';
+import 'package:grad_project/screens/medicines/medicine_details.dart';
 import 'package:grad_project/screens/pharmacies/allpahramcies.dart';
 import 'package:grad_project/screens/pharmacies/pharmacydetails.dart';
+import 'package:grad_project/widgets/Medicines/medicinecard.dart';
 import 'package:grad_project/widgets/doctors/category.dart';
 import 'package:grad_project/widgets/doctors/doctor_card.dart';
 import 'package:grad_project/widgets/hosptials/hospital_card.dart';
+import 'package:grad_project/widgets/mainscaffold.dart';
 import 'package:grad_project/widgets/pharmacies/pharmacy_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -31,68 +38,19 @@ class _SearchscreenState extends State<Searchscreen> {
   bool _isSearching = false;
 
   List<Doctor> _filteredDoctors = [];
-  List<Hospital> _filteredHospitals = [];
-
-  final List<Hospital> _hospitals = [
-    Hospital(
-      name: 'El-Amiry Hospital',
-      category: 'Government Hospital',
-      rating: 4.8,
-      openTime: '10:30am',
-      closeTime: '5:30pm',
-    ),
-    Hospital(
-      name: 'Cairo Medical Center',
-      category: 'Private Hospital',
-      rating: 4.5,
-      openTime: '8:00am',
-      closeTime: '10:00pm',
-    ),
-    Hospital(
-      name: 'Al-Salam Hospital',
-      category: 'Government Hospital',
-      rating: 4.2,
-      openTime: '9:00am',
-      closeTime: '6:00pm',
-    ),
-  ];
-
-  final List<Doctor> _allDoctors = [
-    Doctor(
-      name: 'Youssef Ali',
-      job: 'Neurologist',
-      hospital: 'El-Demerdash Hospital',
-      image: 'assets/images/Pic.png',
-      rate: 4.5,
-      beginDate: '10:30am',
-      endDate: '5:30pm',
-    ),
-    Doctor(
-      name: 'Ahmed Hassan',
-      job: 'Cardiologist',
-      hospital: 'Ain Shams Hospital',
-      image: 'assets/images/Pic2.png',
-      rate: 4.2,
-      beginDate: '9:00am',
-      endDate: '4:00pm',
-    ),
-    Doctor(
-      name: 'Omar Khaled',
-      job: 'Dentist',
-      hospital: 'Smile Care Clinic',
-      image: 'assets/images/Pic4.png',
-      rate: 4.1,
-      beginDate: '8:30am',
-      endDate: '2:30pm',
-    ),
-  ];
 
   @override
   void initState() {
     super.initState();
-    _filteredDoctors = _allDoctors;
-    _filteredHospitals = _hospitals;
+
     context.read<PharmacyCubit>().fetchPharmacies();
+    context.read<HospitalCubit>().searchHospitals(query: 'hospital', limit: 4);
+    context.read<MedicineCubit>().searchMedicines(
+      search: '',
+      category: '',
+      page: 1,
+      limit: 4,
+    );
   }
 
   @override
@@ -104,14 +62,20 @@ class _SearchscreenState extends State<Searchscreen> {
   void _search(String query) {
     setState(() {
       _isSearching = query.isNotEmpty;
-      _filteredDoctors = _allDoctors
-          .where((d) => d.name.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-      _filteredHospitals = _hospitals
-          .where((h) => h.name.toLowerCase().contains(query.toLowerCase()))
-          .toList();
     });
+    context.read<SearchDoctorCubit>().onSearchChanged(query);
     context.read<PharmacyCubit>().searchPharmacies(query);
+    if (query.isEmpty) {
+      context.read<HospitalCubit>().searchHospitals(query: 'hospital');
+    } else {
+      context.read<HospitalCubit>().searchHospitals(query: query);
+    }
+    context.read<MedicineCubit>().searchMedicines(
+      search: query,
+      category: '',
+      page: 1,
+      limit: 10,
+    );
   }
 
   @override
@@ -124,42 +88,95 @@ class _SearchscreenState extends State<Searchscreen> {
       appBar: _buildAppBar(sw),
       body: BlocBuilder<PharmacyCubit, PharmacyState>(
         builder: (context, pharmacyState) {
-          // ── تحديد بيانات الصيدليات ─────────────────────────────
           List<dynamic> pharmacies = [];
-
           if (pharmacyState is PharmacyLoaded) {
             pharmacies = pharmacyState.pharmacies;
           }
 
-          // ── حساب noResults بشكل صحيح (مصدر واحد للـ empty state) ─
           final bool noResults =
               _isSearching &&
               _filteredDoctors.isEmpty &&
-              _filteredHospitals.isEmpty &&
               pharmacies.isEmpty &&
               pharmacyState is! PharmacyLoading;
 
           return CustomScrollView(
             slivers: [
-              // ── Search bar ───────────────────────────────────────
               SliverToBoxAdapter(child: _buildSearchBar(sw, sh)),
-
-              // ── Category shortcuts ───────────────────────────────
               SliverToBoxAdapter(child: _buildCategories(sw, sh)),
 
-              // ── Section: Doctors ──────────────────────────────────
-              // FIX #1: كلا العنصرين (العنوان + القائمة) محاطَين بـ if (!_isSearching)
-              if (!_isSearching)
-                SliverToBoxAdapter(
-                  child: _sectionTitle(S.of(context).populardoctors, sw, sh),
-                ),
-              if (!_isSearching)
-                BlocBuilder<DoctorCubit, DoctorState>(
+              // ── Doctors ───────────────────────────────────────────--------------------------------------------------------------------------
+              // ── Doctors ───────────────────────────────────────────
+              SliverToBoxAdapter(
+                child: BlocBuilder<SearchDoctorCubit, SearchDoctorState>(
                   builder: (context, state) {
-                    if (state is DoctorLoading) {
-                      return SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) => Skeletonizer(
+                    if (state is SearchDoctorInitial && !_isSearching) {
+                      // show popular doctors when not searching
+                      return BlocBuilder<DoctorCubit, DoctorState>(
+                        builder: (context, docState) {
+                          if (docState is DoctorLoading) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _sectionTitle(
+                                  S.of(context).populardoctors,
+                                  sw,
+                                  sh,
+                                ),
+                                ...List.generate(
+                                  3,
+                                  (_) => Skeletonizer(
+                                    child: Doctorcard(
+                                      doctorimage: Image.asset(
+                                        'assets/images/Pic.png',
+                                      ),
+                                      job: "Loading...",
+                                      hospital: "Loading...",
+                                      name: "Loading...",
+                                      rate: 0,
+                                      begindate: "--:--",
+                                      enddate: "--:--",
+                                      profile: '',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                          if (docState is DoctorLoaded) {
+                            final doctors = docState.doctors.take(4).toList();
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _sectionTitle(
+                                  S.of(context).populardoctors,
+                                  sw,
+                                  sh,
+                                ),
+                                ...doctors.map(
+                                  (doctor) => Doctorcard(
+                                    doctorimage: Image.network(doctor.image),
+                                    job: doctor.job,
+                                    hospital: doctor.hospital,
+                                    name: doctor.name,
+                                    rate: doctor.rate,
+                                    begindate: doctor.beginDate,
+                                    enddate: doctor.endDate,
+                                    profile: doctor.profile ?? '',
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      );
+                    }
+
+                    if (state is SearchDoctorLoading) {
+                      return Column(
+                        children: List.generate(
+                          3,
+                          (_) => Skeletonizer(
                             child: Doctorcard(
                               doctorimage: Image.asset('assets/images/Pic.png'),
                               job: "Loading...",
@@ -171,57 +188,191 @@ class _SearchscreenState extends State<Searchscreen> {
                               profile: '',
                             ),
                           ),
-                          childCount: 5,
                         ),
                       );
-                    } else if (state is DoctorLoaded) {
-                      return SliverList(
-                        delegate: SliverChildBuilderDelegate((context, index) {
-                          final doctor = state.doctors[index];
-                          return Doctorcard(
-                            doctorimage: Image.network(doctor.image),
-                            job: doctor.job,
-                            hospital: doctor.hospital,
-                            name: doctor.name,
-                            rate: doctor.rate,
-                            begindate: doctor.beginDate,
-                            enddate: doctor.endDate,
-                            profile: doctor.profile ?? '',
-                          );
-                        }, childCount: state.doctors.length),
-                      );
-                    } else if (state is DoctorError) {
-                      return SliverToBoxAdapter(
-                        child: Center(child: Text("Error: ${state.message}")),
-                      );
-                    } else {
-                      return const SliverToBoxAdapter(
-                        child: Center(child: Text("No data")),
+                    }
+
+                    if (state is SearchDoctorSuccess) {
+                      final doctors = state.doctors.take(4).toList();
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _sectionTitle(S.of(context).doctors, sw, sh),
+                          ...doctors.map(
+                            (doctor) => Doctorcard(
+                              doctorimage: Image.network(doctor.image),
+                              job: doctor.job,
+                              hospital: doctor.hospital,
+                              name: doctor.name,
+                              rate: doctor.rate,
+                              begindate: doctor.beginDate,
+                              enddate: doctor.endDate,
+                              profile: doctor.profile ?? '',
+                            ),
+                          ),
+                        ],
                       );
                     }
+
+                    return const SizedBox.shrink();
                   },
                 ),
+              ),
+              // ── Hospitals ─────────────────────────────────────────-------------------------------------------------------------
+              SliverToBoxAdapter(
+                child: BlocBuilder<HospitalCubit, HospitalState>(
+                  builder: (context, state) {
+                    if (state is HospitalLoading) {
+                      return Skeletonizer(
+                        child: HospitalCard(
+                          hospital: Hospital(
+                            id: '',
+                            name: 'Loading...',
+                            nameAr: '',
+                            category: 'Loading...',
+                            rating: 0,
+                            openTime: '--',
+                            phone: '--',
+                            hasEmergency: false,
+                            specialties: [],
+                            latitude: 0,
+                            longitude: 0,
+                          ),
+                        ),
+                      );
+                    }
 
-              // ── Section: Hospitals ────────────────────────────────
-              if (_filteredHospitals.isNotEmpty) ...[
-                if (!_isSearching)
-                  SliverToBoxAdapter(
-                    child: _sectionTitle(
-                      S.of(context).popularhospitals,
-                      sw,
-                      sh,
-                    ),
-                  ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (_, i) => _buildHospitalTile(_filteredHospitals[i], sw, sh),
-                    childCount: _filteredHospitals.length,
-                  ),
+                    if (state is HospitalLoaded && state.hospitals.isNotEmpty) {
+                      final locale = Localizations.localeOf(
+                        context,
+                      ).languageCode;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _sectionTitle(S.of(context).popularhospitals, sw, sh),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: state.hospitals.length,
+                            itemBuilder: (context, index) {
+                              final hospital = state.hospitals[index];
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: sw * 0.03,
+                                ),
+                                child: GestureDetector(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => Hospitaldetails(
+                                        hospital: hospital,
+                                        devheight: sh,
+                                      ),
+                                    ),
+                                  ),
+                                  child: HospitalCard(hospital: hospital),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    }
+
+                    return const SizedBox.shrink();
+                  },
                 ),
-              ],
+              ),
 
-              // ── Section: Pharmacies ────────────────────────────────
-              // FIX #2: استخدام Column بدل ListView داخل SliverToBoxAdapter
+              // ── Medicines ─────────────────────────────────────────-----------------------------------------
+              SliverToBoxAdapter(
+                child: BlocBuilder<MedicineCubit, MedicineState>(
+                  builder: (context, state) {
+                    if (state is MedicineLoading) {
+                      return const Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+
+                    if (state is MedicineLoaded && state.medicines.isNotEmpty) {
+                      final medicines = state.medicines;
+                      final sw = MediaQuery.of(context).size.width;
+                      final sh = MediaQuery.of(context).size.height;
+
+                      double cardAspectRatio() {
+                        final cardW = (sw - sw * 0.06 - sw * 0.025) / 2;
+                        final cardH =
+                            cardW * 0.65 +
+                            sw * 0.050 +
+                            sw * 0.008 +
+                            sw * 0.039 +
+                            sw * 0.005 +
+                            sw * 0.039 +
+                            sw * 0.101 +
+                            sw * 0.04;
+                        return cardW / cardH;
+                      }
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: sw * 0.03,
+                              vertical: sh * 0.008,
+                            ),
+                            child: Text(
+                              S.of(context).mostsearchedmedicines,
+                              style: TextStyle(
+                                fontSize: sw * 0.045,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: sw * 0.03,
+                            ),
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: medicines.length,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: sw * 0.025,
+                                    mainAxisSpacing: sw * 0.025,
+                                    childAspectRatio: cardAspectRatio(),
+                                  ),
+                              itemBuilder: (_, i) {
+                                final med = medicines[i];
+                                return GestureDetector(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => MainScaffold(
+                                        currentIndex: 3,
+                                        child: MedicineDetails(medicine: med),
+                                      ),
+                                    ),
+                                  ),
+                                  child: MedicineCard(medicine: med),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ),
+              // ── Pharmacies ────────────────────────────────────────------------------------------------------------------
               SliverToBoxAdapter(
                 child: BlocBuilder<PharmacyCubit, PharmacyState>(
                   builder: (context, state) {
@@ -231,17 +382,12 @@ class _SearchscreenState extends State<Searchscreen> {
                         child: Center(child: CircularProgressIndicator()),
                       );
                     }
-
                     if (state is PharmacyError) {
                       return Center(child: Text(state.message));
                     }
-
-                    // FIX #3: حالة SearchEmpty تُعرض هنا فقط إذا كان هناك نتائج في مكان آخر،
-                    // أما إذا كان noResults = true فالـ empty state الموحد يظهر في الأسفل
                     if (state is PharmacySearchEmpty) {
-                      return const SizedBox.shrink(); // noResults يتكفل بالعرض
+                      return const SizedBox.shrink();
                     }
-
                     if (state is PharmacyLoaded &&
                         state.pharmacies.isNotEmpty) {
                       return Column(
@@ -249,26 +395,20 @@ class _SearchscreenState extends State<Searchscreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           if (!state.isSearching)
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                S.of(context).popularpharmacies,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                            _sectionTitle(
+                              S.of(context).popularpharmacies,
+                              sw,
+                              sh,
                             ),
                           ListView.builder(
                             shrinkWrap: true,
-                            // FIX #2: NeverScrollableScrollPhysics لمنع التعارض مع CustomScrollView
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: state.pharmacies.length,
                             itemBuilder: (context, index) {
                               final pharmacy = state.pharmacies[index];
                               return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: sw * 0.03,
                                 ),
                                 child: GestureDetector(
                                   onTap: () => Navigator.push(
@@ -298,13 +438,11 @@ class _SearchscreenState extends State<Searchscreen> {
                         ],
                       );
                     }
-
                     return const SizedBox.shrink();
                   },
                 ),
               ),
 
-              // ── FIX #3: Empty state موحد (مصدر واحد فقط) ───────────
               if (noResults)
                 SliverToBoxAdapter(child: _buildEmptyState(sw, sh)),
 
@@ -316,7 +454,6 @@ class _SearchscreenState extends State<Searchscreen> {
     );
   }
 
-  // ── AppBar ───────────────────────────────────────────────────────
   PreferredSizeWidget _buildAppBar(double sw) => AppBar(
     surfaceTintColor: Colors.transparent,
     scrolledUnderElevation: 0,
@@ -333,7 +470,6 @@ class _SearchscreenState extends State<Searchscreen> {
     ),
   );
 
-  // ── Search bar ───────────────────────────────────────────────────
   Widget _buildSearchBar(double sw, double sh) => Padding(
     padding: EdgeInsets.symmetric(horizontal: sw * 0.04, vertical: sh * 0.015),
     child: Container(
@@ -369,7 +505,6 @@ class _SearchscreenState extends State<Searchscreen> {
     ),
   );
 
-  // ── Category row ─────────────────────────────────────────────────
   Widget _buildCategories(double sw, double sh) {
     final items = [
       {
@@ -413,7 +548,6 @@ class _SearchscreenState extends State<Searchscreen> {
     );
   }
 
-  // ── Section title ────────────────────────────────────────────────
   Widget _sectionTitle(String title, double sw, double sh) => Padding(
     padding: EdgeInsets.fromLTRB(sw * 0.04, sh * 0.018, sw * 0.04, sh * 0.006),
     child: Text(
@@ -422,34 +556,6 @@ class _SearchscreenState extends State<Searchscreen> {
     ),
   );
 
-  // ── Hospital tile ────────────────────────────────────────────────
-  Widget _buildHospitalTile(Hospital h, double sw, double sh) => Padding(
-    padding: EdgeInsets.symmetric(horizontal: sw * 0.03),
-    child: GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => Hospitaldetails(
-            name: h.name,
-            rate: h.rating,
-            opentime: h.openTime,
-            closetime: h.closeTime,
-            devheight: sh,
-            category: h.category,
-          ),
-        ),
-      ),
-      child: HospitalCard(
-        rate: h.rating,
-        name: h.name,
-        category: h.category,
-        opendate: h.openTime,
-        closedate: h.closeTime,
-      ),
-    ),
-  );
-
-  // ── Empty state ──────────────────────────────────────────────────
   Widget _buildEmptyState(double sw, double sh) => Padding(
     padding: EdgeInsets.symmetric(vertical: sh * 0.08),
     child: Column(
